@@ -10,5 +10,5 @@ public interface AdminUserJpaRepository extends CrudRepository<AdminUserEntity, 
 
     String findAdminUserEntityByPassword(String id);
 
-    void saveToken(String token);
+    void save(String token);
 }

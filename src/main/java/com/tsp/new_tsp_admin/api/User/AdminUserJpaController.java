@@ -8,7 +8,6 @@ import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.api.jwt.MyUserDetailsService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,8 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.tsp.new_tsp_admin.api.domain.User.AdminUserEntity.builder;
-
 @RestController
 @RequestMapping("/api/jpa-user")
 @RequiredArgsConstructor
@@ -44,13 +41,12 @@ public class AdminUserJpaController {
                                                    HttpServletRequest request,
                                                    HttpServletResponse response) throws Exception {
 
+        ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
         AdminUserEntity adminUserEntity = new AdminUserEntity();
 
         adminUserEntity.setUserId(authenticationRequest.getUserId());
         adminUserEntity.setPassword(authenticationRequest.getPassword());
         String resultValue = adminUserJpaService.adminLogin(adminUserEntity);
-
-        ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
 
         if ("Y".equals(resultValue)) {
             userMap.put("loginYn", resultValue);
@@ -60,6 +56,9 @@ public class AdminUserJpaController {
             // 로그인 완료 시 생성된 token 값 DB에 저장
             UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
             String token = jwtTokenUtil.generateToken(userDetails);
+
+            System.out.println("===token===");
+            System.out.println(token);
             adminUserEntity.setUserToken(token);
             adminUserJpaService.saveToken(adminUserEntity);
 //            adminUserApiService.insertUserToken(newUserDTO);

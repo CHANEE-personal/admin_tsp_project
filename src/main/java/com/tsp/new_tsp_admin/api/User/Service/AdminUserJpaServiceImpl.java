@@ -42,6 +42,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
 
     @Override
     public void saveToken(AdminUserEntity adminUserEntity) {
-        adminUserJpaRepository.saveToken(adminUserEntity.getUserToken());
+        adminUserJpaRepository.save(adminUserEntity.getUserToken());
     }
 }

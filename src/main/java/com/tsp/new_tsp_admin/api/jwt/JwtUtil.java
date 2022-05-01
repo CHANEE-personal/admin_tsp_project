@@ -61,14 +61,12 @@ public class JwtUtil {
         Claims claims = Jwts.claims();
         claims.put("username", username);
 
-        String jwt = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime))
                 .signWith(getSigningKey(SECRET_KEY), SignatureAlgorithm.HS256)
                 .compact();
-
-        return jwt;
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

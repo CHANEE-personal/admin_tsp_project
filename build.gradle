@@ -1,6 +1,7 @@
 buildscript {
     ext {
         queryDslVersion = "5.0.0"
+        springBootVersion = '2.6.7'
     }
 }
 
@@ -16,6 +17,9 @@ plugins {
 }
 
 apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 group 'org.example'
 version '1.0-SNAPSHOT'
@@ -32,6 +36,9 @@ repositories {
 }
 
 dependencies {
+
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // restdocs 추가
@@ -65,13 +72,15 @@ dependencies {
     implementation group: 'log4j', name: 'log4j', version: '1.2.16'
     compileOnly 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
 
+    // lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    // JUnit
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
+    // junit
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
+    // junit jsonpath
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -83,6 +92,7 @@ dependencies {
     compile 'org.springframework.security:spring-security-web:5.6.3'
     compile 'org.springframework.security:spring-security-config:5.6.3'
 
+    // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2',
             // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
