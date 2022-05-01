@@ -32,6 +32,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
     // restdocs 추가
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
@@ -63,8 +65,8 @@ dependencies {
     implementation group: 'log4j', name: 'log4j', version: '1.2.16'
     compileOnly 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
 
-    compileOnly "org.projectlombok:lombok:1.18.22"
-    annotationProcessor "org.projectlombok:lombok:1.18.22"
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     // JUnit
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
@@ -76,6 +78,16 @@ dependencies {
 
     // cache 추가
     compile('org.springframework.boot:spring-boot-starter-cache')
+
+    // spring security
+    compile 'org.springframework.security:spring-security-web:5.6.3'
+    compile 'org.springframework.security:spring-security-config:5.6.3'
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2',
+            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+            //'org.bouncycastle:bcprov-jdk15on:1.60',
+            'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
 }
 
 // build시 junit 제외
