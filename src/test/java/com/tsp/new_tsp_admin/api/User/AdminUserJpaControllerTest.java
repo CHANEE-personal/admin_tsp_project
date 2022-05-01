@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -18,6 +19,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -34,6 +36,9 @@ class AdminUserJpaControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setup() {
@@ -58,7 +63,8 @@ class AdminUserJpaControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(jsonStr))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.loginYn").value("Y"));
 
     }
 }

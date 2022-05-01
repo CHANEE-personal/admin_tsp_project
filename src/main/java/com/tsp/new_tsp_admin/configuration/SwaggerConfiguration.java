@@ -55,7 +55,7 @@ public class SwaggerConfiguration {
                 .groupName("tsp")
                 .apiInfo(this.apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.tsp.new_tsp_project.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.tsp.new_tsp_admin.api"))
                 .paths(PathSelectors.ant("/api/**"))
                 .build()
                 .securityContexts(List.of(securityContext()))

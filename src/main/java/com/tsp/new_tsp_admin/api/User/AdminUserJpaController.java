@@ -42,6 +42,7 @@ public class AdminUserJpaController {
                                                    HttpServletResponse response) throws Exception {
 
         ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
+
         AdminUserEntity adminUserEntity = new AdminUserEntity();
 
         adminUserEntity.setUserId(authenticationRequest.getUserId());
@@ -57,10 +58,7 @@ public class AdminUserJpaController {
             UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
             String token = jwtTokenUtil.generateToken(userDetails);
 
-            System.out.println("===token===");
-            System.out.println(token);
-            adminUserEntity.setUserToken(token);
-            adminUserJpaService.saveToken(adminUserEntity);
+            adminUserJpaService.saveToken(adminUserEntity.getUserId(),token);
 //            adminUserApiService.insertUserToken(newUserDTO);
         }
 

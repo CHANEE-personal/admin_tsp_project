@@ -1,14 +1,13 @@
 package com.tsp.new_tsp_admin.api.User.Service.Repository;
 
 import com.tsp.new_tsp_admin.api.domain.User.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.jwt.SecurityUser;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-public interface AdminUserJpaRepository extends CrudRepository<AdminUserEntity, Long> {
+public interface AdminUserJpaRepository extends JpaRepository<AdminUserEntity, Long> {
 
-    SecurityUser findAdminUserEntityByUserId(String id);
+    AdminUserEntity findAdminUserEntityByUserId(String id);
 
+    @Query("select a.password from AdminUserEntity a where a.userId = ?1")
     String findAdminUserEntityByPassword(String id);
-
-    void save(String token);
 }

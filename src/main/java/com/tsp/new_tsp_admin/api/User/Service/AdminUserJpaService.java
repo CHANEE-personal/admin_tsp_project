@@ -8,5 +8,5 @@ public interface AdminUserJpaService {
 
     String adminLogin(AdminUserEntity adminUserEntity);
 
-    void saveToken(AdminUserEntity adminUserEntity);
+    void saveToken(String userId, String token);
 }
