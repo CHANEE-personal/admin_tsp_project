@@ -1,7 +1,7 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
-import com.tsp.new_tsp_admin.api.User.Service.Repository.AdminUserJpaRepository;
-import com.tsp.new_tsp_admin.api.domain.User.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;

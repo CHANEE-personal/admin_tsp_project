@@ -1,8 +1,8 @@
-package com.tsp.new_tsp_admin.api.User;
+package com.tsp.new_tsp_admin.api.user;
 
-import com.tsp.new_tsp_admin.api.User.Service.AdminUserJpaService;
-import com.tsp.new_tsp_admin.api.domain.User.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.domain.User.AuthenticationRequest;
+import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.api.jwt.AuthenticationResponse;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.api.jwt.MyUserDetailsService;

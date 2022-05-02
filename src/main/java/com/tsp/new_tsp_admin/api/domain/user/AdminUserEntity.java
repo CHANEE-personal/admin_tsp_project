@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_admin.api.domain.User;
+package com.tsp.new_tsp_admin.api.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

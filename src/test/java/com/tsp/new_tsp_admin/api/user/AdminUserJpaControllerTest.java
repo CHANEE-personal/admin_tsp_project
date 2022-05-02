@@ -1,7 +1,7 @@
-package com.tsp.new_tsp_admin.api.User;
+package com.tsp.new_tsp_admin.api.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsp.new_tsp_admin.api.domain.User.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

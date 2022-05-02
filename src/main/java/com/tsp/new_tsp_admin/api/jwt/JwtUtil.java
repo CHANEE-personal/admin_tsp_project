@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
-import com.tsp.new_tsp_admin.api.domain.User.AdminUserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

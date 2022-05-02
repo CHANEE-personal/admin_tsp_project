@@ -1,6 +1,6 @@
-package com.tsp.new_tsp_admin.api.User.Service;
+package com.tsp.new_tsp_admin.api.user.service;
 
-import com.tsp.new_tsp_admin.api.domain.User.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 
 import java.util.List;
 

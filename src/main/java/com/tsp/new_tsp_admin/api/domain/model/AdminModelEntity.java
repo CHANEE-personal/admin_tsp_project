@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.model;
 
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
