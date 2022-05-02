@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AdminUserJpaServiceImpl implements AdminUserJpaService {
@@ -20,6 +22,12 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
 //    public void signUpUser(AdminUserEntity adminUserEntity) {
 //        String password = adminUserEntity.getPassword();
 //    }
+
+
+    @Override
+    public List<AdminUserEntity> getAdminUserList() {
+        return adminUserJpaRepository.findAll();
+    }
 
     @Override
     public String adminLogin(AdminUserEntity adminUserEntity) {

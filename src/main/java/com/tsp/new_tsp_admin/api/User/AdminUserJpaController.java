@@ -7,6 +7,8 @@ import com.tsp.new_tsp_admin.api.jwt.AuthenticationResponse;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.api.jwt.MyUserDetailsService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,15 +17,16 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.rmi.ServerError;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
@@ -36,6 +39,51 @@ public class AdminUserJpaController {
     private final MyUserDetailsService userDetailsService;
     private final JwtUtil jwtTokenUtil;
 
+    /**
+     * <pre>
+     * 1. MethodName : userEntityList
+     * 2. ClassName  : AdminUserJpaController.java
+     * 3. Comment    : Admin User 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "Admin 회원 조회", notes = "Admin 회원을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping
+    public List<AdminUserEntity> userEntityList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return adminUserJpaService.getAdminUserList();
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : login
+     * 2. ClassName  : AdminUserJpaController.java
+     * 3. Comment    : Admin User 로그인 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "Admin 회원 로그인 처리", notes = "Admin 회원을 로그인 처리한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
     @PostMapping("/login")
     public ConcurrentHashMap<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest,
                                                    HttpServletRequest request,
