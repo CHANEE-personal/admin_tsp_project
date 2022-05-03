@@ -35,7 +35,7 @@ public interface AdminModelJpaService {
      *
      * @param modelMap
      */
-    List<AdminModelDTO> getModelsList(Map<String, Object> modelMap);
+    List<AdminModelEntity> getModelsList(Map<String, Object> modelMap);
 
     /**
      * <pre>
@@ -48,7 +48,7 @@ public interface AdminModelJpaService {
      *
      * @param adminModelEntity
      */
-    AdminModelDTO getOneModel(AdminModelEntity adminModelEntity);
+    AdminModelEntity getOneModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>

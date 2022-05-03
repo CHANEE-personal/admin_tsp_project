@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
 import com.tsp.new_tsp_admin.common.Page;
@@ -22,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 
 @RestController
 @RequestMapping("/api/jpa-model")
@@ -63,7 +60,7 @@ public class AdminModelJpaController {
 
         Long modelListCnt = this.adminModelJpaService.getModelsCount(modelMap);
 
-        List<AdminModelDTO> modelList = new ArrayList<>();
+        List<AdminModelEntity> modelList = new ArrayList<>();
 
         if (modelListCnt > 0) {
             modelList = this.adminModelJpaService.getModelsList(modelMap);
@@ -100,11 +97,11 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{categoryCd}/{idx}")
-    public AdminModelDTO getModelEdit(@PathVariable("categoryCd")
+    public AdminModelEntity getModelEdit(@PathVariable("categoryCd")
                                       @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                       @PathVariable("idx") Integer idx) {
 
-        AdminModelEntity adminModelEntity = builder().idx(idx).categoryCd(categoryCd).build();
+        AdminModelEntity adminModelEntity = AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build();
 
         return this.adminModelJpaService.getOneModel(adminModelEntity);
     }

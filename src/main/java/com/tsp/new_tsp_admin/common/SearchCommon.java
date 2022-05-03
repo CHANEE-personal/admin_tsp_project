@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.common;
 
+import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,8 +23,8 @@ public class SearchCommon {
      * 5. 작성일       : 2021. 08. 08.
      * </pre>
      *
-     * @param  page
-     * @param  paramMap
+     * @param page
+     * @param paramMap
      * @return ConcurrentHashMap
      * @throws Exception
      */
@@ -56,7 +57,7 @@ public class SearchCommon {
      * 5. 작성일       : 2021. 08. 08.
      * </pre>
      *
-     * @param  request
+     * @param request
      * @return ConcurrentHashMap
      * @throws Exception
      */
@@ -70,3 +71,4 @@ public class SearchCommon {
 //            newCommonDTO.setUpdater(StringUtil.getInt(userSeq, 0));
         }
     }
+}

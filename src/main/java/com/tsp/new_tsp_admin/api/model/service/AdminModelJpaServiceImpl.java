@@ -44,12 +44,23 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param modelMap
      */
     @Override
-    public List<AdminModelDTO> getModelsList(Map<String, Object> modelMap) {
-        return null;
+    public List<AdminModelEntity> getModelsList(Map<String, Object> modelMap) {
+        return adminModelJpaRepository.findAll();
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : getOneModel
+     * 2. ClassName  : AdminModeJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param adminModelEntity
+     */
     @Override
-    public AdminModelDTO getOneModel(AdminModelEntity adminModelEntity) {
+    public AdminModelEntity getOneModel(AdminModelEntity adminModelEntity) {
         return null;
     }
 
