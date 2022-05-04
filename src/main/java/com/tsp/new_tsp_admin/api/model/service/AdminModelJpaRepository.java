@@ -29,5 +29,5 @@ public interface AdminModelJpaRepository extends JpaRepository<AdminModelEntity,
      * </pre>
      *
      */
-    AdminModelEntity findAdminModelEntityByUserId(AdminModelEntity adminModelEntity);
+    AdminModelEntity findAdminModelEntityByIdx(AdminModelEntity adminModelEntity);
 }

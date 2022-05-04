@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,7 +60,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     public AdminModelEntity getOneModel(AdminModelEntity adminModelEntity) {
-        return null;
+        return adminModelJpaRepository.findAdminModelEntityByIdx(adminModelEntity);
     }
 
     @Override

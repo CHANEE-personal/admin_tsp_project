@@ -87,6 +87,9 @@ public class AdminModelEntity {
     @NotEmpty(message = "모델 국문 두번째 이름 입력은 필수입니다.")
     private String modelKorSecondName;
 
+    @Column(name = "careerList")
+    private String careerList;
+
     @OneToMany(mappedBy = "adminModelEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 }
