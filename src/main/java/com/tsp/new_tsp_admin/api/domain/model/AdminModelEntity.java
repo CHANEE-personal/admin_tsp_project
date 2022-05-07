@@ -1,6 +1,8 @@
 package com.tsp.new_tsp_admin.api.domain.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
+import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
+import com.tsp.new_tsp_admin.common.CustomConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tsp_model")
-public class AdminModelEntity {
+public class AdminModelEntity extends NewCommonMappedClass {
 
     @Transient
     private Integer rnum;
@@ -87,8 +89,9 @@ public class AdminModelEntity {
     @NotEmpty(message = "모델 국문 두번째 이름 입력은 필수입니다.")
     private String modelKorSecondName;
 
-    @Column(name = "careerList")
-    private String careerList;
+    @Column(name = "career_list")
+    @Convert(converter = CustomConverter.class)
+    private ArrayList<CareerJson> careerList;
 
     @OneToMany(mappedBy = "adminModelEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();

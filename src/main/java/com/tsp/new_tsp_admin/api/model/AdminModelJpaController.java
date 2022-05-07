@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
 import com.tsp.new_tsp_admin.common.Page;
@@ -58,20 +59,20 @@ public class AdminModelJpaController {
         ConcurrentHashMap<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
         modelMap.put("categoryCd", categoryCd);
 
-        Long modelListCnt = this.adminModelJpaService.getModelsCount(modelMap);
+//        Long modelListCnt = this.adminModelJpaService.getModelsCount(modelMap);
 
-        List<AdminModelEntity> modelList = new ArrayList<>();
+        List<AdminModelDTO> modelList = this.adminModelJpaService.findModelsList(modelMap);
 
-        if (modelListCnt > 0) {
-            modelList = this.adminModelJpaService.getModelsList(modelMap);
-        }
+//        if (modelListCnt > 0) {
+//            modelList = this.adminModelJpaService.getModelsList(modelMap);
+//        }
 
         // 리스트 수
         modelMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        modelMap.put("perPageListCnt", Math.ceil((modelListCnt - 1) / page.getSize() + 1));
+        modelMap.put("perPageListCnt", Math.ceil((modelList.size() - 1) / page.getSize() + 1));
         // 전체 아이템 수
-        modelMap.put("modelListTotalCnt", modelListCnt);
+        modelMap.put("modelListTotalCnt", modelList.size());
 
         modelMap.put("modelList", modelList);
 
@@ -97,13 +98,13 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{categoryCd}/{idx}")
-    public AdminModelEntity getModelEdit(@PathVariable("categoryCd")
+    public AdminModelDTO getModelEdit(@PathVariable("categoryCd")
                                       @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                       @PathVariable("idx") Integer idx) {
 
         AdminModelEntity adminModelEntity = AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build();
 
-        return this.adminModelJpaService.getOneModel(adminModelEntity);
+        return this.adminModelJpaService.findOneModel(adminModelEntity);
     }
 
     /**

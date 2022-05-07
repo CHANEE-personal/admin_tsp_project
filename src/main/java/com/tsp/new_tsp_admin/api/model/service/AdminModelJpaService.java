@@ -3,7 +3,6 @@ package com.tsp.new_tsp_admin.api.model.service;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -22,11 +21,11 @@ public interface AdminModelJpaService {
      *
      * @param modelMap
      */
-    Long getModelsCount(Map<String, Object> modelMap);
+    Long findModelsCount(Map<String, Object> modelMap);
 
     /**
      * <pre>
-     * 1. MethodName : getModelsList
+     * 1. MethodName : findModelsList
      * 2. ClassName  : AdminModeJpaService.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
@@ -35,7 +34,7 @@ public interface AdminModelJpaService {
      *
      * @param modelMap
      */
-    List<AdminModelEntity> getModelsList(Map<String, Object> modelMap);
+    List<AdminModelDTO> findModelsList(Map<String, Object> modelMap);
 
     /**
      * <pre>
@@ -48,7 +47,7 @@ public interface AdminModelJpaService {
      *
      * @param adminModelEntity
      */
-    AdminModelEntity getOneModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO findOneModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>

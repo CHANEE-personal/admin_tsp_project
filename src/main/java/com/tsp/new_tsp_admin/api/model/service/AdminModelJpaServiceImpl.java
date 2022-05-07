@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : getModelsCount
+     * 1. MethodName : findModelsCount
      * 2. ClassName  : AdminModeJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 리스트 수 조회
      * 4. 작성자       : CHO
@@ -27,8 +28,8 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param modelMap
      */
     @Override
-    public Long getModelsCount(Map<String, Object> modelMap) {
-        return null;
+    public Long findModelsCount(Map<String, Object> modelMap) {
+        return adminModelJpaRepository.findModelsCount(modelMap);
     }
 
     /**
@@ -43,8 +44,8 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param modelMap
      */
     @Override
-    public List<AdminModelEntity> getModelsList(Map<String, Object> modelMap) {
-        return adminModelJpaRepository.findAll();
+    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
+        return adminModelJpaRepository.findModelsList(modelMap);
     }
 
     /**
@@ -59,8 +60,8 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param adminModelEntity
      */
     @Override
-    public AdminModelEntity getOneModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.findAdminModelEntityByIdx(adminModelEntity);
+    public AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) {
+        return adminModelJpaRepository.findOneModel(adminModelEntity);
     }
 
     @Override

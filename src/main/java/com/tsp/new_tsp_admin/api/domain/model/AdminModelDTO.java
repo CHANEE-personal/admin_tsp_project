@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.domain.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
+import com.tsp.new_tsp_admin.common.CustomConverter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Convert;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +87,9 @@ public class AdminModelDTO extends NewCommonDTO {
     @ApiModelProperty(position = 6, required = true, value = "모델 국문 이름((ex)찬희")
     private String modelKorSecondName;
 
-    @ApiModelProperty(position = 13, value = "모델 경력 사항")
-    private String careerList;
+    @Convert(converter = CustomConverter.class)
+    @ApiModelProperty(required = false, value = "model career")
+    private ArrayList<CareerJson> careerList;
 
     @ApiModelProperty(required = true, value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();
