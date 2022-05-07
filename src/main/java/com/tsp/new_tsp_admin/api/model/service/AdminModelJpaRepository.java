@@ -51,7 +51,11 @@ public class AdminModelJpaRepository {
                     .or(adminModelEntity.modelEngName.contains(searchKeyword))
                     .and(adminModelEntity.categoryCd.eq(categoryCd));
         } else {
-            return adminModelEntity.modelDescription.contains(searchKeyword).and(adminModelEntity.categoryCd.eq(categoryCd));
+            if(!"".equals(searchKeyword)) {
+                return adminModelEntity.modelDescription.contains(searchKeyword).and(adminModelEntity.categoryCd.eq(categoryCd));
+            } else {
+                return adminModelEntity.categoryCd.eq(categoryCd);
+            }
         }
     }
 
@@ -106,6 +110,7 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDtoList(modelList);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
         }
     }
