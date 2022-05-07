@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
@@ -11,10 +12,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.rmi.ServerError;
@@ -34,7 +32,7 @@ public class AdminModelJpaController {
     /**
      * <pre>
      * 1. MethodName : getModelList
-     * 2. ClassName  : AdminModelJpaApi.java
+     * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 09. 08.
@@ -82,7 +80,7 @@ public class AdminModelJpaController {
     /**
      * <pre>
      * 1. MethodName : getModelEdit
-     * 2. ClassName  : AdminModelJpaApi.java
+     * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 상세
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 09. 08.
@@ -109,8 +107,63 @@ public class AdminModelJpaController {
 
     /**
      * <pre>
+     * 1. MethodName : insertModel
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 모델 draft 상태로 저장
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "모델 저장", notes = "모델을 저장한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "모델 등록성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping
+    public String insertModel(AdminModelEntity adminModelEntity) throws Exception {
+
+        String result = "N";
+        if (this.adminModelJpaService.insertModel(adminModelEntity) > 0) {
+            result = "Y";
+        } else {
+            result = "N";
+        }
+        return result;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertModelImage
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 모델 Image 저장
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "모델 이미지 저장", notes = "모델 이미지를 저장한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "모델 이미지 등록성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping("/images")
+    public String insertModelImage(CommonImageEntity commonImageEntity) throws Exception {
+        String result = "N";
+        if (this.adminModelJpaService.insertModelImage(commonImageEntity) > 0) {
+            result = "Y";
+        } else {
+            result = "N";
+        }
+        return result;
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : modelCommonCode
-     * 2. ClassName  : AdminModelJpaApi.java
+     * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 공통 코드 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 09. 08.

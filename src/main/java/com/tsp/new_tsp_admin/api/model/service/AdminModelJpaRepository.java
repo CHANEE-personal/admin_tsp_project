@@ -62,7 +62,7 @@ public class AdminModelJpaRepository {
     /**
      * <pre>
      * 1. MethodName : findModelsCount
-     * 2. ClassName  : ModelRepository.java
+     * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 리스트 갯수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 09. 08.
@@ -85,7 +85,7 @@ public class AdminModelJpaRepository {
     /**
      * <pre>
      * 1. MethodName : findModelsList
-     * 2. ClassName  : ModelRepository.java
+     * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 09. 08.
@@ -112,34 +112,6 @@ public class AdminModelJpaRepository {
         } catch (Exception e) {
             e.printStackTrace();
             throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
-        }
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : modelCommonCode
-     * 2. ClassName  : ModelRepository.java
-     * 3. Comment    : 관리자 모델 공통 코드 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 09. 08.
-     * </pre>
-     *
-     * @param existModelCodeEntity
-     */
-    public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
-        try {
-            ConcurrentHashMap<String, Object> modelCommonMap = new ConcurrentHashMap<>();
-
-            List<CommonCodeEntity> codeEntityList = queryFactory
-                    .selectFrom(commonCodeEntity)
-                    .where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
-                    .fetch();
-
-            modelCommonMap.put("codeEntityList", codeEntityList);
-
-            return modelCommonMap;
-        } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_COMMON);
         }
     }
 
@@ -177,10 +149,10 @@ public class AdminModelJpaRepository {
     /**
      * <pre>
      * 1. MethodName : insertModel
-     * 2. ClassName  : ModelRepository.java
+     * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 등록
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 09. 08.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      * @param adminModelEntity
@@ -192,7 +164,59 @@ public class AdminModelJpaRepository {
 
             return adminModelEntity.getIdx();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_MODEL);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertModelImage
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 모델 이미지 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     * @param commonImageEntity
+     */
+    @Transactional
+    public Integer insertModelImage(CommonImageEntity commonImageEntity) {
+        try {
+            em.persist(commonImageEntity);
+
+            return commonImageEntity.getIdx();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new TspException(ApiExceptionType.ERROR_MODEL);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : modelCommonCode
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 모델 공통 코드 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     *
+     * @param existModelCodeEntity
+     */
+    public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
+        try {
+            ConcurrentHashMap<String, Object> modelCommonMap = new ConcurrentHashMap<>();
+
+            List<CommonCodeEntity> codeEntityList = queryFactory
+                    .selectFrom(commonCodeEntity)
+                    .where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
+                    .fetch();
+
+            modelCommonMap.put("codeEntityList", codeEntityList);
+
+            return modelCommonMap;
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_COMMON);
         }
     }
 

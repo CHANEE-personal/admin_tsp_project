@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 
@@ -12,7 +13,7 @@ public interface AdminModelJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : getModelsCount
+     * 1. MethodName : findModelsCount
      * 2. ClassName  : AdminModeJpaService.java
      * 3. Comment    : 관리자 모델 리스트 수 조회
      * 4. 작성자       : CHO
@@ -38,7 +39,7 @@ public interface AdminModelJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : getOneModel
+     * 1. MethodName : findOneModel
      * 2. ClassName  : AdminModeJpaService.java
      * 3. Comment    : 관리자 모델 상세 조회
      * 4. 작성자       : CHO
@@ -48,6 +49,32 @@ public interface AdminModelJpaService {
      * @param adminModelEntity
      */
     AdminModelDTO findOneModel(AdminModelEntity adminModelEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : insertModel
+     * 2. ClassName  : AdminModeJpaService.java
+     * 3. Comment    : 관리자 모델 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param adminModelEntity
+     */
+    Integer insertModel(AdminModelEntity adminModelEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : insertModelImage
+     * 2. ClassName  : AdminModeJpaService.java
+     * 3. Comment    : 관리자 모델 이미지 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param commonImageEntity
+     */
+    Integer insertModelImage(CommonImageEntity commonImageEntity);
 
     /**
      * <pre>

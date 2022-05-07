@@ -1,10 +1,14 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
+import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
@@ -42,6 +47,15 @@ class AdminModelJpaRepositoryTest {
 
     @Mock
     private AdminModelJpaRepository mockAdminModelJpaRepository;
+
+    @Autowired
+    private EntityManager em;
+    JPAQueryFactory queryFactory;
+
+    @BeforeEach
+    public void init() {
+        queryFactory = new JPAQueryFactory(em);
+    }
 
     @Test
     public void 모델리스트조회테스트() throws Exception {
@@ -221,5 +235,49 @@ class AdminModelJpaRepositoryTest {
         assertThat(filePath).isEqualTo("/test/test.jpg");
         assertThat(imageType).isEqualTo("main");
         assertThat(typeName).isEqualTo("model");
+    }
+
+    @Test
+    public void 모델등록테스트() throws Exception {
+        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity);
+
+        QAdminModelEntity qAdminModelEntity = QAdminModelEntity.adminModelEntity;
+        AdminModelEntity findOneModel = queryFactory.selectFrom(qAdminModelEntity).fetchFirst();
+
+        assertThat(findOneModel.getCategoryCd()).isEqualTo(1);
+        assertThat(findOneModel.getCategoryAge()).isEqualTo("2");
+    }
+
+    @Test
+    public void 모델이미지등록테스트() throws Exception {
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("model")
+                .visible("Y")
+                .build();
+
+        Integer idx = adminModelJpaRepository.insertModelImage(commonImageEntity);
+        QCommonImageEntity qCommonImageEntity = QCommonImageEntity.commonImageEntity;
     }
 }
