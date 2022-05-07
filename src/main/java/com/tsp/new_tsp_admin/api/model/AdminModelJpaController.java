@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.rmi.ServerError;
 import java.util.ArrayList;
@@ -150,9 +151,11 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/images")
-    public String insertModelImage(CommonImageEntity commonImageEntity) throws Exception {
+    public String insertModelImage(AdminModelEntity adminModelEntity,
+                                   CommonImageEntity commonImageEntity,
+                                   MultipartFile[] fileName) throws Exception {
         String result = "N";
-        if (this.adminModelJpaService.insertModelImage(commonImageEntity) > 0) {
+        if (this.adminModelJpaService.insertModelImage(adminModelEntity, commonImageEntity, fileName) > 0) {
             result = "Y";
         } else {
             result = "N";

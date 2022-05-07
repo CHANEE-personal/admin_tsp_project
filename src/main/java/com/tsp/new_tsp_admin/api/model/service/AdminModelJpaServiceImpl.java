@@ -4,8 +4,10 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.image.service.ImageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     private final AdminModelJpaRepository adminModelJpaRepository;
+    private final ImageServiceImpl imageServiceImpl;
 
     /**
      * <pre>
@@ -93,7 +96,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param commonImageEntity
      */
     @Override
-    public Integer insertModelImage(CommonImageEntity commonImageEntity) {
+    public Integer insertModelImage(AdminModelEntity adminModelEntity,
+                                    CommonImageEntity commonImageEntity,
+                                    MultipartFile[] fileName) {
+        CommonImageEntity.builder().typeName("model").typeIdx(adminModelEntity.getIdx()).visible("Y").build();
+//        if("Y".equals(imageServiceImpl))
         return adminModelJpaRepository.insertModelImage(commonImageEntity);
     }
 

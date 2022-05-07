@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -74,7 +75,9 @@ public interface AdminModelJpaService {
      *
      * @param commonImageEntity
      */
-    Integer insertModelImage(CommonImageEntity commonImageEntity);
+    Integer insertModelImage(AdminModelEntity adminModelEntity,
+                             CommonImageEntity commonImageEntity,
+                             MultipartFile[] fileName);
 
     /**
      * <pre>

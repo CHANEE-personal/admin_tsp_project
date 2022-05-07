@@ -36,6 +36,7 @@ public enum ApiExceptionType implements BaseExceptionType {
 	ID_EXIST("ID_EXIST", 400, "같은 아이디 존재"),
 	// 이미지 관련 TYPE
 	NOT_EXIST_IMAGE("ERROR_IMAGE", 500, "이미지 등록 에러"),
+	ERROR_DELETE_IMAGE("ERROR_DELETE_IMAGE", 500, "이미지 삭제 에러"),
 	// 공통 코드 관련 TYPE
 	ERROR_COMMON("ERROR_COMMON", 500, "공통 코드 등록 에러"),
 	NOT_FOUND_COMMON("NOT_FOUND_COMMON", 200, "해당 공통코드 없음"),

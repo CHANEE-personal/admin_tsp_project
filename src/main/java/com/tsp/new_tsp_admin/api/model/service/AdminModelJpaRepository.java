@@ -164,7 +164,6 @@ public class AdminModelJpaRepository {
 
             return adminModelEntity.getIdx();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_MODEL);
         }
     }

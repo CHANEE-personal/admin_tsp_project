@@ -267,17 +267,36 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델이미지등록테스트() throws Exception {
+        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity);
+
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
-                .typeIdx(1)
+                .typeIdx(modelIdx)
                 .typeName("model")
                 .visible("Y")
                 .build();
 
-        Integer idx = adminModelJpaRepository.insertModelImage(commonImageEntity);
+        Integer imageIdx = adminModelJpaRepository.insertModelImage(commonImageEntity);
         QCommonImageEntity qCommonImageEntity = QCommonImageEntity.commonImageEntity;
     }
 }
