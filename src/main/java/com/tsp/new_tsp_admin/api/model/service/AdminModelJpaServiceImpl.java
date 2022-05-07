@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     private final AdminModelJpaRepository adminModelJpaRepository;
-    private final ImageServiceImpl imageServiceImpl;
+//    private final ImageServiceImpl imageServiceImpl;
 
     /**
      * <pre>

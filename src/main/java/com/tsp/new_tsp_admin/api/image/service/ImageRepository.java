@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.image.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
+import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
+
 @Slf4j
 @RequiredArgsConstructor
 @Repository
@@ -19,6 +23,29 @@ public class ImageRepository {
 
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
+
+    /**
+     * <pre>
+     * 1. MethodName : maxSubEntity
+     * 2. ClassName  : ImageRepository.java
+     * 3. Comment    : 이미지 파일 최대 entity 가져오기
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     * @param commonImageEntity
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public CommonImageEntity findOneImage(CommonImageEntity commonImageEntity) {
+        return queryFactory
+                .selectFrom(QCommonImageEntity.commonImageEntity)
+                .where(QCommonImageEntity.commonImageEntity.idx.eq(commonImageEntity.getIdx())
+                        .and(QCommonImageEntity.commonImageEntity.visible.eq("Y"))
+                        .and(QCommonImageEntity.commonImageEntity.typeName.eq(commonImageEntity.getTypeName())))
+                .fetchOne();
+    }
 
     /**
      * <pre>
@@ -37,6 +64,7 @@ public class ImageRepository {
     public Integer maxSubCnt(CommonImageEntity commonImageEntity) {
         return queryFactory.selectFrom(QCommonImageEntity.commonImageEntity)
                 .select(QCommonImageEntity.commonImageEntity.fileNum.max())
+                .where(QCommonImageEntity.commonImageEntity.typeName.eq(commonImageEntity.getTypeName()))
                 .fetchFirst();
     }
 

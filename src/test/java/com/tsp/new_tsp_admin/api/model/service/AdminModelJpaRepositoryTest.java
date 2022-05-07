@@ -33,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
 @Transactional
@@ -256,13 +257,29 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity);
+        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
 
-        QAdminModelEntity qAdminModelEntity = QAdminModelEntity.adminModelEntity;
-        AdminModelEntity findOneModel = queryFactory.selectFrom(qAdminModelEntity).fetchFirst();
+        adminModelJpaRepository.insertModel(adminModelEntity);
 
-        assertThat(findOneModel.getCategoryCd()).isEqualTo(1);
-        assertThat(findOneModel.getCategoryAge()).isEqualTo("2");
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(1);
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("2");
     }
 
     @Test
