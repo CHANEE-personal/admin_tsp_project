@@ -102,12 +102,18 @@ public class ImageRepository {
      * @param commonImageEntity
      */
     @Transactional
-    public String deleteImage(CommonImageEntity commonImageEntity) {
+    public CommonImageEntity deleteImage(CommonImageEntity commonImageEntity) {
         try {
+            em.flush();
+            em.clear();
+            commonImageEntity = em.find(CommonImageEntity.class, commonImageEntity.getIdx());
             em.remove(commonImageEntity);
+            em.flush();
+            em.clear();
 
-            return "Y";
+            return commonImageEntity;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_DELETE_IMAGE);
         }
     }

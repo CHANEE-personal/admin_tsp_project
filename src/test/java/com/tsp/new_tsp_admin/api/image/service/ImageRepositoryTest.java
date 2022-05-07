@@ -93,4 +93,26 @@ class ImageRepositoryTest {
         assertThat(mockImageRepository.findOneImage(commonImageEntity).getFileMask()).isEqualTo("test.jpg");
     }
 
+    @Test
+    public void 이미지삭제테스트() throws Exception {
+        // given
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .fileNum(2)
+                .typeName("model")
+                .visible("Y")
+                .build();
+
+        em.persist(commonImageEntity);
+        // when
+        when(mockImageRepository.findOneImage(commonImageEntity)).thenReturn(commonImageEntity);
+
+        CommonImageEntity commonImageEntity1 = imageRepository.deleteImage(commonImageEntity);
+
+        assertThat(mockImageRepository.findOneImage(commonImageEntity).getImageType()).isEqualTo(commonImageEntity1.getImageType());
+    }
 }
