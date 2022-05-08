@@ -283,6 +283,70 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    public void 모델수정테스트() throws Exception {
+        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity);
+
+        adminModelEntity = AdminModelEntity.builder()
+                .idx(idx)
+                .categoryCd(2)
+                .categoryAge("3")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+                .categoryCd(2)
+                .categoryAge("3")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        adminModelJpaRepository.updateModelByEm(adminModelEntity);
+
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(2);
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("3");
+    }
+
+    @Test
     public void 모델이미지등록테스트() throws Exception {
         AdminModelEntity adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)

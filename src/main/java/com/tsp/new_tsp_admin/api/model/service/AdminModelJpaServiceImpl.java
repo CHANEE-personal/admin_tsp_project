@@ -4,7 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import com.tsp.new_tsp_admin.api.image.service.ImageServiceImpl;
+import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     private final AdminModelJpaRepository adminModelJpaRepository;
-//    private final ImageServiceImpl imageServiceImpl;
+    private final ImageService imageService;
 
     /**
      * <pre>
@@ -100,10 +100,19 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
                                     CommonImageEntity commonImageEntity,
                                     MultipartFile[] fileName) {
         CommonImageEntity.builder().typeName("model").typeIdx(adminModelEntity.getIdx()).visible("Y").build();
-//        if("Y".equals(imageServiceImpl))
         return adminModelJpaRepository.insertModelImage(commonImageEntity);
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : modelCommonCode
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 공통 코드 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     *
+     */
     @Override
     public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity commonCodeEntity) {
         return null;

@@ -7,6 +7,21 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public interface ImageService {
 
+    /**
+     * <pre>
+     * 1. MethodName : uploadImageFile
+     * 2. ClassName  : ImageService.java
+     * 3. Comment    : 이미지 파일 업로드
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     * @param commonImageEntity
+     * @param files
+     * @param flag
+     * @return
+     * @throws Exception
+     */
     String uploadImageFile(CommonImageEntity commonImageEntity,
                            MultipartFile[] files, String flag) throws Exception;
 }

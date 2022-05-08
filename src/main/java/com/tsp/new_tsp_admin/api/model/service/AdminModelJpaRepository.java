@@ -193,6 +193,83 @@ public class AdminModelJpaRepository {
 
     /**
      * <pre>
+     * 1. MethodName : updateModel
+     * 2. ClassName  : ModelRepository.java
+     * 3. Comment    : 관리자 모델 수정 by queryDsl
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     *
+     * @param existAdminModelEntity
+     */
+    @Modifying
+    @Transactional
+    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
+
+        try {
+            JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
+
+            existAdminModelEntity.builder().updateTime(new Date()).updater(1).build();
+
+            update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
+                    .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
+                    .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
+                    .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
+                    .set(adminModelEntity.height, existAdminModelEntity.getHeight())
+                    .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
+                    .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
+                    .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
+                    .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
+                    .set(adminModelEntity.updater, 1)
+                    .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
+
+//            commonImageEntity.builder()
+//                    .typeName("model")
+//                    .typeIdx(existAdminModelEntity.getIdx())
+//                    .build();
+
+//            modelMap.put("typeName", "model");
+
+//            if("Y".equals(imageRepository.updateMultipleFile(commonImageEntity, files, modelMap))) {
+//                return 1;
+//            } else {
+//                return 0;
+//            }
+            return existAdminModelEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateModel
+     * 2. ClassName  : ModelRepository.java
+     * 3. Comment    : 관리자 모델 수정 by queryDsl
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     *
+     * @param existAdminModelEntity
+     */
+    @Modifying
+    @Transactional
+    public AdminModelEntity updateModelByEm(AdminModelEntity existAdminModelEntity) {
+
+        try {
+            em.merge(existAdminModelEntity);
+            em.flush();
+            em.clear();
+            return existAdminModelEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : modelCommonCode
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 공통 코드 조회
@@ -216,59 +293,6 @@ public class AdminModelJpaRepository {
             return modelCommonMap;
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_COMMON);
-        }
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : updateModel
-     * 2. ClassName  : ModelRepository.java
-     * 3. Comment    : 관리자 모델 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 09. 08.
-     * </pre>
-     *
-     * @param existAdminModelEntity
-     * @param commonImageEntity
-     * @param files
-     */
-    @Modifying
-    @Transactional
-    public Integer updateModel(AdminModelEntity existAdminModelEntity, CommonImageEntity commonImageEntity,
-                               MultipartFile[] files, ConcurrentHashMap<String, Object> modelMap) {
-
-        try {
-            JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
-
-            existAdminModelEntity.builder().updateTime(new Date()).updater(1).build();
-
-            update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
-                    .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
-                    .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
-                    .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
-                    .set(adminModelEntity.height, existAdminModelEntity.getHeight())
-                    .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
-                    .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
-                    .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
-                    .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                    .set(adminModelEntity.updater, 1)
-                    .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
-
-            commonImageEntity.builder()
-                    .typeName("model")
-                    .typeIdx(existAdminModelEntity.getIdx())
-                    .build();
-
-            modelMap.put("typeName", "model");
-
-//            if("Y".equals(imageRepository.updateMultipleFile(commonImageEntity, files, modelMap))) {
-//                return 1;
-//            } else {
-//                return 0;
-//            }
-            return 0;
-        } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_MODEL);
         }
     }
 
