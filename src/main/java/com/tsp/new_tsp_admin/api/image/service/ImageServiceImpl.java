@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -11,8 +12,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+@Service("ImageService")
 @RequiredArgsConstructor
-public class ImageServiceImpl {
+public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
 
@@ -54,6 +56,7 @@ public class ImageServiceImpl {
      * @return
      * @throws Exception
      */
+    @Override
     public String uploadImageFile(CommonImageEntity commonImageEntity,
                                   MultipartFile[] files, String flag) throws Exception {
         String ext;        // 파일 확장자
