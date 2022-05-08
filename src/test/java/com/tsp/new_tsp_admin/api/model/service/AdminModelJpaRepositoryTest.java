@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

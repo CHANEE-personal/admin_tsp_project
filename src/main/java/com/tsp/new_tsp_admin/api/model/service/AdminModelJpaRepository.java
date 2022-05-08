@@ -194,7 +194,7 @@ public class AdminModelJpaRepository {
     /**
      * <pre>
      * 1. MethodName : updateModel
-     * 2. ClassName  : ModelRepository.java
+     * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 수정 by queryDsl
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 09. 08.
@@ -244,11 +244,11 @@ public class AdminModelJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : updateModel
-     * 2. ClassName  : ModelRepository.java
-     * 3. Comment    : 관리자 모델 수정 by queryDsl
+     * 1. MethodName : updateModelByEm
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 모델 수정 by entityManager
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 09. 08.
+     * 5. 작성일       : 2022. 05. 08.
      * </pre>
      *
      * @param existAdminModelEntity
@@ -299,7 +299,7 @@ public class AdminModelJpaRepository {
     /**
      * <pre>
      * 1. MethodName : deleteModel
-     * 2. ClassName  : ModelRepository.java
+     * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 삭제
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 09. 08.
