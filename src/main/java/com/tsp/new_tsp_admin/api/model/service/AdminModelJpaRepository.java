@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -110,7 +109,6 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDtoList(modelList);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
         }
     }
