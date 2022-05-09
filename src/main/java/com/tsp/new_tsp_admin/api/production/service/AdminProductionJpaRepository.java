@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.production.service;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity;
@@ -12,6 +13,7 @@ import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -146,6 +148,32 @@ public class AdminProductionJpaRepository {
             return adminProductionEntity.getIdx();
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateProductionByEm
+     * 2. ClassName  : AdminProductionJpaRepository.java
+     * 3. Comment    : 관리자 프로덕션 수정 by entityManager
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 09.
+     * </pre>
+     *
+     * @param existAdminProductionEntity
+     */
+    @Modifying
+    @Transactional
+    public AdminProductionEntity updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
+
+        try {
+            em.merge(existAdminProductionEntity);
+            em.flush();
+            em.clear();
+            return existAdminProductionEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
         }
     }
 }
