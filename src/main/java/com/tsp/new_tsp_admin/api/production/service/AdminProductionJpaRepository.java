@@ -176,4 +176,31 @@ public class AdminProductionJpaRepository {
             throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
         }
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteProductionByEm
+     * 2. ClassName  : AdminProductionJpaRepository.java
+     * 3. Comment    : 관리자 프로덕션 삭제 by entityManager
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 09.
+     * </pre>
+     *
+     * @param adminProductionEntity
+     */
+    public AdminProductionEntity deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
+
+        try {
+            em.flush();
+            em.clear();
+            adminProductionEntity = em.find(AdminProductionEntity.class, adminProductionEntity.getIdx());
+            em.remove(adminProductionEntity);
+            em.flush();
+            em.clear();
+
+            return adminProductionEntity;
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION);
+        }
+    }
 }

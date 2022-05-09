@@ -241,4 +241,29 @@ class AdminProductionJpaRepositoryTest {
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트1");
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트1");
     }
+
+    @Test
+    public void 프로덕션삭제테스트() throws Exception {
+        AdminProductionEntity adminProductionEntity = builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        em.persist(adminProductionEntity);
+
+        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        // when
+        when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+
+        AdminProductionEntity adminProductionEntity1 = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity);
+
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo(adminProductionEntity1.getTitle());
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo(adminProductionEntity1.getDescription());
+    }
 }
