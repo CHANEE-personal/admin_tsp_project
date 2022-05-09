@@ -347,7 +347,49 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델삭제테스트() throws Exception {
+        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(2)
+                .categoryAge("3")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
 
+        em.persist(adminModelEntity);
+
+        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+                .categoryCd(2)
+                .categoryAge("3")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        // when
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+
+        AdminModelEntity adminModelEntity1 = adminModelJpaRepository.deleteModelByEm(adminModelEntity);
+
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelEntity1.getCategoryCd());
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo(adminModelEntity1.getCategoryAge());
     }
 
     @Test

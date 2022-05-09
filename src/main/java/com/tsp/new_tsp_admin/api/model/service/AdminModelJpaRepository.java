@@ -300,7 +300,7 @@ public class AdminModelJpaRepository {
      * <pre>
      * 1. MethodName : deleteModel
      * 2. ClassName  : AdminModelJpaRepository.java
-     * 3. Comment    : 관리자 모델 삭제
+     * 3. Comment    : 관리자 모델 삭제 by queryDsl
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
@@ -318,6 +318,33 @@ public class AdminModelJpaRepository {
                     .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
                     .set(adminModelEntity.updater, 1)
                     .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteModel
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 모델 삭제 by entityManager
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     *
+     * @param adminModelEntity
+     */
+    public AdminModelEntity deleteModelByEm(AdminModelEntity adminModelEntity) {
+
+        try {
+            em.flush();
+            em.clear();
+            adminModelEntity = em.find(AdminModelEntity.class, adminModelEntity.getIdx());
+            em.remove(adminModelEntity);
+            em.flush();
+            em.clear();
+
+            return adminModelEntity;
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
         }
