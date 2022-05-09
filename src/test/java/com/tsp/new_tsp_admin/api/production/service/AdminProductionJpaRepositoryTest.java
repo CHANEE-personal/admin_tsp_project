@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
 @Transactional
@@ -185,5 +186,28 @@ class AdminProductionJpaRepositoryTest {
         assertThat(filePath).isEqualTo("/test/test.jpg");
         assertThat(imageType).isEqualTo("main");
         assertThat(typeName).isEqualTo("production");
+    }
+
+    @Test
+    public void 프로덕션등록테스트() throws Exception {
+        AdminProductionEntity adminProductionEntity = builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        adminProductionJpaRepository.insertProduction(adminProductionEntity);
+
+        when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getVisible()).isEqualTo("Y");
     }
 }

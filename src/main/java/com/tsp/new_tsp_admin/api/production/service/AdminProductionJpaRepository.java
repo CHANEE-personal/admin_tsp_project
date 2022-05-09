@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -126,4 +127,25 @@ public class AdminProductionJpaRepository {
         }
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : insertProduction
+     * 2. ClassName  : AdminProductionJpaRepository.java
+     * 3. Comment    : 관리자 프로덕션 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 09.
+     * </pre>
+     *
+     * @param adminProductionEntity
+     */
+    @Transactional
+    public Integer insertProduction(AdminProductionEntity adminProductionEntity) {
+        try {
+            em.persist(adminProductionEntity);
+
+            return adminProductionEntity.getIdx();
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+        }
+    }
 }
