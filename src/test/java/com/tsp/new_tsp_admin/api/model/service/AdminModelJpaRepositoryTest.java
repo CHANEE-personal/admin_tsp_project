@@ -346,6 +346,11 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    public void 모델삭제테스트() throws Exception {
+
+    }
+
+    @Test
     public void 모델이미지등록테스트() throws Exception {
         AdminModelEntity adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
