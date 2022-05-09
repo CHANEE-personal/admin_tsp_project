@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity;
@@ -17,6 +18,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
 
 @Slf4j
@@ -93,4 +95,35 @@ public class AdminProductionJpaRepository {
             throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST);
         }
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneProduction
+     * 2. ClassName  : AdminProductionJpaRepository.java
+     * 3. Comment    : 관리자 프로덕션 리스트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 09.
+     * </pre>
+     *
+     * @param existAdminProductionEntity
+     */
+    public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) {
+
+        try {
+            AdminProductionEntity findOneProduction = queryFactory
+                    .selectFrom(adminProductionEntity)
+                    .orderBy(adminProductionEntity.idx.desc())
+                    .leftJoin(adminProductionEntity.commonImageEntityList, commonImageEntity)
+                    .fetchJoin()
+                    .where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx())
+                            .and(adminProductionEntity.visible.eq("Y"))
+                            .and(commonImageEntity.typeName.eq("production")))
+                    .fetchOne();
+
+            return ProductionMapper.INSTANCE.toDto(findOneProduction);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION);
+        }
+    }
+
 }

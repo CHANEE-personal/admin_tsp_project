@@ -128,7 +128,7 @@ public class AdminModelJpaRepository {
 
         try {
             //모델 상세 조회
-            AdminModelEntity findModel = queryFactory
+            AdminModelEntity findOneModel = queryFactory
                     .selectFrom(adminModelEntity)
                     .orderBy(adminModelEntity.idx.desc())
                     .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
@@ -138,7 +138,7 @@ public class AdminModelJpaRepository {
                             .and(commonImageEntity.typeName.eq("model")))
                     .fetchOne();
 
-            return ModelMapper.INSTANCE.toDto(findModel);
+            return ModelMapper.INSTANCE.toDto(findOneModel);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
         }
