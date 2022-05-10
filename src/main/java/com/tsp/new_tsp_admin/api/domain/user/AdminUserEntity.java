@@ -1,11 +1,13 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +15,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -21,7 +24,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tsp_admin")
-public class AdminUserEntity extends NewCommonMappedClass implements UserDetails {
+public class AdminUserEntity implements UserDetails {
 
 	@Transient
 	private Integer rnum;
@@ -52,6 +55,26 @@ public class AdminUserEntity extends NewCommonMappedClass implements UserDetails
 
 	@Column(name = "user_token")
 	String userToken;
+
+	@Column(name = "creator", updatable = false)
+	@ApiModelProperty(required = true, value = "등록자")
+	private Integer creator;
+
+	@Column(name = "updater", insertable = false)
+	@ApiModelProperty(required = true, value = "수정자")
+	private Integer updater;
+
+	@Column(name = "create_time", updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@ApiModelProperty(required = true, value = "등록 일자")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date createTime;
+
+	@Column(name = "update_time", insertable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@ApiModelProperty(required = true, value = "수정 일자")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date updateTime;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

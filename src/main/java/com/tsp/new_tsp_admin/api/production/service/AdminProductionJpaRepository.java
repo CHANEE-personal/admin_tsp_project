@@ -2,11 +2,8 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
-import com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
