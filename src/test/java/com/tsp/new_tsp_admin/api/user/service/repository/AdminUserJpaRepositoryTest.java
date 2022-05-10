@@ -19,6 +19,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @Transactional
@@ -47,5 +49,19 @@ class AdminUserJpaRepositoryTest {
         List<AdminUserEntity> userList = adminUserJpaRepository.findAll();
 
         assertThat(userList.size()).isGreaterThan(0);
+    }
+
+    @Test
+    public void 유저상세조회테스트() throws Exception {
+
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder().idx(1).userId("admin").build();
+
+        AdminUserEntity adminUserEntity1 = adminUserJpaRepository.findAdminUserEntityByUserId(adminUserEntity.getUserId());
+
+        assertAll(() -> assertThat(adminUserEntity1.getIdx()).isEqualTo(1),
+                () -> {
+                    assertThat(adminUserEntity1.getUserId()).isEqualTo("admin");
+                    assertNotNull(adminUserEntity1.getUserId());
+                });
     }
 }
