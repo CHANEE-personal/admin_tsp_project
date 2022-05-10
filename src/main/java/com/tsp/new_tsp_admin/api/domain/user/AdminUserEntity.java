@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
+import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tsp_admin")
-public class AdminUserEntity implements UserDetails {
+public class AdminUserEntity extends NewCommonMappedClass implements UserDetails {
 
 	@Transient
 	private Integer rnum;
