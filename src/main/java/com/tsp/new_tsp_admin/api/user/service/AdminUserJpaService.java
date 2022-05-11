@@ -38,7 +38,7 @@ public interface AdminUserJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : adminLogin
+     * 1. MethodName : insertToken
      * 2. ClassName  : AdminUserJpaService.java
      * 3. Comment    : 관리자 토큰 저장
      * 4. 작성자       : CHO
@@ -49,4 +49,32 @@ public interface AdminUserJpaService {
      * @throws Exception
      */
     void insertToken(AdminUserEntity adminUserEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : insertAdminUser
+     * 2. ClassName  : AdminUserJpaService.java
+     * 3. Comment    : 관리자 회원가입
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     * @param adminUserEntity
+     * @throws Exception
+     */
+    Integer insertAdminUser(AdminUserEntity adminUserEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteAdminUser
+     * 2. ClassName  : AdminUserJpaService.java
+     * 3. Comment    : 관리자 회원 탈퇴
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     * @param adminUserEntity
+     * @throws Exception
+     */
+    Integer deleteAdminUser(AdminUserEntity adminUserEntity);
 }

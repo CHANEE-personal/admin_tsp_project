@@ -17,8 +17,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,7 +61,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("로그인 테스트")
     public void 로그인테스트() throws Exception {
 
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        AdminUserEntity adminUserEntity = builder()
                         .userId("admin")
                         .password("pass1234")
                         .build();
@@ -76,5 +76,40 @@ class AdminUserJpaControllerTest {
                 .andExpect(jsonPath("$.loginYn").value("Y"))
                 .andExpect(jsonPath("$.token").isNotEmpty());
 
+    }
+
+    @Test
+    @DisplayName("관리자 회원가입 테스트")
+    public void 회원가입테스트() throws Exception {
+
+        AdminUserEntity adminUserEntity = builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+
+        final String jsonStr = objectMapper.writeValueAsString(adminUserEntity);
+
+        mockMvc.perform(post("/api/jpa-user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("관리자 회원탈퇴 테스트")
+    public void 회원탈퇴테스트() throws Exception {
+        AdminUserEntity adminUserEntity = builder().idx(1).build();
+
+        final String jsonStr = objectMapper.writeValueAsString(adminUserEntity);
+
+        mockMvc.perform(put("/api/jpa-user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }

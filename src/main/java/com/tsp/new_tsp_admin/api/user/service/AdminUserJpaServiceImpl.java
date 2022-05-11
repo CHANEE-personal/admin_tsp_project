@@ -67,4 +67,36 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         AdminUserEntity adminUserEntity = adminUserJpaRepository.findOneUser(paramUserEntity.getUserId());
         adminUserJpaRepository.insertUserToken(adminUserEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertAdminUser
+     * 2. ClassName  : AdminUserJpaServiceImpl.java
+     * 3. Comment    : 관리자 회원가입
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     * @param adminUserEntity
+     */
+    @Override
+    public Integer insertAdminUser(AdminUserEntity adminUserEntity) {
+        return adminUserJpaRepository.insertAdminUser(adminUserEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteAdminUser
+     * 2. ClassName  : AdminUserJpaServiceImpl.java
+     * 3. Comment    : 관리자 회원 탈퇴
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     * @param adminUserEntity
+     */
+    @Override
+    public Integer deleteAdminUser(AdminUserEntity adminUserEntity) {
+        return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
+    }
 }

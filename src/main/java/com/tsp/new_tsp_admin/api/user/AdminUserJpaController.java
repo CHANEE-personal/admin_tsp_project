@@ -173,4 +173,61 @@ public class AdminUserJpaController {
         }
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : insertAdminUser
+     * 2. ClassName  : AdminUserJpaController.java
+     * 3. Comment    : 관리자 로그인 회원가입
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     * @param  adminUserEntity
+     * @throws Exception
+     */
+    @ApiOperation(value = "Admin 회원가입 처리", notes = "Admin 회원가입을 처리한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping
+    public String insertAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
+        String result = "";
+        if (adminUserJpaService.insertAdminUser(adminUserEntity) > 0) {
+            result = "Y";
+        } else {
+            result = "N";
+        }
+        return result;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteAdminUser
+     * 2. ClassName  : AdminUserJpaController.java
+     * 3. Comment    : 관리자 회원 탈퇴
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     * @param  adminUserEntity
+     * @throws Exception
+     */
+    @ApiOperation(value = "Admin 회원탈퇴 처리", notes = "Admin 회원탈퇴 처리한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PutMapping
+    public String deleteAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
+        String result = "";
+        if (adminUserJpaService.deleteAdminUser(adminUserEntity) > 0) {
+            result = "Y";
+        } else {
+            result = "N";
+        }
+        return result;
+    }
 }

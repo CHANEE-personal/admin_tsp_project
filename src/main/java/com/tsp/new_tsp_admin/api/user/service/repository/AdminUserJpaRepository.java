@@ -205,6 +205,7 @@ public class AdminUserJpaRepository {
      *
      * @param adminUserEntity
      */
+    @Transactional
     public Integer deleteAdminUser(AdminUserEntity adminUserEntity) {
         try {
             em.flush();
@@ -216,6 +217,7 @@ public class AdminUserJpaRepository {
 
             return adminUserEntity.getIdx();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
         }
     }
