@@ -12,10 +12,12 @@ import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -114,6 +116,33 @@ public class AdminUserJpaRepository {
 
     /**
      * <pre>
+     * 1. MethodName : insertUserTokenByEm
+     * 2. ClassName  : newAdminUserJpaRepository.java
+     * 3. Comment    : 회원 로그인 후 토큰 등록 By EntityManager
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     * @param adminUserEntity
+     */
+    @Modifying
+    @Transactional
+    public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) {
+        try {
+            AdminUserEntity adminUser = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
+            adminUser.setUserToken(adminUserEntity.getUserToken());
+            em.flush();
+            em.clear();
+
+            return adminUser.getIdx();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new TspException(ApiExceptionType.ERROR_USER);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertUserToken
      * 2. ClassName  : newAdminUserJpaRepository.java
      * 3. Comment    : 회원 로그인 후 토큰 등록
@@ -123,6 +152,8 @@ public class AdminUserJpaRepository {
      *
      * @param existAdminUserEntity
      */
+    @Modifying
+    @Transactional
     public Integer insertUserToken(AdminUserEntity existAdminUserEntity) {
 
         try {

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -63,7 +64,7 @@ class AdminUserJpaRepositoryTest {
     @Test
     public void 유저상세조회테스트() throws Exception {
 
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder().idx(1).userId("admin").build();
+        AdminUserEntity adminUserEntity = builder().idx(1).userId("admin").build();
 
         AdminUserEntity adminUser = adminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
@@ -79,11 +80,22 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     public void 유저로그인테스트() throws Exception {
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        AdminUserEntity adminUserEntity = builder()
                 .userId("admin")
                 .password("pass1234")
                 .build();
 
         assertThat(adminUserJpaRepository.adminLogin(adminUserEntity)).isEqualTo("Y");
+    }
+
+    @Test
+    public void 유저토큰저장테스트() throws Exception {
+        AdminUserEntity adminUserEntity = builder()
+                .idx(1)
+                .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
+                .build();
+
+        assertThat(adminUserJpaRepository.insertUserTokenByEm(adminUserEntity)).isEqualTo(adminUserEntity.getIdx());
+        assertNotNull(adminUserEntity.getUserToken());
     }
 }
