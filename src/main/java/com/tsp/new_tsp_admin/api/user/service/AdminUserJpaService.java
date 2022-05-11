@@ -1,12 +1,12 @@
 package com.tsp.new_tsp_admin.api.user.service;
 
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AdminUserJpaService {
-
-//    void signUpUser(AdminUserEntity adminUserEntity);
 
     /**
      * <pre>
@@ -20,9 +20,33 @@ public interface AdminUserJpaService {
      * @return
      * @throws Exception
      */
-    List<AdminUserEntity> getAdminUserList();
+    List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap);
 
+    /**
+     * <pre>
+     * 1. MethodName : adminLogin
+     * 2. ClassName  : AdminUserJpaService.java
+     * 3. Comment    : 관리자 로그인 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @return
+     * @throws Exception
+     */
     String adminLogin(AdminUserEntity adminUserEntity);
 
-    void saveToken(String userId, String token);
+    /**
+     * <pre>
+     * 1. MethodName : adminLogin
+     * 2. ClassName  : AdminUserJpaService.java
+     * 3. Comment    : 관리자 토큰 저장
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @return
+     * @throws Exception
+     */
+    void insertToken(AdminUserEntity adminUserEntity);
 }

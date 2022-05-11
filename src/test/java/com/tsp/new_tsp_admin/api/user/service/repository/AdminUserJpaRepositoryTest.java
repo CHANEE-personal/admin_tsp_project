@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.user.service.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +17,9 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -46,7 +49,13 @@ class AdminUserJpaRepositoryTest {
     @Test
     public void 유저조회테스트() throws Exception {
 
-        List<AdminUserEntity> userList = adminUserJpaRepository.findAll();
+        // given
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("categoryCd", 1);
+        userMap.put("jpaStartPage", 1);
+        userMap.put("size", 3);
+
+        List<AdminUserDTO> userList = adminUserJpaRepository.findUserList(userMap);
 
         assertThat(userList.size()).isGreaterThan(0);
     }
@@ -56,12 +65,25 @@ class AdminUserJpaRepositoryTest {
 
         AdminUserEntity adminUserEntity = AdminUserEntity.builder().idx(1).userId("admin").build();
 
-        AdminUserEntity adminUserEntity1 = adminUserJpaRepository.findAdminUserEntityByUserId(adminUserEntity.getUserId());
+        AdminUserEntity adminUser = adminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
-        assertAll(() -> assertThat(adminUserEntity1.getIdx()).isEqualTo(1),
+        assertAll(() -> assertThat(adminUser.getIdx()).isEqualTo(1),
                 () -> {
-                    assertThat(adminUserEntity1.getUserId()).isEqualTo("admin");
-                    assertNotNull(adminUserEntity1.getUserId());
+                    assertThat(adminUser.getUserId()).isEqualTo("admin");
+                    assertNotNull(adminUser.getUserId());
+                },
+                () -> {
+                    assertNotNull(adminUser.getUserToken());
                 });
+    }
+
+    @Test
+    public void 유저로그인테스트() throws Exception {
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+                .userId("admin")
+                .password("pass1234")
+                .build();
+
+        assertThat(adminUserJpaRepository.adminLogin(adminUserEntity)).isEqualTo("Y");
     }
 }

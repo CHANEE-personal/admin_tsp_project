@@ -1,7 +1,8 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
-import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -21,7 +22,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
         AdminUserEntity adminUserEntity = null;
         try {
-            adminUserEntity = adminUserJpaRepository.findAdminUserEntityByUserId(id);
+            adminUserEntity = adminUserJpaRepository.findOneUser(id);
 
             // 아이디 일치하는지 확인
             return new User(adminUserEntity.getUsername(),

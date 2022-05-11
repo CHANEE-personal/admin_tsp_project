@@ -1,7 +1,8 @@
 package com.tsp.new_tsp_admin.api.user.service;
 
-import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.common.StringUtils;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -10,48 +11,60 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class AdminUserJpaServiceImpl implements AdminUserJpaService {
 
     private final AdminUserJpaRepository adminUserJpaRepository;
-    private final PasswordEncoder passwordEncoder;
 
-//    @Override
-//    public void signUpUser(AdminUserEntity adminUserEntity) {
-//        String password = adminUserEntity.getPassword();
-//    }
-
-
+    /**
+     * <pre>
+     * 1. MethodName : getAdminUserList
+     * 2. ClassName  : AdminUserJpaServiceImpl.java
+     * 3. Comment    : 관리자 유저 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param userMap
+     */
     @Override
-    public List<AdminUserEntity> getAdminUserList() {
-        return adminUserJpaRepository.findAll();
+    public List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap) {
+        return adminUserJpaRepository.findUserList(userMap);
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : adminLogin
+     * 2. ClassName  : AdminUserJpaServiceImpl.java
+     * 3. Comment    : 관리자 로그인 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param adminUserEntity
+     */
     @Override
     public String adminLogin(AdminUserEntity adminUserEntity) {
-
-        try {
-            final String db_pw = StringUtils.nullStrToStr(adminUserJpaRepository.findAdminUserEntityByPassword(adminUserEntity.getUserId()));
-
-            String result;
-
-            if (passwordEncoder.matches(adminUserEntity.getPassword(), db_pw)) {
-                result = "Y";
-            } else {
-                result = "N";
-            }
-            return result;
-        } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER);
-        }
+        return adminUserJpaRepository.adminLogin(adminUserEntity);
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : insertToken
+     * 2. ClassName  : AdminUserJpaServiceImpl.java
+     * 3. Comment    : 관리자 토큰 저장
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param paramUserEntity
+     */
     @Override
-    public void saveToken(String userId, String token) {
-        AdminUserEntity adminUserEntity = adminUserJpaRepository.findAdminUserEntityByUserId(userId);
-        adminUserEntity.setUserToken(token);
-        adminUserJpaRepository.save(adminUserEntity);
+    public void insertToken(AdminUserEntity paramUserEntity) {
+        AdminUserEntity adminUserEntity = adminUserJpaRepository.findOneUser(paramUserEntity.getUserId());
+        adminUserJpaRepository.insertUserToken(adminUserEntity);
     }
 }

@@ -1,11 +1,14 @@
 package com.tsp.new_tsp_admin.api.user;
 
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.api.jwt.AuthenticationResponse;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.api.jwt.MyUserDetailsService;
+import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -38,6 +41,7 @@ public class AdminUserJpaController {
     private final AuthenticationManager authenticationManager;
     private final MyUserDetailsService userDetailsService;
     private final JwtUtil jwtTokenUtil;
+    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -48,8 +52,6 @@ public class AdminUserJpaController {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param request
-     * @param response
      * @return
      * @throws Exception
      */
@@ -60,8 +62,13 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping
-    public List<AdminUserEntity> userEntityList(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return adminUserJpaService.getAdminUserList();
+    public List<AdminUserDTO> userEntityList(@RequestParam(required = false) Map<String, Object> paramMap,
+                                             Page page) throws Exception {
+
+        // 페이징 및 검색
+        ConcurrentHashMap<String, Object> userMap = searchCommon.searchCommon(page, paramMap);
+
+        return adminUserJpaService.getAdminUserList(userMap);
     }
 
     /**
@@ -105,9 +112,9 @@ public class AdminUserJpaController {
             // 로그인 완료 시 생성된 token 값 DB에 저장
             UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
             String token = jwtTokenUtil.generateToken(userDetails);
+            adminUserEntity.setUserToken(token);
 
-            adminUserJpaService.saveToken(adminUserEntity.getUserId(),token);
-//            adminUserApiService.insertUserToken(newUserDTO);
+            adminUserJpaService.insertToken(adminUserEntity);
         }
 
         return userMap;
@@ -116,7 +123,7 @@ public class AdminUserJpaController {
     /**
      * <pre>
      * 1. MethodName : createAuthenticationToken
-     * 2. ClassName  : AdminLoginApi.java
+     * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 로그인 시 JWT 토큰 발급
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 04. 23.
@@ -143,7 +150,7 @@ public class AdminUserJpaController {
     /**
      * <pre>
      * 1. MethodName : authenticate
-     * 2. ClassName  : AdminLoginApi.java
+     * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 로그인 시 인증
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 04. 23.

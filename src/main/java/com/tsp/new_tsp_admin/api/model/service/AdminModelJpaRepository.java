@@ -103,9 +103,11 @@ public class AdminModelJpaRepository {
                     .limit(StringUtil.getInt(modelMap.get("size"),0))
                     .fetch();
 
-            for(int i = 0; i < modelList.size(); i++) {
-                modelList.get(i).setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-i));
-            }
+//            for(int i = 0; i < modelList.size(); i++) {
+//                modelList.get(i).setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-i));
+//            }
+
+            modelList.forEach(list -> modelList.get(modelList.indexOf(list)).setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
 
             return ModelMapper.INSTANCE.toDtoList(modelList);
         } catch (Exception e) {
