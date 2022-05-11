@@ -86,9 +86,7 @@ public class AdminProductionJpaRepository {
                     .limit(StringUtil.getInt(productionMap.get("size"),0))
                     .fetch();
 
-            for (int i = 0; i < productionList.size(); i++) {
-                productionList.get(i).setRnum(StringUtil.getInt(productionMap.get("startPage"),1)*(StringUtil.getInt(productionMap.get("size"),1))-(2-i));
-            }
+            productionList.forEach(list -> productionList.get(productionList.indexOf(list)).setRnum(StringUtil.getInt(productionMap.get("startPage"),1)*(StringUtil.getInt(productionMap.get("size"),1))-(2-productionList.indexOf(list))));
 
             return ProductionMapper.INSTANCE.toDtoList(productionList);
         } catch (Exception e) {
