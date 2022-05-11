@@ -239,7 +239,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델등록테스트() throws Exception {
-        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+        AdminModelEntity adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -283,7 +283,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델수정테스트() throws Exception {
-        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+        AdminModelEntity adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -302,7 +302,7 @@ class AdminModelJpaRepositoryTest {
 
         Integer idx = adminModelJpaRepository.insertModel(adminModelEntity);
 
-        adminModelEntity = AdminModelEntity.builder()
+        adminModelEntity = builder()
                 .idx(idx)
                 .categoryCd(2)
                 .categoryAge("3")
@@ -347,7 +347,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델삭제테스트() throws Exception {
-        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+        AdminModelEntity adminModelEntity = builder()
                 .categoryCd(2)
                 .categoryAge("3")
                 .modelKorFirstName("조")
@@ -394,7 +394,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델이미지등록테스트() throws Exception {
-        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+        AdminModelEntity adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
