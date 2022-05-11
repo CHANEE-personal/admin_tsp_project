@@ -4,7 +4,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import com.tsp.new_tsp_admin.api.user.mapper.UserMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.common.StringUtils;
@@ -87,7 +86,7 @@ public class AdminUserJpaRepository {
     /**
      * <pre>
      * 1. MethodName : adminLogin
-     * 2. ClassName  : newAdminUserJpaRepository.java
+     * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 로그인 처리
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
@@ -117,7 +116,7 @@ public class AdminUserJpaRepository {
     /**
      * <pre>
      * 1. MethodName : insertUserTokenByEm
-     * 2. ClassName  : newAdminUserJpaRepository.java
+     * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 회원 로그인 후 토큰 등록 By EntityManager
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
@@ -144,7 +143,7 @@ public class AdminUserJpaRepository {
     /**
      * <pre>
      * 1. MethodName : insertUserToken
-     * 2. ClassName  : newAdminUserJpaRepository.java
+     * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 회원 로그인 후 토큰 등록
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
@@ -173,7 +172,7 @@ public class AdminUserJpaRepository {
     /**
      * <pre>
      * 1. MethodName : insertAdminUser
-     * 2. ClassName  : newAdminUserJpaRepository.java
+     * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 회원가입 처리
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
@@ -181,24 +180,43 @@ public class AdminUserJpaRepository {
      *
      * @param adminUserEntity
      */
+    @Transactional
     public Integer insertAdminUser(AdminUserEntity adminUserEntity) {
 
         try {
             //회원 등록
             em.persist(adminUserEntity);
+
+            return adminUserEntity.getIdx();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new TspException(ApiExceptionType.ERROR_USER);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteAdminUser
+     * 2. ClassName  : AdminUserJpaRepository.java
+     * 3. Comment    : 관리자 회원 탈퇴
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     * @param adminUserEntity
+     */
+    public Integer deleteAdminUser(AdminUserEntity adminUserEntity) {
+        try {
+            em.flush();
+            em.clear();
+            adminUserEntity = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
+            em.remove(adminUserEntity);
             em.flush();
             em.clear();
 
-            //회원 등록된 IDX
-            AdminUserEntity newAdminUserEntity = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
-            Integer newIdx = newAdminUserEntity.getIdx();
-
-            em.flush();
-            em.close();
-
-            return newIdx;
+            return adminUserEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_USER);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
         }
     }
 }

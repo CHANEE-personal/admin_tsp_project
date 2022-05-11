@@ -25,6 +25,7 @@ import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
 @Transactional
@@ -97,5 +98,31 @@ class AdminUserJpaRepositoryTest {
 
         assertThat(adminUserJpaRepository.insertUserTokenByEm(adminUserEntity)).isEqualTo(adminUserEntity.getIdx());
         assertNotNull(adminUserEntity.getUserToken());
+    }
+
+    @Test
+    public void 유저회원가입테스트() throws Exception {
+        AdminUserEntity adminUserEntity = builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+
+        adminUserJpaRepository.insertAdminUser(adminUserEntity);
+
+        when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
+
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo("test");
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo("test");
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo("test@test.com");
+    }
+
+    @Test
+    public void 유저탈퇴테스트() throws Exception {
+        AdminUserEntity adminUserEntity = builder().idx(1).build();
+
+        assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity)).isEqualTo(adminUserEntity.getIdx());
     }
 }
