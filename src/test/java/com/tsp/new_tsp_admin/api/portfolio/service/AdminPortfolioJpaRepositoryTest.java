@@ -235,4 +235,34 @@ class AdminPortfolioJpaRepositoryTest {
 
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트1");
     }
+
+    @Test
+    public void 포트폴리오삭제테스트() throws Exception {
+        AdminPortFolioEntity adminPortFolioEntity = builder()
+                .categoryCd(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        em.persist(adminPortFolioEntity);
+
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
+                .categoryCd(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        // when
+        when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
+
+        AdminPortFolioEntity adminPortFolioEntity1 = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
+
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo(adminPortFolioEntity1.getTitle());
+    }
 }

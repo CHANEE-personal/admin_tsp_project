@@ -170,4 +170,30 @@ public class AdminPortfolioJpaRepository {
             throw new TspException(ApiExceptionType.ERROR_UPDATE_PORTFOLIO);
         }
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : deletePortfolio
+     * 2. ClassName  : AdminPortfolioJpaRepository.java
+     * 3. Comment    : 관리자 포트폴리오 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 14.
+     * </pre>
+     *
+     * @param adminPortfolioEntity
+     */
+    public AdminPortFolioEntity deletePortfolio(AdminPortFolioEntity adminPortfolioEntity) {
+        try {
+            em.flush();
+            em.clear();
+            adminPortfolioEntity = em.find(AdminPortFolioEntity.class, adminPortfolioEntity.getIdx());
+            em.remove(adminPortfolioEntity);
+            em.flush();
+            em.clear();
+
+            return adminPortfolioEntity;
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+        }
+    }
 }
