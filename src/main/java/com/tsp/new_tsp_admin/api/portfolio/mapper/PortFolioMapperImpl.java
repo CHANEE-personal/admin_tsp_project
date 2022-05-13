@@ -27,7 +27,7 @@ public class PortFolioMapperImpl implements PortFolioMapper {
 				.createTime(entity.getCreateTime())
 				.updater(entity.getUpdater())
 				.updateTime(entity.getUpdateTime())
-//				.portfolioImage(PortfolioImageMapperImpl.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
+				.portfolioImage(PortfolioImageMapperImpl.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
 				.build();
 	}
 

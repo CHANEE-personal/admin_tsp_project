@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.common.CustomConverter;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -92,6 +95,10 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @Column(name = "career_list")
     @Convert(converter = CustomConverter.class)
     private ArrayList<CareerJson> careerList;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "category_cd", insertable = false, updatable = false)
+    private NewCodeEntity newModelCodeJpaDTO;
 
     @OneToMany(mappedBy = "adminModelEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
