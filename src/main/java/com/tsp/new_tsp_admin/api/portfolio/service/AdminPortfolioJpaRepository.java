@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper;
@@ -16,6 +17,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
 
 @Slf4j
@@ -87,6 +89,36 @@ public class AdminPortfolioJpaRepository {
             return PortFolioMapper.INSTANCE.toDtoList(portfolioList);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaRepository.java
+     * 3. Comment    : 관리자 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 13.
+     * </pre>
+     *
+     * @param existAdminPortfolioEntity
+     */
+    public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+
+        try {
+            // 포트폴리오 상세 조회
+            AdminPortFolioEntity findOnePortfolio = queryFactory
+                    .selectFrom(adminPortFolioEntity)
+                    .leftJoin(adminPortFolioEntity.commonImageEntityList, commonImageEntity)
+                    .fetchJoin()
+                    .where(adminPortFolioEntity.idx.eq(existAdminPortfolioEntity.getIdx())
+                            .and(adminPortFolioEntity.visible.eq("Y")
+                            .and(commonImageEntity.typeName.eq("portfolio"))))
+                    .fetchOne();
+
+            return PortFolioMapper.INSTANCE.toDto(findOnePortfolio);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
         }
     }
 }

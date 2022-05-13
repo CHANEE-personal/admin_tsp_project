@@ -1,7 +1,9 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
+import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @Transactional
@@ -56,5 +61,23 @@ class AdminPortfolioJpaRepositoryTest {
 
         // then
         assertThat(portfolioList.size()).isGreaterThan(0);
+    }
+
+    @Test
+    public void 포트폴리오상세조회테스트() throws Exception {
+
+        // given
+        AdminPortFolioEntity adminPortFolioEntity = builder().idx(1).build();
+
+        // when
+        AdminPortFolioDTO portfolioInfo = adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
+
+        assertAll(() -> assertThat(portfolioInfo.getIdx()).isEqualTo(1),
+                () -> {
+                    assertThat(portfolioInfo.getTitle()).isEqualTo("포트폴리오 테스트");
+                },
+                () -> {
+                    assertThat(portfolioInfo.getDescription()).isEqualTo("포트폴리오 테스트");
+                });
     }
 }
