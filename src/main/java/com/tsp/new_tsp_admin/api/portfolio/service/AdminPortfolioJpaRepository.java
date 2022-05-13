@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -119,6 +120,29 @@ public class AdminPortfolioJpaRepository {
             return PortFolioMapper.INSTANCE.toDto(findOnePortfolio);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertPortfolio
+     * 2. ClassName  : AdminPortfolioJpaRepository.java
+     * 3. Comment    : 관리자 포트폴리오 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 13.
+     * </pre>
+     *
+     * @param adminPortfolioEntity
+     */
+    @Transactional
+    public Integer insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
+        try {
+            em.persist(adminPortfolioEntity);
+
+            return adminPortfolioEntity.getIdx();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
         }
     }
 }

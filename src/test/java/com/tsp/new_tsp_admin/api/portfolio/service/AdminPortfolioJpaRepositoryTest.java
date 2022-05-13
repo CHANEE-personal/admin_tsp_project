@@ -29,11 +29,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
-import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
 @Transactional
@@ -167,5 +167,32 @@ class AdminPortfolioJpaRepositoryTest {
         assertThat(idx).isEqualTo(1);
         assertThat(title).isEqualTo("포트폴리오 테스트");
         assertThat(description).isEqualTo("포트폴리오 테스트");
+    }
+
+    @Test
+    public void 포트폴리오등록테스트() throws Exception {
+        AdminPortFolioEntity adminPortFolioEntity = builder()
+                .categoryCd(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
+                .categoryCd(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
+
+        when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
+
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트");
     }
 }
