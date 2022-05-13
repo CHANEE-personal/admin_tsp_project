@@ -195,4 +195,44 @@ class AdminPortfolioJpaRepositoryTest {
 
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트");
     }
+
+    @Test
+    public void 포트폴리오수정테스트() throws Exception {
+        AdminPortFolioEntity adminPortFolioEntity = builder()
+                .categoryCd(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
+
+        adminPortFolioEntity = builder()
+                .idx(idx)
+                .categoryCd(1)
+                .title("포트폴리오 테스트1")
+                .description("포트폴리오 테스트1")
+                .hashTag("#test1")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
+                .idx(idx)
+                .categoryCd(1)
+                .title("포트폴리오 테스트1")
+                .description("포트폴리오 테스트1")
+                .hashTag("#test1")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
+
+        when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
+
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트1");
+    }
 }

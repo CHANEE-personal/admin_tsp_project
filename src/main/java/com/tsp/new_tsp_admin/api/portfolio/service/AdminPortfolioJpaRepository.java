@@ -11,6 +11,7 @@ import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -143,6 +144,30 @@ public class AdminPortfolioJpaRepository {
         } catch (Exception e) {
             e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updatePortfolio
+     * 2. ClassName  : AdminPortfolioJpaRepository.java
+     * 3. Comment    : 관리자 포트폴리오 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 13.
+     * </pre>
+     *
+     * @param existAdminPortfolioEntity
+     */
+    @Modifying
+    @Transactional
+    public AdminPortFolioEntity updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+        try{
+            em.merge(existAdminPortfolioEntity);
+            em.flush();
+            em.clear();
+            return existAdminPortfolioEntity;
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_PORTFOLIO);
         }
     }
 }

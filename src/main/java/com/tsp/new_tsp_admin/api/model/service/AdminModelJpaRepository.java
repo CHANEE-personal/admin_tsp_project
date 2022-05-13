@@ -259,7 +259,6 @@ public class AdminModelJpaRepository {
             em.clear();
             return existAdminModelEntity;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
         }
     }
