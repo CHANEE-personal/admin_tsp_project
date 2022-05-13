@@ -2,10 +2,12 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity;
+import com.tsp.new_tsp_admin.api.portfolio.mapper.PortfolioImageMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -124,5 +126,46 @@ class AdminPortfolioJpaRepositoryTest {
         assertThat(idx).isEqualTo(portfolioList.get(0).getIdx());
         assertThat(title).isEqualTo(portfolioList.get(0).getTitle());
         assertThat(description).isEqualTo(portfolioList.get(0).getDescription());
+    }
+
+    @Test
+    public void 포트폴리오상세BDD조회테스트() throws Exception {
+
+        // given
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+                .idx(1)
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("model")
+                .build();
+
+        List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
+        commonImageEntityList.add(commonImageEntity);
+
+        AdminPortFolioEntity adminPortfolioEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
+                .idx(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .portfolioImage(PortfolioImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .build();
+
+        given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortfolioEntity)).willReturn(adminPortFolioDTO);
+
+        // when
+        Integer idx = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortfolioEntity).getIdx();
+        String title = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortfolioEntity).getTitle();
+        String description = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortfolioEntity).getDescription();
+
+        assertThat(idx).isEqualTo(1);
+        assertThat(title).isEqualTo("포트폴리오 테스트");
+        assertThat(description).isEqualTo("포트폴리오 테스트");
     }
 }
