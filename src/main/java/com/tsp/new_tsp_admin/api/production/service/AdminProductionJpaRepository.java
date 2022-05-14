@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper;
@@ -141,6 +142,28 @@ public class AdminProductionJpaRepository {
             em.persist(adminProductionEntity);
 
             return adminProductionEntity.getIdx();
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertProductionImage
+     * 2. ClassName  : AdminProductionJpaRepository.java
+     * 3. Comment    : 관리자 프로덕션 이미지 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 14.
+     * </pre>
+     *
+     * @param commonImageEntity
+     */
+    @Transactional
+    public Integer insertProductionImage(CommonImageEntity commonImageEntity) {
+        try {
+            em.persist(commonImageEntity);
+
+            return commonImageEntity.getIdx();
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
         }

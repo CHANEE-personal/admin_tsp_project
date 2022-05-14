@@ -424,6 +424,7 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         Integer imageIdx = adminModelJpaRepository.insertModelImage(commonImageEntity);
-        QCommonImageEntity qCommonImageEntity = QCommonImageEntity.commonImageEntity;
+
+        assertNotNull(imageIdx);
     }
 }

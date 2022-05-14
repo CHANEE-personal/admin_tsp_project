@@ -212,6 +212,31 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
+    public void 프로덕션이미지등록테스트() throws Exception {
+        AdminProductionEntity adminProductionEntity = builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity);
+
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(productionIdx)
+                .typeName("production")
+                .visible("Y")
+                .build();
+
+        Integer imageIdx = adminProductionJpaRepository.insertProductionImage(commonImageEntity);
+
+        assertNotNull(imageIdx);
+    }
+
+    @Test
     public void 프로덕션수정테스트() throws Exception {
         AdminProductionEntity adminProductionEntity = builder()
                 .title("프로덕션 테스트")
