@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper;
@@ -142,6 +143,28 @@ public class AdminPortfolioJpaRepository {
             return adminPortfolioEntity.getIdx();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertPortfolioImage
+     * 2. ClassName  : AdminPortfolioJpaRepository.java
+     * 3. Comment    : 관리자 포트폴리오 이미지 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 14.
+     * </pre>
+     *
+     * @param commonImageEntity
+     */
+    @Transactional
+    public Integer insertPortfolioImage(CommonImageEntity commonImageEntity) {
+        try {
+            em.persist(commonImageEntity);
+
+            return commonImageEntity.getIdx();
+        } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
         }
     }

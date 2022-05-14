@@ -182,7 +182,6 @@ public class AdminModelJpaRepository {
 
             return commonImageEntity.getIdx();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_MODEL);
         }
     }

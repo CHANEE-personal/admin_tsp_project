@@ -196,6 +196,32 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
+    public void 포트폴리오이미지등록테스트() throws Exception {
+        AdminPortFolioEntity adminPortFolioEntity = builder()
+                .categoryCd(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
+
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(portfolioIdx)
+                .typeName("portfolio")
+                .visible("Y")
+                .build();
+
+        assertNotNull(adminPortfolioJpaRepository.insertPortfolioImage(commonImageEntity));
+    }
+
+    @Test
     public void 포트폴리오수정테스트() throws Exception {
         AdminPortFolioEntity adminPortFolioEntity = builder()
                 .categoryCd(1)
