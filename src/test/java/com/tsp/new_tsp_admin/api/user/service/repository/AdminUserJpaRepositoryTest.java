@@ -65,13 +65,13 @@ class AdminUserJpaRepositoryTest {
     @Test
     public void 유저상세조회테스트() throws Exception {
 
-        AdminUserEntity adminUserEntity = builder().idx(1).userId("admin").build();
+        AdminUserEntity adminUserEntity = builder().idx(2).userId("admin01").build();
 
         AdminUserEntity adminUser = adminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
-        assertAll(() -> assertThat(adminUser.getIdx()).isEqualTo(1),
+        assertAll(() -> assertThat(adminUser.getIdx()).isEqualTo(2),
                 () -> {
-                    assertThat(adminUser.getUserId()).isEqualTo("admin");
+                    assertThat(adminUser.getUserId()).isEqualTo("admin01");
                     assertNotNull(adminUser.getUserId());
                 },
                 () -> {
@@ -82,7 +82,7 @@ class AdminUserJpaRepositoryTest {
     @Test
     public void 유저로그인테스트() throws Exception {
         AdminUserEntity adminUserEntity = builder()
-                .userId("admin")
+                .userId("admin01")
                 .password("pass1234")
                 .build();
 
@@ -92,7 +92,7 @@ class AdminUserJpaRepositoryTest {
     @Test
     public void 유저토큰저장테스트() throws Exception {
         AdminUserEntity adminUserEntity = builder()
-                .idx(1)
+                .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
                 .build();
 
@@ -121,7 +121,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     public void 유저탈퇴테스트() throws Exception {
-        AdminUserEntity adminUserEntity = builder().idx(1).build();
+        AdminUserEntity adminUserEntity = builder().idx(2).build();
 
         assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity)).isEqualTo(adminUserEntity.getIdx());
     }
