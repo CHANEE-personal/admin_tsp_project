@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
+import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,21 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) {
         return adminProductionJpaRepository.findProductionsList(productionMap);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertProduction
+     * 2. ClassName  : AdminProductionJpaServiceImpl.java
+     * 3. Comment    : 관리자 프로덕션 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 14.
+     * </pre>
+     *
+     * @param adminProductionEntity
+     */
+    @Override
+    public Integer insertProduction(AdminProductionEntity adminProductionEntity) {
+        return adminProductionJpaRepository.insertProduction(adminProductionEntity);
     }
 }

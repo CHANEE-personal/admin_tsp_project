@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
+import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +33,17 @@ public interface AdminProductionJpaService {
      * @param productionMap
      */
     List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap);
+
+    /**
+     * <pre>
+     * 1. MethodName : insertProduction
+     * 2. ClassName  : AdminProductionJpaService.java
+     * 3. Comment    : 관리자 프로덕션 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 14.
+     * </pre>
+     *
+     * @param adminProductionEntity
+     */
+    Integer insertProduction(AdminProductionEntity adminProductionEntity);
 }
