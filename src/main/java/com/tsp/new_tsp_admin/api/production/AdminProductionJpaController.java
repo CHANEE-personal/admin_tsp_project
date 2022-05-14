@@ -73,6 +73,29 @@ public class AdminProductionJpaController {
 
     /**
      * <pre>
+     * 1. MethodName : getProductionEdit
+     * 2. ClassName  : AdminProductionJpaController.java
+     * 3. Comment    : 관리자 프로덕션 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 15.
+     * </pre>
+     *
+     * @param page
+     */
+    @ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}")
+    public AdminProductionDTO getProductionEdit(@PathVariable("idx") Integer idx) {
+        AdminProductionEntity adminProductionEntity = AdminProductionEntity.builder().idx(idx).build();
+
+        return adminProductionJpaService.findOneProduction(adminProductionEntity);
+    }
+    /**
+     * <pre>
      * 1. MethodName : insertProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 draft 상태로 저장

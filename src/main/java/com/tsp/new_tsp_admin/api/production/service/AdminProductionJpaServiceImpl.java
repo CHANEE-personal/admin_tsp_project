@@ -50,6 +50,22 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
 
     /**
      * <pre>
+     * 1. MethodName : findOneProduction
+     * 2. ClassName  : AdminProductionJpaServiceImpl.java
+     * 3. Comment    : 관리자 프로덕션 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 15.
+     * </pre>
+     *
+     * @param adminProductionEntity
+     */
+    @Override
+    public AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) {
+        return adminProductionJpaRepository.findOneProduction(adminProductionEntity);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertProduction
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 등록

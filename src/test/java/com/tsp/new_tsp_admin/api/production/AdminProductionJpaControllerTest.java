@@ -51,4 +51,15 @@ class AdminProductionJpaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.productionList.length()", greaterThan(0)));
     }
+
+    @Test
+    @DisplayName("Admin 프로덕션 상세 조회 테스트")
+    public void 프로덕션상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-production/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.idx").value("1"))
+                .andExpect(jsonPath("$.title").value("프로덕션 테스트"))
+                .andExpect(jsonPath("$.description").value("프로덕션 테스트"));;
+    }
 }
