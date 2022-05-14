@@ -9,7 +9,7 @@ public interface AdminProductionJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findProductionCount
+     * 1. MethodName : findProductionsCount
      * 2. ClassName  : AdminProductionJpaService.java
      * 3. Comment    : 관리자 프로덕션 리스트 수 조회
      * 4. 작성자       : CHO
