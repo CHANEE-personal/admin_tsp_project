@@ -14,8 +14,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -43,9 +45,10 @@ class AdminProductionJpaControllerTest {
 
     @Test
     @DisplayName("Admin 프로덕션 조회 테스트")
-    public void 프로덕션조회테스트() throws Exception {
+    public void 프로덕션조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-production/lists"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.productionList.length()", greaterThan(0)));
     }
 }
