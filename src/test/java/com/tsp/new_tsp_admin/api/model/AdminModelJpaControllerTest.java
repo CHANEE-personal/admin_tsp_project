@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -90,5 +93,36 @@ class AdminModelJpaControllerTest {
                 .andExpect(jsonPath("$.height").value("170"))
                 .andExpect(jsonPath("$.size3").value("34-24-34"))
                 .andExpect(jsonPath("$.shoes").value("270"));;
+    }
+
+    @Test
+    @DisplayName("Admin 모델 등록 테스트")
+    public void 모델등록Api테스트() throws Exception {
+
+        AdminModelEntity adminModelEntity = builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
+
+        mockMvc.perform(post("/api/jpa-model")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk());
+
     }
 }
