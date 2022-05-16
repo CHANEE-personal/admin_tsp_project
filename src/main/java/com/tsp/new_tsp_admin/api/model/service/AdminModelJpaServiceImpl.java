@@ -86,6 +86,22 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : updateModel
+     * 2. ClassName  : AdminModeJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param adminModelEntity
+     */
+    @Override
+    public AdminModelEntity updateModel(AdminModelEntity adminModelEntity) {
+        return adminModelJpaRepository.updateModelByEm(adminModelEntity);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertModelImage
      * 2. ClassName  : AdminModeJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 이미지 등록

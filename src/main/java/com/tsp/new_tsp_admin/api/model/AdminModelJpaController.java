@@ -153,16 +153,9 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public String updateModel(@RequestBody AdminModelEntity adminModelEntity,
+    public AdminModelEntity updateModel(@RequestBody AdminModelEntity adminModelEntity,
                               @PathVariable("idx") Integer idx) throws Exception {
-
-        String result = "N";
-        if (this.adminModelJpaService.insertModel(adminModelEntity) > 0) {
-            result = "Y";
-        } else {
-            result = "N";
-        }
-        return result;
+        return adminModelJpaService.updateModel(adminModelEntity);
     }
 
     /**
