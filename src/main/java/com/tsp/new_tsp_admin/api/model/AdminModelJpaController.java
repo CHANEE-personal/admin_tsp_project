@@ -125,7 +125,36 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public String insertModel(AdminModelEntity adminModelEntity) throws Exception {
+    public String insertModel(@RequestBody AdminModelEntity adminModelEntity) throws Exception {
+
+        String result = "N";
+        if (this.adminModelJpaService.insertModel(adminModelEntity) > 0) {
+            result = "Y";
+        } else {
+            result = "N";
+        }
+        return result;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateModel
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 모델 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 16.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "모델 저장", notes = "모델을 저장한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "모델 등록성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PutMapping("/{idx}")
+    public String updateModel(@RequestBody AdminModelEntity adminModelEntity,
+                              @PathVariable("idx") Integer idx) throws Exception {
 
         String result = "N";
         if (this.adminModelJpaService.insertModel(adminModelEntity) > 0) {

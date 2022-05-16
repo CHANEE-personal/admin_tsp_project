@@ -5,9 +5,6 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,10 +18,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static org.hamcrest.Matchers.greaterThan;
@@ -48,14 +43,6 @@ class AdminModelJpaControllerTest {
     @Autowired
     private WebApplicationContext wac;
 
-//    static Stream<Arguments> modelMap() {
-//        Map<String, Object> modelMap = new HashMap<>();
-//        return Stream.of(
-//                Arguments.of(modelMap.put("jpaStartPage", 1)),
-//                Arguments.of(modelMap.put("size", 3))
-//        );
-//    }
-
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
@@ -64,8 +51,6 @@ class AdminModelJpaControllerTest {
                 .build();
     }
 
-//    @ParameterizedTest
-//    @MethodSource("modelMap")
     @Test
     @DisplayName("Admin 모델 조회 테스트")
     public void 모델조회Api테스트() throws Exception {
@@ -96,6 +81,7 @@ class AdminModelJpaControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("Admin 모델 등록 테스트")
     public void 모델등록Api테스트() throws Exception {
 
@@ -123,6 +109,37 @@ class AdminModelJpaControllerTest {
                 .content(jsonStr))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Admin 모델 수정 테스트")
+    public void 모델수정Api테스트() throws Exception {
+
+        AdminModelEntity adminModelEntity = builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
+
+        mockMvc.perform(post("/api/jpa-model")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk());
+
 
     }
 }
