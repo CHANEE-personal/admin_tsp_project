@@ -140,6 +140,29 @@ class AdminModelJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
+        adminModelEntity = builder().idx(1)
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("test")
+                .modelKorSecondName("test")
+                .modelKorName("test")
+                .modelFirstName("test")
+                .modelSecondName("test")
+                .modelEngName("test")
+                .modelDescription("test")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
 
+        final String updateStr = objectMapper.writeValueAsString(adminModelEntity);
+
+        mockMvc.perform(put("/api/jpa-model/1")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(updateStr))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }

@@ -142,19 +142,19 @@ public class AdminModelJpaController {
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 수정
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 16.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
-    @ApiOperation(value = "모델 저장", notes = "모델을 저장한다.")
+    @ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "모델 등록성공", response = Map.class),
+            @ApiResponse(code = 200, message = "모델 수정성공", response = Map.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
     public AdminModelEntity updateModel(@RequestBody AdminModelEntity adminModelEntity,
-                              @PathVariable("idx") Integer idx) throws Exception {
+                                        @PathVariable("idx") Integer idx) throws Exception {
         return adminModelJpaService.updateModel(adminModelEntity);
     }
 
