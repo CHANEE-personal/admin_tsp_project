@@ -80,7 +80,7 @@ public class AdminProductionJpaController {
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
      *
-     * @param page
+     * @param idx
      */
     @ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
     @ApiResponses({
@@ -94,13 +94,14 @@ public class AdminProductionJpaController {
 
         return adminProductionJpaService.findOneProduction(adminProductionEntity);
     }
+
     /**
      * <pre>
      * 1. MethodName : insertProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 draft 상태로 저장
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 5. 작성일       : 2022. 05. 16.
      * </pre>
      *
      */
@@ -117,5 +118,27 @@ public class AdminProductionJpaController {
         } else {
             return 0;
         }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateProduction
+     * 2. ClassName  : AdminProductionJpaController.java
+     * 3. Comment    : 관리자 프로덕션 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 16.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "프로덕션 수정", notes = "프로덕션을 수정한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "프로덕션 등록성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PutMapping("/{idx}")
+    public AdminProductionEntity updateProduction(@RequestBody AdminProductionEntity adminProductionEntity,
+                                                  @PathVariable("idx") Integer idx) throws Exception {
+        return adminProductionJpaService.updateProduction(adminProductionEntity);
     }
 }

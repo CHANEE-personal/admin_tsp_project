@@ -79,4 +79,20 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     public Integer insertProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.insertProduction(adminProductionEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateProduction
+     * 2. ClassName  : AdminProductionJpaServiceImpl.java
+     * 3. Comment    : 관리자 프로덕션 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 16.
+     * </pre>
+     *
+     * @param adminProductionEntity
+     */
+    @Override
+    public AdminProductionEntity updateProduction(AdminProductionEntity adminProductionEntity) {
+        return adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
+    }
 }
