@@ -160,6 +160,28 @@ public class AdminModelJpaController {
 
     /**
      * <pre>
+     * 1. MethodName : deleteModel
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 모델 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 17.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "모델 삭제성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @DeleteMapping("/{idx}")
+    public AdminModelEntity deleteModel(@RequestBody AdminModelEntity adminModelEntity,
+                                        @PathVariable("idx") Integer idx) throws Exception {
+        return adminModelJpaService.deleteModel(adminModelEntity);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertModelImage
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 Image 저장

@@ -79,6 +79,19 @@ public interface AdminModelJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : deleteModel
+     * 2. ClassName  : AdminModeJpaService.java
+     * 3. Comment    : 관리자 모델 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 17.
+     * </pre>
+     *
+     * @param adminModelEntity
+     */
+    AdminModelEntity deleteModel(AdminModelEntity adminModelEntity);
+
+    /**
+     * <pre>
      * 1. MethodName : insertModelImage
      * 2. ClassName  : AdminModeJpaService.java
      * 3. Comment    : 관리자 모델 이미지 등록
