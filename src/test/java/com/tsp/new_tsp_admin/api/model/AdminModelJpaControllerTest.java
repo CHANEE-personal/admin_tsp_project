@@ -18,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Collections;
 
@@ -43,6 +44,9 @@ class AdminModelJpaControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
+
+    @Autowired
+    private EntityManager em;
 
     private AdminModelEntity adminModelEntity;
 
@@ -118,13 +122,10 @@ class AdminModelJpaControllerTest {
     public void 모델수정Api테스트() throws Exception {
         final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
 
-        mockMvc.perform(post("/api/jpa-model")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(jsonStr))
-                .andDo(print())
-                .andExpect(status().isOk());
+        em.persist(adminModelEntity);
 
         adminModelEntity = builder()
+                .idx(adminModelEntity.getIdx())
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("test")
