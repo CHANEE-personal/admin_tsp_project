@@ -72,4 +72,17 @@ public interface AdminProductionJpaService {
      * @param adminProductionEntity
      */
     AdminProductionEntity updateProduction(AdminProductionEntity adminProductionEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteProduction
+     * 2. ClassName  : AdminProductionJpaService.java
+     * 3. Comment    : 관리자 프로덕션 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 17.
+     * </pre>
+     *
+     * @param adminProductionEntity
+     */
+    AdminProductionEntity deleteProduction(AdminProductionEntity adminProductionEntity);
 }
