@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.transaction.Transactional;
+
 import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -24,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -38,11 +41,19 @@ class AdminProductionJpaControllerTest {
     @Autowired
     private WebApplicationContext wac;
 
+    private AdminProductionEntity adminProductionEntity;
+
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .alwaysDo(print())
+                .build();
+
+        adminProductionEntity = builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
                 .build();
     }
 
@@ -69,12 +80,6 @@ class AdminProductionJpaControllerTest {
     @Test
     @DisplayName("Admin 프로덕션 등록 테스트")
     public void 프로덕션등록Api테스트() throws Exception {
-        AdminProductionEntity adminProductionEntity = builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
-
         final String jsonStr = objectMapper.writeValueAsString(adminProductionEntity);
 
         mockMvc.perform(post("/api/jpa-production")
@@ -87,13 +92,6 @@ class AdminProductionJpaControllerTest {
     @Test
     @DisplayName("Admin 프로덕션 수정 테스트")
     public void 프로덕션수정Api테스트() throws Exception {
-        AdminProductionEntity adminProductionEntity = builder()
-                .idx(1)
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
-
         final String jsonStr = objectMapper.writeValueAsString(adminProductionEntity);
 
         mockMvc.perform(post("/api/jpa-production")
@@ -109,6 +107,25 @@ class AdminProductionJpaControllerTest {
         mockMvc.perform(put("/api/jpa-production/1")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(updateStr))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Admin 프로덕션 삭제 테스트")
+    public void 프로덕션삭제Api테스트() throws Exception {
+        AdminProductionEntity adminProductionEntity = builder()
+                .idx(1)
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        final String jsonStr = objectMapper.writeValueAsString(adminProductionEntity);
+
+        mockMvc.perform(delete("/api/jpa-production/1")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(jsonStr))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

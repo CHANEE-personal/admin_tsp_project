@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -43,11 +44,30 @@ class AdminModelJpaControllerTest {
     @Autowired
     private WebApplicationContext wac;
 
+    private AdminModelEntity adminModelEntity;
+
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .alwaysDo(print())
+                .build();
+
+        adminModelEntity = builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
                 .build();
     }
 
@@ -84,24 +104,6 @@ class AdminModelJpaControllerTest {
     @Transactional
     @DisplayName("Admin 모델 등록 테스트")
     public void 모델등록Api테스트() throws Exception {
-
-        AdminModelEntity adminModelEntity = builder()
-                .categoryCd(1)
-                .categoryAge("2")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
-
         final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
 
         mockMvc.perform(post("/api/jpa-model")
@@ -114,24 +116,6 @@ class AdminModelJpaControllerTest {
     @Test
     @DisplayName("Admin 모델 수정 테스트")
     public void 모델수정Api테스트() throws Exception {
-
-        AdminModelEntity adminModelEntity = builder()
-                .categoryCd(1)
-                .categoryAge("2")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
-
         final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
 
         mockMvc.perform(post("/api/jpa-model")
@@ -140,7 +124,7 @@ class AdminModelJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        adminModelEntity = builder().idx(1)
+        adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("test")
