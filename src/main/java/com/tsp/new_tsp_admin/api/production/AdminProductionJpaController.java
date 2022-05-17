@@ -158,7 +158,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PutMapping("/{idx}")
+    @DeleteMapping("/{idx}")
     public AdminProductionEntity deleteProduction(@RequestBody AdminProductionEntity adminProductionEntity,
                                                   @PathVariable("idx") Integer idx) throws Exception {
         return adminProductionJpaService.deleteProduction(adminProductionEntity);

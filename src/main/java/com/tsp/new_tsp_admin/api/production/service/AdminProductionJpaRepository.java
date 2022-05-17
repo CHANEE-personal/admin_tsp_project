@@ -209,8 +209,6 @@ public class AdminProductionJpaRepository {
     public AdminProductionEntity deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
 
         try {
-            em.flush();
-            em.clear();
             adminProductionEntity = em.find(AdminProductionEntity.class, adminProductionEntity.getIdx());
             em.remove(adminProductionEntity);
             em.flush();
@@ -218,6 +216,7 @@ public class AdminProductionJpaRepository {
 
             return adminProductionEntity;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION);
         }
     }

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
@@ -40,6 +41,9 @@ class AdminProductionJpaControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
+
+    @Autowired
+    private EntityManager em;
 
     private AdminProductionEntity adminProductionEntity;
 
@@ -94,13 +98,9 @@ class AdminProductionJpaControllerTest {
     public void 프로덕션수정Api테스트() throws Exception {
         final String jsonStr = objectMapper.writeValueAsString(adminProductionEntity);
 
-        mockMvc.perform(post("/api/jpa-production")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(jsonStr))
-                .andDo(print())
-                .andExpect(status().isOk());
+        em.persist(adminProductionEntity);
 
-        adminProductionEntity = builder().idx(1).title("테스트1").description("테스트1").build();
+        adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
 
         final String updateStr = objectMapper.writeValueAsString(adminProductionEntity);
 
