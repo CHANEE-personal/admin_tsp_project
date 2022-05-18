@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.portfolio;
 
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
+import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.portfolio.service.AdminPortfolioJpaService;
 import com.tsp.new_tsp_admin.common.Page;
 import com.tsp.new_tsp_admin.common.SearchCommon;
@@ -93,5 +94,30 @@ public class AdminPortfolioJpaController {
         AdminPortFolioEntity adminPortFolioEntity = AdminPortFolioEntity.builder().idx(idx).build();
 
         return this.adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertPortfolio
+     * 2. ClassName  : AdminPortfolioJpaController.java
+     * 3. Comment    : 관리자 포트폴리오 draft 상태로 저장
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 18.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "포트폴리오 저장", notes = "포트폴리오를 저장한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "포트폴리오 등록성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping
+    public Integer insertPortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
+        if (this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity) > 0) {
+            return this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
+        } else {
+            return 0;
+        }
     }
 }

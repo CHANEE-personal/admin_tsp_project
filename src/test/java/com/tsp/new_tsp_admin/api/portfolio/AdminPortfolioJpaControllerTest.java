@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -22,7 +23,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.greaterThan;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,7 +56,7 @@ class AdminPortfolioJpaControllerTest {
                 .build();
 
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(1)
+                .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
                 .hashTag("#test")
@@ -83,5 +84,18 @@ class AdminPortfolioJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idx").value("1"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Admin 포트폴리오 등록 테스트")
+    public void 포트폴리오등록Api테스트() throws Exception {
+        final String jsonStr = objectMapper.writeValueAsString(adminPortFolioEntity);
+
+        mockMvc.perform(post("/api/jpa-portfolio")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
