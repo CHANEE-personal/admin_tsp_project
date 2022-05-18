@@ -206,8 +206,6 @@ public class AdminPortfolioJpaRepository {
      */
     public AdminPortFolioEntity deletePortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         try {
-            em.flush();
-            em.clear();
             adminPortfolioEntity = em.find(AdminPortFolioEntity.class, adminPortfolioEntity.getIdx());
             em.remove(adminPortfolioEntity);
             em.flush();

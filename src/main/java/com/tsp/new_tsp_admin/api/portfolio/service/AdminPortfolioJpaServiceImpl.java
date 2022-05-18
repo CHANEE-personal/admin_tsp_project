@@ -93,4 +93,20 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
     public AdminPortFolioEntity updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : deletePortfolio
+     * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
+     * 3. Comment    : 관리자 포트폴리오 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 18.
+     * </pre>
+     *
+     * @param adminPortFolioEntity
+     */
+    @Override
+    public AdminPortFolioEntity deletePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+        return adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
+    }
 }

@@ -124,4 +124,18 @@ class AdminPortfolioJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("Admin 포트폴리오 삭제 테스트")
+    public void 포트폴리오삭제Api테스트() throws Exception {
+        final String jsonStr = objectMapper.writeValueAsString(adminPortFolioEntity);
+
+        em.persist(adminPortFolioEntity);
+
+        mockMvc.perform(delete("/api/jpa-portfolio/"+adminPortFolioEntity.getIdx())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

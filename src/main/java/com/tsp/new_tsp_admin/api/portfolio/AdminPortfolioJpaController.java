@@ -142,4 +142,27 @@ public class AdminPortfolioJpaController {
                                                 @PathVariable("idx") Integer idx) throws Exception {
         return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : deletePortfolio
+     * 2. ClassName  : AdminPortfolioJpaController.java
+     * 3. Comment    : 관리자 포트폴리오 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 18.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "포트폴리오 삭제", notes = "포트폴리오를 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "포트폴리오 삭제성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @DeleteMapping("/{idx}")
+    public AdminPortFolioEntity deletePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
+                                                @PathVariable("idx") Integer idx) throws Exception {
+        adminPortFolioEntity.setIdx(idx);
+        return adminPortfolioJpaService.deletePortfolio(adminPortFolioEntity);
+    }
 }

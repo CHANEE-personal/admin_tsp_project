@@ -72,4 +72,17 @@ public interface AdminPortfolioJpaService {
      * @param adminPortFolioEntity
      */
     AdminPortFolioEntity updatePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : deletePortfolio
+     * 2. ClassName  : AdminModeJpaService.java
+     * 3. Comment    : 관리자 포트폴리오 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 17.
+     * </pre>
+     *
+     * @param adminPortFolioEntity
+     */
+    AdminPortFolioEntity deletePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 }
