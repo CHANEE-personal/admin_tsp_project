@@ -77,4 +77,20 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
     public Integer insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : updatePortfolio
+     * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
+     * 3. Comment    : 관리자 포트폴리오 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 18.
+     * </pre>
+     *
+     * @param adminPortFolioEntity
+     */
+    @Override
+    public AdminPortFolioEntity updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+        return adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
+    }
 }

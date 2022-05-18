@@ -59,4 +59,17 @@ public interface AdminPortfolioJpaService {
      * @param adminPortFolioEntity
      */
     Integer insertPortfolio(AdminPortFolioEntity adminPortFolioEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : updatePortfolio
+     * 2. ClassName  : AdminPortfolioJpaService.java
+     * 3. Comment    : 관리자 포트폴리오 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 18.
+     * </pre>
+     *
+     * @param adminPortFolioEntity
+     */
+    AdminPortFolioEntity updatePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 }

@@ -120,4 +120,26 @@ public class AdminPortfolioJpaController {
             return 0;
         }
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : updatePortfolio
+     * 2. ClassName  : AdminPortfolioJpaController.java
+     * 3. Comment    : 관리자 포트폴리오 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 18.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "포트폴리오 수정", notes = "포트폴리오를 수정한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "포트폴리오 수정성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PutMapping("/{idx}")
+    public AdminPortFolioEntity updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
+                                                @PathVariable("idx") Integer idx) throws Exception {
+        return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
+    }
 }

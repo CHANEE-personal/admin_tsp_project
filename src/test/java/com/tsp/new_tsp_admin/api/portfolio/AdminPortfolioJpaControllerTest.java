@@ -98,4 +98,30 @@ class AdminPortfolioJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("Admin 포트폴리오 수정 테스트")
+    public void 포트폴리오수정Api테스트() throws Exception {
+        final String jsonStr = objectMapper.writeValueAsString(adminPortFolioEntity);
+
+        em.persist(adminPortFolioEntity);
+
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
+                .idx(adminPortFolioEntity.getIdx())
+                .categoryCd(1)
+                .title("포트폴리오 테스트1111")
+                .description("포트폴리오 테스트1111")
+                .hashTag("#test111")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        final String updateStr = objectMapper.writeValueAsString(adminPortFolioEntity);
+
+        mockMvc.perform(put("/api/jpa-portfolio/1")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(updateStr))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
