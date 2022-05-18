@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
+import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +33,17 @@ public interface AdminPortfolioJpaService {
      * @param portfolioMap
      */
     List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap);
+
+    /**
+     * <pre>
+     * 1. MethodName : findOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaService.java
+     * 3. Comment    : 관리자 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 18.
+     * </pre>
+     *
+     * @param adminPortFolioEntity
+     */
+    AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 }

@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
+import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +44,21 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
     @Override
     public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
         return adminPortfolioJpaRepository.findPortfoliosList(portfolioMap);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
+     * 3. Comment    : 관리자 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 18.
+     * </pre>
+     *
+     * @param portfolioMap
+     */
+    @Override
+    public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+        return adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
     }
 }
