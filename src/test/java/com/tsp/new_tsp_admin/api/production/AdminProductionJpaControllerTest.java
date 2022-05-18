@@ -104,7 +104,7 @@ class AdminProductionJpaControllerTest {
 
         final String updateStr = objectMapper.writeValueAsString(adminProductionEntity);
 
-        mockMvc.perform(put("/api/jpa-production/1")
+        mockMvc.perform(put("/api/jpa-production/"+adminProductionEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(updateStr))
                 .andDo(print())
@@ -114,16 +114,11 @@ class AdminProductionJpaControllerTest {
     @Test
     @DisplayName("Admin 프로덕션 삭제 테스트")
     public void 프로덕션삭제Api테스트() throws Exception {
-        AdminProductionEntity adminProductionEntity = builder()
-                .idx(1)
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
-
         final String jsonStr = objectMapper.writeValueAsString(adminProductionEntity);
 
-        mockMvc.perform(delete("/api/jpa-production/1")
+        em.persist(adminProductionEntity);
+
+        mockMvc.perform(delete("/api/jpa-production/"+adminProductionEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(jsonStr))
                 .andDo(print())

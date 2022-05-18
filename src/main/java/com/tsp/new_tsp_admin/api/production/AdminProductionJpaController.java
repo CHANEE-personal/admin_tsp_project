@@ -161,6 +161,7 @@ public class AdminProductionJpaController {
     @DeleteMapping("/{idx}")
     public AdminProductionEntity deleteProduction(@RequestBody AdminProductionEntity adminProductionEntity,
                                                   @PathVariable("idx") Integer idx) throws Exception {
+        adminProductionEntity.setIdx(idx);
         return adminProductionJpaService.deleteProduction(adminProductionEntity);
     }
 }
