@@ -177,6 +177,7 @@ public class AdminModelJpaController {
     @DeleteMapping("/{idx}")
     public AdminModelEntity deleteModel(@RequestBody AdminModelEntity adminModelEntity,
                                         @PathVariable("idx") Integer idx) throws Exception {
+        adminModelEntity.setIdx(idx);
         return adminModelJpaService.deleteModel(adminModelEntity);
     }
 

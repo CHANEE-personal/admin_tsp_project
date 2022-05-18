@@ -331,8 +331,6 @@ public class AdminModelJpaRepository {
     public AdminModelEntity deleteModelByEm(AdminModelEntity adminModelEntity) {
 
         try {
-            em.flush();
-            em.clear();
             adminModelEntity = em.find(AdminModelEntity.class, adminModelEntity.getIdx());
             em.remove(adminModelEntity);
             em.flush();

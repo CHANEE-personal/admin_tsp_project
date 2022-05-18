@@ -150,4 +150,18 @@ class AdminModelJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("Admin 모델 삭제 테스트")
+    public void 모델삭제Api테스트() throws Exception {
+        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
+
+        em.persist(adminModelEntity);
+
+        mockMvc.perform(delete("/api/jpa-model/"+adminModelEntity.getIdx())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
