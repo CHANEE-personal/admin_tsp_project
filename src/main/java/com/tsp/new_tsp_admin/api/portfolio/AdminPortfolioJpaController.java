@@ -64,9 +64,9 @@ public class AdminPortfolioJpaController {
         // 전체 페이지 수
         portfolioMap.put("perPageListCnt", Math.ceil((portfolioCnt - 1) / page.getSize() + 1));
         // 전체 아이템 수
-        portfolioMap.put("productionListCnt", portfolioCnt);
+        portfolioMap.put("portfolioListCnt", portfolioCnt);
 
-        portfolioMap.put("productionList", portfolioList);
+        portfolioMap.put("portfolioList", portfolioList);
 
         return portfolioMap;
     }
