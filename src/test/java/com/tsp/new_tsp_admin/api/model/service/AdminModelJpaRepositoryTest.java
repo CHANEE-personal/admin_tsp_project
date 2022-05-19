@@ -40,7 +40,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("모델 Repository Test")
 class AdminModelJpaRepositoryTest {
-
+    private AdminModelEntity adminModelEntity;
+    private AdminModelDTO adminModelDTO;
     @Autowired
     private AdminModelJpaRepository adminModelJpaRepository;
 
@@ -54,6 +55,40 @@ class AdminModelJpaRepositoryTest {
     @BeforeEach
     public void init() {
         queryFactory = new JPAQueryFactory(em);
+
+        adminModelEntity = builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        adminModelDTO = AdminModelDTO.builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
     }
 
     @Test
@@ -238,40 +273,6 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델등록테스트() throws Exception {
-        AdminModelEntity adminModelEntity = builder()
-                .categoryCd(1)
-                .categoryAge("2")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
-
-        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
-                .categoryCd(1)
-                .categoryAge("2")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
-
         adminModelJpaRepository.insertModel(adminModelEntity);
 
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
@@ -282,23 +283,6 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델수정테스트() throws Exception {
-        AdminModelEntity adminModelEntity = builder()
-                .categoryCd(1)
-                .categoryAge("2")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
-
         Integer idx = adminModelJpaRepository.insertModel(adminModelEntity);
 
         adminModelEntity = builder()
@@ -319,7 +303,9 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+        adminModelJpaRepository.updateModelByEm(adminModelEntity);
+
+        adminModelDTO = AdminModelDTO.builder()
                 .categoryCd(2)
                 .categoryAge("3")
                 .modelKorFirstName("조")
@@ -336,8 +322,6 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelJpaRepository.updateModelByEm(adminModelEntity);
-
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
 
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(2);
@@ -346,7 +330,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델삭제테스트() throws Exception {
-        AdminModelEntity adminModelEntity = builder()
+        adminModelEntity = builder()
                 .categoryCd(2)
                 .categoryAge("3")
                 .modelKorFirstName("조")
@@ -365,7 +349,7 @@ class AdminModelJpaRepositoryTest {
 
         em.persist(adminModelEntity);
 
-        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+        adminModelDTO = AdminModelDTO.builder()
                 .categoryCd(2)
                 .categoryAge("3")
                 .modelKorFirstName("조")
