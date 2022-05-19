@@ -42,6 +42,8 @@ import static org.mockito.Mockito.when;
 class AdminModelJpaRepositoryTest {
     private AdminModelEntity adminModelEntity;
     private AdminModelDTO adminModelDTO;
+    private CommonImageEntity commonImageEntity;
+    private CommonImageDTO commonImageDTO;
     @Autowired
     private AdminModelJpaRepository adminModelJpaRepository;
 
@@ -89,6 +91,26 @@ class AdminModelJpaRepositoryTest {
                 .shoes("270")
                 .visible("Y")
                 .build();
+
+        commonImageEntity = CommonImageEntity.builder()
+                .idx(1)
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("model")
+                .build();
+
+        commonImageDTO = CommonImageDTO.builder()
+                .idx(1)
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("model")
+                .build();
     }
 
     @Test
@@ -111,58 +133,58 @@ class AdminModelJpaRepositoryTest {
     public void 모델상세조회테스트() throws Exception {
 
         // given
-        AdminModelEntity adminModelEntity = builder().idx(3).categoryCd(1).build();
+        adminModelEntity = builder().idx(3).categoryCd(1).build();
 
         // when
-        AdminModelDTO modelInfo = adminModelJpaRepository.findOneModel(adminModelEntity);
+        adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
 
-        assertAll(() -> assertThat(modelInfo.getIdx()).isEqualTo(3),
+        assertAll(() -> assertThat(adminModelDTO.getIdx()).isEqualTo(3),
                 () -> {
-                    assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
-                    assertNotNull(modelInfo.getCategoryCd());
+                    assertThat(adminModelDTO.getCategoryCd()).isEqualTo(1);
+                    assertNotNull(adminModelDTO.getCategoryCd());
                 },
                 () -> {
-                    assertThat(modelInfo.getCategoryAge()).isEqualTo("2");
-                    assertNotNull(modelInfo.getCategoryAge());
+                    assertThat(adminModelDTO.getCategoryAge()).isEqualTo("2");
+                    assertNotNull(adminModelDTO.getCategoryAge());
                 },
                 () -> {
-                    assertThat(modelInfo.getModelKorName()).isEqualTo("조찬희");
-                    assertNotNull(modelInfo.getModelKorName());
+                    assertThat(adminModelDTO.getModelKorName()).isEqualTo("조찬희");
+                    assertNotNull(adminModelDTO.getModelKorName());
                 },
                 () -> {
-                    assertThat(modelInfo.getModelEngName()).isEqualTo("CHOCHANHEE");
-                    assertNotNull(modelInfo.getModelEngName());
+                    assertThat(adminModelDTO.getModelEngName()).isEqualTo("CHOCHANHEE");
+                    assertNotNull(adminModelDTO.getModelEngName());
                 },
                 () -> {
-                    assertThat(modelInfo.getModelDescription()).isEqualTo("chaneeCho");
-                    assertNotNull(modelInfo.getModelDescription());
+                    assertThat(adminModelDTO.getModelDescription()).isEqualTo("chaneeCho");
+                    assertNotNull(adminModelDTO.getModelDescription());
                 },
                 () -> {
-                    assertThat(modelInfo.getHeight()).isEqualTo("170");
-                    assertNotNull(modelInfo.getHeight());
+                    assertThat(adminModelDTO.getHeight()).isEqualTo("170");
+                    assertNotNull(adminModelDTO.getHeight());
                 },
                 () -> {
-                    assertThat(modelInfo.getSize3()).isEqualTo("34-24-34");
-                    assertNotNull(modelInfo.getSize3());
+                    assertThat(adminModelDTO.getSize3()).isEqualTo("34-24-34");
+                    assertNotNull(adminModelDTO.getSize3());
                 },
                 () -> {
-                    assertThat(modelInfo.getShoes()).isEqualTo("270");
-                    assertNotNull(modelInfo.getShoes());
+                    assertThat(adminModelDTO.getShoes()).isEqualTo("270");
+                    assertNotNull(adminModelDTO.getShoes());
                 },
                 () -> {
-                    assertThat(modelInfo.getVisible()).isEqualTo("Y");
-                    assertNotNull(modelInfo.getVisible());
+                    assertThat(adminModelDTO.getVisible()).isEqualTo("Y");
+                    assertNotNull(adminModelDTO.getVisible());
                 });
 
-        assertThat(modelInfo.getModelImage().get(0).getTypeName()).isEqualTo("model");
-        assertThat(modelInfo.getModelImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(modelInfo.getModelImage().get(0).getFileName()).isEqualTo("52d4fdc8-f109-408e-b243-85cc1be207c5.jpg");
-        assertThat(modelInfo.getModelImage().get(0).getFilePath()).isEqualTo("/var/www/dist/upload/1223023959779.jpg");
+        assertThat(adminModelDTO.getModelImage().get(0).getTypeName()).isEqualTo("model");
+        assertThat(adminModelDTO.getModelImage().get(0).getImageType()).isEqualTo("main");
+        assertThat(adminModelDTO.getModelImage().get(0).getFileName()).isEqualTo("52d4fdc8-f109-408e-b243-85cc1be207c5.jpg");
+        assertThat(adminModelDTO.getModelImage().get(0).getFilePath()).isEqualTo("/var/www/dist/upload/1223023959779.jpg");
 
-        assertThat(modelInfo.getModelImage().get(1).getTypeName()).isEqualTo("model");
-        assertThat(modelInfo.getModelImage().get(1).getImageType()).isEqualTo("sub1");
-        assertThat(modelInfo.getModelImage().get(1).getFileName()).isEqualTo("e13f6930-17a5-407c-96ed-fd625b720d21.jpg");
-        assertThat(modelInfo.getModelImage().get(1).getFilePath()).isEqualTo("/var/www/dist/upload/1223023959823.jpg");
+        assertThat(adminModelDTO.getModelImage().get(1).getTypeName()).isEqualTo("model");
+        assertThat(adminModelDTO.getModelImage().get(1).getImageType()).isEqualTo("sub1");
+        assertThat(adminModelDTO.getModelImage().get(1).getFileName()).isEqualTo("e13f6930-17a5-407c-96ed-fd625b720d21.jpg");
+        assertThat(adminModelDTO.getModelImage().get(1).getFilePath()).isEqualTo("/var/www/dist/upload/1223023959823.jpg");
     }
 
     @Test
@@ -173,16 +195,6 @@ class AdminModelJpaRepositoryTest {
         modelMap.put("categoryCd", "1");
         modelMap.put("jpaStartPage", 1);
         modelMap.put("size", 3);
-
-        CommonImageDTO commonImageDTO = CommonImageDTO.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("model")
-                .build();
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
@@ -206,22 +218,12 @@ class AdminModelJpaRepositoryTest {
     public void 모델상세BDD조회테스트() throws Exception {
 
         // given
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("model")
-                .build();
-
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        AdminModelEntity adminModelEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminModelEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
 
-        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+        adminModelDTO = AdminModelDTO.builder()
                 .idx(1)
                 .categoryCd(1)
                 .categoryAge("2")
@@ -377,7 +379,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델이미지등록테스트() throws Exception {
-        AdminModelEntity adminModelEntity = builder()
+        adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
