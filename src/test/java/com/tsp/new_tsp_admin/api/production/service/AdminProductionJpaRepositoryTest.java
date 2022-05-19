@@ -40,6 +40,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("프로덕션 Repository Test")
 class AdminProductionJpaRepositoryTest {
+    private AdminProductionEntity adminProductionEntity;
+    private AdminProductionDTO adminProductionDTO;
+    private CommonImageEntity commonImageEntity;
+    private CommonImageDTO commonImageDTO;
 
     @Autowired
     private AdminProductionJpaRepository adminProductionJpaRepository;
@@ -52,7 +56,41 @@ class AdminProductionJpaRepositoryTest {
     JPAQueryFactory queryFactory;
 
     @BeforeEach
-    public void init() { queryFactory = new JPAQueryFactory(em); }
+    public void init() {
+        queryFactory = new JPAQueryFactory(em);
+
+        adminProductionEntity = builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        adminProductionDTO = AdminProductionDTO.builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        commonImageEntity = commonImageEntity = CommonImageEntity.builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("production")
+                .visible("Y")
+                .build();
+
+        commonImageDTO = CommonImageDTO.builder()
+                .idx(1)
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("production")
+                .build();
+    }
 
     @Test
     public void 프로덕션리스트조회테스트() throws Exception {
@@ -73,29 +111,29 @@ class AdminProductionJpaRepositoryTest {
     public void 프로덕션상세조회테스트() throws Exception {
 
         // given
-        AdminProductionEntity adminProductionEntity = builder().idx(1).build();
+        adminProductionEntity = builder().idx(1).build();
 
         // when
-        AdminProductionDTO productionInfo = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
+        adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
 
-        assertAll(() -> assertThat(productionInfo.getIdx()).isEqualTo(1),
+        assertAll(() -> assertThat(adminProductionDTO.getIdx()).isEqualTo(1),
                 () -> {
-                    assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트");
-                    assertNotNull(productionInfo.getTitle());
+                    assertThat(adminProductionDTO.getTitle()).isEqualTo("테스트1");
+                    assertNotNull(adminProductionDTO.getTitle());
                 },
                 () -> {
-                    assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트");
-                    assertNotNull(productionInfo.getDescription());
+                    assertThat(adminProductionDTO.getDescription()).isEqualTo("테스트1");
+                    assertNotNull(adminProductionDTO.getDescription());
                 },
                 () -> {
-                    assertThat(productionInfo.getVisible()).isEqualTo("Y");
-                    assertNotNull(productionInfo.getVisible());
+                    assertThat(adminProductionDTO.getVisible()).isEqualTo("Y");
+                    assertNotNull(adminProductionDTO.getVisible());
                 });
 
-        assertThat(productionInfo.getProductionImage().get(0).getTypeName()).isEqualTo("production");
-        assertThat(productionInfo.getProductionImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(productionInfo.getProductionImage().get(0).getFileName()).isEqualTo("52d4fdc8-f109-408e-b243-85cc1be207c5.jpg");
-        assertThat(productionInfo.getProductionImage().get(0).getFileMask()).isEqualTo("1223024921206.jpg");
+        assertThat(adminProductionDTO.getProductionImage().get(0).getTypeName()).isEqualTo("production");
+        assertThat(adminProductionDTO.getProductionImage().get(0).getImageType()).isEqualTo("main");
+        assertThat(adminProductionDTO.getProductionImage().get(0).getFileName()).isEqualTo("52d4fdc8-f109-408e-b243-85cc1be207c5.jpg");
+        assertThat(adminProductionDTO.getProductionImage().get(0).getFileMask()).isEqualTo("1223024921206.jpg");
     }
 
     @Test
@@ -105,16 +143,6 @@ class AdminProductionJpaRepositoryTest {
         ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
         productionMap.put("jpaStartPage", 1);
         productionMap.put("size", 3);
-
-        CommonImageDTO commonImageDTO = CommonImageDTO.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("production")
-                .build();
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
@@ -141,16 +169,6 @@ class AdminProductionJpaRepositoryTest {
     public void 프로덕션상세BDD조회테스트() throws Exception {
 
         // given
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("production")
-                .build();
-
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
@@ -190,18 +208,6 @@ class AdminProductionJpaRepositoryTest {
 
     @Test
     public void 프로덕션등록테스트() throws Exception {
-        AdminProductionEntity adminProductionEntity = builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
-
-        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
-
         adminProductionJpaRepository.insertProduction(adminProductionEntity);
 
         when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
@@ -213,12 +219,6 @@ class AdminProductionJpaRepositoryTest {
 
     @Test
     public void 프로덕션이미지등록테스트() throws Exception {
-        AdminProductionEntity adminProductionEntity = builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
-
         Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity);
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -238,12 +238,6 @@ class AdminProductionJpaRepositoryTest {
 
     @Test
     public void 프로덕션수정테스트() throws Exception {
-        AdminProductionEntity adminProductionEntity = builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
-
         Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity);
 
         adminProductionEntity = builder()
@@ -269,15 +263,10 @@ class AdminProductionJpaRepositoryTest {
 
     @Test
     public void 프로덕션삭제테스트() throws Exception {
-        AdminProductionEntity adminProductionEntity = builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
 
         em.persist(adminProductionEntity);
 
-        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
+        adminProductionDTO = AdminProductionDTO.builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
