@@ -122,7 +122,8 @@ class AdminUserJpaRepositoryTest {
     @Test
     public void 유저탈퇴테스트() throws Exception {
         AdminUserEntity adminUserEntity = builder().idx(2).build();
+        AdminUserDTO adminUserDTO = AdminUserDTO.builder().idx(2).build();
 
-        assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity)).isEqualTo(adminUserEntity.getIdx());
+        assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity).getIdx()).isEqualTo(adminUserDTO.getIdx());
     }
 }

@@ -221,13 +221,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping
-    public String deleteAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
-        String result = "";
-        if (adminUserJpaService.deleteAdminUser(adminUserEntity) > 0) {
-            result = "Y";
-        } else {
-            result = "N";
-        }
-        return result;
+    public AdminUserDTO deleteAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
+        return adminUserJpaService.deleteAdminUser(adminUserEntity);
     }
 }

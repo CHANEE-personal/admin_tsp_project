@@ -96,7 +96,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * @param adminUserEntity
      */
     @Override
-    public Integer deleteAdminUser(AdminUserEntity adminUserEntity) {
+    public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
         return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
     }
 }

@@ -206,16 +206,14 @@ public class AdminUserJpaRepository {
      * @param adminUserEntity
      */
     @Transactional
-    public Integer deleteAdminUser(AdminUserEntity adminUserEntity) {
+    public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
         try {
-            em.flush();
-            em.clear();
             adminUserEntity = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
             em.remove(adminUserEntity);
             em.flush();
             em.clear();
 
-            return adminUserEntity.getIdx();
+            return UserMapper.INSTANCE.toDto(adminUserEntity);
         } catch (Exception e) {
             e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);

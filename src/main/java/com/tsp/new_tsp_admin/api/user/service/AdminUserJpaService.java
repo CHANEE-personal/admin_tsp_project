@@ -76,5 +76,5 @@ public interface AdminUserJpaService {
      * @param adminUserEntity
      * @throws Exception
      */
-    Integer deleteAdminUser(AdminUserEntity adminUserEntity);
+    AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity);
 }
