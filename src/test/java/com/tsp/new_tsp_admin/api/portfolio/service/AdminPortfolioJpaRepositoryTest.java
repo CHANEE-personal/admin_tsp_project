@@ -40,6 +40,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("포트폴리오 Repository Test")
 class AdminPortfolioJpaRepositoryTest {
+    private AdminPortFolioEntity adminPortFolioEntity;
+    private AdminPortFolioDTO adminPortFolioDTO;
+    private CommonImageEntity commonImageEntity;
+    private CommonImageDTO commonImageDTO;
 
     @Autowired
     private AdminPortfolioJpaRepository adminPortfolioJpaRepository;
@@ -52,7 +56,47 @@ class AdminPortfolioJpaRepositoryTest {
     JPAQueryFactory queryFactory;
 
     @BeforeEach
-    public void init() { queryFactory = new JPAQueryFactory(em); }
+    public void init() {
+        queryFactory = new JPAQueryFactory(em);
+
+        adminPortFolioEntity = builder()
+                .categoryCd(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        adminPortFolioDTO = AdminPortFolioDTO.builder()
+                .categoryCd(1)
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        commonImageEntity = CommonImageEntity.builder()
+                .idx(1)
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("model")
+                .build();
+
+        commonImageDTO = CommonImageDTO.builder()
+                .idx(1)
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("portfolio")
+                .build();
+    }
 
     @Test
     public void 포트폴리오조회테스트() throws Exception {
@@ -73,17 +117,17 @@ class AdminPortfolioJpaRepositoryTest {
     public void 포트폴리오상세조회테스트() throws Exception {
 
         // given
-        AdminPortFolioEntity adminPortFolioEntity = builder().idx(1).build();
+        adminPortFolioEntity = builder().idx(1).build();
 
         // when
-        AdminPortFolioDTO portfolioInfo = adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
+        adminPortFolioDTO = adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
 
-        assertAll(() -> assertThat(portfolioInfo.getIdx()).isEqualTo(1),
+        assertAll(() -> assertThat(adminPortFolioDTO.getIdx()).isEqualTo(1),
                 () -> {
-                    assertThat(portfolioInfo.getTitle()).isEqualTo("포트폴리오 테스트");
+                    assertThat(adminPortFolioDTO.getTitle()).isEqualTo("포트폴리오 테스트");
                 },
                 () -> {
-                    assertThat(portfolioInfo.getDescription()).isEqualTo("포트폴리오 테스트");
+                    assertThat(adminPortFolioDTO.getDescription()).isEqualTo("포트폴리오 테스트");
                 });
     }
 
@@ -94,16 +138,6 @@ class AdminPortfolioJpaRepositoryTest {
         ConcurrentHashMap<String, Object> portfolioMap = new ConcurrentHashMap<>();
         portfolioMap.put("jpaStartPage", 1);
         portfolioMap.put("size", 3);
-
-        CommonImageDTO commonImageDTO = CommonImageDTO.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("portfolio")
-                .build();
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
@@ -130,22 +164,12 @@ class AdminPortfolioJpaRepositoryTest {
     public void 포트폴리오상세BDD조회테스트() throws Exception {
 
         // given
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("model")
-                .build();
-
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        AdminPortFolioEntity adminPortfolioEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminPortFolioEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
 
-        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
+        adminPortFolioDTO = AdminPortFolioDTO.builder()
                 .idx(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -155,12 +179,12 @@ class AdminPortfolioJpaRepositoryTest {
                 .portfolioImage(PortfolioImageMapper.INSTANCE.toDtoList(commonImageEntityList))
                 .build();
 
-        given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortfolioEntity)).willReturn(adminPortFolioDTO);
+        given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
 
         // when
-        Integer idx = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortfolioEntity).getIdx();
-        String title = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortfolioEntity).getTitle();
-        String description = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortfolioEntity).getDescription();
+        Integer idx = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getIdx();
+        String title = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle();
+        String description = mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getDescription();
 
         assertThat(idx).isEqualTo(1);
         assertThat(title).isEqualTo("포트폴리오 테스트");
@@ -169,24 +193,6 @@ class AdminPortfolioJpaRepositoryTest {
 
     @Test
     public void 포트폴리오등록테스트() throws Exception {
-        AdminPortFolioEntity adminPortFolioEntity = builder()
-                .categoryCd(1)
-                .title("포트폴리오 테스트")
-                .description("포트폴리오 테스트")
-                .hashTag("#test")
-                .videoUrl("https://youtube.com")
-                .visible("Y")
-                .build();
-
-        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
-                .categoryCd(1)
-                .title("포트폴리오 테스트")
-                .description("포트폴리오 테스트")
-                .hashTag("#test")
-                .videoUrl("https://youtube.com")
-                .visible("Y")
-                .build();
-
         adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
 
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
@@ -197,15 +203,6 @@ class AdminPortfolioJpaRepositoryTest {
 
     @Test
     public void 포트폴리오이미지등록테스트() throws Exception {
-        AdminPortFolioEntity adminPortFolioEntity = builder()
-                .categoryCd(1)
-                .title("포트폴리오 테스트")
-                .description("포트폴리오 테스트")
-                .hashTag("#test")
-                .videoUrl("https://youtube.com")
-                .visible("Y")
-                .build();
-
         Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -223,15 +220,6 @@ class AdminPortfolioJpaRepositoryTest {
 
     @Test
     public void 포트폴리오수정테스트() throws Exception {
-        AdminPortFolioEntity adminPortFolioEntity = builder()
-                .categoryCd(1)
-                .title("포트폴리오 테스트")
-                .description("포트폴리오 테스트")
-                .hashTag("#test")
-                .videoUrl("https://youtube.com")
-                .visible("Y")
-                .build();
-
         Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
 
         adminPortFolioEntity = builder()
@@ -264,25 +252,7 @@ class AdminPortfolioJpaRepositoryTest {
 
     @Test
     public void 포트폴리오삭제테스트() throws Exception {
-        AdminPortFolioEntity adminPortFolioEntity = builder()
-                .categoryCd(1)
-                .title("포트폴리오 테스트")
-                .description("포트폴리오 테스트")
-                .hashTag("#test")
-                .videoUrl("https://youtube.com")
-                .visible("Y")
-                .build();
-
         em.persist(adminPortFolioEntity);
-
-        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
-                .categoryCd(1)
-                .title("포트폴리오 테스트")
-                .description("포트폴리오 테스트")
-                .hashTag("#test")
-                .videoUrl("https://youtube.com")
-                .visible("Y")
-                .build();
 
         // when
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
