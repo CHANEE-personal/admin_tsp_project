@@ -71,7 +71,7 @@ public interface AdminPortfolioJpaService {
      *
      * @param adminPortFolioEntity
      */
-    AdminPortFolioEntity updatePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
     /**
      * <pre>
@@ -84,5 +84,5 @@ public interface AdminPortfolioJpaService {
      *
      * @param adminPortFolioEntity
      */
-    AdminPortFolioEntity deletePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 }

@@ -182,12 +182,12 @@ public class AdminPortfolioJpaRepository {
      */
     @Modifying
     @Transactional
-    public AdminPortFolioEntity updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+    public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
         try{
             em.merge(existAdminPortfolioEntity);
             em.flush();
             em.clear();
-            return existAdminPortfolioEntity;
+            return PortFolioMapper.INSTANCE.toDto(existAdminPortfolioEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_UPDATE_PORTFOLIO);
         }
@@ -204,14 +204,14 @@ public class AdminPortfolioJpaRepository {
      *
      * @param adminPortfolioEntity
      */
-    public AdminPortFolioEntity deletePortfolio(AdminPortFolioEntity adminPortfolioEntity) {
+    public AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         try {
             adminPortfolioEntity = em.find(AdminPortFolioEntity.class, adminPortfolioEntity.getIdx());
             em.remove(adminPortfolioEntity);
             em.flush();
             em.clear();
 
-            return adminPortfolioEntity;
+            return PortFolioMapper.INSTANCE.toDto(adminPortfolioEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
         }

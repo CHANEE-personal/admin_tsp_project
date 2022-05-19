@@ -138,7 +138,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminPortFolioEntity updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
+    public AdminPortFolioDTO updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
                                                 @PathVariable("idx") Integer idx) throws Exception {
         return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
     }
@@ -160,7 +160,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public AdminPortFolioEntity deletePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
+    public AdminPortFolioDTO deletePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
                                                 @PathVariable("idx") Integer idx) throws Exception {
         adminPortFolioEntity.setIdx(idx);
         return adminPortfolioJpaService.deletePortfolio(adminPortFolioEntity);

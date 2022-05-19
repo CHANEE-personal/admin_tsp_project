@@ -257,8 +257,8 @@ class AdminPortfolioJpaRepositoryTest {
         // when
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
 
-        AdminPortFolioEntity adminPortFolioEntity1 = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
+        AdminPortFolioDTO adminPortFolioDTO1 = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
 
-        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo(adminPortFolioEntity1.getTitle());
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo(adminPortFolioDTO1.getTitle());
     }
 }

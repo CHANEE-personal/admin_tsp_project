@@ -90,7 +90,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * @param adminPortFolioEntity
      */
     @Override
-    public AdminPortFolioEntity updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
     }
 
@@ -106,7 +106,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * @param adminPortFolioEntity
      */
     @Override
-    public AdminPortFolioEntity deletePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
     }
 }
