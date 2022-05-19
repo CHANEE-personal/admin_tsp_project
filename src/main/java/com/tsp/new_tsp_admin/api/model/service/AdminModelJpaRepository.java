@@ -329,7 +329,7 @@ public class AdminModelJpaRepository {
      *
      * @param adminModelEntity
      */
-    public AdminModelEntity deleteModelByEm(AdminModelEntity adminModelEntity) {
+    public AdminModelDTO deleteModelByEm(AdminModelEntity adminModelEntity) {
 
         try {
             adminModelEntity = em.find(AdminModelEntity.class, adminModelEntity.getIdx());
@@ -337,7 +337,7 @@ public class AdminModelJpaRepository {
             em.flush();
             em.clear();
 
-            return adminModelEntity;
+            return ModelMapper.INSTANCE.toDto(adminModelEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
         }

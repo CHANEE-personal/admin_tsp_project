@@ -88,7 +88,7 @@ public interface AdminModelJpaService {
      *
      * @param adminModelEntity
      */
-    AdminModelEntity deleteModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO deleteModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>

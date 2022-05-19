@@ -371,10 +371,10 @@ class AdminModelJpaRepositoryTest {
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
 
-        AdminModelEntity adminModelEntity1 = adminModelJpaRepository.deleteModelByEm(adminModelEntity);
+        AdminModelDTO adminModelDTO1 = adminModelJpaRepository.deleteModelByEm(adminModelEntity);
 
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelEntity1.getCategoryCd());
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo(adminModelEntity1.getCategoryAge());
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelDTO1.getCategoryCd());
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo(adminModelDTO1.getCategoryAge());
     }
 
     @Test

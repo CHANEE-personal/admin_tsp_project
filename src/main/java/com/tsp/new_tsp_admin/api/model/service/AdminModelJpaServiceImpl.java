@@ -112,7 +112,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param adminModelEntity
      */
     @Override
-    public AdminModelEntity deleteModel(AdminModelEntity adminModelEntity) {
+    public AdminModelDTO deleteModel(AdminModelEntity adminModelEntity) {
         return adminModelJpaRepository.deleteModelByEm(adminModelEntity);
     }
 
