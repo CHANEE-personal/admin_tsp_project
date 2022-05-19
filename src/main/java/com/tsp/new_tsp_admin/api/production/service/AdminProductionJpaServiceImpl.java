@@ -108,7 +108,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * @param adminProductionEntity
      */
     @Override
-    public AdminProductionEntity deleteProduction(AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO deleteProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity);
     }
 }

@@ -84,5 +84,5 @@ public interface AdminProductionJpaService {
      *
      * @param adminProductionEntity
      */
-    AdminProductionEntity deleteProduction(AdminProductionEntity adminProductionEntity);
+    AdminProductionDTO deleteProduction(AdminProductionEntity adminProductionEntity);
 }

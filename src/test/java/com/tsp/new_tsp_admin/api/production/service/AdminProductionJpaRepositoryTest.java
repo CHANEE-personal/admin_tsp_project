@@ -275,9 +275,9 @@ class AdminProductionJpaRepositoryTest {
         // when
         when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
 
-        AdminProductionEntity adminProductionEntity1 = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity);
+        AdminProductionDTO adminProductionDTO1 = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity);
 
-        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo(adminProductionEntity1.getTitle());
-        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo(adminProductionEntity1.getDescription());
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo(adminProductionDTO1.getTitle());
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo(adminProductionDTO1.getDescription());
     }
 }

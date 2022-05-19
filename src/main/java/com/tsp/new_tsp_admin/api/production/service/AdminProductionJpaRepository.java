@@ -206,7 +206,8 @@ public class AdminProductionJpaRepository {
      *
      * @param adminProductionEntity
      */
-    public AdminProductionEntity deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
+    @Transactional
+    public AdminProductionDTO deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
 
         try {
             adminProductionEntity = em.find(AdminProductionEntity.class, adminProductionEntity.getIdx());
@@ -214,7 +215,7 @@ public class AdminProductionJpaRepository {
             em.flush();
             em.clear();
 
-            return adminProductionEntity;
+            return ProductionMapper.INSTANCE.toDto(adminProductionEntity);
         } catch (Exception e) {
             e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION);

@@ -159,7 +159,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public AdminProductionEntity deleteProduction(@RequestBody AdminProductionEntity adminProductionEntity,
+    public AdminProductionDTO deleteProduction(@RequestBody AdminProductionEntity adminProductionEntity,
                                                   @PathVariable("idx") Integer idx) throws Exception {
         adminProductionEntity.setIdx(idx);
         return adminProductionJpaService.deleteProduction(adminProductionEntity);
