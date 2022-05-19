@@ -71,7 +71,7 @@ public interface AdminProductionJpaService {
      *
      * @param adminProductionEntity
      */
-    AdminProductionEntity updateProduction(AdminProductionEntity adminProductionEntity);
+    AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity);
 
     /**
      * <pre>

@@ -92,7 +92,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * @param adminProductionEntity
      */
     @Override
-    public AdminProductionEntity updateProduction(AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
     }
 

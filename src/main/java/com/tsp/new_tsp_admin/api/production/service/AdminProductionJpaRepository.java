@@ -182,13 +182,13 @@ public class AdminProductionJpaRepository {
      */
     @Modifying
     @Transactional
-    public AdminProductionEntity updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
+    public AdminProductionDTO updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
 
         try {
             em.merge(existAdminProductionEntity);
             em.flush();
             em.clear();
-            return existAdminProductionEntity;
+            return ProductionMapper.INSTANCE.toDto(existAdminProductionEntity);
         } catch (Exception e) {
             e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);

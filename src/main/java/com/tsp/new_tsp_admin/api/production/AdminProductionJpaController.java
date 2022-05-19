@@ -137,7 +137,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminProductionEntity updateProduction(@RequestBody AdminProductionEntity adminProductionEntity,
+    public AdminProductionDTO updateProduction(@RequestBody AdminProductionEntity adminProductionEntity,
                                                   @PathVariable("idx") Integer idx) throws Exception {
         return adminProductionJpaService.updateProduction(adminProductionEntity);
     }
