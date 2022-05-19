@@ -96,7 +96,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param adminModelEntity
      */
     @Override
-    public AdminModelEntity updateModel(AdminModelEntity adminModelEntity) {
+    public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
         return adminModelJpaRepository.updateModelByEm(adminModelEntity);
     }
 

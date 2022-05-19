@@ -75,7 +75,7 @@ public interface AdminModelJpaService {
      *
      * @param adminModelEntity
      */
-    AdminModelEntity updateModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO updateModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>

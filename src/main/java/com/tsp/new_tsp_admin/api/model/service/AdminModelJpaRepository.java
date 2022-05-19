@@ -250,13 +250,14 @@ public class AdminModelJpaRepository {
      */
     @Modifying
     @Transactional
-    public AdminModelEntity updateModelByEm(AdminModelEntity existAdminModelEntity) {
+    public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) {
 
         try {
             em.merge(existAdminModelEntity);
             em.flush();
             em.clear();
-            return existAdminModelEntity;
+
+            return ModelMapper.INSTANCE.toDto(existAdminModelEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
         }
