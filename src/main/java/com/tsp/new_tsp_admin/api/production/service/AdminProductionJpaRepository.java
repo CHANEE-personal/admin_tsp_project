@@ -137,11 +137,11 @@ public class AdminProductionJpaRepository {
      * @param adminProductionEntity
      */
     @Transactional
-    public Integer insertProduction(AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         try {
             em.persist(adminProductionEntity);
 
-            return adminProductionEntity.getIdx();
+            return ProductionMapper.INSTANCE.toDto(adminProductionEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
         }

@@ -112,12 +112,8 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public Integer insertProduction(@RequestBody AdminProductionEntity adminProductionEntity) throws Exception {
-        if (this.adminProductionJpaService.insertProduction(adminProductionEntity) > 0) {
-            return this.adminProductionJpaService.insertProduction(adminProductionEntity);
-        } else {
-            return 0;
-        }
+    public AdminProductionDTO insertProduction(@RequestBody AdminProductionEntity adminProductionEntity) throws Exception {
+        return this.adminProductionJpaService.insertProduction(adminProductionEntity);
     }
 
     /**

@@ -77,8 +77,8 @@ class AdminProductionJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idx").value("1"))
-                .andExpect(jsonPath("$.title").value("프로덕션 테스트"))
-                .andExpect(jsonPath("$.description").value("프로덕션 테스트"));;
+                .andExpect(jsonPath("$.title").value("테스트1"))
+                .andExpect(jsonPath("$.description").value("테스트1"));;
     }
 
     @Test
@@ -90,7 +90,9 @@ class AdminProductionJpaControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(jsonStr))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("프로덕션 테스트"))
+                .andExpect(jsonPath("$.description").value("프로덕션 테스트"));
     }
 
     @Test
@@ -108,7 +110,9 @@ class AdminProductionJpaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(updateStr))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("테스트1"))
+                .andExpect(jsonPath("$.description").value("테스트1"));
     }
 
     @Test

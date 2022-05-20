@@ -219,7 +219,7 @@ class AdminProductionJpaRepositoryTest {
 
     @Test
     public void 프로덕션이미지등록테스트() throws Exception {
-        Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity);
+        Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -238,7 +238,7 @@ class AdminProductionJpaRepositoryTest {
 
     @Test
     public void 프로덕션수정테스트() throws Exception {
-        Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity);
+        Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         adminProductionEntity = builder()
                 .idx(idx)

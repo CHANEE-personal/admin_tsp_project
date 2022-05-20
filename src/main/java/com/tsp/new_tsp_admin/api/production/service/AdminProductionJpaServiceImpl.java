@@ -76,7 +76,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * @param adminProductionEntity
      */
     @Override
-    public Integer insertProduction(AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.insertProduction(adminProductionEntity);
     }
 

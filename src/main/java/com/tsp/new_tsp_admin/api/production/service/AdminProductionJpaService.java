@@ -58,7 +58,7 @@ public interface AdminProductionJpaService {
      *
      * @param adminProductionEntity
      */
-    Integer insertProduction(AdminProductionEntity adminProductionEntity);
+    AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity);
 
     /**
      * <pre>
