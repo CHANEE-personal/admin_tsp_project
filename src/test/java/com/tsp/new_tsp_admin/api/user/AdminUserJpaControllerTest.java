@@ -32,6 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdminUserJpaControllerTest {
 
+    private AdminUserEntity adminUserEntity;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -50,6 +52,11 @@ class AdminUserJpaControllerTest {
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .alwaysDo(print())
                 .build();
+
+        adminUserEntity = builder()
+                .userId("admin01")
+                .password("pass1234")
+                .build();
     }
 
     @Test
@@ -63,11 +70,6 @@ class AdminUserJpaControllerTest {
     @Test
     @DisplayName("로그인 테스트")
     public void 로그인테스트() throws Exception {
-
-        AdminUserEntity adminUserEntity = builder()
-                        .userId("admin01")
-                        .password("pass1234")
-                        .build();
 
         final String jsonStr = objectMapper.writeValueAsString(adminUserEntity);
 
@@ -85,7 +87,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("관리자 회원가입 테스트")
     public void 회원가입테스트() throws Exception {
 
-        AdminUserEntity adminUserEntity = builder()
+        adminUserEntity = builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -99,7 +101,11 @@ class AdminUserJpaControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(jsonStr))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value("test"))
+                .andExpect(jsonPath("$.password").value("test"))
+                .andExpect(jsonPath("$.name").value("test"))
+                .andExpect(jsonPath("$.email").value("test@test.com"));
     }
 
     @Test
