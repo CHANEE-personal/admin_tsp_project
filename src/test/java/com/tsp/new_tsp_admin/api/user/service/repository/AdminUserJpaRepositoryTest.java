@@ -25,6 +25,7 @@ import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @DataJpaTest
@@ -34,6 +35,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("회원 Repository Test")
 class AdminUserJpaRepositoryTest {
+    private AdminUserEntity adminUserEntity;
+    private AdminUserDTO adminUserDTO;
 
     @Autowired
     private AdminUserJpaRepository adminUserJpaRepository;
@@ -46,7 +49,12 @@ class AdminUserJpaRepositoryTest {
     JPAQueryFactory queryFactory;
 
     @BeforeEach
-    public void init() { queryFactory = new JPAQueryFactory(em); }
+    public void init() {
+        queryFactory = new JPAQueryFactory(em);
+
+        adminUserEntity = builder().idx(2).userId("admin01").build();
+        adminUserDTO = AdminUserDTO.builder().idx(2).build();
+    }
 
     @Test
     public void 유저조회테스트() throws Exception {
@@ -64,8 +72,6 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     public void 유저상세조회테스트() throws Exception {
-
-        AdminUserEntity adminUserEntity = builder().idx(2).userId("admin01").build();
 
         AdminUserEntity adminUser = adminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
@@ -121,9 +127,6 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     public void 유저탈퇴테스트() throws Exception {
-        AdminUserEntity adminUserEntity = builder().idx(2).build();
-        AdminUserDTO adminUserDTO = AdminUserDTO.builder().idx(2).build();
-
         assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity).getIdx()).isEqualTo(adminUserDTO.getIdx());
     }
 }
