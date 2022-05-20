@@ -56,11 +56,9 @@ public class AdminUserJpaRepository {
 
             List<AdminUserDTO> userDtoList = UserMapper.INSTANCE.toDtoList(userList);
 
-            for (int i = 0; i < userDtoList.size(); i++) {
-                userDtoList.get(i).setRnum(StringUtil.getInt(userMap.get("startPage"), 1) * (StringUtil.getInt(userMap.get("size"), 1)) - (2 - i));
-            }
+            userList.forEach(list -> userList.get(userList.indexOf(list)).setRnum(StringUtil.getInt(userMap.get("startPage"), 1)*(StringUtil.getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
 
-            return userDtoList;
+            return UserMapper.INSTANCE.toDtoList(userList);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_USER_LIST);
         }

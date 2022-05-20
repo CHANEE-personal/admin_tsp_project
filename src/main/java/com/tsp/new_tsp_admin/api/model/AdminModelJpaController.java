@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
+
 @RestController
 @Api(tags = "모델관련 API")
 @RequestMapping("/api/jpa-model")
@@ -103,7 +105,7 @@ public class AdminModelJpaController {
                                       @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                       @PathVariable("idx") Integer idx) {
 
-        AdminModelEntity adminModelEntity = AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build();
+        AdminModelEntity adminModelEntity = builder().idx(idx).categoryCd(categoryCd).build();
 
         return this.adminModelJpaService.findOneModel(adminModelEntity);
     }
