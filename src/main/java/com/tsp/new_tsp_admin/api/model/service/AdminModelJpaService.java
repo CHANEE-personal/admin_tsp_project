@@ -62,7 +62,7 @@ public interface AdminModelJpaService {
      *
      * @param adminModelEntity
      */
-    Integer insertModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO insertModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>

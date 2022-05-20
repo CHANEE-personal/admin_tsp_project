@@ -80,7 +80,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param adminModelEntity
      */
     @Override
-    public Integer insertModel(AdminModelEntity adminModelEntity) {
+    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         return adminModelJpaRepository.insertModel(adminModelEntity);
     }
 

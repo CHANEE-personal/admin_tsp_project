@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.portfolio;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

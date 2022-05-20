@@ -125,15 +125,8 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public String insertModel(@RequestBody AdminModelEntity adminModelEntity) throws Exception {
-
-        String result = "N";
-        if (this.adminModelJpaService.insertModel(adminModelEntity) > 0) {
-            result = "Y";
-        } else {
-            result = "N";
-        }
-        return result;
+    public AdminModelDTO insertModel(@RequestBody AdminModelEntity adminModelEntity) throws Exception {
+        return this.adminModelJpaService.insertModel(adminModelEntity);
     }
 
     /**

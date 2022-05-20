@@ -114,7 +114,18 @@ class AdminModelJpaControllerTest {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(jsonStr))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryCd").value(1))
+                .andExpect(jsonPath("$.categoryAge").value("2"))
+                .andExpect(jsonPath("$.modelKorFirstName").value("조"))
+                .andExpect(jsonPath("$.modelKorSecondName").value("찬희"))
+                .andExpect(jsonPath("$.modelKorName").value("조찬희"))
+                .andExpect(jsonPath("$.modelFirstName").value("CHO"))
+                .andExpect(jsonPath("$.modelSecondName").value("CHANHEE"))
+                .andExpect(jsonPath("$.modelDescription").value("chaneeCho"))
+                .andExpect(jsonPath("$.height").value("170"))
+                .andExpect(jsonPath("$.size3").value("34-24-34"))
+                .andExpect(jsonPath("$.shoes").value("270"));
     }
 
     @Test
@@ -148,7 +159,9 @@ class AdminModelJpaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(updateStr))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.modelKorFirstName").value("test"))
+                .andExpect(jsonPath("$.modelKorSecondName").value("test"));
     }
 
     @Test

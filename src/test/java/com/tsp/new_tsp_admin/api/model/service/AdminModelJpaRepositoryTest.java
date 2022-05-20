@@ -285,7 +285,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     public void 모델수정테스트() throws Exception {
-        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity);
+        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = builder()
                 .idx(idx)
@@ -396,7 +396,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity);
+        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")

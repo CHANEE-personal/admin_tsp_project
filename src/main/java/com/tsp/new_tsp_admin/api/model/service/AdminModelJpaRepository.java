@@ -154,11 +154,11 @@ public class AdminModelJpaRepository {
      * @param adminModelEntity
      */
     @Transactional
-    public Integer insertModel(AdminModelEntity adminModelEntity) {
+    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         try {
             em.persist(adminModelEntity);
 
-            return adminModelEntity.getIdx();
+            return ModelMapper.INSTANCE.toDto(adminModelEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_MODEL);
         }
