@@ -136,11 +136,11 @@ public class AdminPortfolioJpaRepository {
      * @param adminPortfolioEntity
      */
     @Transactional
-    public Integer insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
+    public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         try {
             em.persist(adminPortfolioEntity);
 
-            return adminPortfolioEntity.getIdx();
+            return PortFolioMapper.INSTANCE.toDto(adminPortfolioEntity);
         } catch (Exception e) {
             e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);

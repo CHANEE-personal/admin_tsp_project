@@ -74,7 +74,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * @param adminPortFolioEntity
      */
     @Override
-    public Integer insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
     }
 

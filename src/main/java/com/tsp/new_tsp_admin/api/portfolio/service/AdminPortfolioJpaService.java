@@ -58,7 +58,7 @@ public interface AdminPortfolioJpaService {
      *
      * @param adminPortFolioEntity
      */
-    Integer insertPortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
     /**
      * <pre>

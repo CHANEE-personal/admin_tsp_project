@@ -203,7 +203,7 @@ class AdminPortfolioJpaRepositoryTest {
 
     @Test
     public void 포트폴리오이미지등록테스트() throws Exception {
-        Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
+        Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -220,7 +220,7 @@ class AdminPortfolioJpaRepositoryTest {
 
     @Test
     public void 포트폴리오수정테스트() throws Exception {
-        Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
+        Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminPortFolioEntity = builder()
                 .idx(idx)

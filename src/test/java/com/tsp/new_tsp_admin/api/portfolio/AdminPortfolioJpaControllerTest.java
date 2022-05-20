@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.portfolio;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -96,7 +97,12 @@ class AdminPortfolioJpaControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(jsonStr))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryCd").value(1))
+                .andExpect(jsonPath("$.title").value("포트폴리오 테스트"))
+                .andExpect(jsonPath("$.description").value("포트폴리오 테스트"))
+                .andExpect(jsonPath("$.hashTag").value("#test"))
+                .andExpect(jsonPath("$.videoUrl").value("https://youtube.com"));
     }
 
     @Test
@@ -122,7 +128,12 @@ class AdminPortfolioJpaControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(updateStr))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryCd").value(1))
+                .andExpect(jsonPath("$.title").value("포트폴리오 테스트1111"))
+                .andExpect(jsonPath("$.description").value("포트폴리오 테스트1111"))
+                .andExpect(jsonPath("$.hashTag").value("#test111"))
+                .andExpect(jsonPath("$.videoUrl").value("https://youtube.com"));
     }
 
     @Test

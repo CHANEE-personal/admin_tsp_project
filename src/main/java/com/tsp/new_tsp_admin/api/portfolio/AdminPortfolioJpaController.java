@@ -113,12 +113,8 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public Integer insertPortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
-        if (this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity) > 0) {
-            return this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
-        } else {
-            return 0;
-        }
+    public AdminPortFolioDTO insertPortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
+        return this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
     }
 
     /**
