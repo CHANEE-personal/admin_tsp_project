@@ -80,7 +80,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * @param adminUserEntity
      */
     @Override
-    public Integer insertAdminUser(AdminUserEntity adminUserEntity) {
+    public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
         return adminUserJpaRepository.insertAdminUser(adminUserEntity);
     }
 

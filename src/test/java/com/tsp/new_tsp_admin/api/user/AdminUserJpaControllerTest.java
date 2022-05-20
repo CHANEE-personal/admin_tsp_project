@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.transaction.Transactional;
+
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdminUserJpaControllerTest {
@@ -62,7 +65,7 @@ class AdminUserJpaControllerTest {
     public void 로그인테스트() throws Exception {
 
         AdminUserEntity adminUserEntity = builder()
-                        .userId("admin")
+                        .userId("admin01")
                         .password("pass1234")
                         .build();
 

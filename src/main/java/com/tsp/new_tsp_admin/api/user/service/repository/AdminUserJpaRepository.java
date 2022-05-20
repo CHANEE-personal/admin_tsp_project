@@ -181,13 +181,13 @@ public class AdminUserJpaRepository {
      * @param adminUserEntity
      */
     @Transactional
-    public Integer insertAdminUser(AdminUserEntity adminUserEntity) {
+    public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
 
         try {
             //회원 등록
             em.persist(adminUserEntity);
 
-            return adminUserEntity.getIdx();
+            return UserMapper.INSTANCE.toDto(adminUserEntity);
         } catch (Exception e) {
             e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_USER);

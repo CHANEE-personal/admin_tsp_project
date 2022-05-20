@@ -192,14 +192,8 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public String insertAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
-        String result = "";
-        if (adminUserJpaService.insertAdminUser(adminUserEntity) > 0) {
-            result = "Y";
-        } else {
-            result = "N";
-        }
-        return result;
+    public AdminUserDTO insertAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
+        return adminUserJpaService.insertAdminUser(adminUserEntity);
     }
 
     /**

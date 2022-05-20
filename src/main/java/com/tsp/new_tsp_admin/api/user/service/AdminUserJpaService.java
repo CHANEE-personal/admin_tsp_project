@@ -62,7 +62,7 @@ public interface AdminUserJpaService {
      * @param adminUserEntity
      * @throws Exception
      */
-    Integer insertAdminUser(AdminUserEntity adminUserEntity);
+    AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity);
 
     /**
      * <pre>
