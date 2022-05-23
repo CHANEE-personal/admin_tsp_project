@@ -15,7 +15,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -57,6 +60,10 @@ class AdminModelJpaRepositoryTest {
     @BeforeEach
     public void init() {
         queryFactory = new JPAQueryFactory(em);
+        List<MultipartFile> imageFiles = List.of(
+                new MockMultipartFile("test1", "test1.jpg", MediaType.IMAGE_JPEG_VALUE, "test1".getBytes()),
+                new MockMultipartFile("test2", "test2.jpg", MediaType.IMAGE_JPEG_VALUE, "test2".getBytes())
+        );
 
         adminModelEntity = builder()
                 .categoryCd(1)
@@ -408,8 +415,8 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer imageIdx = adminModelJpaRepository.insertModelImage(commonImageEntity);
+        CommonImageDTO commonImageDTO1 = adminModelJpaRepository.insertModelImage(commonImageEntity);
 
-        assertNotNull(imageIdx);
+        assertNotNull(commonImageDTO1);
     }
 }

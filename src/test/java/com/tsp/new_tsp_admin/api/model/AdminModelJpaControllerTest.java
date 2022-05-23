@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -17,14 +19,19 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -176,5 +183,33 @@ class AdminModelJpaControllerTest {
                 .content(jsonStr))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Admin 모델 이미지 등록 테스트")
+    public void 모델이미지등록Api테스트() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("image","0522045010647.png" ,
+                "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png"));
+
+        MockMultipartFile file1 = new MockMultipartFile("image","0522045010772.png" ,
+                "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"));
+
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(adminModelEntity.getIdx())
+                .typeName("model")
+                .visible("Y")
+                .build();
+
+        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
+        final String jsonStr1 = objectMapper.writeValueAsString(commonImageEntity);
+
+        mockMvc.perform(multipart("/api/jpa-model/images").file(file).file(file1).content(jsonStr).content(jsonStr1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.fileMask").value("test.jpg"));
     }
 }

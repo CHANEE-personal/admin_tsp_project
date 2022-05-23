@@ -4,9 +4,11 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
@@ -176,11 +178,11 @@ public class AdminModelJpaRepository {
      * @param commonImageEntity
      */
     @Transactional
-    public Integer insertModelImage(CommonImageEntity commonImageEntity) {
+    public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
         try {
             em.persist(commonImageEntity);
 
-            return commonImageEntity.getIdx();
+            return ModelImageMapper.INSTANCE.toDto(commonImageEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_MODEL);
         }

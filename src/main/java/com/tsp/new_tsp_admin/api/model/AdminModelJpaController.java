@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
@@ -168,7 +170,7 @@ public class AdminModelJpaController {
     })
     @DeleteMapping("/{idx}")
     public AdminModelDTO deleteModel(@RequestBody AdminModelEntity adminModelEntity,
-                                        @PathVariable("idx") Integer idx) throws Exception {
+                                     @PathVariable("idx") Integer idx) throws Exception {
         adminModelEntity.setIdx(idx);
         return adminModelJpaService.deleteModel(adminModelEntity);
     }
@@ -189,17 +191,13 @@ public class AdminModelJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PostMapping("/images")
-    public String insertModelImage(AdminModelEntity adminModelEntity,
-                                   CommonImageEntity commonImageEntity,
-                                   MultipartFile[] fileName) throws Exception {
-        String result = "N";
-        if (this.adminModelJpaService.insertModelImage(adminModelEntity, commonImageEntity, fileName) > 0) {
-            result = "Y";
-        } else {
-            result = "N";
-        }
-        return result;
+    @PostMapping(value = "/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public CommonImageDTO insertModelImage(AdminModelEntity adminModelEntity,
+                                           CommonImageEntity commonImageEntity,
+                                           List<MultipartFile> fileName) throws Exception {
+        CommonImageEntity.builder().typeName("model").typeIdx(adminModelEntity.getIdx()).visible("Y").build();
+
+        return this.adminModelJpaService.insertModelImage(commonImageEntity, fileName);
     }
 
     /**
