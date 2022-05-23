@@ -104,10 +104,7 @@ public class AdminModelJpaController {
     public AdminModelDTO getModelEdit(@PathVariable("categoryCd")
                                       @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                       @PathVariable("idx") Integer idx) {
-
-        AdminModelEntity adminModelEntity = builder().idx(idx).categoryCd(categoryCd).build();
-
-        return this.adminModelJpaService.findOneModel(adminModelEntity);
+        return this.adminModelJpaService.findOneModel(builder().idx(idx).categoryCd(categoryCd).build());
     }
 
     /**
@@ -225,9 +222,7 @@ public class AdminModelJpaController {
     public ConcurrentHashMap<String, Object> modelCommonCode() {
         ConcurrentHashMap<String, Object> modelCmmCode = new ConcurrentHashMap<>();
 
-        CommonCodeEntity modelCodeEntity = CommonCodeEntity.builder().cmmType("model").build();
-
-        modelCmmCode.put("modelCmmCode", this.adminModelJpaService.modelCommonCode(modelCodeEntity));
+        modelCmmCode.put("modelCmmCode", this.adminModelJpaService.modelCommonCode(CommonCodeEntity.builder().cmmType("model").build()));
 
         return modelCmmCode;
     }

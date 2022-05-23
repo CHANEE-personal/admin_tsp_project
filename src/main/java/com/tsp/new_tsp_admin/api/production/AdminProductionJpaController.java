@@ -49,14 +49,12 @@ public class AdminProductionJpaController {
     public ConcurrentHashMap getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
         ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
 
-        ConcurrentHashMap<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
-
-        Long productionCnt = this.adminProductionJpaService.findProductionsCount(searchMap);
+        Long productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
 
         List<AdminProductionDTO> productionList = new ArrayList<>();
 
         if (productionCnt > 0) {
-            productionList = this.adminProductionJpaService.findProductionsList(searchMap);
+            productionList = this.adminProductionJpaService.findProductionsList(searchCommon.searchCommon(page, paramMap));
         }
 
         // 리스트 수
@@ -90,9 +88,7 @@ public class AdminProductionJpaController {
     })
     @GetMapping("/{idx}")
     public AdminProductionDTO getProductionEdit(@PathVariable("idx") Integer idx) {
-        AdminProductionEntity adminProductionEntity = AdminProductionEntity.builder().idx(idx).build();
-
-        return adminProductionJpaService.findOneProduction(adminProductionEntity);
+        return adminProductionJpaService.findOneProduction(AdminProductionEntity.builder().idx(idx).build());
     }
 
     /**
@@ -134,7 +130,7 @@ public class AdminProductionJpaController {
     })
     @PutMapping("/{idx}")
     public AdminProductionDTO updateProduction(@RequestBody AdminProductionEntity adminProductionEntity,
-                                                  @PathVariable("idx") Integer idx) throws Exception {
+                                               @PathVariable("idx") Integer idx) throws Exception {
         return adminProductionJpaService.updateProduction(adminProductionEntity);
     }
 
@@ -156,7 +152,7 @@ public class AdminProductionJpaController {
     })
     @DeleteMapping("/{idx}")
     public AdminProductionDTO deleteProduction(@RequestBody AdminProductionEntity adminProductionEntity,
-                                                  @PathVariable("idx") Integer idx) throws Exception {
+                                               @PathVariable("idx") Integer idx) throws Exception {
         adminProductionEntity.setIdx(idx);
         return adminProductionJpaService.deleteProduction(adminProductionEntity);
     }

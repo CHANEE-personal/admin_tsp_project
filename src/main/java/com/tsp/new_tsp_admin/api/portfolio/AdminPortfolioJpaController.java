@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.portfolio;
 
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
-import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.portfolio.service.AdminPortfolioJpaService;
 import com.tsp.new_tsp_admin.common.Page;
 import com.tsp.new_tsp_admin.common.SearchCommon;
@@ -50,14 +49,12 @@ public class AdminPortfolioJpaController {
     public ConcurrentHashMap<String, Object> getPortfolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
         ConcurrentHashMap<String, Object> portfolioMap = new ConcurrentHashMap<>();
 
-        ConcurrentHashMap<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
-
-        Long portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchMap);
+        Long portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
 
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
 
         if(portfolioCnt > 0) {
-            portfolioList = this.adminPortfolioJpaService.findPortfoliosList(searchMap);
+            portfolioList = this.adminPortfolioJpaService.findPortfoliosList(searchCommon.searchCommon(page, paramMap));
         }
 
         // 리스트 수
@@ -91,9 +88,7 @@ public class AdminPortfolioJpaController {
     })
     @GetMapping(value = "/{idx}")
     public AdminPortFolioDTO getPortfolioEdit(@PathVariable("idx") Integer idx) {
-        AdminPortFolioEntity adminPortFolioEntity = AdminPortFolioEntity.builder().idx(idx).build();
-
-        return this.adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        return this.adminPortfolioJpaService.findOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
     /**
@@ -135,7 +130,7 @@ public class AdminPortfolioJpaController {
     })
     @PutMapping("/{idx}")
     public AdminPortFolioDTO updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
-                                                @PathVariable("idx") Integer idx) throws Exception {
+                                             @PathVariable("idx") Integer idx) throws Exception {
         return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
     }
 
@@ -157,7 +152,7 @@ public class AdminPortfolioJpaController {
     })
     @DeleteMapping("/{idx}")
     public AdminPortFolioDTO deletePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
-                                                @PathVariable("idx") Integer idx) throws Exception {
+                                             @PathVariable("idx") Integer idx) throws Exception {
         adminPortFolioEntity.setIdx(idx);
         return adminPortfolioJpaService.deletePortfolio(adminPortFolioEntity);
     }
