@@ -4,6 +4,8 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 public interface ImageService {
 
@@ -22,6 +24,5 @@ public interface ImageService {
      * @return
      * @throws Exception
      */
-    String uploadImageFile(CommonImageEntity commonImageEntity,
-                           MultipartFile[] files, String flag) throws Exception;
+    String uploadImageFile(CommonImageEntity commonImageEntity, List<MultipartFile> files, String flag) throws Exception;
 }

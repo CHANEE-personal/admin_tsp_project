@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 @Service("ImageService")
@@ -58,7 +59,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public String uploadImageFile(CommonImageEntity commonImageEntity,
-                                  MultipartFile[] files, String flag) throws Exception {
+                                  List<MultipartFile> files, String flag) throws Exception {
         String ext;        // 파일 확장자
         String fileId;      // 파일명
         String fileMask;    // 파일 Mask
