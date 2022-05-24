@@ -190,7 +190,7 @@ class AdminModelJpaControllerTest {
     public void 모델이미지등록Api테스트() throws Exception {
 
         List<MultipartFile> imageFiles = List.of(
-                new MockMultipartFile("image","0522045010647.png" ,
+                new MockMultipartFile("image","0522045010647.png",
                         "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
                 new MockMultipartFile("image","0522045010772.png" ,
                         "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
@@ -198,9 +198,9 @@ class AdminModelJpaControllerTest {
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
+                .fileName("0522045010647.png")
+                .fileMask("0522045010647.png")
+                .filePath("src/main/resources/static/images/0522045010647.png")
                 .typeIdx(adminModelEntity.getIdx())
                 .typeName("model")
                 .visible("Y")

@@ -77,20 +77,21 @@ public class ImageServiceImpl implements ImageService {
         if (files != null) {
             if ("update".equals(flag)) {
                 if ("production".equals(commonImageEntity.getTypeName())) {
-                    builder().imageType("main").typeIdx(commonImageEntity.getIdx());
+                    commonImageEntity.setImageType("main");
+                    commonImageEntity.setTypeIdx(commonImageEntity.getIdx());
                     imageRepository.deleteImage(commonImageEntity);
                 }
             }
 
             for (MultipartFile file: files) {
+                System.out.println("===file===");
+                System.out.println(file.getOriginalFilename());
+                System.out.println(file.getSize());
                 try {
-                    ext = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+                    ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
                     fileId = currentDate();
                     fileMask = fileId + '.' + ext;
                     fileSize = file.getSize();
-
-                    System.out.println("===fileId===");
-                    System.out.println(fileId);
 
                     if (!new File(uploadPath).exists()) {
                         try {
@@ -102,19 +103,19 @@ public class ImageServiceImpl implements ImageService {
 
                     if ("insert".equals(flag)) {
                         if (mainCnt == 0) {
-                            builder().imageType("main").build();
+                            commonImageEntity.setImageType("main");
                         } else {
-                            builder().imageType("sub" + mainCnt);
+                            commonImageEntity.setImageType("sub" + mainCnt);
                         }
                     } else {
                         if ("production".equals(commonImageEntity.getTypeName())) {
-                            builder().imageType("main");
+                            commonImageEntity.setImageType("main");
                         } else {
                             if (imageRepository.maxSubCnt(commonImageEntity) == 1) {
-                                builder().imageType("main");
+                                commonImageEntity.setImageType("main");
                             } else {
-                                builder().imageType("sub" + StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
-                                builder().fileNum(StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
+                                commonImageEntity.setImageType("sub" + StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
+                                commonImageEntity.setFileNum(StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
                             }
                         }
                     }
@@ -124,12 +125,12 @@ public class ImageServiceImpl implements ImageService {
 
                     Runtime.getRuntime().exec("chmod -R 755 " + filePath);
 
-                    builder().fileNum(StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0))
-                            .fileName(file.getOriginalFilename())
-                            .fileSize(fileSize)
-                            .fileMask(fileMask)
-                            .filePath(uploadPath + fileMask)
-                            .visible("Y").build();
+                    commonImageEntity.setFileNum(StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
+                    commonImageEntity.setFileName(file.getOriginalFilename());
+                    commonImageEntity.setFileSize(fileSize);
+                    commonImageEntity.setFileMask(fileMask);
+                    commonImageEntity.setFilePath(uploadPath + fileMask);
+                    commonImageEntity.setVisible("Y");
 
                     if (imageRepository.insertImage(commonImageEntity) > 0) {
                         mainCnt++;

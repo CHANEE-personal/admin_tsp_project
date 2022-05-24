@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -195,7 +194,9 @@ public class AdminModelJpaController {
     public String insertModelImage(AdminModelEntity adminModelEntity,
                                    CommonImageEntity commonImageEntity,
                                    @RequestParam("images") List<MultipartFile> fileName) throws Exception {
-        CommonImageEntity.builder().typeName("model").typeIdx(adminModelEntity.getIdx()).visible("Y").build();
+        commonImageEntity.setTypeName("model");
+        commonImageEntity.setTypeIdx(adminModelEntity.getIdx());
+        commonImageEntity.setVisible("Y");
 
         return this.adminModelJpaService.insertModelImage(commonImageEntity, fileName);
     }

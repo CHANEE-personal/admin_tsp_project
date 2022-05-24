@@ -109,7 +109,6 @@ public class ImageRepository {
 
             return commonImageEntity;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_DELETE_IMAGE);
         }
     }
