@@ -131,13 +131,12 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * @param commonImageEntity
      */
     @Override
-    public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {
+    public String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {
         try {
-            imageService.uploadImageFile(commonImageEntity, fileName, "insert");
+            return imageService.uploadImageFile(commonImageEntity, fileName, "insert");
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
         }
-        return adminModelJpaRepository.insertModelImage(commonImageEntity);
     }
 
     /**

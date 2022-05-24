@@ -192,9 +192,9 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public CommonImageDTO insertModelImage(AdminModelEntity adminModelEntity,
-                                           CommonImageEntity commonImageEntity,
-                                           List<MultipartFile> fileName) throws Exception {
+    public String insertModelImage(AdminModelEntity adminModelEntity,
+                                   CommonImageEntity commonImageEntity,
+                                   @RequestParam("images") List<MultipartFile> fileName) throws Exception {
         CommonImageEntity.builder().typeName("model").typeIdx(adminModelEntity.getIdx()).visible("Y").build();
 
         return this.adminModelJpaService.insertModelImage(commonImageEntity, fileName);

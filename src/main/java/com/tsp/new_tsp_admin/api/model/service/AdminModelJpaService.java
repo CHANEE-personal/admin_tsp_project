@@ -102,7 +102,7 @@ public interface AdminModelJpaService {
      *
      * @param commonImageEntity
      */
-    CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName);
+    String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName);
 
     /**
      * <pre>

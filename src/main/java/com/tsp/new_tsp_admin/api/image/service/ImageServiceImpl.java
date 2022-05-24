@@ -12,6 +12,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+
+import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
 
 @Service("ImageService")
 @RequiredArgsConstructor
@@ -74,17 +77,20 @@ public class ImageServiceImpl implements ImageService {
         if (files != null) {
             if ("update".equals(flag)) {
                 if ("production".equals(commonImageEntity.getTypeName())) {
-                    CommonImageEntity.builder().imageType("main").typeIdx(commonImageEntity.getIdx());
+                    builder().imageType("main").typeIdx(commonImageEntity.getIdx());
                     imageRepository.deleteImage(commonImageEntity);
                 }
             }
 
             for (MultipartFile file: files) {
                 try {
-                    ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+                    ext = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
                     fileId = currentDate();
                     fileMask = fileId + '.' + ext;
                     fileSize = file.getSize();
+
+                    System.out.println("===fileId===");
+                    System.out.println(fileId);
 
                     if (!new File(uploadPath).exists()) {
                         try {
@@ -96,19 +102,19 @@ public class ImageServiceImpl implements ImageService {
 
                     if ("insert".equals(flag)) {
                         if (mainCnt == 0) {
-                            CommonImageEntity.builder().imageType("main").build();
+                            builder().imageType("main").build();
                         } else {
-                            CommonImageEntity.builder().imageType("sub" + mainCnt);
+                            builder().imageType("sub" + mainCnt);
                         }
                     } else {
                         if ("production".equals(commonImageEntity.getTypeName())) {
-                            CommonImageEntity.builder().imageType("main");
+                            builder().imageType("main");
                         } else {
                             if (imageRepository.maxSubCnt(commonImageEntity) == 1) {
-                                CommonImageEntity.builder().imageType("main");
+                                builder().imageType("main");
                             } else {
-                                CommonImageEntity.builder().imageType("sub" + StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
-                                CommonImageEntity.builder().fileNum(StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
+                                builder().imageType("sub" + StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
+                                builder().fileNum(StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0));
                             }
                         }
                     }
@@ -118,7 +124,7 @@ public class ImageServiceImpl implements ImageService {
 
                     Runtime.getRuntime().exec("chmod -R 755 " + filePath);
 
-                    CommonImageEntity.builder().fileNum(StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0))
+                    builder().fileNum(StringUtil.getInt(imageRepository.maxSubCnt(commonImageEntity), 0))
                             .fileName(file.getOriginalFilename())
                             .fileSize(fileSize)
                             .fileMask(fileMask)

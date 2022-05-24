@@ -3,7 +3,6 @@ package com.tsp.new_tsp_admin.api.image.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
-import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -104,8 +102,6 @@ public class ImageRepository {
     @Transactional
     public CommonImageEntity deleteImage(CommonImageEntity commonImageEntity) {
         try {
-            em.flush();
-            em.clear();
             commonImageEntity = em.find(CommonImageEntity.class, commonImageEntity.getIdx());
             em.remove(commonImageEntity);
             em.flush();
