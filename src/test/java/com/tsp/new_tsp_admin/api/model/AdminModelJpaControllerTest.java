@@ -97,18 +97,18 @@ class AdminModelJpaControllerTest {
     @Test
     @DisplayName("Admin 모델 상세 조회 테스트")
     public void 모델상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-model/1/3"))
+        mockMvc.perform(get("/api/jpa-model/2/143"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.idx").value("3"))
-                .andExpect(jsonPath("$.categoryCd").value("1"))
-                .andExpect(jsonPath("$.modelFirstName").value("CHO"))
-                .andExpect(jsonPath("$.modelSecondName").value("CHAN HEE"))
-                .andExpect(jsonPath("$.modelKorFirstName").value("조"))
-                .andExpect(jsonPath("$.modelKorSecondName").value("찬희"))
-                .andExpect(jsonPath("$.height").value("170"))
-                .andExpect(jsonPath("$.size3").value("34-24-34"))
-                .andExpect(jsonPath("$.shoes").value("270"));;
+                .andExpect(jsonPath("$.idx").value("143"))
+                .andExpect(jsonPath("$.categoryCd").value("2"))
+                .andExpect(jsonPath("$.modelFirstName").value("kim"))
+                .andExpect(jsonPath("$.modelSecondName").value("ye yeong"))
+                .andExpect(jsonPath("$.modelKorFirstName").value("김"))
+                .andExpect(jsonPath("$.modelKorSecondName").value("예영"))
+                .andExpect(jsonPath("$.height").value("173"))
+                .andExpect(jsonPath("$.size3").value("31-24-34"))
+                .andExpect(jsonPath("$.shoes").value("240"));
     }
 
     @Test
