@@ -140,14 +140,14 @@ class AdminModelJpaRepositoryTest {
     public void 모델상세조회테스트() throws Exception {
 
         // given
-        adminModelEntity = builder().idx(3).categoryCd(1).build();
+        adminModelEntity = builder().idx(143).categoryCd(2).build();
 
         // when
         adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
 
-        assertAll(() -> assertThat(adminModelDTO.getIdx()).isEqualTo(3),
+        assertAll(() -> assertThat(adminModelDTO.getIdx()).isEqualTo(143),
                 () -> {
-                    assertThat(adminModelDTO.getCategoryCd()).isEqualTo(1);
+                    assertThat(adminModelDTO.getCategoryCd()).isEqualTo(2);
                     assertNotNull(adminModelDTO.getCategoryCd());
                 },
                 () -> {
@@ -155,27 +155,27 @@ class AdminModelJpaRepositoryTest {
                     assertNotNull(adminModelDTO.getCategoryAge());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getModelKorName()).isEqualTo("조찬희");
+                    assertThat(adminModelDTO.getModelKorName()).isEqualTo("김예영");
                     assertNotNull(adminModelDTO.getModelKorName());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getModelEngName()).isEqualTo("CHOCHANHEE");
+                    assertThat(adminModelDTO.getModelEngName()).isEqualTo("kimye yeong");
                     assertNotNull(adminModelDTO.getModelEngName());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getModelDescription()).isEqualTo("chaneeCho");
+                    assertThat(adminModelDTO.getModelDescription()).isEqualTo("　");
                     assertNotNull(adminModelDTO.getModelDescription());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getHeight()).isEqualTo("170");
+                    assertThat(adminModelDTO.getHeight()).isEqualTo("173");
                     assertNotNull(adminModelDTO.getHeight());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getSize3()).isEqualTo("34-24-34");
+                    assertThat(adminModelDTO.getSize3()).isEqualTo("31-24-34");
                     assertNotNull(adminModelDTO.getSize3());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getShoes()).isEqualTo("270");
+                    assertThat(adminModelDTO.getShoes()).isEqualTo("240");
                     assertNotNull(adminModelDTO.getShoes());
                 },
                 () -> {
@@ -185,13 +185,13 @@ class AdminModelJpaRepositoryTest {
 
         assertThat(adminModelDTO.getModelImage().get(0).getTypeName()).isEqualTo("model");
         assertThat(adminModelDTO.getModelImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(adminModelDTO.getModelImage().get(0).getFileName()).isEqualTo("52d4fdc8-f109-408e-b243-85cc1be207c5.jpg");
-        assertThat(adminModelDTO.getModelImage().get(0).getFilePath()).isEqualTo("/var/www/dist/upload/1223023959779.jpg");
+        assertThat(adminModelDTO.getModelImage().get(0).getFileName()).isEqualTo("1.png");
+        assertThat(adminModelDTO.getModelImage().get(0).getFilePath()).isEqualTo("/var/www/dist/upload/0522045010647.png");
 
         assertThat(adminModelDTO.getModelImage().get(1).getTypeName()).isEqualTo("model");
         assertThat(adminModelDTO.getModelImage().get(1).getImageType()).isEqualTo("sub1");
-        assertThat(adminModelDTO.getModelImage().get(1).getFileName()).isEqualTo("e13f6930-17a5-407c-96ed-fd625b720d21.jpg");
-        assertThat(adminModelDTO.getModelImage().get(1).getFilePath()).isEqualTo("/var/www/dist/upload/1223023959823.jpg");
+        assertThat(adminModelDTO.getModelImage().get(1).getFileName()).isEqualTo("2.png");
+        assertThat(adminModelDTO.getModelImage().get(1).getFilePath()).isEqualTo("/var/www/dist/upload/0522045010772.png");
     }
 
     @Test
