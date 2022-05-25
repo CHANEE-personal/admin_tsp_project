@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
-
 @Service("ImageService")
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
@@ -83,12 +81,9 @@ public class ImageServiceImpl implements ImageService {
                 }
             }
 
-            for (MultipartFile file: files) {
-                System.out.println("===file===");
-                System.out.println(file.getOriginalFilename());
-                System.out.println(file.getSize());
+            for (MultipartFile file : files) {
                 try {
-                    ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+                    ext = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
                     fileId = currentDate();
                     fileMask = fileId + '.' + ext;
                     fileSize = file.getSize();

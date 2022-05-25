@@ -190,10 +190,10 @@ class AdminModelJpaControllerTest {
     public void 모델이미지등록Api테스트() throws Exception {
 
         List<MultipartFile> imageFiles = List.of(
-                new MockMultipartFile("image","0522045010647.png",
-                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
-                new MockMultipartFile("image","0522045010772.png" ,
-                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
+                new MockMultipartFile("0522045010647","0522045010647.png",
+                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png"))
+//                new MockMultipartFile("0522045010772","0522045010772.png" ,
+//                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
         );
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -211,7 +211,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(multipart("/api/jpa-model/images")
                         .file("images", imageFiles.get(0).getBytes())
-                        .file("images", imageFiles.get(1).getBytes())
+//                        .file("images", imageFiles.get(1).getBytes())
                         .content(jsonStr).content(jsonStr1)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
