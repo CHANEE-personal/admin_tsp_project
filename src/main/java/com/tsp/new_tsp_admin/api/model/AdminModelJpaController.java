@@ -213,7 +213,7 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 공통 코드 조회", notes = "모델을 공통 코드를 조회한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "브랜드 등록성공", response = Map.class),
+            @ApiResponse(code = 200, message = "모델 공통 코드 조회성공", response = Map.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })

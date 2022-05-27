@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
@@ -418,5 +419,15 @@ class AdminModelJpaRepositoryTest {
         CommonImageDTO commonImageDTO1 = adminModelJpaRepository.insertModelImage(commonImageEntity);
 
         assertNotNull(commonImageDTO1);
+    }
+
+    @Test
+    public void 모델공통코드조회테스트() throws Exception {
+        CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
+                .categoryCd(1).visible("Y").cmmType("model").build();
+
+        // then
+        assertThat(adminModelJpaRepository.modelCommonCode(commonCodeEntity).size()).isGreaterThan(0);
+
     }
 }
