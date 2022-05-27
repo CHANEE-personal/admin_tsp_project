@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -213,6 +215,20 @@ class AdminModelJpaControllerTest {
 //                        .file("images", imageFiles.get(1).getBytes())
                         .content(jsonStr).content(jsonStr1)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 모델공통코드조회테스트() throws Exception {
+        CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
+                .categoryCd(1).visible("Y").cmmType("model").build();
+
+        final String codeStr = objectMapper.writeValueAsString(commonCodeEntity);
+
+        mockMvc.perform(get("/api/jpa-model/common")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(codeStr))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
