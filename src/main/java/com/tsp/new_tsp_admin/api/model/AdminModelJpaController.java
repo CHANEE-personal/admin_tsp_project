@@ -218,11 +218,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/common")
-    public ConcurrentHashMap<String, Object> modelCommonCode() {
-        ConcurrentHashMap<String, Object> modelCmmCode = new ConcurrentHashMap<>();
-
-        modelCmmCode.put("modelCmmCode", this.adminModelJpaService.modelCommonCode(CommonCodeEntity.builder().cmmType("model").build()));
-
-        return modelCmmCode;
+    public List<CommonCodeEntity> modelCommonCode() {
+        return this.adminModelJpaService.modelCommonCode(CommonCodeEntity.builder().cmmType("model").build());
     }
 }

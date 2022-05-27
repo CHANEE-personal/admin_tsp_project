@@ -150,7 +150,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
-    public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity commonCodeEntity) {
-        return null;
+    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity) {
+        return adminModelJpaRepository.modelCommonCode(commonCodeEntity);
     }
 }

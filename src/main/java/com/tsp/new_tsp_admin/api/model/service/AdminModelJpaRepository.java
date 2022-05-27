@@ -276,18 +276,12 @@ public class AdminModelJpaRepository {
      *
      * @param existModelCodeEntity
      */
-    public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
+    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
         try {
-            ConcurrentHashMap<String, Object> modelCommonMap = new ConcurrentHashMap<>();
-
-            List<CommonCodeEntity> codeEntityList = queryFactory
+            return queryFactory
                     .selectFrom(commonCodeEntity)
                     .where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
                     .fetch();
-
-            modelCommonMap.put("codeEntityList", codeEntityList);
-
-            return modelCommonMap;
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_COMMON);
         }

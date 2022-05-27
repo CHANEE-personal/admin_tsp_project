@@ -115,5 +115,5 @@ public interface AdminModelJpaService {
      *
      * @param commonCodeEntity
      */
-    ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity commonCodeEntity);
+    List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity);
 }
