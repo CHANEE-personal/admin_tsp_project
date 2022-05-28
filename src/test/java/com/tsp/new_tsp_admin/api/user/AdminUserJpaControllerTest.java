@@ -54,8 +54,9 @@ class AdminUserJpaControllerTest {
                 .build();
 
         adminUserEntity = builder()
-                .userId("admin01")
+                .userId("admin02")
                 .password("pass1234")
+                .visible("Y")
                 .build();
     }
 
