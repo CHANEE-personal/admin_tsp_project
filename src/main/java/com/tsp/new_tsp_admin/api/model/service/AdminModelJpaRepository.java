@@ -23,7 +23,6 @@ import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonCodeEntity.commonCodeEntity;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;

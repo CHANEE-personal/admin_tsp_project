@@ -63,20 +63,18 @@ public class AdminModelJpaController {
         ConcurrentHashMap<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
         modelMap.put("categoryCd", categoryCd);
 
-        Long modelListCnt = this.adminModelJpaService.findModelsCount(modelMap);
-
         List<AdminModelDTO> modelList = new ArrayList<>();
 
-        if (modelListCnt > 0) {
+        if (this.adminModelJpaService.findModelsCount(modelMap) > 0) {
             modelList = this.adminModelJpaService.findModelsList(modelMap);
         }
 
         // 리스트 수
         modelMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        modelMap.put("perPageListCnt", Math.ceil((modelListCnt - 1) / page.getSize() + 1));
+        modelMap.put("perPageListCnt", Math.ceil((this.adminModelJpaService.findModelsCount(modelMap) - 1) / page.getSize() + 1));
         // 전체 아이템 수
-        modelMap.put("modelListTotalCnt", modelListCnt);
+        modelMap.put("modelListTotalCnt", this.adminModelJpaService.findModelsCount(modelMap));
 
         modelMap.put("modelList", modelList);
 

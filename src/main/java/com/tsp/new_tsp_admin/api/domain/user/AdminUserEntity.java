@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
-import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
