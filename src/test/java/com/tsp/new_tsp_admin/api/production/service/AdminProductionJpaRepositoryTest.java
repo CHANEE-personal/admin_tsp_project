@@ -40,11 +40,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("프로덕션 Repository Test")
 class AdminProductionJpaRepositoryTest {
-    private AdminProductionEntity adminProductionEntity;
-    private AdminProductionDTO adminProductionDTO;
-    private CommonImageEntity commonImageEntity;
-    private CommonImageDTO commonImageDTO;
-
     @Autowired
     private AdminProductionJpaRepository adminProductionJpaRepository;
 
@@ -55,10 +50,12 @@ class AdminProductionJpaRepositoryTest {
     private EntityManager em;
     JPAQueryFactory queryFactory;
 
-    @BeforeEach
-    public void init() {
-        queryFactory = new JPAQueryFactory(em);
+    private AdminProductionEntity adminProductionEntity;
+    private AdminProductionDTO adminProductionDTO;
+    private CommonImageEntity commonImageEntity;
+    private CommonImageDTO commonImageDTO;
 
+    public void createProductionAndImage() {
         adminProductionEntity = builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
@@ -92,6 +89,12 @@ class AdminProductionJpaRepositoryTest {
                 .build();
     }
 
+    @BeforeEach
+    public void init() {
+        queryFactory = new JPAQueryFactory(em);
+        createProductionAndImage();
+    }
+
     @Test
     public void 프로덕션리스트조회테스트() throws Exception {
 
@@ -100,11 +103,8 @@ class AdminProductionJpaRepositoryTest {
         productionMap.put("jpaStartPage", 1);
         productionMap.put("size", 3);
 
-        // when
-        List<AdminProductionDTO> productionList = adminProductionJpaRepository.findProductionsList(productionMap);
-
         // then
-        assertThat(productionList.size()).isGreaterThan(0);
+        assertThat(adminProductionJpaRepository.findProductionsList(productionMap).size()).isGreaterThan(0);
     }
 
     @Test
@@ -153,16 +153,10 @@ class AdminProductionJpaRepositoryTest {
 
         given(mockAdminProductionJpaRepository.findProductionsList(productionMap)).willReturn(productionList);
 
-        // when
-        Integer idx = mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getIdx();
-        String title = mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getTitle();
-        String description = mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getDescription();
-        String visible = mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getVisible();
-
-        assertThat(idx).isEqualTo(productionList.get(0).getIdx());
-        assertThat(title).isEqualTo(productionList.get(0).getTitle());
-        assertThat(description).isEqualTo(productionList.get(0).getDescription());
-        assertThat(visible).isEqualTo(productionList.get(0).getVisible());
+        assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getIdx()).isEqualTo(productionList.get(0).getIdx());
+        assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getTitle()).isEqualTo(productionList.get(0).getTitle());
+        assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getDescription()).isEqualTo(productionList.get(0).getDescription());
+        assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getVisible()).isEqualTo(productionList.get(0).getVisible());
     }
 
     @Test
@@ -184,26 +178,15 @@ class AdminProductionJpaRepositoryTest {
 
         given(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
 
-        // when
-        Integer idx = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx();
-        String title = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle();
-        String description = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription();
-        String visible = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getVisible();
-        String fileName = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFileName();
-        String fileMask = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFileMask();
-        String filePath = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFilePath();
-        String imageType = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getImageType();
-        String typeName = mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getTypeName();
-
-        assertThat(idx).isEqualTo(1);
-        assertThat(title).isEqualTo("프로덕션 테스트");
-        assertThat(description).isEqualTo("프로덕션 테스트");
-        assertThat(visible).isEqualTo("Y");
-        assertThat(fileName).isEqualTo("test.jpg");
-        assertThat(fileMask).isEqualTo("test.jpg");
-        assertThat(filePath).isEqualTo("/test/test.jpg");
-        assertThat(imageType).isEqualTo("main");
-        assertThat(typeName).isEqualTo("production");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx()).isEqualTo(1);
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getVisible()).isEqualTo("Y");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFileName()).isEqualTo("test.jpg");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFileMask()).isEqualTo("test.jpg");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getImageType()).isEqualTo("main");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getTypeName()).isEqualTo("production");
     }
 
     @Test

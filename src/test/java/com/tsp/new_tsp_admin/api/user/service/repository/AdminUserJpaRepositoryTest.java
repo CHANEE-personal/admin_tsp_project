@@ -18,14 +18,12 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @DataJpaTest
@@ -35,9 +33,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("회원 Repository Test")
 class AdminUserJpaRepositoryTest {
-    private AdminUserEntity adminUserEntity;
-    private AdminUserDTO adminUserDTO;
-
     @Autowired
     private AdminUserJpaRepository adminUserJpaRepository;
 
@@ -48,12 +43,18 @@ class AdminUserJpaRepositoryTest {
     private EntityManager em;
     JPAQueryFactory queryFactory;
 
+    private AdminUserEntity adminUserEntity;
+    private AdminUserDTO adminUserDTO;
+
+    public void createUser() {
+        adminUserEntity = builder().idx(2).userId("admin01").build();
+        adminUserDTO = AdminUserDTO.builder().idx(2).build();
+    }
+
     @BeforeEach
     public void init() {
         queryFactory = new JPAQueryFactory(em);
-
-        adminUserEntity = builder().idx(2).userId("admin01").build();
-        adminUserDTO = AdminUserDTO.builder().idx(2).build();
+        createUser();
     }
 
     @Test
@@ -65,9 +66,7 @@ class AdminUserJpaRepositoryTest {
         userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
 
-        List<AdminUserDTO> userList = adminUserJpaRepository.findUserList(userMap);
-
-        assertThat(userList.size()).isGreaterThan(0);
+        assertThat(adminUserJpaRepository.findUserList(userMap).size()).isGreaterThan(0);
     }
 
     @Test
