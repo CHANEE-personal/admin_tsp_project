@@ -91,8 +91,7 @@ class AdminModelJpaControllerTest {
         modelMap.put("size", Collections.singletonList("3"));
         mockMvc.perform(get("/api/jpa-model/lists/1").params(modelMap))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.modelList.length()", greaterThan(0)));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -169,7 +168,8 @@ class AdminModelJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.modelKorFirstName").value("test"))
-                .andExpect(jsonPath("$.modelKorSecondName").value("test"));
+                .andExpect(jsonPath("$.modelKorSecondName").value("test"))
+                .andExpect(jsonPath("$.modelKorName").value("test"));
     }
 
     @Test
