@@ -205,7 +205,8 @@ public class AdminModelJpaRepository {
         try {
             JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-            existAdminModelEntity.builder().updateTime(new Date()).updater(1).build();
+            existAdminModelEntity.setUpdater(1);
+            existAdminModelEntity.setUpdateTime(new Date());
 
             update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
                     .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
@@ -219,18 +220,6 @@ public class AdminModelJpaRepository {
                     .set(adminModelEntity.updater, 1)
                     .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
 
-//            commonImageEntity.builder()
-//                    .typeName("model")
-//                    .typeIdx(existAdminModelEntity.getIdx())
-//                    .build();
-
-//            modelMap.put("typeName", "model");
-
-//            if("Y".equals(imageRepository.updateMultipleFile(commonImageEntity, files, modelMap))) {
-//                return 1;
-//            } else {
-//                return 0;
-//            }
             return existAdminModelEntity;
         } catch (Exception e) {
             e.printStackTrace();
@@ -302,7 +291,8 @@ public class AdminModelJpaRepository {
         try {
             JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-            existAdminModelEntity.builder().updateTime(new Date ()).updater(1).build();
+            existAdminModelEntity.setUpdater(1);
+            existAdminModelEntity.setUpdateTime(new Date());
 
             return update.set(adminModelEntity.visible, "N")
                     .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())

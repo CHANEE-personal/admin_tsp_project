@@ -54,8 +54,6 @@ public class AdminUserJpaRepository {
                     .limit(StringUtil.getInt(userMap.get("size"), 0))
                     .fetch();
 
-            List<AdminUserDTO> userDtoList = UserMapper.INSTANCE.toDtoList(userList);
-
             userList.forEach(list -> userList.get(userList.indexOf(list)).setRnum(StringUtil.getInt(userMap.get("startPage"), 1)*(StringUtil.getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
 
             return UserMapper.INSTANCE.toDtoList(userList);
