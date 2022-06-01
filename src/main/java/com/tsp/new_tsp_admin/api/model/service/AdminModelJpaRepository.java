@@ -176,6 +176,7 @@ public class AdminModelJpaRepository {
      *
      * @param commonImageEntity
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
         try {
@@ -198,7 +199,7 @@ public class AdminModelJpaRepository {
      *
      * @param existAdminModelEntity
      */
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
 
@@ -238,7 +239,7 @@ public class AdminModelJpaRepository {
      *
      * @param existAdminModelEntity
      */
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) {
 
@@ -314,6 +315,7 @@ public class AdminModelJpaRepository {
      *
      * @param adminModelEntity
      */
+    @Modifying(clearAutomatically = true)
     public AdminModelDTO deleteModelByEm(AdminModelEntity adminModelEntity) {
 
         try {
