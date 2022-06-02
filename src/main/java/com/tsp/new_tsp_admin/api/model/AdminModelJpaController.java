@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.*;
+
 
 @RestController
 @Api(tags = "모델관련 API")
