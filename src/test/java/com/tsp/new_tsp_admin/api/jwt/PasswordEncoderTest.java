@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -88,7 +87,6 @@ public class PasswordEncoderTest {
 
     @Test
     public void customDelegatingPasswordEncoder() {
-
         Map<String, PasswordEncoder> encoders = new HashMap<>();
         String idForEncode = "bcrypt";
         encoders.put(idForEncode, new BCryptPasswordEncoder());
