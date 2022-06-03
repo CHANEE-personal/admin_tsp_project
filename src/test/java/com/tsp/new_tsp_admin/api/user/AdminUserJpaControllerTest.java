@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -121,5 +123,23 @@ class AdminUserJpaControllerTest {
                 .content(jsonStr))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("JWT 토큰 발급 테스트")
+    public void 토큰발급테스트() throws Exception {
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+        authenticationRequest.setUserId("admin01");
+        authenticationRequest.setPassword("pass1234");
+
+        final String jsonStr = objectMapper.writeValueAsString(authenticationRequest);
+
+        mockMvc.perform(post("/api/jpa-user/authenticate")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.jwt").isNotEmpty())
+                .andExpect(jsonPath("$.token").isNotEmpty());
     }
 }

@@ -42,7 +42,18 @@ class JwtUtilTest {
     }
 
     @Test
-    public void token생성테스트() throws Exception {
+    public void isTokenExpiredTest() throws Exception {
+        String token = jwtUtil.generateToken(userDetails);
+        assertFalse(jwtUtil.isTokenExpired(token));
+    }
+
+    @Test
+    public void generateTokenTest() throws Exception {
+        assertNotNull(jwtUtil.generateToken(userDetails));
+    }
+
+    @Test
+    public void generateRefreshTokenTest() throws Exception {
         assertNotNull(jwtUtil.generateToken(userDetails));
     }
 
