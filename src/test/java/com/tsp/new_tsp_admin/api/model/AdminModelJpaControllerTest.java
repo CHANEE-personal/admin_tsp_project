@@ -29,8 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -58,13 +56,7 @@ class AdminModelJpaControllerTest {
 
     private AdminModelEntity adminModelEntity;
 
-    @BeforeEach
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-                .addFilter(new CharacterEncodingFilter("UTF-8", true))
-                .alwaysDo(print())
-                .build();
-
+    public void createAdminModel() {
         adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
@@ -81,6 +73,16 @@ class AdminModelJpaControllerTest {
                 .shoes("270")
                 .visible("Y")
                 .build();
+    }
+
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .alwaysDo(print())
+                .build();
+
+        createAdminModel();
     }
 
     @Test
@@ -192,16 +194,12 @@ class AdminModelJpaControllerTest {
 
         List<MultipartFile> imageFiles = List.of(
                 new MockMultipartFile("0522045010647","0522045010647.png",
-                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png"))
-//                new MockMultipartFile("0522045010772","0522045010772.png" ,
-//                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
+                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
+                new MockMultipartFile("0522045010772","0522045010772.png" ,
+                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
         );
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
-                .imageType("main")
-                .fileName("0522045010647.png")
-                .fileMask("0522045010647.png")
-                .filePath("src/main/resources/static/images/0522045010647.png")
                 .typeIdx(adminModelEntity.getIdx())
                 .typeName("model")
                 .visible("Y")
@@ -212,7 +210,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(multipart("/api/jpa-model/images")
                         .file("images", imageFiles.get(0).getBytes())
-//                        .file("images", imageFiles.get(1).getBytes())
+                        .file("images", imageFiles.get(1).getBytes())
                         .content(jsonStr).content(jsonStr1)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
