@@ -1,8 +1,6 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
-import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,13 +31,30 @@ class JwtUtilTest {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Test
-    public void token생성테스트() throws Exception {
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+    private final AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+    private UserDetails userDetails;
+
+    @BeforeEach
+    public void setUp() throws Exception {
         authenticationRequest.setUserId("admin01");
         authenticationRequest.setPassword("pass1234");
-        UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
+        userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
+    }
 
-        Assertions.assertNotNull(jwtUtil.generateToken(userDetails));
+    @Test
+    public void token생성테스트() throws Exception {
+        assertNotNull(jwtUtil.generateToken(userDetails));
+    }
+
+    @Test
+    public void extractAllClaimsTest() throws Exception {
+        String token = jwtUtil.generateToken(userDetails);
+        assertNotNull(jwtUtil.extractAllClaims(token));
+    }
+
+    @Test
+    public void validateTokenTest() throws Exception {
+        String token = jwtUtil.generateToken(userDetails);
+        assertTrue(jwtUtil.validateToken(token, userDetails));
     }
 }
