@@ -25,8 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
             adminUserEntity = adminUserJpaRepository.findOneUser(id);
 
             // 아이디 일치하는지 확인
-            return new User(adminUserEntity.getUsername(),
-                   adminUserEntity.getPassword(),
+            return new User(adminUserEntity.getUsername(), adminUserEntity.getPassword(),
                     AuthorityUtils.createAuthorityList("ROLE_ADMIN"));
         } catch (Exception e) {
             e.printStackTrace();
