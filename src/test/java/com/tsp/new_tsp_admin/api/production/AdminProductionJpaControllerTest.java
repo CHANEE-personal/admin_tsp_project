@@ -47,6 +47,14 @@ class AdminProductionJpaControllerTest {
 
     private AdminProductionEntity adminProductionEntity;
 
+    public void createAdminProduction() {
+        adminProductionEntity = builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+    }
+
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
@@ -54,11 +62,7 @@ class AdminProductionJpaControllerTest {
                 .alwaysDo(print())
                 .build();
 
-        adminProductionEntity = builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
+        createAdminProduction();
     }
 
     @Test
@@ -84,11 +88,9 @@ class AdminProductionJpaControllerTest {
     @Test
     @DisplayName("Admin 프로덕션 등록 테스트")
     public void 프로덕션등록Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminProductionEntity);
-
         mockMvc.perform(post("/api/jpa-production")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(jsonStr))
+                .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("프로덕션 테스트"))
@@ -98,17 +100,13 @@ class AdminProductionJpaControllerTest {
     @Test
     @DisplayName("Admin 프로덕션 수정 테스트")
     public void 프로덕션수정Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminProductionEntity);
-
         em.persist(adminProductionEntity);
 
         adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
 
-        final String updateStr = objectMapper.writeValueAsString(adminProductionEntity);
-
         mockMvc.perform(put("/api/jpa-production/"+adminProductionEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(updateStr))
+                        .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("테스트1"))
@@ -118,13 +116,11 @@ class AdminProductionJpaControllerTest {
     @Test
     @DisplayName("Admin 프로덕션 삭제 테스트")
     public void 프로덕션삭제Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminProductionEntity);
-
         em.persist(adminProductionEntity);
 
         mockMvc.perform(delete("/api/jpa-production/"+adminProductionEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(jsonStr))
+                        .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

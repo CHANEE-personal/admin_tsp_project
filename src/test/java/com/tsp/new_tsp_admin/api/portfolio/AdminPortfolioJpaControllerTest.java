@@ -48,13 +48,7 @@ class AdminPortfolioJpaControllerTest {
 
     private AdminPortFolioEntity adminPortFolioEntity;
 
-    @BeforeEach
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-                .addFilter(new CharacterEncodingFilter("UTF-8", true))
-                .alwaysDo(print())
-                .build();
-
+    public void createAdminPortfolio() {
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
@@ -63,6 +57,16 @@ class AdminPortfolioJpaControllerTest {
                 .videoUrl("https://youtube.com")
                 .visible("Y")
                 .build();
+    }
+
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .alwaysDo(print())
+                .build();
+
+        createAdminPortfolio();
     }
 
     @Test
@@ -90,11 +94,9 @@ class AdminPortfolioJpaControllerTest {
     @Transactional
     @DisplayName("Admin 포트폴리오 등록 테스트")
     public void 포트폴리오등록Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminPortFolioEntity);
-
         mockMvc.perform(post("/api/jpa-portfolio")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(jsonStr))
+                .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categoryCd").value(1))
@@ -107,8 +109,6 @@ class AdminPortfolioJpaControllerTest {
     @Test
     @DisplayName("Admin 포트폴리오 수정 테스트")
     public void 포트폴리오수정Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminPortFolioEntity);
-
         em.persist(adminPortFolioEntity);
 
         adminPortFolioEntity = AdminPortFolioEntity.builder()
@@ -121,11 +121,9 @@ class AdminPortfolioJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        final String updateStr = objectMapper.writeValueAsString(adminPortFolioEntity);
-
         mockMvc.perform(put("/api/jpa-portfolio/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(updateStr))
+                .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categoryCd").value(1))
@@ -138,13 +136,11 @@ class AdminPortfolioJpaControllerTest {
     @Test
     @DisplayName("Admin 포트폴리오 삭제 테스트")
     public void 포트폴리오삭제Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminPortFolioEntity);
-
         em.persist(adminPortFolioEntity);
 
         mockMvc.perform(delete("/api/jpa-portfolio/"+adminPortFolioEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(jsonStr))
+                        .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

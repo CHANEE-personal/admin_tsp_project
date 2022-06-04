@@ -117,11 +117,9 @@ class AdminModelJpaControllerTest {
     @Transactional
     @DisplayName("Admin 모델 등록 테스트")
     public void 모델등록Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
-
         mockMvc.perform(post("/api/jpa-model")
         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(jsonStr))
+                .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categoryCd").value(1))
@@ -140,8 +138,6 @@ class AdminModelJpaControllerTest {
     @Test
     @DisplayName("Admin 모델 수정 테스트")
     public void 모델수정Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
-
         em.persist(adminModelEntity);
 
         adminModelEntity = builder()
@@ -162,11 +158,9 @@ class AdminModelJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        final String updateStr = objectMapper.writeValueAsString(adminModelEntity);
-
         mockMvc.perform(put("/api/jpa-model/1")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(updateStr))
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.modelKorFirstName").value("test"))
@@ -177,13 +171,11 @@ class AdminModelJpaControllerTest {
     @Test
     @DisplayName("Admin 모델 삭제 테스트")
     public void 모델삭제Api테스트() throws Exception {
-        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
-
         em.persist(adminModelEntity);
 
         mockMvc.perform(delete("/api/jpa-model/"+adminModelEntity.getIdx())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(jsonStr))
+                .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -205,13 +197,11 @@ class AdminModelJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
-        final String jsonStr1 = objectMapper.writeValueAsString(commonImageEntity);
-
         mockMvc.perform(multipart("/api/jpa-model/images")
                         .file("images", imageFiles.get(0).getBytes())
                         .file("images", imageFiles.get(1).getBytes())
-                        .content(jsonStr).content(jsonStr1)
+                        .content(objectMapper.writeValueAsString(adminModelEntity))
+                        .content(objectMapper.writeValueAsString(commonImageEntity))
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -222,11 +212,9 @@ class AdminModelJpaControllerTest {
         CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
                 .categoryCd(1).visible("Y").cmmType("model").build();
 
-        final String codeStr = objectMapper.writeValueAsString(commonCodeEntity);
-
         mockMvc.perform(get("/api/jpa-model/common")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(codeStr))
+                .content(objectMapper.writeValueAsString(commonCodeEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
