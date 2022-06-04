@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -71,6 +70,7 @@ class AdminModelJpaControllerTest {
                 .height("170")
                 .size3("34-24-34")
                 .shoes("270")
+                .status("draft")
                 .visible("Y")
                 .build();
     }
@@ -156,6 +156,7 @@ class AdminModelJpaControllerTest {
                 .size3("34-24-34")
                 .shoes("270")
                 .visible("Y")
+                .status("active")
                 .build();
 
         mockMvc.perform(put("/api/jpa-model/1")
@@ -191,17 +192,9 @@ class AdminModelJpaControllerTest {
                         "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
         );
 
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
-                .typeIdx(adminModelEntity.getIdx())
-                .typeName("model")
-                .visible("Y")
-                .build();
-
-        mockMvc.perform(multipart("/api/jpa-model/images")
+        mockMvc.perform(multipart("/api/jpa-model/1/images")
                         .file("images", imageFiles.get(0).getBytes())
                         .file("images", imageFiles.get(1).getBytes())
-                        .content(objectMapper.writeValueAsString(adminModelEntity))
-                        .content(objectMapper.writeValueAsString(commonImageEntity))
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk());

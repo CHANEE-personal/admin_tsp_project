@@ -130,6 +130,29 @@ public class AdminModelJpaController {
 
     /**
      * <pre>
+     * 1. MethodName : insertModelImage
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 모델 Image 저장
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "모델 이미지 저장", notes = "모델 이미지를 저장한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "모델 이미지 등록성공", response = Map.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping(value = "/{idx}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String insertModelImage(@PathVariable("idx") Integer idx,
+                                   @RequestParam("images") List<MultipartFile> fileName) throws Exception {
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder().typeName("model").typeIdx(idx).visible("Y").build();
+        return this.adminModelJpaService.insertModelImage(commonImageEntity, fileName);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : updateModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 수정
@@ -171,33 +194,6 @@ public class AdminModelJpaController {
                                      @PathVariable("idx") Integer idx) throws Exception {
         adminModelEntity.setIdx(idx);
         return adminModelJpaService.deleteModel(adminModelEntity);
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : insertModelImage
-     * 2. ClassName  : AdminModelJpaController.java
-     * 3. Comment    : 관리자 모델 Image 저장
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
-     * </pre>
-     *
-     */
-    @ApiOperation(value = "모델 이미지 저장", notes = "모델 이미지를 저장한다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "모델 이미지 등록성공", response = Map.class),
-            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
-    })
-    @PostMapping(value = "/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String insertModelImage(AdminModelEntity adminModelEntity,
-                                   CommonImageEntity commonImageEntity,
-                                   @RequestParam("images") List<MultipartFile> fileName) throws Exception {
-        commonImageEntity.setTypeName("model");
-        commonImageEntity.setTypeIdx(adminModelEntity.getIdx());
-        commonImageEntity.setVisible("Y");
-
-        return this.adminModelJpaService.insertModelImage(commonImageEntity, fileName);
     }
 
     /**

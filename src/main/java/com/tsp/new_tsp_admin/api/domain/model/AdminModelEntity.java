@@ -96,6 +96,10 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @Convert(converter = CustomConverter.class)
     private ArrayList<CareerJson> careerList;
 
+    @Column(name = "status")
+    @NotEmpty
+    private String status;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newModelCodeJpaDTO;

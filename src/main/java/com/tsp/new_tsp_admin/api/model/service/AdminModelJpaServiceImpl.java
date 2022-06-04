@@ -1,10 +1,10 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
 import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -14,13 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
 public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     private final AdminModelJpaRepository adminModelJpaRepository;
+    private final ImageRepository imageRepository;
     private final ImageService imageService;
 
     /**
@@ -133,7 +133,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     public String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {
         try {
-            return imageService.uploadImageFile(commonImageEntity, fileName, "insert");
+            return imageRepository.uploadImageFile(commonImageEntity, fileName, "insert");
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
         }

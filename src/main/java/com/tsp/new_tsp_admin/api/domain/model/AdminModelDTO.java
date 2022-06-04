@@ -91,6 +91,10 @@ public class AdminModelDTO extends NewCommonDTO {
     @ApiModelProperty(required = false, value = "model career")
     private ArrayList<CareerJson> careerList;
 
+    @NotNull(message = "모델 상태 선택은 필수입니다.")
+    @ApiModelProperty(required = true, value = "model status")
+    private String status;
+
     @ApiModelProperty(required = true, value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();
 }
