@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -48,6 +47,14 @@ class AdminUserJpaControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    public void createUser() {
+        adminUserEntity = builder()
+                .userId("admin02")
+                .password("pass1234")
+                .visible("Y")
+                .build();
+    }
+
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
@@ -55,11 +62,7 @@ class AdminUserJpaControllerTest {
                 .alwaysDo(print())
                 .build();
 
-        adminUserEntity = builder()
-                .userId("admin02")
-                .password("pass1234")
-                .visible("Y")
-                .build();
+        createUser();
     }
 
     @Test
@@ -73,23 +76,18 @@ class AdminUserJpaControllerTest {
     @Test
     @DisplayName("로그인 테스트")
     public void 로그인테스트() throws Exception {
-
-        final String jsonStr = objectMapper.writeValueAsString(adminUserEntity);
-
         mockMvc.perform(post("/api/jpa-user/login")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(jsonStr))
+                .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.loginYn").value("Y"))
                 .andExpect(jsonPath("$.token").isNotEmpty());
-
     }
 
     @Test
     @DisplayName("관리자 회원가입 테스트")
     public void 회원가입테스트() throws Exception {
-
         adminUserEntity = builder()
                 .userId("test")
                 .password("test")
@@ -98,11 +96,9 @@ class AdminUserJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        final String jsonStr = objectMapper.writeValueAsString(adminUserEntity);
-
         mockMvc.perform(post("/api/jpa-user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(jsonStr))
+                .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value("test"))
@@ -116,11 +112,9 @@ class AdminUserJpaControllerTest {
     public void 회원탈퇴테스트() throws Exception {
         AdminUserEntity adminUserEntity = builder().idx(1).build();
 
-        final String jsonStr = objectMapper.writeValueAsString(adminUserEntity);
-
         mockMvc.perform(put("/api/jpa-user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(jsonStr))
+                .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -132,11 +126,9 @@ class AdminUserJpaControllerTest {
         authenticationRequest.setUserId("admin01");
         authenticationRequest.setPassword("pass1234");
 
-        final String jsonStr = objectMapper.writeValueAsString(authenticationRequest);
-
         mockMvc.perform(post("/api/jpa-user/authenticate")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(jsonStr))
+                .content(objectMapper.writeValueAsString(authenticationRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.jwt").isNotEmpty())

@@ -33,8 +33,7 @@ public class PasswordEncoderTest {
     }
 
     @Test
-    public void delegatingPasswordEncoding테스트() {
-
+    public void delegatingPasswordEncoding() {
         // given
         String password = "pass1234";
 

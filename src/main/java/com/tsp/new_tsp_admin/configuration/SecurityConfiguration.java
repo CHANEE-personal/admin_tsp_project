@@ -21,18 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-//    private final MyUserDetailsService userDetailsService;
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//    }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService);
-//    }
-
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs",
@@ -76,28 +64,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        String contextPath = this.adminServerProperties.getContextPath();
-//
-//        SavedRequestAwareAuthenticationSuccessHandler successHandler =
-//                new SavedRequestAwareAuthenticationSuccessHandler();
-//        successHandler.setTargetUrlParameter("redirectTo");
-//        successHandler.setDefaultTargetUrl("/");
-//
-//        http.authorizeHttpRequests()
-//                .antMatchers(contextPath + "/assets/**").permitAll()
-//                .antMatchers(contextPath + "/login").permitAll()
-//                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage(contextPath + "/login").successHandler(successHandler).and()
-//                .logout().logoutUrl(contextPath + "/logout").and()
-//                .httpBasic().and()
-//                .csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .ignoringAntMatchers(
-//                        contextPath + "/instances",
-//                        contextPath + "/actuator/**"
-//                );
         http.csrf().disable();
     }
 
