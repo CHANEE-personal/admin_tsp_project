@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
+
 @RestController
 @RequestMapping("/api/jpa-user")
 @RequiredArgsConstructor
@@ -52,8 +54,6 @@ public class AdminUserJpaController {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @return
-     * @throws Exception
      */
     @ApiOperation(value = "Admin 회원 조회", notes = "Admin 회원을 조회한다.")
     @ApiResponses({
@@ -80,10 +80,6 @@ public class AdminUserJpaController {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
      */
     @ApiOperation(value = "Admin 회원 로그인 처리", notes = "Admin 회원을 로그인 처리한다.")
     @ApiResponses({
@@ -98,10 +94,11 @@ public class AdminUserJpaController {
 
         ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
 
-        AdminUserEntity adminUserEntity = new AdminUserEntity();
+        AdminUserEntity adminUserEntity = builder()
+                        .userId(authenticationRequest.getUserId())
+                        .password(authenticationRequest.getPassword())
+                        .build();
 
-        adminUserEntity.setUserId(authenticationRequest.getUserId());
-        adminUserEntity.setPassword(authenticationRequest.getPassword());
         String resultValue = adminUserJpaService.adminLogin(adminUserEntity);
 
         if ("Y".equals(resultValue)) {
@@ -129,8 +126,6 @@ public class AdminUserJpaController {
      * 5. 작성일       : 2021. 04. 23.
      * </pre>
      *
-     * @param  authenticationRequest
-     * @throws Exception
      */
     @ApiIgnore
     @ApiOperation(value = "JWT 토근 발급", notes = "JWT 토근 발급")
@@ -156,9 +151,6 @@ public class AdminUserJpaController {
      * 5. 작성일       : 2021. 04. 23.
      * </pre>
      *
-     * @param  id
-     * @param  password
-     * @throws Exception
      */
     private void authenticate(String id, String password) throws Exception {
         try {
@@ -182,8 +174,6 @@ public class AdminUserJpaController {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param  adminUserEntity
-     * @throws Exception
      */
     @ApiOperation(value = "Admin 회원가입 처리", notes = "Admin 회원가입을 처리한다.")
     @ApiResponses({
@@ -205,8 +195,6 @@ public class AdminUserJpaController {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param  adminUserEntity
-     * @throws Exception
      */
     @ApiOperation(value = "Admin 회원탈퇴 처리", notes = "Admin 회원탈퇴 처리한다.")
     @ApiResponses({
