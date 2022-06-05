@@ -68,7 +68,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param modelMap
      */
     public Long findModelsCount(Map<String, Object> modelMap) {
 
@@ -91,7 +90,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param modelMap
      */
     public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
 
@@ -121,7 +119,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param existAdminModelEntity
      */
     public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) {
 
@@ -152,7 +149,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
-     * @param adminModelEntity
      */
     @Transactional
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
@@ -174,7 +170,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
-     * @param commonImageEntity
      */
     @Modifying(clearAutomatically = true)
     @Transactional
@@ -197,7 +192,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param existAdminModelEntity
      */
     @Modifying(clearAutomatically = true)
     @Transactional
@@ -237,7 +231,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 05. 08.
      * </pre>
      *
-     * @param existAdminModelEntity
      */
     @Modifying(clearAutomatically = true)
     @Transactional
@@ -263,7 +256,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param existModelCodeEntity
      */
     public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
         try {
@@ -285,7 +277,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param existAdminModelEntity
      */
     public Long deleteModel(AdminModelEntity existAdminModelEntity) {
 
@@ -313,7 +304,6 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param adminModelEntity
      */
     @Modifying(clearAutomatically = true)
     public AdminModelDTO deleteModelByEm(AdminModelEntity adminModelEntity) {

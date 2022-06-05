@@ -36,7 +36,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     public Long findModelsCount(Map<String, Object> modelMap) {
-        return adminModelJpaRepository.findModelsCount(modelMap);
+        try {
+            return adminModelJpaRepository.findModelsCount(modelMap);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+        }
     }
 
     /**
@@ -52,7 +56,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
-        return adminModelJpaRepository.findModelsList(modelMap);
+        try {
+            return adminModelJpaRepository.findModelsList(modelMap);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+        }
     }
 
     /**
@@ -68,7 +76,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     public AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.findOneModel(adminModelEntity);
+        try {
+            return adminModelJpaRepository.findOneModel(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
+        }
     }
 
     /**
@@ -84,7 +96,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.insertModel(adminModelEntity);
+        try {
+            return adminModelJpaRepository.insertModel(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_MODEL);
+        }
     }
 
     /**
@@ -100,7 +116,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.updateModelByEm(adminModelEntity);
+        try {
+            return adminModelJpaRepository.updateModelByEm(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
+        }
     }
 
     /**
@@ -116,7 +136,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     public AdminModelDTO deleteModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.deleteModelByEm(adminModelEntity);
+        try {
+            return adminModelJpaRepository.deleteModelByEm(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
+        }
     }
 
     /**

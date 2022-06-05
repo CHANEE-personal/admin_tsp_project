@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.*;
 
 
+@Validated
 @RestController
 @Api(tags = "모델관련 API")
 @RequestMapping("/api/jpa-model")
@@ -45,9 +47,6 @@ public class AdminModelJpaController {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param categoryCd
-     * @param paramMap
-     * @param page
      */
     @ApiOperation(value = "모델 조회", notes = "모델을 조회한다.")
     @ApiResponses({
@@ -58,7 +57,8 @@ public class AdminModelJpaController {
     @GetMapping(value = "/lists/{categoryCd}")
     public ConcurrentHashMap<String, Object> getModelList(@PathVariable("categoryCd")
                                                           @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                                          Map<String, Object> paramMap, Page page) {
+                                                          Map<String, Object> paramMap,
+                                                          Page page) throws Exception {
 
         // 페이징 및 검색
         ConcurrentHashMap<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
@@ -91,8 +91,6 @@ public class AdminModelJpaController {
      * 5. 작성일       : 2021. 09. 08.
      * </pre>
      *
-     * @param categoryCd
-     * @param idx
      */
     @ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
     @ApiResponses({
@@ -103,7 +101,7 @@ public class AdminModelJpaController {
     @GetMapping("/{categoryCd}/{idx}")
     public AdminModelDTO getModelEdit(@PathVariable("categoryCd")
                                       @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                      @PathVariable("idx") Integer idx) {
+                                      @PathVariable("idx") Integer idx) throws Exception {
         return this.adminModelJpaService.findOneModel(builder().idx(idx).categoryCd(categoryCd).build());
     }
 
@@ -213,7 +211,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/common")
-    public List<CommonCodeEntity> modelCommonCode() {
+    public List<CommonCodeEntity> modelCommonCode() throws Exception {
         return this.adminModelJpaService.modelCommonCode(CommonCodeEntity.builder().cmmType("model").build());
     }
 }

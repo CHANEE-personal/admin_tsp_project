@@ -49,6 +49,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(Error.create(tspException.getBaseExceptionType()), HttpStatus.OK);
 	}
 
+
 //	@ExceptionHandler(MethodArgumentNotValidException.class)
 //	@ResponseStatus(HttpStatus.BAD_REQUEST)
 //	public ResponseEntity<ErrorResponse> validException(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status) {

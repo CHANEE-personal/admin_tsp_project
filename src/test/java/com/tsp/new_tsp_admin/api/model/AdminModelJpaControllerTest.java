@@ -97,6 +97,15 @@ class AdminModelJpaControllerTest {
     }
 
     @Test
+    @DisplayName("Admin 모델 조회 예외 테스트")
+    public void 모델조회Api예외테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-model/lists/-1"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString().equals("모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.");
+    }
+
+    @Test
     @DisplayName("Admin 모델 상세 조회 테스트")
     public void 모델상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-model/2/143"))

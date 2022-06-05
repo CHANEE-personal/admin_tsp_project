@@ -22,9 +22,8 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param modelMap
      */
-    Long findModelsCount(Map<String, Object> modelMap);
+    Long findModelsCount(Map<String, Object> modelMap) throws Exception;
 
     /**
      * <pre>
@@ -35,9 +34,8 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param modelMap
      */
-    List<AdminModelDTO> findModelsList(Map<String, Object> modelMap);
+    List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws Exception;
 
     /**
      * <pre>
@@ -48,9 +46,8 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param adminModelEntity
      */
-    AdminModelDTO findOneModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) throws Exception;
 
     /**
      * <pre>
@@ -61,9 +58,8 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param adminModelEntity
      */
-    AdminModelDTO insertModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO insertModel(AdminModelEntity adminModelEntity) throws Exception;
 
     /**
      * <pre>
@@ -74,9 +70,8 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param adminModelEntity
      */
-    AdminModelDTO updateModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO updateModel(AdminModelEntity adminModelEntity) throws Exception;
 
     /**
      * <pre>
@@ -87,9 +82,8 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      *
-     * @param adminModelEntity
      */
-    AdminModelDTO deleteModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO deleteModel(AdminModelEntity adminModelEntity) throws Exception;
 
     /**
      * <pre>
@@ -100,9 +94,8 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param commonImageEntity
      */
-    String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName);
+    String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception;
 
     /**
      * <pre>
@@ -113,7 +106,6 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param commonCodeEntity
      */
-    List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity);
+    List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity) throws Exception;
 }
