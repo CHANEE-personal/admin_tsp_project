@@ -157,6 +157,7 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDto(adminModelEntity);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_MODEL);
         }
     }

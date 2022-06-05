@@ -37,12 +37,12 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private Integer idx;
 
     @Column(name = "category_cd")
-    @Range(min = 1, max = 3, message = "모델 카테고리 값은 1~3 사이 값만 입력할 수 있습니다")
+    @Range(min = 1, max = 3, message = "모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.")
     @NotNull(message = "모델 카테고리 선택은 필수입니다.")
     private Integer categoryCd;
 
     @Column(name = "category_age")
-    @Range(min = 2, max = 6, message = "모델 연령대 값은 2~6 사이 값만 입력할 수 있습니다")
+    @Range(min = 2, max = 6, message = "모델 연령대 값은 2~6 사이 값만 입력할 수 있습니다.")
     @NotEmpty(message = "모델 연령대 선택은 필수입니다.")
     private String categoryAge;
 
@@ -100,7 +100,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private ArrayList<CareerJson> careerList;
 
     @Column(name = "status")
-    @NotEmpty
+    @NotEmpty(message = "모델 상태값 선택은 필수입니다.")
     private String status;
 
     @ManyToOne(fetch = LAZY)

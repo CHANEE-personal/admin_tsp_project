@@ -17,10 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -37,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @DataJpaTest
 @Transactional
@@ -62,11 +59,6 @@ class AdminModelJpaRepositoryTest {
     private CommonImageDTO commonImageDTO;
 
     public void createModelAndImage() {
-        List<MultipartFile> imageFiles = List.of(
-                new MockMultipartFile("test1", "test1.jpg", MediaType.IMAGE_JPEG_VALUE, "test1".getBytes()),
-                new MockMultipartFile("test2", "test2.jpg", MediaType.IMAGE_JPEG_VALUE, "test2".getBytes())
-        );
-
         adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
@@ -78,6 +70,7 @@ class AdminModelJpaRepositoryTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
+                .status("draft")
                 .height("170")
                 .size3("34-24-34")
                 .shoes("270")
@@ -231,7 +224,7 @@ class AdminModelJpaRepositoryTest {
 
         // given
         ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
-        modelMap.put("categoryCd", "1");
+        modelMap.put("categoryCd", 1);
         modelMap.put("jpaStartPage", 1);
         modelMap.put("size", 3);
 
@@ -241,11 +234,17 @@ class AdminModelJpaRepositoryTest {
         List<AdminModelDTO> modelList = new ArrayList<>();
         modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).build());
 
+        // when
         given(mockAdminModelJpaRepository.findModelsList(modelMap)).willReturn(modelList);
 
+        // then
         assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
         assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
         assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(3)).findModelsList(modelMap);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findModelsList(modelMap);
     }
 
     @Test
@@ -272,8 +271,10 @@ class AdminModelJpaRepositoryTest {
                 .modelImage(ModelImageMapper.INSTANCE.toDtoList(commonImageEntityList))
                 .build();
 
+        // when
         given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
 
+        // then
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(1);
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(1);
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("2");
@@ -289,6 +290,10 @@ class AdminModelJpaRepositoryTest {
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelImage().get(0).getImageType()).isEqualTo("main");
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelImage().get(0).getTypeName()).isEqualTo("model");
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(15)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
     }
 
     @Test
@@ -300,6 +305,10 @@ class AdminModelJpaRepositoryTest {
 
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(1);
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("2");
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(2)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
     }
 
     @Test
@@ -344,6 +353,7 @@ class AdminModelJpaRepositoryTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
+                .status("active")
                 .height("170")
                 .size3("34-24-34")
                 .shoes("270")
@@ -363,6 +373,7 @@ class AdminModelJpaRepositoryTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
+                .status("active")
                 .height("170")
                 .size3("34-24-34")
                 .shoes("270")
@@ -373,6 +384,10 @@ class AdminModelJpaRepositoryTest {
 
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(2);
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("3");
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(2)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
     }
 
     @Test
@@ -403,41 +418,7 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 삭제 테스트")
     public void 모델삭제테스트() throws Exception {
-        adminModelEntity = builder()
-                .categoryCd(2)
-                .categoryAge("3")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
-
         em.persist(adminModelEntity);
-
-        adminModelDTO = AdminModelDTO.builder()
-                .categoryCd(2)
-                .categoryAge("3")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
@@ -446,28 +427,15 @@ class AdminModelJpaRepositoryTest {
 
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelDTO1.getCategoryCd());
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo(adminModelDTO1.getCategoryAge());
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(2)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
     }
 
     @Test
     @DisplayName("모델 이미지 등록 테스트")
     public void 모델이미지등록테스트() throws Exception {
-        adminModelEntity = builder()
-                .categoryCd(1)
-                .categoryAge("2")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
-
         Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
