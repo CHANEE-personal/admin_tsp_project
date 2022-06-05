@@ -17,14 +17,18 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @DataJpaTest
 @Transactional
@@ -58,11 +62,11 @@ class AdminUserJpaRepositoryTest {
     }
 
     @Test
-    public void 유저조회테스트() throws Exception {
+    @DisplayName("유저 조회 테스트")
+    public void 유저조회테스트() {
 
         // given
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("categoryCd", 1);
         userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
 
@@ -70,7 +74,40 @@ class AdminUserJpaRepositoryTest {
     }
 
     @Test
-    public void 유저상세조회테스트() throws Exception {
+    @DisplayName("유저 BDD 조회 테스트")
+    public void 유저BDD조회테스트() {
+        // given
+        ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
+        userMap.put("jpaStartPage", 1);
+        userMap.put("size", 3);
+
+        List<AdminUserDTO> userList = new ArrayList<>();
+        AdminUserDTO adminUserDTO = AdminUserDTO.builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+        userList.add(adminUserDTO);
+
+        // when
+        given(mockAdminUserJpaRepository.findUserList(userMap)).willReturn(userList);
+
+        // then
+        assertThat(mockAdminUserJpaRepository.findUserList(userMap).get(0).getUserId()).isEqualTo(userList.get(0).getUserId());
+        assertThat(mockAdminUserJpaRepository.findUserList(userMap).get(0).getPassword()).isEqualTo(userList.get(0).getPassword());
+        assertThat(mockAdminUserJpaRepository.findUserList(userMap).get(0).getName()).isEqualTo(userList.get(0).getName());
+        assertThat(mockAdminUserJpaRepository.findUserList(userMap).get(0).getEmail()).isEqualTo(userList.get(0).getEmail());
+
+        // verify
+        verify(mockAdminUserJpaRepository, times(4)).findUserList(userMap);
+        verify(mockAdminUserJpaRepository, atLeastOnce()).findUserList(userMap);
+    }
+
+    @Test
+    @DisplayName("유저 상세 조회 테스트")
+    public void 유저상세조회테스트() {
 
         AdminUserEntity adminUser = adminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
@@ -85,7 +122,8 @@ class AdminUserJpaRepositoryTest {
     }
 
     @Test
-    public void 유저로그인테스트() throws Exception {
+    @DisplayName("유저 로그인 테스트")
+    public void 유저로그인테스트() {
         AdminUserEntity adminUserEntity = builder()
                 .userId("admin01")
                 .password("pass1234")
@@ -95,7 +133,8 @@ class AdminUserJpaRepositoryTest {
     }
 
     @Test
-    public void 유저토큰저장테스트() throws Exception {
+    @DisplayName("유저 토큰 저장 테스트")
+    public void 유저토큰저장테스트() {
         AdminUserEntity adminUserEntity = builder()
                 .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
@@ -106,7 +145,8 @@ class AdminUserJpaRepositoryTest {
     }
 
     @Test
-    public void 유저회원가입테스트() throws Exception {
+    @DisplayName("유저 회원가입 테스트")
+    public void 유저회원가입테스트() {
         AdminUserEntity adminUserEntity = builder()
                 .userId("test")
                 .password("test")
@@ -125,7 +165,8 @@ class AdminUserJpaRepositoryTest {
     }
 
     @Test
-    public void 유저탈퇴테스트() throws Exception {
+    @DisplayName("유저 회원탈퇴 테스트")
+    public void 유저탈퇴테스트() {
         assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity).getIdx()).isEqualTo(adminUserDTO.getIdx());
     }
 }
