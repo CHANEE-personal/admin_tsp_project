@@ -28,7 +28,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param userMap
      */
     @Override
     public List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap) {
@@ -44,7 +43,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param adminUserEntity
      */
     @Override
     public String adminLogin(AdminUserEntity adminUserEntity) {
@@ -60,12 +58,11 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param paramUserEntity
      */
     @Override
     public void insertToken(AdminUserEntity paramUserEntity) {
         AdminUserEntity adminUserEntity = adminUserJpaRepository.findOneUser(paramUserEntity.getUserId());
-        adminUserJpaRepository.insertUserToken(adminUserEntity);
+        adminUserJpaRepository.insertUserTokenByEm(adminUserEntity);
     }
 
     /**
@@ -77,7 +74,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param adminUserEntity
      */
     @Override
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
@@ -93,7 +89,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param adminUserEntity
      */
     @Override
     public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {

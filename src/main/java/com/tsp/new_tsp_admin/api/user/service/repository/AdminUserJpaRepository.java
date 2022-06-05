@@ -42,7 +42,6 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param userMap
      */
     public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
 
@@ -71,7 +70,6 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param id
      */
     public AdminUserEntity findOneUser(String id) {
         return queryFactory.selectFrom(adminUserEntity)
@@ -88,7 +86,6 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param existAdminUserEntity
      */
     public String adminLogin(AdminUserEntity existAdminUserEntity) {
 
@@ -118,7 +115,6 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param adminUserEntity
      */
     @Modifying
     @Transactional
@@ -145,7 +141,6 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param existAdminUserEntity
      */
     @Modifying
     @Transactional
@@ -174,7 +169,6 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param adminUserEntity
      */
     @Transactional
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
@@ -185,7 +179,6 @@ public class AdminUserJpaRepository {
 
             return UserMapper.INSTANCE.toDto(adminUserEntity);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_USER);
         }
     }
@@ -199,7 +192,6 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param adminUserEntity
      */
     @Transactional
     public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
@@ -211,7 +203,6 @@ public class AdminUserJpaRepository {
 
             return UserMapper.INSTANCE.toDto(adminUserEntity);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
         }
     }

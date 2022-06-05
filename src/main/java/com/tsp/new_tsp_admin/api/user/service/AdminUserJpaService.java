@@ -17,8 +17,6 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @return
-     * @throws Exception
      */
     List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap);
 
@@ -31,8 +29,6 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @return
-     * @throws Exception
      */
     String adminLogin(AdminUserEntity adminUserEntity);
 
@@ -45,8 +41,6 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @return
-     * @throws Exception
      */
     void insertToken(AdminUserEntity adminUserEntity);
 
@@ -59,8 +53,6 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param adminUserEntity
-     * @throws Exception
      */
     AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity);
 
@@ -73,8 +65,6 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      *
-     * @param adminUserEntity
-     * @throws Exception
      */
     AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity);
 }
