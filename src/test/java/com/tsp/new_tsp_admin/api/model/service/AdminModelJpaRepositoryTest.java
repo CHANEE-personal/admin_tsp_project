@@ -7,6 +7,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.exception.TspException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
@@ -127,6 +129,7 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 리스트 조회 테스트")
     public void 모델리스트조회테스트() throws Exception {
 
         // given
@@ -140,6 +143,20 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 리스트 조회 예외 테스트")
+    public void 모델리스트조회예외테스트() throws Exception {
+
+        // given
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("categoryCd", -1);
+
+        // then
+        assertThatThrownBy(() -> adminModelJpaRepository.findModelsList(modelMap))
+                .isInstanceOf(TspException.class);
+    }
+
+    @Test
+    @DisplayName("모델 상세 조회 테스트")
     public void 모델상세조회테스트() throws Exception {
 
         // given
@@ -198,6 +215,18 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 상세 조회 예외 테스트")
+    public void 모델상세조회예외테스트() throws Exception {
+        // given
+        adminModelEntity = builder().categoryCd(-1).build();
+
+        // then
+        assertThatThrownBy(() -> adminModelJpaRepository.findOneModel(adminModelEntity))
+                .isInstanceOf(TspException.class);
+    }
+
+    @Test
+    @DisplayName("모델 BDD 조회 테스트")
     public void 모델BDD조회테스트() throws Exception {
 
         // given
@@ -220,6 +249,7 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 상세 BDD 조회 테스트")
     public void 모델상세BDD조회테스트() throws Exception {
 
         // given
@@ -262,6 +292,7 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 등록 테스트")
     public void 모델등록테스트() throws Exception {
         adminModelJpaRepository.insertModel(adminModelEntity);
 
@@ -272,6 +303,32 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 등록 예외 테스트")
+    public void 모델등록예외테스트() throws Exception {
+        adminModelEntity = builder()
+                .categoryCd(-1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        // then
+        assertThatThrownBy(() -> adminModelJpaRepository.insertModel(adminModelEntity))
+                .isInstanceOf(TspException.class);
+    }
+
+    @Test
+    @DisplayName("모델 수정 테스트")
     public void 모델수정테스트() throws Exception {
         Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
@@ -319,6 +376,32 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 수정 예외 테스트")
+    public void 모델수정예외테스트() throws Exception {
+        adminModelEntity = builder()
+                .categoryCd(-1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        // then
+        assertThatThrownBy(() -> adminModelJpaRepository.updateModelByEm(adminModelEntity))
+                .isInstanceOf(TspException.class);
+    }
+
+    @Test
+    @DisplayName("모델 삭제 테스트")
     public void 모델삭제테스트() throws Exception {
         adminModelEntity = builder()
                 .categoryCd(2)
@@ -366,6 +449,7 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 이미지 등록 테스트")
     public void 모델이미지등록테스트() throws Exception {
         adminModelEntity = builder()
                 .categoryCd(1)
@@ -402,6 +486,7 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 공통 코드 조회 테스트")
     public void 모델공통코드조회테스트() throws Exception {
         CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
                 .categoryCd(1).visible("Y").cmmType("model").build();

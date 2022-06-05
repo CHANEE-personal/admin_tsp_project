@@ -121,6 +121,14 @@ class AdminModelJpaControllerTest {
                 .andExpect(jsonPath("$.size3").value("31-24-34"))
                 .andExpect(jsonPath("$.shoes").value("240"));
     }
+    @Test
+    @DisplayName("Admin 모델 상세 조회 예외 테스트")
+    public void 모델상세조회Api예외테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-model/-1/1"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString().equals("모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.");
+    }
 
     @Test
     @Transactional
@@ -142,6 +150,37 @@ class AdminModelJpaControllerTest {
                 .andExpect(jsonPath("$.height").value("170"))
                 .andExpect(jsonPath("$.size3").value("34-24-34"))
                 .andExpect(jsonPath("$.shoes").value("270"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Admin 모델 등록 예외 테스트")
+    public void 모델등록Api예외테스트() throws Exception {
+        AdminModelEntity exAdminModelEntity = builder()
+                .categoryCd(-1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .status("draft")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(post("/api/jpa-model")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(exAdminModelEntity)))
+                .andDo(print())
+                .andExpect(jsonPath("$.code").value("ERROR_MODEL"))
+                .andExpect(jsonPath("$.status").value(500))
+                .andExpect(jsonPath("$.message").value("모델 등록 에러"));
     }
 
     @Test
