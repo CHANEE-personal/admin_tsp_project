@@ -218,6 +218,39 @@ class AdminModelJpaControllerTest {
     }
 
     @Test
+    @DisplayName("Admin 모델 수정 예외 테스트")
+    public void 모델수정Api예외테스트() throws Exception {
+        em.persist(adminModelEntity);
+
+        adminModelEntity = builder()
+                .idx(adminModelEntity.getIdx())
+                .categoryCd(-1)
+                .categoryAge("2")
+                .modelKorFirstName("test")
+                .modelKorSecondName("test")
+                .modelKorName("test")
+                .modelFirstName("test")
+                .modelSecondName("test")
+                .modelEngName("test")
+                .modelDescription("test")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .status("active")
+                .build();
+
+        mockMvc.perform(put("/api/jpa-model/1")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
+                .andDo(print())
+                .andExpect(jsonPath("$.code").value("ERROR_UPDATE_MODEL"))
+                .andExpect(jsonPath("$.status").value(500))
+                .andExpect(jsonPath("$.message").value("모델 수정 에러"));
+    }
+
+    @Test
     @DisplayName("Admin 모델 삭제 테스트")
     public void 모델삭제Api테스트() throws Exception {
         em.persist(adminModelEntity);
