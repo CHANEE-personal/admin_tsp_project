@@ -53,7 +53,6 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param productionMap
      */
     public Long findProductionsCount(Map<String, Object> productionMap) {
 
@@ -75,7 +74,6 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param productionMap
      */
     public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) {
         try {
@@ -104,7 +102,6 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param existAdminProductionEntity
      */
     public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) {
 
@@ -134,7 +131,6 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     @Transactional
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
@@ -156,7 +152,6 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param commonImageEntity
      */
     @Transactional
     public Integer insertProductionImage(CommonImageEntity commonImageEntity) {
@@ -178,7 +173,6 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param existAdminProductionEntity
      */
     @Modifying
     @Transactional
@@ -190,7 +184,6 @@ public class AdminProductionJpaRepository {
             em.clear();
             return ProductionMapper.INSTANCE.toDto(existAdminProductionEntity);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
         }
     }
@@ -204,7 +197,6 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     @Transactional
     public AdminProductionDTO deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
@@ -217,7 +209,6 @@ public class AdminProductionJpaRepository {
 
             return ProductionMapper.INSTANCE.toDto(adminProductionEntity);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION);
         }
     }

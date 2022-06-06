@@ -53,7 +53,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 12.
      * </pre>
      *
-     * @param portfolioMap
      */
     public Long findPortfoliosCount(Map<String, Object> portfolioMap) {
         try {
@@ -74,7 +73,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
      *
-     * @param portfolioMap
      */
     public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
         try {
@@ -103,7 +101,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
      *
-     * @param existAdminPortfolioEntity
      */
     public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
 
@@ -133,7 +130,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
      *
-     * @param adminPortfolioEntity
      */
     @Transactional
     public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
@@ -142,7 +138,6 @@ public class AdminPortfolioJpaRepository {
 
             return PortFolioMapper.INSTANCE.toDto(adminPortfolioEntity);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
         }
     }
@@ -156,7 +151,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param commonImageEntity
      */
     @Transactional
     public Integer insertPortfolioImage(CommonImageEntity commonImageEntity) {
@@ -178,7 +172,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
      *
-     * @param existAdminPortfolioEntity
      */
     @Modifying
     @Transactional
@@ -202,7 +195,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param adminPortfolioEntity
      */
     public AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         try {

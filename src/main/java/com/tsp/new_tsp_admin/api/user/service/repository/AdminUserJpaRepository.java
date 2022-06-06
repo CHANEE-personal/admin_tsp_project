@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,8 +88,6 @@ public class AdminUserJpaRepository {
      */
     public String adminLogin(AdminUserEntity existAdminUserEntity) {
 
-        Map<String, Object> userMap = new HashMap<>();
-
         try {
             final String db_pw = StringUtils.nullStrToStr(findOneUser(existAdminUserEntity.getUserId()).getPassword());
             String result;
@@ -127,7 +124,6 @@ public class AdminUserJpaRepository {
 
             return adminUser.getIdx();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_USER);
         }
     }
@@ -203,7 +199,7 @@ public class AdminUserJpaRepository {
 
             return UserMapper.INSTANCE.toDto(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_USER);
         }
     }
 }

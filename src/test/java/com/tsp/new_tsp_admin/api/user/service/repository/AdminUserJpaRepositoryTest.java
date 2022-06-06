@@ -92,7 +92,8 @@ class AdminUserJpaRepositoryTest {
         userList.add(adminUserDTO);
 
         // when
-        given(mockAdminUserJpaRepository.findUserList(userMap)).willReturn(userList);
+//        given(mockAdminUserJpaRepository.findUserList(userMap)).willReturn(userList);
+        when(mockAdminUserJpaRepository.findUserList(userMap)).thenReturn(userList);
 
         // then
         assertThat(mockAdminUserJpaRepository.findUserList(userMap).get(0).getUserId()).isEqualTo(userList.get(0).getUserId());
@@ -135,7 +136,8 @@ class AdminUserJpaRepositoryTest {
                 .build();
 
         // when
-        given(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).willReturn(bddUserEntity);
+//        given(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).willReturn(bddUserEntity);
+        when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(bddUserEntity);
 
         // then
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo(bddUserEntity.getUserId());
@@ -174,6 +176,7 @@ class AdminUserJpaRepositoryTest {
     @Test
     @DisplayName("유저 회원가입 테스트")
     public void 유저회원가입테스트() {
+        // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
@@ -184,8 +187,10 @@ class AdminUserJpaRepositoryTest {
 
         adminUserJpaRepository.insertAdminUser(adminUserEntity);
 
+        // when
         when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
 
+        // then
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo("test");
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getPassword()).isEqualTo("test");
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo("test");
