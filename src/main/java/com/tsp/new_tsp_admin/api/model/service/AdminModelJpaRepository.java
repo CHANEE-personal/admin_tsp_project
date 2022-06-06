@@ -157,6 +157,7 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDto(adminModelEntity);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.ERROR_MODEL);
         }
     }
@@ -200,7 +201,7 @@ public class AdminModelJpaRepository {
         try {
             JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-            existAdminModelEntity.setUpdater(1);
+            existAdminModelEntity.setUpdater("1");
             existAdminModelEntity.setUpdateTime(new Date());
 
             update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
@@ -212,7 +213,7 @@ public class AdminModelJpaRepository {
                     .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
                     .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
                     .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                    .set(adminModelEntity.updater, 1)
+                    .set(adminModelEntity.updater, "1")
                     .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
 
             return existAdminModelEntity;
@@ -282,12 +283,12 @@ public class AdminModelJpaRepository {
         try {
             JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-            existAdminModelEntity.setUpdater(1);
+            existAdminModelEntity.setUpdater("1");
             existAdminModelEntity.setUpdateTime(new Date());
 
             return update.set(adminModelEntity.visible, "N")
                     .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                    .set(adminModelEntity.updater, 1)
+                    .set(adminModelEntity.updater, "1")
                     .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);

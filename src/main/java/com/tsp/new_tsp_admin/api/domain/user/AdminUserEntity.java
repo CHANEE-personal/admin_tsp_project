@@ -57,11 +57,11 @@ public class AdminUserEntity implements UserDetails {
 
 	@Column(name = "creator", updatable = false)
 	@ApiModelProperty(required = true, value = "등록자")
-	private Integer creator;
+	private String creator;
 
 	@Column(name = "updater", insertable = false)
 	@ApiModelProperty(required = true, value = "수정자")
-	private Integer updater;
+	private String updater;
 
 	@Column(name = "create_time", updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)

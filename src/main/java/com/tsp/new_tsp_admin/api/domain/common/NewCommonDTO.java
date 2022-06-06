@@ -21,10 +21,10 @@ import java.util.Date;
 public class NewCommonDTO {
 
     @ApiModelProperty(required = true, value = "등록자", hidden = true)
-    private Integer creator;
+    private String creator;
 
     @ApiModelProperty(required = true, value = "수정자", hidden = true)
-    private Integer updater;
+    private String updater;
 
     @ApiModelProperty(required = true, value = "등록자 이름", hidden = true)
     private String adminName;

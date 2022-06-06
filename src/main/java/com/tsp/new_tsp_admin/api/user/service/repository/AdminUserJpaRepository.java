@@ -12,6 +12,10 @@ import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +24,7 @@ import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.api.domain.user.QAdminUserEntity.adminUserEntity;
 
@@ -31,6 +36,7 @@ public class AdminUserJpaRepository {
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     /**
      * <pre>
@@ -78,6 +84,22 @@ public class AdminUserJpaRepository {
 
     /**
      * <pre>
+     * 1. MethodName : findOneUserByToken
+     * 2. ClassName  : AdminUserJpaRepository.java
+     * 3. Comment    : 토큰을 이용한 유저 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     */
+    public Integer findOneUserByToken(String token) {
+        return Objects.requireNonNull(queryFactory.selectFrom(adminUserEntity)
+                .where(adminUserEntity.userToken.eq(token))
+                .fetchOne()).getIdx();
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : adminLogin
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 로그인 처리
@@ -93,6 +115,10 @@ public class AdminUserJpaRepository {
             String result;
 
             if (passwordEncoder.matches(existAdminUserEntity.getPassword(), db_pw)) {
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(existAdminUserEntity.getUserId(), existAdminUserEntity.getPassword())
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
                 result = "Y";
             } else {
                 result = "N";
@@ -146,7 +172,7 @@ public class AdminUserJpaRepository {
             JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
             update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
-                    .set(adminUserEntity.updater, 1)
+                    .set(adminUserEntity.updater, "1")
                     .set(adminUserEntity.updateTime, new Date())
                     .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
 

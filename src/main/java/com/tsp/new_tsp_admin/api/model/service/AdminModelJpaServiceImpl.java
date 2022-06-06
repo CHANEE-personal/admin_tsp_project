@@ -32,7 +32,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param modelMap
      */
     @Override
     public Long findModelsCount(Map<String, Object> modelMap) {
@@ -52,7 +51,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param modelMap
      */
     @Override
     public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
@@ -72,7 +70,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param adminModelEntity
      */
     @Override
     public AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) {
@@ -92,7 +89,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param adminModelEntity
      */
     @Override
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
@@ -112,7 +108,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param adminModelEntity
      */
     @Override
     public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
@@ -132,7 +127,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      *
-     * @param adminModelEntity
      */
     @Override
     public AdminModelDTO deleteModel(AdminModelEntity adminModelEntity) {
@@ -152,7 +146,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param commonImageEntity
      */
     @Override
     public String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {

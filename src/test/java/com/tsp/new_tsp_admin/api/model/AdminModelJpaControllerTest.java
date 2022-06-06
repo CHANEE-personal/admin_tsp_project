@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -134,6 +135,21 @@ class AdminModelJpaControllerTest {
     @Transactional
     @DisplayName("Admin 모델 등록 테스트")
     public void 모델등록Api테스트() throws Exception {
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+                .userId("admin02")
+                .password("pass1234")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(post("/api/jpa-user/login")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.loginYn").value("Y"))
+                .andExpect(jsonPath("$.token").isNotEmpty());
+
+
         mockMvc.perform(post("/api/jpa-model")
         .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
