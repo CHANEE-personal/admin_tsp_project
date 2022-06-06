@@ -18,7 +18,7 @@ public interface AdminUserJpaService {
      * </pre>
      *
      */
-    List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap);
+    List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap) throws Exception;
 
     /**
      * <pre>
@@ -30,7 +30,7 @@ public interface AdminUserJpaService {
      * </pre>
      *
      */
-    String adminLogin(AdminUserEntity adminUserEntity);
+    String adminLogin(AdminUserEntity adminUserEntity) throws Exception;
 
     /**
      * <pre>
@@ -42,7 +42,7 @@ public interface AdminUserJpaService {
      * </pre>
      *
      */
-    void insertToken(AdminUserEntity adminUserEntity);
+    void insertToken(AdminUserEntity adminUserEntity) throws Exception;
 
     /**
      * <pre>
@@ -54,7 +54,7 @@ public interface AdminUserJpaService {
      * </pre>
      *
      */
-    AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity);
+    AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) throws Exception;
 
     /**
      * <pre>
@@ -66,5 +66,5 @@ public interface AdminUserJpaService {
      * </pre>
      *
      */
-    AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity);
+    AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) throws Exception;
 }

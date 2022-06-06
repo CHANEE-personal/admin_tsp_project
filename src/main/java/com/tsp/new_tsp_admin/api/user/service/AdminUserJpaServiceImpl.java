@@ -3,11 +3,9 @@ package com.tsp.new_tsp_admin.api.user.service;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
-import com.tsp.new_tsp_admin.common.StringUtils;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +29,11 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     public List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap) {
-        return adminUserJpaRepository.findUserList(userMap);
+        try {
+            return adminUserJpaRepository.findUserList(userMap);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER_LIST);
+        }
     }
 
     /**
@@ -46,7 +48,11 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     public String adminLogin(AdminUserEntity adminUserEntity) {
-        return adminUserJpaRepository.adminLogin(adminUserEntity);
+        try {
+            return adminUserJpaRepository.adminLogin(adminUserEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER);
+        }
     }
 
     /**
@@ -77,7 +83,11 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
-        return adminUserJpaRepository.insertAdminUser(adminUserEntity);
+        try {
+            return adminUserJpaRepository.insertAdminUser(adminUserEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_USER);
+        }
     }
 
     /**
@@ -92,6 +102,10 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
-        return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
+        try {
+            return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_DELETE_USER);
+        }
     }
 }
