@@ -6,7 +6,9 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,10 +24,7 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
@@ -45,6 +44,8 @@ import static org.mockito.Mockito.*;
 class AdminModelJpaRepositoryTest {
     @Autowired
     private AdminModelJpaRepository adminModelJpaRepository;
+    @Autowired
+    private AdminUserJpaRepository adminUserJpaRepository;
 
     @Mock
     private AdminModelJpaRepository mockAdminModelJpaRepository;
@@ -59,6 +60,15 @@ class AdminModelJpaRepositoryTest {
     private CommonImageDTO commonImageDTO;
 
     public void createModelAndImage() {
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+                .userId("admin02")
+                .password("pass1234")
+                .name("test")
+                .visible("Y")
+                .build();
+
+        adminUserJpaRepository.adminLogin(adminUserEntity);
+
         adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
@@ -123,7 +133,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 리스트 조회 테스트")
-    public void 모델리스트조회테스트() throws Exception {
+    public void 모델리스트조회테스트() {
 
         // given
         Map<String, Object> modelMap = new HashMap<>();
@@ -137,7 +147,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 리스트 조회 예외 테스트")
-    public void 모델리스트조회예외테스트() throws Exception {
+    public void 모델리스트조회예외테스트() {
 
         // given
         Map<String, Object> modelMap = new HashMap<>();
@@ -150,7 +160,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 상세 조회 테스트")
-    public void 모델상세조회테스트() throws Exception {
+    public void 모델상세조회테스트() {
 
         // given
         adminModelEntity = builder().idx(143).categoryCd(2).build();
@@ -209,7 +219,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 상세 조회 예외 테스트")
-    public void 모델상세조회예외테스트() throws Exception {
+    public void 모델상세조회예외테스트() {
         // given
         adminModelEntity = builder().categoryCd(-1).build();
 
@@ -220,7 +230,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 BDD 조회 테스트")
-    public void 모델BDD조회테스트() throws Exception {
+    public void 모델BDD조회테스트() {
 
         // given
         ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
@@ -249,7 +259,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 상세 BDD 조회 테스트")
-    public void 모델상세BDD조회테스트() throws Exception {
+    public void 모델상세BDD조회테스트() {
 
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
@@ -298,11 +308,14 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 등록 테스트")
-    public void 모델등록테스트() throws Exception {
+    public void 모델등록테스트() {
+        // given
         adminModelJpaRepository.insertModel(adminModelEntity);
 
+        // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
 
+        // then
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(1);
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("2");
 
@@ -312,8 +325,22 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 등록 CreatedBy 테스트")
+    public void 모델등록CreatedBy테스트() {
+        // given
+        adminModelJpaRepository.insertModel(adminModelEntity);
+
+        // when
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+
+        // then
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCreator()).isNotEmpty();
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCreateTime()).isEqualTo(new Date());
+    }
+
+    @Test
     @DisplayName("모델 등록 예외 테스트")
-    public void 모델등록예외테스트() throws Exception {
+    public void 모델등록예외테스트() {
         adminModelEntity = builder()
                 .categoryCd(-1)
                 .categoryAge("2")
@@ -338,7 +365,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 수정 테스트")
-    public void 모델수정테스트() throws Exception {
+    public void 모델수정테스트() {
         Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = builder()
@@ -392,7 +419,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 수정 예외 테스트")
-    public void 모델수정예외테스트() throws Exception {
+    public void 모델수정예외테스트() {
         adminModelEntity = builder()
                 .categoryCd(-1)
                 .categoryAge("2")
@@ -417,7 +444,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 삭제 테스트")
-    public void 모델삭제테스트() throws Exception {
+    public void 모델삭제테스트() {
         em.persist(adminModelEntity);
 
         // when
@@ -435,7 +462,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 이미지 등록 테스트")
-    public void 모델이미지등록테스트() throws Exception {
+    public void 모델이미지등록테스트() {
         Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -455,7 +482,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 공통 코드 조회 테스트")
-    public void 모델공통코드조회테스트() throws Exception {
+    public void 모델공통코드조회테스트() {
         CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
                 .categoryCd(1).visible("Y").cmmType("model").build();
 
