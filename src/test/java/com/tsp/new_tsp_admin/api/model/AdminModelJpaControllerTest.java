@@ -257,6 +257,56 @@ class AdminModelJpaControllerTest {
     }
 
     @Test
+    @Transactional
+    @DisplayName("LastModifiedBy, UpdateTimestamp 테스트")
+    public void LastModifiedByAndUpdateTimestamp테스트() throws Exception {
+
+        em.persist(adminModelEntity);
+
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+                .userId("admin02")
+                .password("pass1234")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(post("/api/jpa-user/login")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.loginYn").value("Y"))
+                .andExpect(jsonPath("$.token").isNotEmpty());
+
+        adminModelEntity = builder()
+                .idx(adminModelEntity.getIdx())
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("test")
+                .modelKorSecondName("test")
+                .modelKorName("test")
+                .modelFirstName("test")
+                .modelSecondName("test")
+                .modelEngName("test")
+                .modelDescription("test")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .status("active")
+                .build();
+
+        mockMvc.perform(put("/api/jpa-model/1")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.modelKorFirstName").value("test"))
+                .andExpect(jsonPath("$.modelKorSecondName").value("test"))
+                .andExpect(jsonPath("$.modelKorName").value("test"));
+    }
+
+    @Test
     @DisplayName("Admin 모델 수정 예외 테스트")
     public void 모델수정Api예외테스트() throws Exception {
         em.persist(adminModelEntity);
