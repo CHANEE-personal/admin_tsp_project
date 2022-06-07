@@ -135,21 +135,6 @@ class AdminModelJpaControllerTest {
     @Transactional
     @DisplayName("Admin 모델 등록 테스트")
     public void 모델등록Api테스트() throws Exception {
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId("admin02")
-                .password("pass1234")
-                .visible("Y")
-                .build();
-
-        mockMvc.perform(post("/api/jpa-user/login")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminUserEntity)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.loginYn").value("Y"))
-                .andExpect(jsonPath("$.token").isNotEmpty());
-
-
         mockMvc.perform(post("/api/jpa-model")
         .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
@@ -166,6 +151,44 @@ class AdminModelJpaControllerTest {
                 .andExpect(jsonPath("$.height").value("170"))
                 .andExpect(jsonPath("$.size3").value("34-24-34"))
                 .andExpect(jsonPath("$.shoes").value("270"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("CreatedBy, CreationTimestamp 테스트")
+    public void CreatedByAndCreationTimestamp테스트() throws Exception {
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+                .userId("admin02")
+                .password("pass1234")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(post("/api/jpa-user/login")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.loginYn").value("Y"))
+                .andExpect(jsonPath("$.token").isNotEmpty());
+
+        mockMvc.perform(post("/api/jpa-model")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryCd").value(1))
+                .andExpect(jsonPath("$.categoryAge").value("2"))
+                .andExpect(jsonPath("$.modelKorFirstName").value("조"))
+                .andExpect(jsonPath("$.modelKorSecondName").value("찬희"))
+                .andExpect(jsonPath("$.modelKorName").value("조찬희"))
+                .andExpect(jsonPath("$.modelFirstName").value("CHO"))
+                .andExpect(jsonPath("$.modelSecondName").value("CHANHEE"))
+                .andExpect(jsonPath("$.modelDescription").value("chaneeCho"))
+                .andExpect(jsonPath("$.height").value("170"))
+                .andExpect(jsonPath("$.size3").value("34-24-34"))
+                .andExpect(jsonPath("$.shoes").value("270"))
+                .andExpect(jsonPath("$.creator").isNotEmpty())
+                .andExpect(jsonPath("$.createTime").isNotEmpty());
     }
 
     @Test
