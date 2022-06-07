@@ -13,9 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +54,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public Long findProductionsCount(Map<String, Object> productionMap) {
 
         try {
@@ -75,6 +76,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) {
         try {
             List<AdminProductionEntity> productionList = queryFactory
@@ -103,6 +105,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) {
 
         try {

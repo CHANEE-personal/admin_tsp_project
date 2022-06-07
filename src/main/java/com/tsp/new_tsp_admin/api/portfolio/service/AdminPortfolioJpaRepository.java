@@ -13,9 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +54,7 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public Long findPortfoliosCount(Map<String, Object> portfolioMap) {
         try {
             return queryFactory.selectFrom(adminPortFolioEntity)
@@ -74,6 +75,7 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
         try {
             List<AdminPortFolioEntity> portfolioList =  queryFactory
@@ -102,6 +104,7 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
 
         try {
@@ -196,6 +199,7 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
+    @Transactional
     public AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         try {
             adminPortfolioEntity = em.find(AdminPortFolioEntity.class, adminPortfolioEntity.getIdx());

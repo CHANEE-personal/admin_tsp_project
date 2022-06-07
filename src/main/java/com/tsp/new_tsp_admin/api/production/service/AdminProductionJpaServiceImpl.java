@@ -4,6 +4,9 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,9 +28,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param productionMap
      */
     @Override
+    @Cacheable("production")
     public Long findProductionsCount(Map<String, Object> productionMap) {
         return adminProductionJpaRepository.findProductionsCount(productionMap);
     }
@@ -41,9 +44,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param productionMap
      */
     @Override
+    @Cacheable("production")
     public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) {
         return adminProductionJpaRepository.findProductionsList(productionMap);
     }
@@ -57,9 +60,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     @Override
+    @Cacheable("production")
     public AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.findOneProduction(adminProductionEntity);
     }
@@ -73,9 +76,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     @Override
+    @CachePut("production")
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.insertProduction(adminProductionEntity);
     }
@@ -89,9 +92,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     @Override
+    @CachePut("production")
     public AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
     }
@@ -105,9 +108,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     @Override
+    @CacheEvict("production")
     public AdminProductionDTO deleteProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity);
     }

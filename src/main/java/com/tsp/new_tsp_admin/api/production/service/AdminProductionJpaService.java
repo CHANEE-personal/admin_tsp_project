@@ -17,7 +17,6 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param productionMap
      */
     Long findProductionsCount(Map<String, Object> productionMap);
 
@@ -30,7 +29,6 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param productionMap
      */
     List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap);
 
@@ -43,7 +41,6 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity);
 
@@ -56,7 +53,6 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity);
 
@@ -69,7 +65,6 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity);
 
@@ -82,7 +77,6 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      *
-     * @param adminProductionEntity
      */
     AdminProductionDTO deleteProduction(AdminProductionEntity adminProductionEntity);
 }

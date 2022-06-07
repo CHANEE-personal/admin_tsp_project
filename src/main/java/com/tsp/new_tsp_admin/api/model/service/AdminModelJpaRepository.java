@@ -17,9 +17,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +69,7 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public Long findModelsCount(Map<String, Object> modelMap) {
 
         try {
@@ -91,6 +92,7 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
 
         try {
@@ -120,6 +122,7 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) {
 
         try {
@@ -306,6 +309,7 @@ public class AdminModelJpaRepository {
      *
      */
     @Modifying(clearAutomatically = true)
+    @Transactional
     public AdminModelDTO deleteModelByEm(AdminModelEntity adminModelEntity) {
 
         try {

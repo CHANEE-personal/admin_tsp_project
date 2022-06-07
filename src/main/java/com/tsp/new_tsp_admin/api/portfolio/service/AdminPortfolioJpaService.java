@@ -17,7 +17,6 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param portfolioMap
      */
     Long findPortfoliosCount(Map<String, Object> portfolioMap);
 
@@ -30,7 +29,6 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param portfolioMap
      */
     List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap);
 
@@ -43,7 +41,6 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      *
-     * @param adminPortFolioEntity
      */
     AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
@@ -56,7 +53,6 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      *
-     * @param adminPortFolioEntity
      */
     AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
@@ -69,7 +65,6 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      *
-     * @param adminPortFolioEntity
      */
     AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
@@ -82,7 +77,6 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      *
-     * @param adminPortFolioEntity
      */
     AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 }

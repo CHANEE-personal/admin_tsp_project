@@ -3,6 +3,9 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +26,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param portfolioMap
      */
     @Override
+    @Cacheable("portfolio")
     public Long findPortfoliosCount(Map<String, Object> portfolioMap) {
         return adminPortfolioJpaRepository.findPortfoliosCount(portfolioMap);
     }
@@ -39,9 +42,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param portfolioMap
      */
     @Override
+    @Cacheable("portfolio")
     public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
         return adminPortfolioJpaRepository.findPortfoliosList(portfolioMap);
     }
@@ -55,9 +58,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      *
-     * @param adminPortFolioEntity
      */
     @Override
+    @Cacheable("portfolio")
     public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
     }
@@ -71,9 +74,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      *
-     * @param adminPortFolioEntity
      */
     @Override
+    @CachePut("portfolio")
     public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
     }
@@ -87,9 +90,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      *
-     * @param adminPortFolioEntity
      */
     @Override
+    @CachePut("portfolio")
     public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
     }
@@ -103,9 +106,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      *
-     * @param adminPortFolioEntity
      */
     @Override
+    @CacheEvict("portfolio")
     public AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
     }

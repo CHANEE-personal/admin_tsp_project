@@ -9,7 +9,11 @@ import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -53,6 +57,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
+    @Cacheable("model")
     public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
         try {
             return adminModelJpaRepository.findModelsList(modelMap);
@@ -72,6 +77,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
+    @Cacheable("model")
     public AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) {
         try {
             return adminModelJpaRepository.findOneModel(adminModelEntity);
@@ -91,6 +97,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
+    @CachePut("model")
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         try {
             return adminModelJpaRepository.insertModel(adminModelEntity);
@@ -110,6 +117,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
+    @CachePut("model")
     public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
         try {
             return adminModelJpaRepository.updateModelByEm(adminModelEntity);
@@ -129,6 +137,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
+    @CacheEvict("model")
     public AdminModelDTO deleteModel(AdminModelEntity adminModelEntity) {
         try {
             return adminModelJpaRepository.deleteModelByEm(adminModelEntity);
