@@ -66,11 +66,7 @@ public class AdminUserJpaController {
     @GetMapping
     public List<AdminUserDTO> userEntityList(@RequestParam(required = false) Map<String, Object> paramMap,
                                              Page page) throws Exception {
-
-        // 페이징 및 검색
-        ConcurrentHashMap<String, Object> userMap = searchCommon.searchCommon(page, paramMap);
-
-        return adminUserJpaService.getAdminUserList(userMap);
+        return adminUserJpaService.getAdminUserList(searchCommon.searchCommon(page, paramMap));
     }
 
     /**

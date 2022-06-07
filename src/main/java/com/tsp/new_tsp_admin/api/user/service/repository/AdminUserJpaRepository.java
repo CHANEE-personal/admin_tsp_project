@@ -18,9 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +48,7 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
 
         try {
@@ -76,10 +77,15 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public AdminUserEntity findOneUser(String id) {
-        return queryFactory.selectFrom(adminUserEntity)
-                .where(adminUserEntity.userId.eq(id))
-                .fetchOne();
+        try {
+            return queryFactory.selectFrom(adminUserEntity)
+                    .where(adminUserEntity.userId.eq(id))
+                    .fetchOne();
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER);
+        }
     }
 
     /**
@@ -92,6 +98,7 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public Integer findOneUserByToken(String token) {
         return Objects.requireNonNull(queryFactory.selectFrom(adminUserEntity)
                 .where(adminUserEntity.userToken.eq(token))

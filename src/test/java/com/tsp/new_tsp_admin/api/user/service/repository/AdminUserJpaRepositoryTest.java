@@ -66,7 +66,7 @@ class AdminUserJpaRepositoryTest {
     public void 유저조회테스트() {
 
         // given
-        Map<String, Object> userMap = new HashMap<>();
+        ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
         userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
 

@@ -6,6 +6,9 @@ import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +31,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      *
      */
     @Override
+    @Cacheable("user")
     public List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap) {
         try {
             return adminUserJpaRepository.findUserList(userMap);
@@ -66,6 +70,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      *
      */
     @Override
+    @CachePut("user")
     public void insertToken(AdminUserEntity paramUserEntity) {
         AdminUserEntity adminUserEntity = adminUserJpaRepository.findOneUser(paramUserEntity.getUserId());
         adminUserJpaRepository.insertUserTokenByEm(adminUserEntity);
@@ -82,6 +87,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      *
      */
     @Override
+    @CachePut("user")
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
         try {
             return adminUserJpaRepository.insertAdminUser(adminUserEntity);
@@ -101,6 +107,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      *
      */
     @Override
+    @CacheEvict("user")
     public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
         try {
             return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
