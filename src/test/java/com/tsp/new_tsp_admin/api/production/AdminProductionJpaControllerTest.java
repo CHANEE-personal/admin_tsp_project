@@ -118,7 +118,7 @@ class AdminProductionJpaControllerTest {
     public void 프로덕션삭제Api테스트() throws Exception {
         em.persist(adminProductionEntity);
 
-        mockMvc.perform(delete("/api/jpa-production/"+adminProductionEntity.getIdx())
+        mockMvc.perform(delete("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())

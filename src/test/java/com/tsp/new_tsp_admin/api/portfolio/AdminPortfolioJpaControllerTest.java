@@ -138,7 +138,7 @@ class AdminPortfolioJpaControllerTest {
     public void 포트폴리오삭제Api테스트() throws Exception {
         em.persist(adminPortFolioEntity);
 
-        mockMvc.perform(delete("/api/jpa-portfolio/"+adminPortFolioEntity.getIdx())
+        mockMvc.perform(delete("/api/jpa-portfolio/{idx}", adminPortFolioEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())

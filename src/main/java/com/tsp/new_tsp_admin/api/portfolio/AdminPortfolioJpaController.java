@@ -37,7 +37,6 @@ public class AdminPortfolioJpaController {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      *
-     * @param page
      */
     @ApiOperation(value = "포트폴리오 조회", notes = "포트폴리오를 조회한다.")
     @ApiResponses({
@@ -80,7 +79,6 @@ public class AdminPortfolioJpaController {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      *
-     * @param idx
      */
     @ApiOperation(value = "포트폴리오 상세 조회", notes = "포트폴리오를 상세 조회한다.")
     @ApiResponses({

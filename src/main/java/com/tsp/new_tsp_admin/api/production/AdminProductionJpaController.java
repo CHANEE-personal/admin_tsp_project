@@ -37,7 +37,6 @@ public class AdminProductionJpaController {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      *
-     * @param page
      */
     @ApiOperation(value = "프로덕션 조회", notes = "프로덕션을 조회한다.")
     @ApiResponses({
@@ -48,7 +47,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ConcurrentHashMap getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
+    public ConcurrentHashMap<String, Object> getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
         ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
 
         Long productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
@@ -80,7 +79,6 @@ public class AdminProductionJpaController {
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
      *
-     * @param idx
      */
     @ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
     @ApiResponses({

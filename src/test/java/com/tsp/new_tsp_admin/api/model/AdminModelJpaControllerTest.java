@@ -344,7 +344,7 @@ class AdminModelJpaControllerTest {
     public void 모델삭제Api테스트() throws Exception {
         em.persist(adminModelEntity);
 
-        mockMvc.perform(delete("/api/jpa-model/"+adminModelEntity.getIdx())
+        mockMvc.perform(delete("/api/jpa-model/{idx}", adminModelEntity.getIdx())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())

@@ -16,7 +16,6 @@ import java.util.Map;
 public class AdminProductionJpaServiceImpl implements AdminProductionJpaService {
 
     private final AdminProductionJpaRepository adminProductionJpaRepository;
-    private final ImageService imageService;
 
     /**
      * <pre>
