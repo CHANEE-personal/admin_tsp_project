@@ -55,6 +55,9 @@ public class AdminUserEntity implements UserDetails {
 	@Column(name = "user_token")
 	String userToken;
 
+	@Column(name = "user_refreshToken")
+	String userRefreshToken;
+
 	@Column(name = "creator", updatable = false)
 	@ApiModelProperty(required = true, value = "등록자")
 	private String creator;
