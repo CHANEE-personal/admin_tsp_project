@@ -7,6 +7,7 @@ public enum ApiExceptionType implements BaseExceptionType {
 
 	// User 관련 Type
 	ERROR_USER("ERROR_USER", 500, "유저 등록 에러"),
+	ERROR_UPDATE_USER("ERROR_UPDATE_USER", 500, "유저 수정 에러"),
 	ERROR_DELETE_USER("ERROR_DELETE_USER", 500, "유저 삭제 에러"),
 	NOT_FOUND_USER("NOT_FOUND_USER", 200, "해당 유저 없음"),
 	NOT_FOUND_USER_LIST("NOT_FOUND_USER_LIST", 200, "유저 리스트 없음"),

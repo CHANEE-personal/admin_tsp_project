@@ -214,6 +214,29 @@ public class AdminUserJpaRepository {
 
     /**
      * <pre>
+     * 1. MethodName : updateAdminUser
+     * 2. ClassName  : AdminUserJpaRepository.java
+     * 3. Comment    : 관리자 회원 수정 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     */
+    @Transactional
+    public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
+        try {
+            em.merge(adminUserEntity);
+            em.flush();
+            em.clear();
+
+            return UserMapper.INSTANCE.toDto(adminUserEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_USER);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : deleteAdminUser
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 회원 탈퇴

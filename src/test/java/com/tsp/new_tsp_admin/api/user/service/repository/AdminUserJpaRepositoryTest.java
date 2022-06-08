@@ -201,6 +201,43 @@ class AdminUserJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("유저 회원수정 테스트")
+    public void 유저회원수정테스트() {
+        // given
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+
+        Integer idx = adminUserJpaRepository.insertAdminUser(adminUserEntity).getIdx();
+
+        AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
+                .idx(idx)
+                .userId("test1")
+                .password("test1")
+                .name("test1")
+                .email("test1@test.com")
+                .visible("Y")
+                .build();
+
+        adminUserJpaRepository.updateAdminUser(newAdminUserEntity);
+
+        // when
+        when(mockAdminUserJpaRepository.findOneUser(newAdminUserEntity.getUserId())).thenReturn(newAdminUserEntity);
+
+        // then
+        assertThat(mockAdminUserJpaRepository.findOneUser(newAdminUserEntity.getUserId()).getUserId()).isEqualTo("test1");
+        assertThat(mockAdminUserJpaRepository.findOneUser(newAdminUserEntity.getUserId()).getName()).isEqualTo("test1");
+
+        // verify
+        verify(mockAdminUserJpaRepository, times(2)).findOneUser(newAdminUserEntity.getUserId());
+        verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(newAdminUserEntity.getUserId());
+    }
+
+    @Test
     @DisplayName("유저 회원탈퇴 테스트")
     public void 유저탈퇴테스트() {
         assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity).getIdx()).isEqualTo(adminUserDTO.getIdx());

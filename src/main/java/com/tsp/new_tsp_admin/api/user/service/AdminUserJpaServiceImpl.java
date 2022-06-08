@@ -98,6 +98,26 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : updateAdminUser
+     * 2. ClassName  : AdminUserJpaServiceImpl.java
+     * 3. Comment    : 관리자 회원 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     */
+    @Override
+    @CachePut("user")
+    public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
+        try {
+            return adminUserJpaRepository.updateAdminUser(adminUserEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_USER);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : deleteAdminUser
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 회원 탈퇴

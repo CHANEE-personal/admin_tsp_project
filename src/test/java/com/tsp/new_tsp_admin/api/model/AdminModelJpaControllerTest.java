@@ -246,7 +246,7 @@ class AdminModelJpaControllerTest {
                 .status("active")
                 .build();
 
-        mockMvc.perform(put("/api/jpa-model/1")
+        mockMvc.perform(put("/api/jpa-model/{idx}", adminModelEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())

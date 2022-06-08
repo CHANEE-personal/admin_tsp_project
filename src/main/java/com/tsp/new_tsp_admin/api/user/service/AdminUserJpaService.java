@@ -58,6 +58,18 @@ public interface AdminUserJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : updateAdminUser
+     * 2. ClassName  : AdminUserJpaService.java
+     * 3. Comment    : 관리자 회원 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     */
+    AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : deleteAdminUser
      * 2. ClassName  : AdminUserJpaService.java
      * 3. Comment    : 관리자 회원 탈퇴

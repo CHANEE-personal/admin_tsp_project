@@ -169,7 +169,7 @@ public class AdminUserJpaController {
      * <pre>
      * 1. MethodName : insertAdminUser
      * 2. ClassName  : AdminUserJpaController.java
-     * 3. Comment    : 관리자 로그인 회원가입
+     * 3. Comment    : 관리자 회원가입
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
@@ -186,6 +186,30 @@ public class AdminUserJpaController {
     @PostMapping
     public AdminUserDTO insertAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
         return adminUserJpaService.insertAdminUser(adminUserEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateAdminUser
+     * 2. ClassName  : AdminUserJpaController.java
+     * 3. Comment    : 관리자 회원 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 11.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "Admin 회원 수정 처리", notes = "Admin 회원 수정을 처리한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PutMapping("{idx}")
+    public AdminUserDTO updateAdminUser(@RequestBody AdminUserEntity adminUserEntity,
+                                        @PathVariable("idx") Integer idx) throws Exception {
+        return adminUserJpaService.updateAdminUser(adminUserEntity);
     }
 
     /**

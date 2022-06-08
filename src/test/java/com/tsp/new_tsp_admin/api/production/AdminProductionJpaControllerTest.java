@@ -104,7 +104,7 @@ class AdminProductionJpaControllerTest {
 
         adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
 
-        mockMvc.perform(put("/api/jpa-production/"+adminProductionEntity.getIdx())
+        mockMvc.perform(put("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
