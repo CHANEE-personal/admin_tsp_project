@@ -9,9 +9,7 @@ import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.api.jwt.MyUserDetailsService;
 import com.tsp.new_tsp_admin.common.Page;
 import com.tsp.new_tsp_admin.common.SearchCommon;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -108,8 +106,12 @@ public class AdminUserJpaController {
 
             // 로그인 완료 시 생성된 token 값 DB에 저장
             UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
-            String token = jwtTokenUtil.generateToken(userDetails);
-            adminUserEntity.setUserToken(token);
+            String accessToken = jwtTokenUtil.generateToken(userDetails);
+            String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+            adminUserEntity.setUserToken(accessToken);
+            adminUserEntity.setUserRefreshToken(refreshToken);
+            jwtTokenUtil.setHeaderAccessToken(response, accessToken);
+            jwtTokenUtil.setHeaderRefreshToken(response, refreshToken);
 
             adminUserJpaService.insertToken(adminUserEntity);
         }
@@ -127,11 +129,7 @@ public class AdminUserJpaController {
      * </pre>
      *
      */
-    @ApiIgnore
-    @ApiOperation(value = "JWT 토근 발급", notes = "JWT 토근 발급")
-    @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
         // id, password 인증
         authenticate(authenticationRequest.getUserId(), authenticationRequest.getPassword());
 
@@ -140,6 +138,23 @@ public class AdminUserJpaController {
         String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(token));
+    }
+
+    @ApiOperation(value = "JWT 토큰 재발급", notes = "JWT 토큰을 재발급")
+    @PostMapping(value = "/refresh")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "access-token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "REFRESH-TOKEN", value = "refresh-token", required = true, dataType = "String", paramType = "header")
+    })
+    public ResponseEntity<?> createAuthenticationRefreshToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        // id, password 인증
+        authenticate(authenticationRequest.getUserId(), authenticationRequest.getPassword());
+
+        // 사용자 정보 조회 후 token 생성
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
+        String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse(refreshToken));
     }
 
     /**

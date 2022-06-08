@@ -155,7 +155,7 @@ class AdminUserJpaControllerTest {
         authenticationRequest.setUserId("admin01");
         authenticationRequest.setPassword("pass1234");
 
-        mockMvc.perform(post("/api/jpa-user/authenticate")
+        mockMvc.perform(post("/api/jpa-user/refresh")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(authenticationRequest)))
                 .andDo(print())
