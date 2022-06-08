@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
@@ -47,10 +48,15 @@ class AdminUserJpaControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EntityManager em;
+
     public void createUser() {
         adminUserEntity = builder()
                 .userId("admin02")
                 .password("pass1234")
+                .name("admin02")
+                .email("admin02@tsp.com")
                 .visible("Y")
                 .build();
     }
@@ -105,6 +111,29 @@ class AdminUserJpaControllerTest {
                 .andExpect(jsonPath("$.password").value("test"))
                 .andExpect(jsonPath("$.name").value("test"))
                 .andExpect(jsonPath("$.email").value("test@test.com"));
+    }
+
+    @Test
+    @DisplayName("관리자 회원수정 테스트")
+    public void 회원수정테스트() throws Exception {
+        em.persist(adminUserEntity);
+
+        adminUserEntity = builder()
+                .idx(adminUserEntity.getIdx())
+                .userId("admin03")
+                .password("pass1234")
+                .name("admin03")
+                .email("admin03@tsp.com")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(put("/api/jpa-user/{idx}", adminUserEntity.getIdx())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value("admin03"))
+                .andExpect(jsonPath("$.name").value("admin03"));
     }
 
     @Test
