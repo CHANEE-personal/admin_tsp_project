@@ -153,8 +153,7 @@ public class AdminModelJpaController {
     @PostMapping(value = "/{idx}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String insertModelImage(@PathVariable("idx") Integer idx,
                                    @RequestParam("images") List<MultipartFile> fileName) throws Exception {
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder().typeName("model").typeIdx(idx).visible("Y").build();
-        return this.adminModelJpaService.insertModelImage(commonImageEntity, fileName);
+        return this.adminModelJpaService.insertModelImage(CommonImageEntity.builder().typeName("model").typeIdx(idx).visible("Y").build(), fileName);
     }
 
     /**

@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.image.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
-import com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -11,16 +10,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,7 +44,6 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
-     * @return
      */
     public String currentDate() {
         String pattern = "MMddHHmmssSSS";
@@ -57,21 +58,19 @@ public class ImageRepository {
      * <pre>
      * 1. MethodName : maxSubEntity
      * 2. ClassName  : ImageRepository.java
-     * 3. Comment    : 이미지 파일 최대 entity 가져오기
+     * 3. Comment    : 이미지 파일 상세 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
-     * @param commonImageEntity
-     * @return
      */
-    @Transactional
-    public CommonImageEntity findOneImage(CommonImageEntity commonImageEntity) {
+    @Transactional(readOnly = true)
+    public CommonImageEntity findOneImage(CommonImageEntity exCommonImageEntity) {
         return queryFactory
-                .selectFrom(QCommonImageEntity.commonImageEntity)
-                .where(QCommonImageEntity.commonImageEntity.idx.eq(commonImageEntity.getIdx())
-                        .and(QCommonImageEntity.commonImageEntity.visible.eq("Y"))
-                        .and(QCommonImageEntity.commonImageEntity.typeName.eq(commonImageEntity.getTypeName())))
+                .selectFrom(commonImageEntity)
+                .where(commonImageEntity.idx.eq(exCommonImageEntity.getIdx())
+                        .and(commonImageEntity.visible.eq("Y"))
+                        .and(commonImageEntity.typeName.eq(exCommonImageEntity.getTypeName())))
                 .fetchOne();
     }
 
@@ -84,14 +83,12 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
-     * @param commonImageEntity
-     * @return
      */
-    @Transactional
-    public Integer maxSubCnt(CommonImageEntity commonImageEntity) {
-        return queryFactory.selectFrom(QCommonImageEntity.commonImageEntity)
-                .select(QCommonImageEntity.commonImageEntity.fileNum.max())
-                .where(QCommonImageEntity.commonImageEntity.typeName.eq(commonImageEntity.getTypeName()))
+    @Transactional(readOnly = true)
+    public Integer maxSubCnt(CommonImageEntity exCommonImageEntity) {
+        return queryFactory.selectFrom(commonImageEntity)
+                .select(commonImageEntity.fileNum.max())
+                .where(commonImageEntity.typeName.eq(exCommonImageEntity.getTypeName()))
                 .fetchFirst();
     }
 
@@ -104,7 +101,6 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
-     * @param commonImageEntity
      */
     @Transactional
     @Modifying(clearAutomatically = true)
@@ -114,7 +110,7 @@ public class ImageRepository {
 
             return commonImageEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
+            throw new TspException(ApiExceptionType.ERROR_IMAGE);
         }
     }
 
@@ -127,11 +123,6 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
-     * @param commonImageEntity
-     * @param files
-     * @param flag
-     * @return
-     * @throws Exception
      */
     public String uploadImageFile(CommonImageEntity commonImageEntity,
                                   List<MultipartFile> files, String flag) throws Exception {
@@ -166,7 +157,7 @@ public class ImageRepository {
                         try {
                             new File(uploadPath).mkdir();
                         } catch (Exception e) {
-                            e.getStackTrace();
+                            throw new TspException(ApiExceptionType.ERROR_IMAGE);
                         }
                     }
 
@@ -218,7 +209,7 @@ public class ImageRepository {
                         mainCnt++;
                     }
                 } catch (Exception e) {
-                    throw new Exception();
+                    throw new TspException(ApiExceptionType.ERROR_IMAGE);
                 }
             }
         }
@@ -234,17 +225,16 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
-     * @param commonImageEntity
      */
     @Transactional
-    public CommonImageEntity deleteImage(CommonImageEntity commonImageEntity) {
+    public CommonImageEntity deleteImage(CommonImageEntity exCommonImageEntity) {
         try {
-            commonImageEntity = em.find(CommonImageEntity.class, commonImageEntity.getIdx());
-            em.remove(commonImageEntity);
+            exCommonImageEntity = em.find(CommonImageEntity.class, exCommonImageEntity.getIdx());
+            em.remove(exCommonImageEntity);
             em.flush();
             em.clear();
 
-            return commonImageEntity;
+            return exCommonImageEntity;
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_IMAGE);
         }

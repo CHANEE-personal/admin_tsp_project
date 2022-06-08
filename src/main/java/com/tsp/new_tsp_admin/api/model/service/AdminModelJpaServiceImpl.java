@@ -5,7 +5,6 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
-import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -25,7 +23,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     private final AdminModelJpaRepository adminModelJpaRepository;
     private final ImageRepository imageRepository;
-    private final ImageService imageService;
 
     /**
      * <pre>
@@ -161,7 +158,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return imageRepository.uploadImageFile(commonImageEntity, fileName, "insert");
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
+            throw new TspException(ApiExceptionType.ERROR_IMAGE);
         }
     }
 
