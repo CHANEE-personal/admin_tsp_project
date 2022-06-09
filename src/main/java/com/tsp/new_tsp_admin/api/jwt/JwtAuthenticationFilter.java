@@ -1,8 +1,10 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
+import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -13,8 +15,11 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final AdminUserJpaRepository adminUserJpaRepository;
 
     private final JwtUtil jwtUtil;
+
+    private final MyUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -31,11 +36,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     boolean isRefreshToken = jwtUtil.isTokenExpired(refreshToken);
 
                     if(validateRefreshToken && isRefreshToken) {
-//                        String newAccessToken = jwtUtil.generateToken();
+                        String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+                        String newAccessToken = jwtUtil.generateToken(userDetails);
+                        jwtUtil.setHeaderAccessToken(response, newAccessToken);
+                        this.setAuthentication(newAccessToken);
                     }
                 }
             }
         }
+        filterChain.doFilter(request, response);
     }
 
     public void setAuthentication(String token) {
