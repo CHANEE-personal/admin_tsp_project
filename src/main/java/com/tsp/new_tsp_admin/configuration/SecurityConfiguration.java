@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.configuration;
 
+import com.tsp.new_tsp_admin.api.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -36,8 +38,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      *
-     * @return
-     * @throws Exception
      */
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -54,8 +54,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      *
-     * @return
-     * @throws Exception
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -64,7 +62,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.authorizeRequests().anyRequest().authenticated().and()
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                .csrf().disable();
     }
 
     @Bean
@@ -79,5 +79,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtFilter() {
+        return new JwtAuthenticationFilter();
     }
 }

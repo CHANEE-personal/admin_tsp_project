@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.jwt;
 
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,31 +14,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final AdminUserJpaRepository adminUserJpaRepository;
+    @Autowired
+    private AdminUserJpaRepository adminUserJpaRepository;
 
-    private final JwtUtil jwtUtil;
+    @Autowired
+    private JwtUtil jwtUtil;
 
-    private final MyUserDetailsService userDetailsService;
+    @Autowired
+    private MyUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = jwtUtil.resolveAccessToken(request);
         String refreshToken = jwtUtil.resolveRefreshToken(request);
 
+        String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+
         // 유효한 토큰인지 검사
         if (accessToken != null) {
-            if (jwtUtil.isTokenExpired(accessToken)) {
+            if (jwtUtil.validateToken(accessToken, userDetails)) {
                 this.setAuthentication(accessToken);
             } else {
                 if (refreshToken != null) {
-                    boolean validateRefreshToken = jwtUtil.isTokenExpired(refreshToken);
-                    boolean isRefreshToken = jwtUtil.isTokenExpired(refreshToken);
+                    boolean validateRefreshToken = jwtUtil.validateToken(refreshToken, userDetails);
 
-                    if(validateRefreshToken && isRefreshToken) {
-                        String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
-                        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+                    if(validateRefreshToken) {
                         String newAccessToken = jwtUtil.generateToken(userDetails);
                         jwtUtil.setHeaderAccessToken(response, newAccessToken);
                         this.setAuthentication(newAccessToken);
