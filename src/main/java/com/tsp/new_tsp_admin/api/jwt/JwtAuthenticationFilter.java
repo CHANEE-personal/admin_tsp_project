@@ -28,7 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } else {
                 if (refreshToken != null) {
                     boolean validateRefreshToken = jwtUtil.isTokenExpired(refreshToken);
+                    boolean isRefreshToken = jwtUtil.isTokenExpired(refreshToken);
 
+                    if(validateRefreshToken && isRefreshToken) {
+//                        String newAccessToken = jwtUtil.generateToken();
+                    }
                 }
             }
         }
