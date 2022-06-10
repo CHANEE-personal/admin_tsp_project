@@ -18,9 +18,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
@@ -159,6 +157,19 @@ class AdminUserJpaRepositoryTest {
                 .build();
 
         assertThat(adminUserJpaRepository.adminLogin(adminUserEntity)).isEqualTo("Y");
+    }
+
+    @Test
+    @DisplayName("유저 토큰을 이용한 회원 조회")
+    public void 유저토큰을이용한회원조회테스트() {
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+                .userId("admin01")
+                .idx(2)
+                .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
+                .build();
+
+        adminUserJpaRepository.insertUserTokenByEm(adminUserEntity);
+        assertThat(adminUserJpaRepository.findOneUserByToken(adminUserEntity.getUserToken())).isEqualTo(adminUserEntity.getUserId());
     }
 
     @Test

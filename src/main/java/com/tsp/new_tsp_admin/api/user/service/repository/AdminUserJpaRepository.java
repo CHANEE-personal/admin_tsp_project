@@ -107,22 +107,6 @@ public class AdminUserJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findRefreshToken
-     * 2. ClassName  : AdminUserJpaRepository.java
-     * 3. Comment    : refreshToken 존재 유무 확인
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
-     * </pre>
-     *
-     */
-//    @Transactional(readOnly = true)
-//    public Boolean findRefreshToken(String refreshToken) {
-//        return queryFactory.selectFrom(adminUserEntity)
-//                .where(adminUserEntity.)
-//    }
-
-    /**
-     * <pre>
      * 1. MethodName : adminLogin
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 로그인 처리
