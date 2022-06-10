@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,10 +96,8 @@ public class AdminUserJpaController {
                         .password(authenticationRequest.getPassword())
                         .build();
 
-        String resultValue = adminUserJpaService.adminLogin(adminUserEntity);
-
-        if ("Y".equals(resultValue)) {
-            userMap.put("loginYn", resultValue);
+        if ("Y".equals(adminUserJpaService.adminLogin(adminUserEntity))) {
+            userMap.put("loginYn", "Y");
             userMap.put("userId", adminUserEntity.getUserId());
             userMap.put("token", createAuthenticationToken(authenticationRequest));
 
@@ -134,8 +131,7 @@ public class AdminUserJpaController {
         authenticate(authenticationRequest.getUserId(), authenticationRequest.getPassword());
 
         // 사용자 정보 조회 후 token 생성
-        UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
-        String token = jwtTokenUtil.generateToken(userDetails);
+        String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(authenticationRequest.getUserId()));
 
         return ResponseEntity.ok(new AuthenticationResponse(token));
     }
@@ -151,8 +147,7 @@ public class AdminUserJpaController {
         authenticate(authenticationRequest.getUserId(), authenticationRequest.getPassword());
 
         // 사용자 정보 조회 후 token 생성
-        UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
-        String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+        String refreshToken = jwtTokenUtil.generateRefreshToken(userDetailsService.loadUserByUsername(authenticationRequest.getUserId()));
 
         return ResponseEntity.ok(new AuthenticationResponse(refreshToken));
     }
