@@ -55,7 +55,7 @@ public class AdminUserEntity implements UserDetails {
 	@Column(name = "user_token")
 	String userToken;
 
-	@Column(name = "user_refreshToken")
+	@Column(name = "user_refresh_token")
 	String userRefreshToken;
 
 	@Column(name = "creator", updatable = false)
