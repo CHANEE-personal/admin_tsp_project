@@ -88,6 +88,7 @@ class AdminUserJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.loginYn").value("Y"))
+                .andExpect(jsonPath("$.userId").value(adminUserEntity.getUserId()))
                 .andExpect(jsonPath("$.token").isNotEmpty());
     }
 

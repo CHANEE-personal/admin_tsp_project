@@ -47,7 +47,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
      *
-     * @throws Exception
      */
     @Bean
     public MethodValidationPostProcessor methodValidationPostProcessor() {
@@ -63,7 +62,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
      *
-     * @throws Exception
      */
     @Override
     public MessageCodesResolver getMessageCodesResolver() {
@@ -81,7 +79,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
      *
-     * @throws Exception
      */
     @Bean
     public MessageSource messageSource() {
@@ -101,7 +98,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
      *
-     * @throws Exception
      */
     @Bean
     public LocalValidatorFactoryBean getValidator(MessageSource messageSource) {

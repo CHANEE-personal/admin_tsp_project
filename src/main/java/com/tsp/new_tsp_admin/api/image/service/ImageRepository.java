@@ -69,8 +69,8 @@ public class ImageRepository {
         return queryFactory
                 .selectFrom(commonImageEntity)
                 .where(commonImageEntity.idx.eq(exCommonImageEntity.getIdx())
-                        .and(commonImageEntity.visible.eq("Y"))
-                        .and(commonImageEntity.typeName.eq(exCommonImageEntity.getTypeName())))
+                .and(commonImageEntity.visible.eq("Y"))
+                .and(commonImageEntity.typeName.eq(exCommonImageEntity.getTypeName())))
                 .fetchOne();
     }
 

@@ -29,7 +29,6 @@ public class SwaggerConfiguration {
      * 5. 작성일       : 2021. 02. 09.
      * </pre>
      *
-     * @return
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
@@ -47,7 +46,6 @@ public class SwaggerConfiguration {
      * 5. 작성일       : 2021. 02. 09.
      * </pre>
      *
-     * @return
      */
     @Bean
     public Docket commonApi() {
@@ -71,7 +69,6 @@ public class SwaggerConfiguration {
      * 5. 작성일       : 2021. 02. 09.
      * </pre>
      *
-     * @return
      */
     private ApiKey apikey() {
         return new ApiKey("JWT", "Authorization", "header");

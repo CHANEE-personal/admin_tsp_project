@@ -217,8 +217,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminUserDTO updateAdminUser(@RequestBody AdminUserEntity adminUserEntity,
-                                        @PathVariable("idx") Integer idx) throws Exception {
+    public AdminUserDTO updateAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
         return adminUserJpaService.updateAdminUser(adminUserEntity);
     }
 

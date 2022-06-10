@@ -182,6 +182,7 @@ class AdminUserJpaRepositoryTest {
 
         assertThat(adminUserJpaRepository.insertUserTokenByEm(adminUserEntity)).isEqualTo(adminUserEntity.getIdx());
         assertNotNull(adminUserEntity.getUserToken());
+        assertNotNull(adminUserEntity.getUserRefreshToken());
     }
 
     @Test
