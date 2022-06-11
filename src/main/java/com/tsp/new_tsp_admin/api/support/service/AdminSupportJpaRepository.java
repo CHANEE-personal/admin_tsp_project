@@ -91,4 +91,29 @@ public class AdminSupportJpaRepository {
             throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
         }
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneSupportModel
+     * 2. ClassName  : ProductionRepository.java
+     * 3. Comment    : 관리자 지원모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 26.
+     * </pre>
+     *
+     * @param existAdminSupportEntity
+     */
+    public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
+
+        try {
+            //모델 상세 조회
+            AdminSupportEntity findOneSupportModel = queryFactory.selectFrom(adminSupportEntity)
+                    .where(adminSupportEntity.idx.eq(existAdminSupportEntity.getIdx()))
+                    .fetchOne();
+
+            return SupportMapper.INSTANCE.toDto(findOneSupportModel);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT);
+        }
+    }
 }
