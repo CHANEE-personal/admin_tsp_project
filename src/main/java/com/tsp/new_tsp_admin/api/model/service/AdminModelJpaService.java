@@ -16,7 +16,7 @@ public interface AdminModelJpaService {
     /**
      * <pre>
      * 1. MethodName : findModelsCount
-     * 2. ClassName  : AdminModeJpaService.java
+     * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 리스트 수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -28,7 +28,7 @@ public interface AdminModelJpaService {
     /**
      * <pre>
      * 1. MethodName : findModelsList
-     * 2. ClassName  : AdminModeJpaService.java
+     * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -40,7 +40,7 @@ public interface AdminModelJpaService {
     /**
      * <pre>
      * 1. MethodName : findOneModel
-     * 2. ClassName  : AdminModeJpaService.java
+     * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 상세 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -52,7 +52,7 @@ public interface AdminModelJpaService {
     /**
      * <pre>
      * 1. MethodName : insertModel
-     * 2. ClassName  : AdminModeJpaService.java
+     * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 등록
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -64,7 +64,7 @@ public interface AdminModelJpaService {
     /**
      * <pre>
      * 1. MethodName : updateModel
-     * 2. ClassName  : AdminModeJpaService.java
+     * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 수정
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -76,7 +76,7 @@ public interface AdminModelJpaService {
     /**
      * <pre>
      * 1. MethodName : deleteModel
-     * 2. ClassName  : AdminModeJpaService.java
+     * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 삭제
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
@@ -88,7 +88,7 @@ public interface AdminModelJpaService {
     /**
      * <pre>
      * 1. MethodName : insertModelImage
-     * 2. ClassName  : AdminModeJpaService.java
+     * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 이미지 등록
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -100,7 +100,7 @@ public interface AdminModelJpaService {
     /**
      * <pre>
      * 1. MethodName : modelCommonCode
-     * 2. ClassName  : AdminModeJpaService.java
+     * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 공통 코드 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
