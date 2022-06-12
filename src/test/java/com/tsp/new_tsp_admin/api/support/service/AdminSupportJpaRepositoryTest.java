@@ -28,6 +28,7 @@ import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @DataJpaTest
 @Transactional
@@ -40,7 +41,7 @@ class AdminSupportJpaRepositoryTest {
     private AdminSupportJpaRepository adminSupportJpaRepository;
 
     @Mock
-    AdminSupportJpaRepository mockAdminJpaRepository;
+    AdminSupportJpaRepository mockAdminSupportJpaRepository;
 
     @Autowired
     private EntityManager em;
@@ -50,7 +51,7 @@ class AdminSupportJpaRepositoryTest {
     private AdminSupportDTO adminSupportDTO;
 
     public void createSupport() {
-        AdminSupportEntity adminSupportEntity = builder()
+        adminSupportEntity = builder()
                 .supportName("조찬희")
                 .supportHeight(170)
                 .supportMessage("조찬희")
@@ -58,7 +59,7 @@ class AdminSupportJpaRepositoryTest {
                 .supportSize3("31-24-31")
                 .build();
 
-        AdminSupportDTO adminSupportDTO = AdminSupportDTO.builder()
+        adminSupportDTO = AdminSupportDTO.builder()
                 .supportName("조찬희")
                 .supportHeight(170)
                 .supportMessage("조찬희")
@@ -112,16 +113,49 @@ class AdminSupportJpaRepositoryTest {
         supportList.add(AdminSupportDTO.builder().idx(1).supportName("조찬희").supportPhone("010-9466-2702").build());
 
         // when
-        given(mockAdminJpaRepository.findSupportsList(supportMap)).willReturn(supportList);
+        given(mockAdminSupportJpaRepository.findSupportsList(supportMap)).willReturn(supportList);
 
         // then
-        assertThat(mockAdminJpaRepository.findSupportsList(supportMap).get(0).getIdx()).isEqualTo(supportList.get(0).getIdx());
-        assertThat(mockAdminJpaRepository.findSupportsList(supportMap).get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
+        assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getIdx()).isEqualTo(supportList.get(0).getIdx());
+        assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
     }
 
     @Test
     @DisplayName("지원모델 수정 테스트")
     public void 지원모델수정테스트() {
+        em.persist(adminSupportEntity);
+        Integer idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
 
+        adminSupportEntity = builder()
+                .idx(idx)
+                .supportName("test")
+                .supportPhone("010-9466-2702")
+                .supportHeight(170)
+                .supportSize3("31-24-31")
+                .supportMessage("test")
+                .supportInstagram("https://instagram.com")
+                .build();
+
+        adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
+
+        adminSupportDTO = AdminSupportDTO.builder()
+                .supportName("test")
+                .supportPhone("010-9466-2702")
+                .supportHeight(170)
+                .supportSize3("31-24-31")
+                .supportMessage("test")
+                .supportInstagram("https://instagram.com")
+                .build();
+
+        when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+
+        // then
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportMessage()).isEqualTo("test");
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportHeight()).isEqualTo(170);
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(3)).findOneSupportModel(adminSupportEntity);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
     }
 }

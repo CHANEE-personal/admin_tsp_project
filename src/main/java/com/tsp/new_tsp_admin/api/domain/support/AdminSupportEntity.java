@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -33,7 +34,7 @@ public class AdminSupportEntity extends NewCommonMappedClass {
     private String supportName;
 
     @Column(name = "support_height")
-    @NotEmpty(message = "지원자 키 입력은 필수입니다.")
+    @NotNull(message = "지원자 키 입력은 필수입니다.")
     private Integer supportHeight;
 
     @Column(name = "support_size3")
