@@ -95,4 +95,29 @@ public class AdminSupportJpaController {
                                               @PathVariable("idx") Integer idx) throws Exception {
         return adminSupportJpaService.updateSupportModel(adminSupportEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteSupportModel
+     * 2. ClassName  : AdminSupportJpaController.java
+     * 3. Comment    : 관리자 지원 모델 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "지원모델 삭제", notes = "지원모델을 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "모델 삭제성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @DeleteMapping("/{idx}")
+    public AdminSupportDTO deleteSupportModel(@RequestBody AdminSupportEntity adminSupportEntity,
+                                              @PathVariable("idx") Integer idx) throws Exception {
+        adminSupportEntity.setIdx(idx);
+        return adminSupportJpaService.deleteSupportModel(adminSupportEntity);
+    }
 }

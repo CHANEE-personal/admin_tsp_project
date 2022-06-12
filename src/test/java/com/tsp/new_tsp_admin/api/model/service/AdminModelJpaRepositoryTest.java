@@ -453,6 +453,7 @@ class AdminModelJpaRepositoryTest {
 
         AdminModelDTO adminModelDTO1 = adminModelJpaRepository.deleteModelByEm(adminModelEntity);
 
+        // then
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelDTO1.getCategoryCd());
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo(adminModelDTO1.getCategoryAge());
 

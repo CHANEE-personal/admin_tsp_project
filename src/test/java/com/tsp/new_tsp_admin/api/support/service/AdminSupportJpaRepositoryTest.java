@@ -158,4 +158,23 @@ class AdminSupportJpaRepositoryTest {
         verify(mockAdminSupportJpaRepository, times(3)).findOneSupportModel(adminSupportEntity);
         verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
     }
+
+    @Test
+    @DisplayName("지원 모델 삭제 테스트")
+    public void 지원모델삭제테스트() {
+        em.persist(adminSupportEntity);
+
+        // when
+        when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+
+        AdminSupportDTO adminSupportDTO1 = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity);
+
+        // then
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo(adminSupportDTO1.getSupportName());
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportMessage()).isEqualTo(adminSupportDTO1.getSupportMessage());
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(2)).findOneSupportModel(adminSupportEntity);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
+    }
 }

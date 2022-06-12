@@ -51,7 +51,6 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param supportMap
      */
     public Long findSupportsCount(Map<String, Object> supportMap) {
 
@@ -73,7 +72,6 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param supportMap
      */
     public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) {
 
@@ -106,7 +104,6 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param existAdminSupportEntity
      */
     public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
 
@@ -131,7 +128,6 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
-     * @param existAdminSupportEntity
      */
     @Modifying(clearAutomatically = true)
     @Transactional
@@ -144,6 +140,32 @@ public class AdminSupportJpaRepository {
             return SupportMapper.INSTANCE.toDto(existAdminSupportEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_UPDATE_SUPPORT);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteSupportModel
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     */
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) {
+
+        try {
+            adminSupportEntity = em.find(AdminSupportEntity.class, adminSupportEntity.getIdx());
+            em.remove(adminSupportEntity);
+            em.flush();
+            em.clear();
+
+            return SupportMapper.INSTANCE.toDto(adminSupportEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_DELETE_SUPPORT);
         }
     }
 }

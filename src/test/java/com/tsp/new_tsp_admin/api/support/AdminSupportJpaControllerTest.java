@@ -114,4 +114,16 @@ class AdminSupportJpaControllerTest {
 				.andExpect(jsonPath("$.supportName").value("테스트"))
 				.andExpect(jsonPath("$.supportMessage").value("테스트"));
 	}
+
+	@Test
+	@DisplayName("Admin 지원모델 삭제 테스트")
+	public void 지원모델삭제Api테스트() throws Exception {
+		em.persist(adminSupportEntity);
+
+		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(adminSupportEntity)))
+				.andDo(print())
+				.andExpect(status().isOk());
+	}
 }
