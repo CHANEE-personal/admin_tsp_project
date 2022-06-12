@@ -119,4 +119,9 @@ class AdminSupportJpaRepositoryTest {
         assertThat(mockAdminJpaRepository.findSupportsList(supportMap).get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
     }
 
+    @Test
+    @DisplayName("지원모델 수정 테스트")
+    public void 지원모델수정테스트() {
+
+    }
 }

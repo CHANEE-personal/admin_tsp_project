@@ -10,7 +10,9 @@ import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -46,7 +48,7 @@ public class AdminSupportJpaRepository {
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 리스트 갯수 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 09. 26.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      * @param supportMap
@@ -68,7 +70,7 @@ public class AdminSupportJpaRepository {
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 리스트 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 09. 26.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      * @param supportMap
@@ -98,10 +100,10 @@ public class AdminSupportJpaRepository {
     /**
      * <pre>
      * 1. MethodName : findOneSupportModel
-     * 2. ClassName  : ProductionRepository.java
+     * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 상세 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 09. 26.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      * @param existAdminSupportEntity
@@ -117,6 +119,31 @@ public class AdminSupportJpaRepository {
             return SupportMapper.INSTANCE.toDto(findOneSupportModel);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateSupportModel
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     * @param existAdminSupportEntity
+     */
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public AdminSupportDTO updateSupportModel(AdminSupportEntity existAdminSupportEntity) {
+        try {
+            em.merge(existAdminSupportEntity);
+            em.flush();
+            em.clear();
+
+            return SupportMapper.INSTANCE.toDto(existAdminSupportEntity);
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_SUPPORT);
         }
     }
 }
