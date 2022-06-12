@@ -44,4 +44,16 @@ public interface AdminSupportJpaService {
      *
      */
     AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteSupportModel
+     * 2. ClassName  : AdminSupportJpaService.java
+     * 3. Comment    : 관리자 지원모델 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     */
+    AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
 }
