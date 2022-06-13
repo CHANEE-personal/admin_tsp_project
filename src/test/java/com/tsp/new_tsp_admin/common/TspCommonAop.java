@@ -38,22 +38,21 @@ public class TspCommonAop {
 	 * 5. 작성일       : 2022. 05. 14.
 	 * </pre>
 	 *
-	 * @param joinPoint
 	 */
-//	@Before("cut()")
-//	public void beforeParameterLog(JoinPoint joinPoint) {
-//		// 메서드 정보 받아오기
-//		Method method = getMethod(joinPoint);
-//		log.info("======= method name = {} =======", method.getName());
-//
-//		// 파라미터 받아오기
-//		Object[] args = joinPoint.getArgs();
-//		if (args.length <= 0) log.info("no parameter");
-//		for (Object arg : args) {
-//			log.info("parameter type = {}", arg.getClass().getSimpleName());
-//			log.info("parameter value = {}", arg);
-//		}
-//	}
+	@Before("cut()")
+	public void beforeParameterLog(JoinPoint joinPoint) {
+		// 메서드 정보 받아오기
+		Method method = getMethod(joinPoint);
+		log.info("======= method name = {} =======", method.getName());
+
+		// 파라미터 받아오기
+		Object[] args = joinPoint.getArgs();
+		if (args.length <= 0) log.info("no parameter");
+		for (Object arg : args) {
+			log.info("parameter type = {}", arg.getClass().getSimpleName());
+			log.info("parameter value = {}", arg);
+		}
+	}
 
 	/**
 	 * <pre>
@@ -64,22 +63,20 @@ public class TspCommonAop {
 	 * 5. 작성일       : 2022. 01. 16.
 	 * </pre>
 	 *
-	 * @param joinPoint
-	 * @param returnObj
 	 */
-//	@AfterReturning(value = "cut()", returning = "returnObj")
-//	public void afterReturnLog(JoinPoint joinPoint, Object returnObj) {
-//		// 메서드 정보 받아오기
-//		Method method = getMethod(joinPoint);
-//		log.info("======= method name = {} =======", method.getName());
-//
-//		log.info("return type = {}", returnObj.getClass().getSimpleName());
-//		log.info("return value = {}", returnObj);
-//	}
+	@AfterReturning(value = "cut()", returning = "returnObj")
+	public void afterReturnLog(JoinPoint joinPoint, Object returnObj) {
+		// 메서드 정보 받아오기
+		Method method = getMethod(joinPoint);
+		log.info("======= method name = {} =======", method.getName());
+
+		log.info("return type = {}", returnObj.getClass().getSimpleName());
+		log.info("return value = {}", returnObj);
+	}
 
 	// JoinPoint로 메서드 정보 가져오기
-//	private Method getMethod(JoinPoint joinPoint) {
-//		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-//		return signature.getMethod();
-//	}
+	private Method getMethod(JoinPoint joinPoint) {
+		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+		return signature.getMethod();
+	}
 }
