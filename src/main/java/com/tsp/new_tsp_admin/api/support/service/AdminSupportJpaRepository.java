@@ -83,13 +83,9 @@ public class AdminSupportJpaRepository {
                     .limit(StringUtil.getInt(supportMap.get("size"),0))
                     .fetch();
 
-            List<AdminSupportDTO> supportDtoList = SupportMapper.INSTANCE.toDtoList(supportList);
+            supportList.forEach(list -> supportList.get(supportList.indexOf(list)).setRnum(StringUtil.getInt(supportMap.get("startPage"),1)*(StringUtil.getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
 
-            for(int i = 0; i < supportDtoList.size(); i++) {
-                supportDtoList.get(i).setRnum(StringUtil.getInt(supportMap.get("startPage"),1)*(StringUtil.getInt(supportMap.get("size"),1))-(2-i));
-            }
-
-            return supportDtoList;
+            return SupportMapper.INSTANCE.toDtoList(supportList);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
         }

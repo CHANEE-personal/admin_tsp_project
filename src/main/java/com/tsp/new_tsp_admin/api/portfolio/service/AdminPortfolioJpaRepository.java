@@ -183,6 +183,7 @@ public class AdminPortfolioJpaRepository {
             em.merge(existAdminPortfolioEntity);
             em.flush();
             em.clear();
+
             return PortFolioMapper.INSTANCE.toDto(existAdminPortfolioEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_UPDATE_PORTFOLIO);
