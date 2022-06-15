@@ -135,8 +135,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminPortFolioDTO updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
-                                             @PathVariable("idx") Integer idx) throws Exception {
+    public AdminPortFolioDTO updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
         return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
     }
 
