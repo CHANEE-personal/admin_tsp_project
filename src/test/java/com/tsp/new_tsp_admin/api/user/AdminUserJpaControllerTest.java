@@ -74,7 +74,7 @@ class AdminUserJpaControllerTest {
     @Test
     @DisplayName("Admin 회원 조회 테스트")
     public void Admin회원조회() throws Exception {
-        mockMvc.perform(get("/api/jpa-user"))
+        mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

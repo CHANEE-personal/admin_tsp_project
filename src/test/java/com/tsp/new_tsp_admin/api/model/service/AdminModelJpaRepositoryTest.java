@@ -245,7 +245,8 @@ class AdminModelJpaRepositoryTest {
         modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).build());
 
         // when
-        given(mockAdminModelJpaRepository.findModelsList(modelMap)).willReturn(modelList);
+//        given(mockAdminModelJpaRepository.findModelsList(modelMap)).willReturn(modelList);
+        when(mockAdminModelJpaRepository.findModelsList(modelMap)).thenReturn(modelList);
 
         // then
         assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
@@ -282,7 +283,8 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         // when
-        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+//        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
 
         // then
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(1);
@@ -407,6 +409,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
+        // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
 
         // then

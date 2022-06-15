@@ -95,6 +95,10 @@ class AdminModelJpaControllerTest {
         mockMvc.perform(get("/api/jpa-model/lists/1").params(modelMap))
                 .andDo(print())
                 .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/jpa-model/lists/1").param("page", "1").param("size", "100"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
