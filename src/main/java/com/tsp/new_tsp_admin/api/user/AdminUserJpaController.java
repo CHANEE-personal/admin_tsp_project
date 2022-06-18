@@ -122,7 +122,7 @@ public class AdminUserJpaController {
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 로그인 시 JWT 토큰 발급
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 04. 23.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
@@ -158,7 +158,7 @@ public class AdminUserJpaController {
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 로그인 시 인증
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 04. 23.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
