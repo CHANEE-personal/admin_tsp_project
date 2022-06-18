@@ -185,6 +185,7 @@ public class AdminProductionJpaRepository {
             em.merge(existAdminProductionEntity);
             em.flush();
             em.clear();
+
             return ProductionMapper.INSTANCE.toDto(existAdminProductionEntity);
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);

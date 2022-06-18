@@ -23,6 +23,16 @@ public class WebConfiguration implements WebMvcConfigurer {
                     "classpath:/META-INF/resources/",
                     "classpath:/META-INF/resources/webjars/"};
 
+    /**
+     * <pre>
+     * 1. MethodName : addCorsMappings
+     * 2. ClassName  : WebConfiguration.java
+     * 3. Comment    : Cors 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 01. 15.
+     * </pre>
+     *
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

@@ -1,13 +1,10 @@
 package com.tsp.new_tsp_admin.common;
 
-import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
-import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,8 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @RequiredArgsConstructor
 public class SearchCommon {
-
-    private final AdminUserJpaRepository adminUserJpaRepository;
 
     /**
      * <pre>

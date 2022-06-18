@@ -175,8 +175,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminModelDTO updateModel(@RequestBody AdminModelEntity adminModelEntity,
-                                        @PathVariable("idx") Integer idx) throws Exception {
+    public AdminModelDTO updateModel(@RequestBody AdminModelEntity adminModelEntity) throws Exception {
         return adminModelJpaService.updateModel(adminModelEntity);
     }
 

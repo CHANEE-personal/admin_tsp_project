@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
-import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import lombok.RequiredArgsConstructor;

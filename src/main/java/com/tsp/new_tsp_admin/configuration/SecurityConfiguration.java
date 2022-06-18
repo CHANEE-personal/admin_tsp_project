@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * <pre>
      * 1. MethodName : authenticationManagerBean
-     * 2. ClassName  : SecurityConfig.java
+     * 2. ClassName  : SecurityConfiguration.java
      * 3. Comment    : authenticationManager Bean 등록
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
@@ -48,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * <pre>
      * 1. MethodName : passwordEncoder
-     * 2. ClassName  : SecurityConfig.java
+     * 2. ClassName  : SecurityConfiguration.java
      * 3. Comment    : 암호화에 필요한 passwordEncoder Bean 등록
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
@@ -81,6 +81,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : jwtFilter
+     * 2. ClassName  : SecurityConfiguration.java
+     * 3. Comment    : jwt 인증 Filter
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     @Bean
     public JwtAuthenticationFilter jwtFilter() {
         return new JwtAuthenticationFilter();
