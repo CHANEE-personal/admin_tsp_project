@@ -30,7 +30,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 리스트 수 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
@@ -49,7 +49,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
@@ -69,7 +69,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 상세 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
@@ -129,7 +129,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 삭제
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 5. 작성일       : 2022. 05. 17.
      * </pre>
      *
      */
@@ -168,7 +168,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 공통 코드 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
