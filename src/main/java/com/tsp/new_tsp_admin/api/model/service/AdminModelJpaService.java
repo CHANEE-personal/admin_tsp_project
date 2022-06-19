@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -9,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public interface AdminModelJpaService {
 
@@ -19,7 +17,7 @@ public interface AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 리스트 수 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
@@ -31,7 +29,7 @@ public interface AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
@@ -43,7 +41,7 @@ public interface AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 상세 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
@@ -55,7 +53,7 @@ public interface AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 등록
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
@@ -67,7 +65,7 @@ public interface AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 수정
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
@@ -79,7 +77,7 @@ public interface AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 삭제
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 17.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
@@ -91,7 +89,7 @@ public interface AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 이미지 등록
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
@@ -103,7 +101,7 @@ public interface AdminModelJpaService {
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 공통 코드 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 5. 작성일       : 2022. 05. 07.
      * </pre>
      *
      */
