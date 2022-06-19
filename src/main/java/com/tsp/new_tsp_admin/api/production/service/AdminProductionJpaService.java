@@ -50,7 +50,7 @@ public interface AdminProductionJpaService {
      * 2. ClassName  : AdminProductionJpaService.java
      * 3. Comment    : 관리자 프로덕션 등록
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 14.
+     * 5. 작성일       : 2022. 05. 16.
      * </pre>
      *
      */
