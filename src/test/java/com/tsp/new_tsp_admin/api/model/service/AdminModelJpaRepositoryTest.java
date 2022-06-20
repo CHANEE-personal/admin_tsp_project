@@ -8,6 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.ModelMapperImpl;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,22 +88,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelDTO = AdminModelDTO.builder()
-                .categoryCd(1)
-                .categoryAge("2")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
+        adminModelDTO = ModelMapperImpl.INSTANCE.toDto(adminModelEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .idx(1)
@@ -114,15 +100,7 @@ class AdminModelJpaRepositoryTest {
                 .typeName("model")
                 .build();
 
-        commonImageDTO = CommonImageDTO.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("model")
-                .build();
+        commonImageDTO = ModelImageMapper.INSTANCE.toDto(commonImageEntity);
     }
 
     @BeforeEach
@@ -391,23 +369,7 @@ class AdminModelJpaRepositoryTest {
 
         adminModelJpaRepository.updateModelByEm(adminModelEntity);
 
-        adminModelDTO = AdminModelDTO.builder()
-                .categoryCd(2)
-                .categoryAge("3")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelKorName("조찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelEngName("CHOCHANHEE")
-                .modelDescription("chaneeCho")
-                .modelMainYn("Y")
-                .status("active")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
+        adminModelDTO = ModelMapperImpl.INSTANCE.toDto(adminModelEntity);
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);

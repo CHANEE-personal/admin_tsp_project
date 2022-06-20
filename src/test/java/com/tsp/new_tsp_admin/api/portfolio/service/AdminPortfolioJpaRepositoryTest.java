@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
+import com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapperImpl;
 import com.tsp.new_tsp_admin.api.portfolio.mapper.PortfolioImageMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,14 +66,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminPortFolioDTO = AdminPortFolioDTO.builder()
-                .categoryCd(1)
-                .title("포트폴리오 테스트")
-                .description("포트폴리오 테스트")
-                .hashTag("#test")
-                .videoUrl("https://youtube.com")
-                .visible("Y")
-                .build();
+        adminPortFolioDTO = PortFolioMapperImpl.INSTANCE.toDto(adminPortFolioEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .idx(1)
@@ -84,15 +78,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .typeName("portfolio")
                 .build();
 
-        commonImageDTO = CommonImageDTO.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("portfolio")
-                .build();
+        commonImageDTO = PortfolioImageMapper.INSTANCE.toDto(commonImageEntity);
     }
 
     @BeforeEach
@@ -246,15 +232,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
-                .idx(idx)
-                .categoryCd(1)
-                .title("포트폴리오 테스트1")
-                .description("포트폴리오 테스트1")
-                .hashTag("#test1")
-                .videoUrl("https://youtube.com")
-                .visible("Y")
-                .build();
+        AdminPortFolioDTO adminPortFolioDTO = PortFolioMapperImpl.INSTANCE.toDto(adminPortFolioEntity);
 
         adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
 

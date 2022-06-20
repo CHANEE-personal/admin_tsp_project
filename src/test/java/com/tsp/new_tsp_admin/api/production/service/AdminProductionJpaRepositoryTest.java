@@ -6,6 +6,8 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapperImpl;
+import com.tsp.new_tsp_admin.api.production.mapper.ProductionMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,11 +64,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminProductionDTO = AdminProductionDTO.builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
+        adminProductionDTO = ProductionMapperImpl.INSTANCE.toDto(adminProductionEntity);
 
         commonImageEntity = commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -78,15 +76,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        commonImageDTO = CommonImageDTO.builder()
-                .idx(1)
-                .imageType("main")
-                .fileName("test.jpg")
-                .fileMask("test.jpg")
-                .filePath("/test/test.jpg")
-                .typeIdx(1)
-                .typeName("production")
-                .build();
+        commonImageDTO = ModelImageMapperImpl.INSTANCE.toDto(commonImageEntity);
     }
 
     @BeforeEach
@@ -250,11 +240,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
-                .title("프로덕션 테스트1")
-                .description("프로덕션 테스트1")
-                .visible("Y")
-                .build();
+        AdminProductionDTO adminProductionDTO = ProductionMapperImpl.INSTANCE.toDto(adminProductionEntity);
 
         adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
 
