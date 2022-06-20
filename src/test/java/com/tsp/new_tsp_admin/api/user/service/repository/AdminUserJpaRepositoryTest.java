@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.user.service.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.user.mapper.UserMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class AdminUserJpaRepositoryTest {
 
     public void createUser() {
         adminUserEntity = builder().idx(2).userId("admin01").build();
-        adminUserDTO = AdminUserDTO.builder().idx(2).build();
+        adminUserDTO = UserMapperImpl.INSTANCE.toDto(adminUserEntity);
     }
 
     @BeforeEach

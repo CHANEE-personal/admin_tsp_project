@@ -3,7 +3,7 @@ package com.tsp.new_tsp_admin.api.support.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
-import org.assertj.core.api.Assertions;
+import com.tsp.new_tsp_admin.api.support.mapper.SupportMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -59,13 +58,7 @@ class AdminSupportJpaRepositoryTest {
                 .supportSize3("31-24-31")
                 .build();
 
-        adminSupportDTO = AdminSupportDTO.builder()
-                .supportName("조찬희")
-                .supportHeight(170)
-                .supportMessage("조찬희")
-                .supportPhone("010-9466-2702")
-                .supportSize3("31-24-31")
-                .build();
+        adminSupportDTO = SupportMapperImpl.INSTANCE.toDto(adminSupportEntity);
     }
 
     @BeforeEach
@@ -138,14 +131,7 @@ class AdminSupportJpaRepositoryTest {
 
         adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
 
-        adminSupportDTO = AdminSupportDTO.builder()
-                .supportName("test")
-                .supportPhone("010-9466-2702")
-                .supportHeight(170)
-                .supportSize3("31-24-31")
-                .supportMessage("test")
-                .supportInstagram("https://instagram.com")
-                .build();
+        adminSupportDTO = SupportMapperImpl.INSTANCE.toDto(adminSupportEntity);
 
         when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
 
