@@ -44,7 +44,7 @@ public class AdminUserJpaRepository {
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 유저 리스트 조회
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
@@ -111,7 +111,7 @@ public class AdminUserJpaRepository {
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 로그인 처리
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
@@ -142,7 +142,7 @@ public class AdminUserJpaRepository {
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 회원 로그인 후 토큰 등록 By EntityManager
      * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 5. 작성일       : 2022. 05. 02.
      * </pre>
      *
      */
