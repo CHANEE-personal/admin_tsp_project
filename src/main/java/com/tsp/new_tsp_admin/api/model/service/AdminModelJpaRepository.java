@@ -281,6 +281,8 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
+    @Transactional
     public Long deleteModel(AdminModelEntity existAdminModelEntity) {
 
         try {

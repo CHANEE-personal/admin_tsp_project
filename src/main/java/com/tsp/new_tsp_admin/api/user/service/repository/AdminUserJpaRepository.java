@@ -146,7 +146,6 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Modifying
     @Transactional
     public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) {
         try {
@@ -172,7 +171,7 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Transactional
     public Integer insertUserToken(AdminUserEntity existAdminUserEntity) {
 
@@ -223,6 +222,7 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
         try {
@@ -246,6 +246,7 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
         try {

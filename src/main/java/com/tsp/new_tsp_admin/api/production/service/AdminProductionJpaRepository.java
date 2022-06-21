@@ -177,7 +177,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      *
      */
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminProductionDTO updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
 
@@ -202,6 +202,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminProductionDTO deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
 
