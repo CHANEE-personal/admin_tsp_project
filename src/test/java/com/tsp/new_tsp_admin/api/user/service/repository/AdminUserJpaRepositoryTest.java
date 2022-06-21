@@ -19,7 +19,9 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
@@ -63,9 +65,8 @@ class AdminUserJpaRepositoryTest {
     @Test
     @DisplayName("유저 조회 테스트")
     public void 유저조회테스트() {
-
         // given
-        ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
+        Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
 
@@ -76,7 +77,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 BDD 조회 테스트")
     public void 유저BDD조회테스트() {
         // given
-        ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
+        Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
 
