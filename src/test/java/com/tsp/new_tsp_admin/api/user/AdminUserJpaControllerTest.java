@@ -84,11 +84,21 @@ class AdminUserJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 회원 조회 테스트")
     public void Admin회원조회() throws Exception {
         mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100"))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 회원 조회 권한 테스트")
+    public void Admin회원조회권한테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100"))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -131,6 +141,26 @@ class AdminUserJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("관리자 회원가입 권한 예외 테스트")
+    public void 회원가입권한테스트() throws Exception {
+        adminUserEntity = builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(post("/api/jpa-user")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원수정 테스트")
     public void 회원수정테스트() throws Exception {
         em.persist(adminUserEntity);
@@ -154,6 +184,29 @@ class AdminUserJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("관리자 회원수정 권한 예외 테스트")
+    public void 회원수정권한테스트() throws Exception {
+        em.persist(adminUserEntity);
+
+        adminUserEntity = builder()
+                .idx(adminUserEntity.getIdx())
+                .userId("admin03")
+                .password("pass1234")
+                .name("admin03")
+                .email("admin03@tsp.com")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(put("/api/jpa-user/{idx}", adminUserEntity.getIdx())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원탈퇴 테스트")
     public void 회원탈퇴테스트() throws Exception {
         AdminUserEntity adminUserEntity = builder().idx(1).build();
@@ -163,6 +216,19 @@ class AdminUserJpaControllerTest {
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("관리자 회원탈퇴 권한 테스트")
+    public void 회원탈퇴권한테스트() throws Exception {
+        AdminUserEntity adminUserEntity = builder().idx(1).build();
+
+        mockMvc.perform(put("/api/jpa-user")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
     @Test

@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -80,6 +82,7 @@ class AdminModelJpaControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .apply(springSecurity())
                 .alwaysDo(print())
                 .build();
 
@@ -87,6 +90,7 @@ class AdminModelJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 조회 테스트")
     public void 모델조회Api테스트() throws Exception {
         MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
@@ -102,6 +106,7 @@ class AdminModelJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 조회 예외 테스트")
     public void 모델조회Api예외테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-model/lists/-1"))
@@ -111,6 +116,16 @@ class AdminModelJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 모델 조회 권한 테스트")
+    public void 모델조회Api권한테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-model/lists/-1"))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 상세 조회 테스트")
     public void 모델상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-model/2/143"))
@@ -133,6 +148,15 @@ class AdminModelJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andReturn().getResponse().getContentAsString().equals("모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.");
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 모델 상세 조회 권한 테스트")
+    public void 모델상세조회Api권한테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-model/2/143"))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
     @Test
