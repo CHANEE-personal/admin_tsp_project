@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.configuration;
 
 import com.tsp.new_tsp_admin.api.jwt.JwtAuthenticationFilter;
+import com.tsp.new_tsp_admin.api.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs",
@@ -63,7 +65,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().authenticated().and()
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
 
@@ -83,7 +86,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     /**
      * <pre>
-     * 1. MethodName : jwtFilter
+     * 1. MethodName : jwtAuthorizationFilter
+     * 2. ClassName  : SecurityConfiguration.java
+     * 3. Comment    : 로그인 인증
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+        return new JwtAuthorizationFilter(authenticationManager());
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : jwtAuthenticationFilter
      * 2. ClassName  : SecurityConfiguration.java
      * 3. Comment    : jwt 인증 Filter
      * 4. 작성자       : CHO
@@ -92,7 +110,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      *
      */
     @Bean
-    public JwtAuthenticationFilter jwtFilter() {
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         return new JwtAuthenticationFilter();
     }
 }

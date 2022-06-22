@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (refreshToken != null) {
                     boolean validateRefreshToken = jwtUtil.validateToken(refreshToken, userDetails);
 
-                    if(validateRefreshToken) {
+                    if (validateRefreshToken) {
                         String newAccessToken = jwtUtil.generateToken(userDetails);
                         jwtUtil.setHeaderAccessToken(response, newAccessToken);
                         this.setAuthentication(newAccessToken);
