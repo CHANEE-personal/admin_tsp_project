@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
+import com.tsp.new_tsp_admin.api.domain.user.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +23,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -95,10 +101,12 @@ class AdminUserJpaControllerTest {
     @Test
     @DisplayName("관리자 회원가입 테스트")
     public void 회원가입테스트() throws Exception {
+
         adminUserEntity = builder()
                 .userId("test")
                 .password("test")
                 .name("test")
+                .role(Role.ROLE_USER)
                 .email("test@test.com")
                 .visible("Y")
                 .build();
@@ -111,7 +119,8 @@ class AdminUserJpaControllerTest {
                 .andExpect(jsonPath("$.userId").value("test"))
                 .andExpect(jsonPath("$.password").value("test"))
                 .andExpect(jsonPath("$.name").value("test"))
-                .andExpect(jsonPath("$.email").value("test@test.com"));
+                .andExpect(jsonPath("$.email").value("test@test.com"))
+                .andExpect(jsonPath("$.role").value("ROLE_USER"));
     }
 
     @Test

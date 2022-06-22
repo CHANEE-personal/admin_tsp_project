@@ -43,4 +43,7 @@ public class AdminUserDTO extends NewCommonDTO {
 
 	@ApiModelProperty(required = false, value = "user refresh Token", hidden = true)
 	String userRefreshToken;
+
+	@ApiModelProperty(required = false, value = "role", hidden = true)
+	Role role;
 }

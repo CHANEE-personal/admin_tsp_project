@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.user;
 
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
+import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;

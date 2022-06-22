@@ -53,6 +53,7 @@ public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter
                     )
             );
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException();
         }
     }

@@ -1,9 +1,13 @@
 package com.tsp.new_tsp_admin.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ApiExceptionType implements BaseExceptionType {
+	// 로그인 관련 Type
+	NO_LOGIN("NO_LOGIN", 401, "로그인 필요"),
+	NO_ADMIN("NO_ADMIN", 403, "권한 없는 사용자"),
 
 	// User 관련 Type
 	ERROR_USER("ERROR_USER", 500, "유저 등록 에러"),
