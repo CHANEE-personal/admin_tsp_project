@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private AdminUserJpaRepository adminUserJpaRepository;
@@ -25,27 +27,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String accessToken = jwtUtil.resolveAccessToken(request);
-        String refreshToken = jwtUtil.resolveRefreshToken(request);
 
-        String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+        try {
+            String accessToken = jwtUtil.resolveAccessToken(request);
+            String refreshToken = jwtUtil.resolveRefreshToken(request);
 
-        // 유효한 토큰인지 검사
-        if (accessToken != null) {
-            if (jwtUtil.validateToken(accessToken, userDetails)) {
-                this.setAuthentication(accessToken);
-            } else {
-                if (refreshToken != null) {
-                    boolean validateRefreshToken = jwtUtil.validateToken(refreshToken, userDetails);
+            String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
-                    if (validateRefreshToken) {
-                        String newAccessToken = jwtUtil.generateToken(userDetails);
-                        jwtUtil.setHeaderAccessToken(response, newAccessToken);
-                        this.setAuthentication(newAccessToken);
+            // 유효한 토큰인지 검사
+            if (accessToken != null) {
+                if (jwtUtil.validateToken(accessToken, userDetails)) {
+                    this.setAuthentication(accessToken);
+                } else {
+                    if (refreshToken != null) {
+                        boolean validateRefreshToken = jwtUtil.validateToken(refreshToken, userDetails);
+
+                        if (validateRefreshToken) {
+                            String newAccessToken = jwtUtil.generateToken(userDetails);
+                            jwtUtil.setHeaderAccessToken(response, newAccessToken);
+                            this.setAuthentication(newAccessToken);
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            log.error("Could not set user authentication in security context", e);
         }
         filterChain.doFilter(request, response);
     }
