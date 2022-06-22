@@ -89,13 +89,12 @@ public class AdminUserJpaController {
     public ConcurrentHashMap<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest,
                                                    HttpServletRequest request,
                                                    HttpServletResponse response) throws Exception {
-
         ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
 
         AdminUserEntity adminUserEntity = builder()
-                        .userId(authenticationRequest.getUserId())
-                        .password(authenticationRequest.getPassword())
-                        .build();
+                .userId(authenticationRequest.getUserId())
+                .password(authenticationRequest.getPassword())
+                .build();
 
         if ("Y".equals(adminUserJpaService.adminLogin(adminUserEntity))) {
             userMap.put("loginYn", "Y");
@@ -115,6 +114,7 @@ public class AdminUserJpaController {
         }
 
         return userMap;
+
     }
 
     /**

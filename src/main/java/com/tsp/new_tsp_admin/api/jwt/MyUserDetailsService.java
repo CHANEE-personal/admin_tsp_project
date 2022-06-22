@@ -29,6 +29,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
         try {
             AdminUserEntity adminUserEntity = adminUserJpaRepository.findOneUser(id);
+            adminUserEntity.setUserRefreshToken(adminUserEntity.getUserToken());
+            adminUserJpaRepository.insertUserTokenByEm(adminUserEntity);
 
             // 아이디 일치하는지 확인
             return new User(adminUserEntity.getName(), adminUserEntity.getPassword(),

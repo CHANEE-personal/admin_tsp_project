@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.user;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,9 +31,9 @@ import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -63,6 +65,7 @@ class AdminUserJpaControllerTest {
                 .password("pass1234")
                 .name("admin02")
                 .email("admin02@tsp.com")
+                .role(Role.ROLE_ADMIN)
                 .visible("Y")
                 .build();
     }
@@ -71,8 +74,11 @@ class AdminUserJpaControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .apply(springSecurity())
                 .alwaysDo(print())
                 .build();
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         createUser();
     }
@@ -86,6 +92,7 @@ class AdminUserJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     @DisplayName("로그인 테스트")
     public void 로그인테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-user/login")
@@ -93,12 +100,13 @@ class AdminUserJpaControllerTest {
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.loginYn").value("Y"))
-                .andExpect(jsonPath("$.userId").value(adminUserEntity.getUserId()))
-                .andExpect(jsonPath("$.token").isNotEmpty());
+                .andExpect(header().string("loginYn", "Y"))
+                .andExpect(header().string("username", "test"))
+                .andExpect(header().exists("authorization"));
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원가입 테스트")
     public void 회원가입테스트() throws Exception {
 
@@ -106,7 +114,6 @@ class AdminUserJpaControllerTest {
                 .userId("test")
                 .password("test")
                 .name("test")
-                .role(Role.ROLE_USER)
                 .email("test@test.com")
                 .visible("Y")
                 .build();
@@ -120,7 +127,7 @@ class AdminUserJpaControllerTest {
                 .andExpect(jsonPath("$.password").value("test"))
                 .andExpect(jsonPath("$.name").value("test"))
                 .andExpect(jsonPath("$.email").value("test@test.com"))
-                .andExpect(jsonPath("$.role").value("ROLE_USER"));
+                .andExpect(jsonPath("$.role").value("ROLE_ADMIN"));
     }
 
     @Test

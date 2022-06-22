@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.user.mapper.UserMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.common.StringUtils;
@@ -150,8 +151,6 @@ public class AdminUserJpaRepository {
     public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) {
         try {
             AdminUserEntity adminUser = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
-            adminUser.setUserToken(adminUserEntity.getUserToken());
-            adminUser.setUserRefreshToken(adminUserEntity.getUserRefreshToken());
             em.flush();
             em.clear();
 
@@ -204,6 +203,7 @@ public class AdminUserJpaRepository {
 
         try {
             //회원 등록
+            adminUserEntity.setRole(Role.ROLE_ADMIN);
             em.persist(adminUserEntity);
 
             return UserMapper.INSTANCE.toDto(adminUserEntity);

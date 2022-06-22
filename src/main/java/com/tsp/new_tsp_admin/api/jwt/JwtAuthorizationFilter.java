@@ -74,6 +74,8 @@ public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter
                 .compact();
 
         response.addHeader("authorization", "Bearer " + token);
+        response.addHeader("username", ((User) authResult.getPrincipal()).getUsername());
+        response.addHeader("loginYn", "Y");
         response.getWriter().write("Bearer " + token);
         response.getWriter().flush();
     }

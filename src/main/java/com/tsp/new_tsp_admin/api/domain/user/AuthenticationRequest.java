@@ -1,7 +1,10 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @Getter
 @Setter
@@ -20,13 +24,10 @@ public class AuthenticationRequest implements UserDetails {
 
     private AdminUserEntity adminUserEntity;
 
-    @Autowired
-    public AuthenticationRequest(AdminUserEntity adminUserEntity) {
-        this.adminUserEntity = adminUserEntity;
-    }
-
     private static final long serialVersionUID = 5926468583005150707L;
+    @JsonProperty("userId")
     private String userId;
+    @JsonProperty("password")
     private String password;
 
     @Override

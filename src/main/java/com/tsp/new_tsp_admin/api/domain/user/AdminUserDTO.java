@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel
 public class AdminUserDTO extends NewCommonDTO {
 
