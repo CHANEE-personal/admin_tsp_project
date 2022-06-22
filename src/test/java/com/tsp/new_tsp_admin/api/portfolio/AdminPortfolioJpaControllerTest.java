@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,6 +25,7 @@ import java.util.Collections;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,6 +65,7 @@ class AdminPortfolioJpaControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .apply(springSecurity())
                 .alwaysDo(print())
                 .build();
 
@@ -70,6 +73,7 @@ class AdminPortfolioJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 조회 테스트")
     public void 포트폴리오조회Api테스트() throws Exception {
         MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
@@ -82,6 +86,19 @@ class AdminPortfolioJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 포트폴리오 조회 권한 테스트")
+    public void 포트폴리오조회Api권한테스트() throws Exception {
+        MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
+        portfolioMap.put("jpaStartPage", Collections.singletonList("1"));
+        portfolioMap.put("size", Collections.singletonList("3"));
+        mockMvc.perform(get("/api/jpa-portfolio/lists").params(portfolioMap))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 상세 조회 테스트")
     public void 포트폴리오상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-portfolio/1"))
@@ -91,7 +108,16 @@ class AdminPortfolioJpaControllerTest {
     }
 
     @Test
-    @Transactional
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 포트폴리오 상세 조회 권한 테스트")
+    public void 포트폴리오상세조회Api권한테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-portfolio/1"))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 등록 테스트")
     public void 포트폴리오등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-portfolio")
@@ -107,6 +133,18 @@ class AdminPortfolioJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 포트폴리오 등록 권한 테스트")
+    public void 포트폴리오등록Api권한테스트() throws Exception {
+        mockMvc.perform(post("/api/jpa-portfolio")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 수정 테스트")
     public void 포트폴리오수정Api테스트() throws Exception {
         em.persist(adminPortFolioEntity);
@@ -134,6 +172,30 @@ class AdminPortfolioJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 포트폴리오 수정 권한 테스트")
+    public void 포트폴리오수정Api권한테스트() throws Exception {
+        em.persist(adminPortFolioEntity);
+
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
+                .idx(adminPortFolioEntity.getIdx())
+                .categoryCd(1)
+                .title("포트폴리오 테스트1111")
+                .description("포트폴리오 테스트1111")
+                .hashTag("#test111")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(put("/api/jpa-portfolio/{idx}", adminPortFolioEntity.getIdx())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 삭제 테스트")
     public void 포트폴리오삭제Api테스트() throws Exception {
         em.persist(adminPortFolioEntity);
@@ -143,5 +205,18 @@ class AdminPortfolioJpaControllerTest {
                         .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 포트폴리오 삭제 권한 테스트")
+    public void 포트폴리오삭제Api권한테스트() throws Exception {
+        em.persist(adminPortFolioEntity);
+
+        mockMvc.perform(delete("/api/jpa-portfolio/{idx}", adminPortFolioEntity.getIdx())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 }
