@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -51,8 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             }
-        } catch (Exception e) {
-            log.error("Could not set user authentication in security context", e);
+        } catch (ExpiredJwtException eje) {
+            log.info("Security exception for user {} - {}", eje.getClaims().getSubject(), eje.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            log.debug("Exception " + eje.getMessage(), eje);
         }
         filterChain.doFilter(request, response);
     }
