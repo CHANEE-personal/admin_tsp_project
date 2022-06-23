@@ -81,6 +81,11 @@ public class AdminUserJpaRepository {
     @Transactional(readOnly = true)
     public AdminUserEntity findOneUser(String id) {
         try {
+            System.out.println("===id===");
+            System.out.println(id);
+            System.out.println(queryFactory.selectFrom(adminUserEntity)
+                    .where(adminUserEntity.userId.eq(id))
+                    .fetchOne().getUserId());
             return queryFactory.selectFrom(adminUserEntity)
                     .where(adminUserEntity.userId.eq(id))
                     .fetchOne();
@@ -147,14 +152,16 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) {
         try {
-            AdminUserEntity adminUser = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
+//            AdminUserEntity adminUser = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
+            em.merge(adminUserEntity);
             em.flush();
             em.clear();
 
-            return adminUser.getIdx();
+            return adminUserEntity.getIdx();
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_USER);
         }

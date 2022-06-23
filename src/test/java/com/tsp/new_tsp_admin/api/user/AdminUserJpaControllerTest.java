@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.api.domain.user.Role;
+import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
@@ -27,6 +30,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
@@ -59,13 +63,29 @@ class AdminUserJpaControllerTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return authorities;
+    }
+
     public void createUser() {
+        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin02", passwordEncoder.encode("pass1234"), getAuthorities());
+        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+
         adminUserEntity = builder()
                 .userId("admin02")
-                .password("pass1234")
+                .password(passwordEncoder.encode("pass1234"))
                 .name("admin02")
                 .email("admin02@tsp.com")
                 .role(Role.ROLE_ADMIN)
+                .userToken(token)
                 .visible("Y")
                 .build();
     }
@@ -81,13 +101,16 @@ class AdminUserJpaControllerTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         createUser();
+
+        em.persist(adminUserEntity);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 회원 조회 테스트")
     public void Admin회원조회() throws Exception {
-        mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100"))
+        mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -120,6 +143,9 @@ class AdminUserJpaControllerTest {
     @DisplayName("관리자 회원가입 테스트")
     public void 회원가입테스트() throws Exception {
 
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin01", "pass1234", getAuthorities());
+        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+
         adminUserEntity = builder()
                 .userId("test")
                 .password("test")
@@ -128,7 +154,7 @@ class AdminUserJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        mockMvc.perform(post("/api/jpa-user")
+        mockMvc.perform(post("/api/jpa-user").header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
