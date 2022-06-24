@@ -122,11 +122,11 @@ public class JwtUtil implements Serializable {
 
     // 엑세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader("authorization", "bearer "+ accessToken);
+        response.setHeader("authorization", "Bearer " + accessToken);
     }
 
     // 리프레시 토큰 헤더 설정
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader("refreshToken", "bearer "+ refreshToken);
+        response.setHeader("refreshToken", "Bearer " + refreshToken);
     }
 }

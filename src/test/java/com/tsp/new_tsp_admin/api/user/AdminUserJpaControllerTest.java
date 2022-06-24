@@ -76,18 +76,20 @@ class AdminUserJpaControllerTest {
     public void createUser() {
         passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin02", passwordEncoder.encode("pass1234"), getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
         adminUserEntity = builder()
-                .userId("admin02")
-                .password(passwordEncoder.encode("pass1234"))
-                .name("admin02")
-                .email("admin02@tsp.com")
+                .userId("admin04")
+                .password("pass1234")
+                .name("test")
+                .email("test@test.com")
                 .role(Role.ROLE_ADMIN)
                 .userToken(token)
                 .visible("Y")
                 .build();
+
+        em.persist(adminUserEntity);
     }
 
     @BeforeEach
@@ -101,8 +103,6 @@ class AdminUserJpaControllerTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         createUser();
-
-        em.persist(adminUserEntity);
     }
 
     @Test
@@ -110,7 +110,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("Admin 회원 조회 테스트")
     public void Admin회원조회() throws Exception {
         mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100")
-                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                        .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -142,21 +142,18 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원가입 테스트")
     public void 회원가입테스트() throws Exception {
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin01", "pass1234", getAuthorities());
-        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
-
-        adminUserEntity = builder()
+        AdminUserEntity newAdminUserEntity = builder()
                 .userId("test")
                 .password("test")
                 .name("test")
                 .email("test@test.com")
+                .role(Role.ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
-        mockMvc.perform(post("/api/jpa-user").header("Authorization", "Bearer " + token)
+        mockMvc.perform(post("/api/jpa-user").header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .content(objectMapper.writeValueAsString(newAdminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value("test"))
@@ -189,9 +186,7 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원수정 테스트")
     public void 회원수정테스트() throws Exception {
-        em.persist(adminUserEntity);
-
-        adminUserEntity = builder()
+        AdminUserEntity updateAdminUserEntity = builder()
                 .idx(adminUserEntity.getIdx())
                 .userId("admin03")
                 .password("pass1234")
@@ -200,9 +195,9 @@ class AdminUserJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        mockMvc.perform(put("/api/jpa-user/{idx}", adminUserEntity.getIdx())
+        mockMvc.perform(put("/api/jpa-user/{idx}", updateAdminUserEntity.getIdx()).header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .content(objectMapper.writeValueAsString(updateAdminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value("admin03"))

@@ -1,23 +1,20 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
@@ -36,6 +33,7 @@ public class MyUserDetailsService implements UserDetailsService {
             return new User(adminUserEntity.getName(), adminUserEntity.getPassword(),
                     AuthorityUtils.createAuthorityList("ROLE_ADMIN"));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.NOT_FOUND_USER);
         }
     }
