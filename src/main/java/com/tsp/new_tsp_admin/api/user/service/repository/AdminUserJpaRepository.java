@@ -81,15 +81,11 @@ public class AdminUserJpaRepository {
     @Transactional(readOnly = true)
     public AdminUserEntity findOneUser(String id) {
         try {
-            System.out.println("===id===");
-            System.out.println(id);
-            System.out.println(queryFactory.selectFrom(adminUserEntity)
-                    .where(adminUserEntity.userId.eq(id))
-                    .fetchOne().getUserId());
             return queryFactory.selectFrom(adminUserEntity)
                     .where(adminUserEntity.userId.eq(id))
                     .fetchOne();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(ApiExceptionType.NOT_FOUND_USER);
         }
     }
@@ -210,7 +206,6 @@ public class AdminUserJpaRepository {
 
         try {
             //회원 등록
-            adminUserEntity.setRole(Role.ROLE_ADMIN);
             em.persist(adminUserEntity);
 
             return UserMapper.INSTANCE.toDto(adminUserEntity);

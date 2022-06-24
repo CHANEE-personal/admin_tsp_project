@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.user;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
@@ -99,8 +98,6 @@ class AdminUserJpaControllerTest {
                 .apply(springSecurity())
                 .alwaysDo(print())
                 .build();
-
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         createUser();
     }
@@ -208,9 +205,7 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "USER")
     @DisplayName("관리자 회원수정 권한 예외 테스트")
     public void 회원수정권한테스트() throws Exception {
-        em.persist(adminUserEntity);
-
-        adminUserEntity = builder()
+        AdminUserEntity updateAdminUserEntity = builder()
                 .idx(adminUserEntity.getIdx())
                 .userId("admin03")
                 .password("pass1234")
@@ -219,9 +214,9 @@ class AdminUserJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        mockMvc.perform(put("/api/jpa-user/{idx}", adminUserEntity.getIdx())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminUserEntity)))
+        mockMvc.perform(put("/api/jpa-user/{idx}", updateAdminUserEntity.getIdx()).header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -230,11 +225,11 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원탈퇴 테스트")
     public void 회원탈퇴테스트() throws Exception {
-        AdminUserEntity adminUserEntity = builder().idx(1).build();
+        AdminUserEntity deleteAdminUserEntity = builder().idx(adminUserEntity.getIdx()).build();
 
-        mockMvc.perform(put("/api/jpa-user")
+        mockMvc.perform(put("/api/jpa-user").header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .content(objectMapper.writeValueAsString(deleteAdminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -243,11 +238,11 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "USER")
     @DisplayName("관리자 회원탈퇴 권한 테스트")
     public void 회원탈퇴권한테스트() throws Exception {
-        AdminUserEntity adminUserEntity = builder().idx(1).build();
+        AdminUserEntity deleteAdminUserEntity = builder().idx(adminUserEntity.getIdx()).build();
 
-        mockMvc.perform(put("/api/jpa-user")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminUserEntity)))
+        mockMvc.perform(put("/api/jpa-user").header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(deleteAdminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
