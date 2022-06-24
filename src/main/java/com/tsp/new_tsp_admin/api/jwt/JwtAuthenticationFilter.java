@@ -34,12 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String refreshToken = jwtUtil.resolveRefreshToken(request);
 
             String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
-            System.out.println("===userId===");
-            System.out.println(userId);
             UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-            System.out.println("===userDetails===");
-            System.out.println(userDetails.getUsername());
-            System.out.println(userDetails.getPassword());
 
             // 유효한 토큰인지 검사
             if (accessToken != null) {
