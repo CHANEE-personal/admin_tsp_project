@@ -49,19 +49,17 @@ public class JwtUtil implements Serializable {
                 .getBody();
     }
 
-    public String getUsername(String token) {
-        return extractAllClaims(token).get("username", String.class);
-    }
-
     public String resolveAccessToken(HttpServletRequest request) {
-        if(request.getHeader("authorization") != null )
+        if (request.getHeader("authorization") != null)   {
             return request.getHeader("authorization").substring(7);
+        }
         return null;
     }
 
     public String resolveRefreshToken(HttpServletRequest request) {
-        if(request.getHeader("refreshToken") != null )
+        if (request.getHeader("refreshToken") != null) {
             return request.getHeader("refreshToken").substring(7);
+        }
         return null;
     }
 

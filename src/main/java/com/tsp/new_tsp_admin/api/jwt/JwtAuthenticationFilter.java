@@ -52,10 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             }
-        } catch (ExpiredJwtException eje) {
-            log.info("Security exception for user {} - {}", eje.getClaims().getSubject(), eje.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.info("Security exception for user {} - {}", e.getClaims().getSubject(), e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            log.debug("Exception " + eje.getMessage(), eje);
+            log.debug("Exception " + e.getMessage(), e);
         }
         filterChain.doFilter(request, response);
     }
