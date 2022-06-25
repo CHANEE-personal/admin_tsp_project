@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.production;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,10 +75,20 @@ class AdminProductionJpaControllerTest {
     }
 
     public void createAdminProduction() {
-        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+
+        adminUserEntity = AdminUserEntity.builder()
+                .userId("admin04")
+                .password("pass1234")
+                .name("test")
+                .email("test@test.com")
+                .role(Role.ROLE_ADMIN)
+                .userToken(token)
+                .visible("Y")
+                .build();
+
+        em.persist(adminUserEntity);
 
         adminProductionEntity = builder()
                 .title("프로덕션 테스트")
