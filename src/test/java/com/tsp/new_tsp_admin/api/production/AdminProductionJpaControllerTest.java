@@ -2,6 +2,8 @@ package com.tsp.new_tsp_admin.api.production;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,6 +26,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 import static org.hamcrest.Matchers.greaterThan;
@@ -45,11 +56,29 @@ class AdminProductionJpaControllerTest {
     private WebApplicationContext wac;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     private EntityManager em;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     private AdminProductionEntity adminProductionEntity;
+    private AdminUserEntity adminUserEntity;
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return authorities;
+    }
 
     public void createAdminProduction() {
+        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
+        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+
         adminProductionEntity = builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
@@ -72,7 +101,8 @@ class AdminProductionJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 조회 테스트")
     public void 프로덕션조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-production/lists"))
+        mockMvc.perform(get("/api/jpa-production/lists")
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.productionList.length()", greaterThan(0)));
@@ -82,7 +112,8 @@ class AdminProductionJpaControllerTest {
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 프로덕션 조회 권한 테스트")
     public void 프로덕션조회Api권한테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-production/lists"))
+        mockMvc.perform(get("/api/jpa-production/lists")
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -91,7 +122,8 @@ class AdminProductionJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 상세 조회 테스트")
     public void 프로덕션상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-production/1"))
+        mockMvc.perform(get("/api/jpa-production/1")
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idx").value("1"))
@@ -103,7 +135,8 @@ class AdminProductionJpaControllerTest {
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 프로덕션 상세 조회 권한 테스트")
     public void 프로덕션상세조회Api권한테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-production/1"))
+        mockMvc.perform(get("/api/jpa-production/1")
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -113,6 +146,7 @@ class AdminProductionJpaControllerTest {
     @DisplayName("Admin 프로덕션 등록 테스트")
     public void 프로덕션등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-production")
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
@@ -126,8 +160,9 @@ class AdminProductionJpaControllerTest {
     @DisplayName("Admin 프로덕션 등록 권한 테스트")
     public void 프로덕션등록Api권한테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-production")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminProductionEntity)))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -141,8 +176,9 @@ class AdminProductionJpaControllerTest {
         adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
 
         mockMvc.perform(put("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminProductionEntity)))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("테스트1"))
@@ -158,8 +194,9 @@ class AdminProductionJpaControllerTest {
         adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
 
         mockMvc.perform(put("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminProductionEntity)))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -171,8 +208,9 @@ class AdminProductionJpaControllerTest {
         em.persist(adminProductionEntity);
 
         mockMvc.perform(delete("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminProductionEntity)))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -184,8 +222,9 @@ class AdminProductionJpaControllerTest {
         em.persist(adminProductionEntity);
 
         mockMvc.perform(delete("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminProductionEntity)))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
