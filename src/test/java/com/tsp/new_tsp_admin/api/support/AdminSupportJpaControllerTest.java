@@ -3,6 +3,9 @@ package com.tsp.new_tsp_admin.api.support;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.Role;
+import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.api.support.mapper.SupportMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -13,6 +16,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,7 +31,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
@@ -53,10 +62,34 @@ class AdminSupportJpaControllerTest {
 	@Autowired
 	private EntityManager em;
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	private AdminSupportEntity adminSupportEntity;
-	private AdminSupportDTO adminSupportDTO;
+	private AdminUserEntity adminUserEntity;
+
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		return authorities;
+	}
 
 	public void createAdminSupport() {
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
+		String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+
+		adminUserEntity = AdminUserEntity.builder()
+				.userId("admin04")
+				.password("pass1234")
+				.name("test")
+				.email("test@test.com")
+				.role(Role.ROLE_ADMIN)
+				.userToken(token)
+				.visible("Y")
+				.build();
+
+		em.persist(adminUserEntity);
+
 		adminSupportEntity = builder()
 				.supportName("조찬희")
 				.supportMessage("조찬희 지원")
@@ -65,8 +98,6 @@ class AdminSupportJpaControllerTest {
 				.supportSize3("31-24-31")
 				.supportInstagram("https://instagram.com")
 				.build();
-
-		adminSupportDTO = SupportMapperImpl.INSTANCE.toDto(adminSupportEntity);
 	}
 
 	@BeforeEach
@@ -87,7 +118,8 @@ class AdminSupportJpaControllerTest {
 		MultiValueMap<String, String> supportMap = new LinkedMultiValueMap<>();
 		supportMap.put("jpaStartPage", Collections.singletonList("1"));
 		supportMap.put("size", Collections.singletonList("3"));
-		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap))
+		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
@@ -99,7 +131,8 @@ class AdminSupportJpaControllerTest {
 		MultiValueMap<String, String> supportMap = new LinkedMultiValueMap<>();
 		supportMap.put("jpaStartPage", Collections.singletonList("1"));
 		supportMap.put("size", Collections.singletonList("3"));
-		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap))
+		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isForbidden());
 	}
@@ -108,7 +141,8 @@ class AdminSupportJpaControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원 모델 상세 조회 테스트")
 	public void 지원모델상세조회Api테스트() throws Exception {
-		mockMvc.perform(get("/api/jpa-support/1"))
+		mockMvc.perform(get("/api/jpa-support/1")
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
@@ -130,6 +164,7 @@ class AdminSupportJpaControllerTest {
 				.build();
 
 		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
@@ -155,8 +190,9 @@ class AdminSupportJpaControllerTest {
 				.build();
 
 		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
-						.contentType(MediaType.APPLICATION_JSON_VALUE)
-						.content(objectMapper.writeValueAsString(adminSupportEntity)))
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
 				.andExpect(status().isForbidden());
 	}
@@ -168,6 +204,7 @@ class AdminSupportJpaControllerTest {
 		em.persist(adminSupportEntity);
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
@@ -181,8 +218,9 @@ class AdminSupportJpaControllerTest {
 		em.persist(adminSupportEntity);
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
-						.contentType(MediaType.APPLICATION_JSON_VALUE)
-						.content(objectMapper.writeValueAsString(adminSupportEntity)))
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
 				.andExpect(status().isForbidden());
 	}

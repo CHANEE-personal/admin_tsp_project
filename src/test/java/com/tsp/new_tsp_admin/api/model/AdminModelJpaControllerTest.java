@@ -63,9 +63,6 @@ class AdminModelJpaControllerTest {
     private WebApplicationContext wac;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -81,8 +78,6 @@ class AdminModelJpaControllerTest {
     }
 
     public void createAdminModel() {
-        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 

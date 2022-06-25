@@ -57,9 +57,6 @@ class AdminPortfolioJpaControllerTest {
     private WebApplicationContext wac;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
