@@ -128,8 +128,25 @@ class AdminModelJpaControllerTest {
         MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
         modelMap.put("jpaStartPage", Collections.singletonList("1"));
         modelMap.put("size", Collections.singletonList("3"));
-        mockMvc.perform(get("/api/jpa-model/lists/1").params(modelMap)
+        mockMvc.perform(get("/api/jpa-model/lists/1").queryParams(modelMap)
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 모델 검색 조회 테스트")
+    public void 모델검색조회Api테스트() throws Exception {
+        // 검색 테스트
+        LinkedMultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
+        paramMap.add("jpaStartPage", "1");
+        paramMap.add("size", "3");
+        paramMap.add("searchType", "0");
+        paramMap.add("searchKeyword", "김민주");
+
+        mockMvc.perform(get("/api/jpa-model/lists/2").queryParams(paramMap)
+                        .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
