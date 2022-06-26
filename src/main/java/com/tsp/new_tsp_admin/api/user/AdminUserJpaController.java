@@ -25,9 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.rmi.ServerError;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 
@@ -85,10 +85,10 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/login")
-    public ConcurrentHashMap<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest,
+    public Map<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest,
                                                    HttpServletRequest request,
                                                    HttpServletResponse response) throws Exception {
-        ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
+        Map<String, Object> userMap = new HashMap<>();
 
         AdminUserEntity adminUserEntity = builder()
                 .userId(authenticationRequest.getUserId())
