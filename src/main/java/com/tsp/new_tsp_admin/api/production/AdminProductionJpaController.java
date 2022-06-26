@@ -15,9 +15,9 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/api/jpa-production")
@@ -47,8 +47,8 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ConcurrentHashMap<String, Object> getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
-        ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
+    public Map<String, Object> getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
+        Map<String, Object> productionMap = new HashMap<>();
 
         Long productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
 

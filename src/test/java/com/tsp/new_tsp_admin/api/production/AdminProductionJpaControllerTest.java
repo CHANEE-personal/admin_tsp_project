@@ -20,6 +20,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -112,6 +113,23 @@ class AdminProductionJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.productionList.length()", greaterThan(0)));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 프로덕션 검색 조회 테스트")
+    public void 프로덕션검색조회Api테스트() throws Exception {
+        // 검색 테스트
+        LinkedMultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
+        paramMap.add("jpaStartPage", "1");
+        paramMap.add("size", "3");
+        paramMap.add("searchType", "0");
+        paramMap.add("searchKeyword", "하하");
+
+        mockMvc.perform(get("/api/jpa-production/lists").queryParams(paramMap)
+                        .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test

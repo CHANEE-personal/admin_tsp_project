@@ -49,10 +49,10 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/lists")
-    public ConcurrentHashMap<String, Object> getSupportList(Map<String, Object> paramMap,
+    public Map<String, Object> getSupportList(Map<String, Object> paramMap,
                                                             Page page) throws Exception {
         // 페이징 및 검색
-        ConcurrentHashMap<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
+        Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
 
         List<AdminSupportDTO> supportList = new ArrayList<>();
 

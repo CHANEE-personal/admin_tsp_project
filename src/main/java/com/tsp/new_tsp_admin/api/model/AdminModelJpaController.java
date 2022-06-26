@@ -60,12 +60,6 @@ public class AdminModelJpaController {
                                             @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                             @RequestParam Map<String, Object> paramMap,
                                             Page page) throws Exception {
-
-        System.out.println("===paramMap===");
-        System.out.println(paramMap);
-        System.out.println(paramMap.get("searchKeyword"));
-        System.out.println(paramMap.get("searchType"));
-
         // 페이징 및 검색
         Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
         modelMap.put("categoryCd", categoryCd);

@@ -1,12 +1,11 @@
 package com.tsp.new_tsp_admin.common;
 
-import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
@@ -23,9 +22,9 @@ public class SearchCommon {
      * </pre>
      *
      */
-    public ConcurrentHashMap<String, Object> searchCommon(Page page, Map<String, Object> paramMap) {
+    public Map<String, Object> searchCommon(Page page, Map<String, Object> paramMap) {
 
-        ConcurrentHashMap<String, Object> searchMap = new ConcurrentHashMap<>();
+        Map<String, Object> searchMap = new HashMap<>();
 
         // 페이징 처리
         Integer pageCnt = StringUtil.getInt(page.getPage(), 1);
