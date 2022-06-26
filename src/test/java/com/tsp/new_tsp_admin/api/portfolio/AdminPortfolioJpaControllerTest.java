@@ -122,6 +122,22 @@ class AdminPortfolioJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 포트폴리오 검색조회 테스트")
+    public void 포트폴리오검색조회Api테스트() throws Exception {
+        MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
+        portfolioMap.add("jpaStartPage", "1");
+        portfolioMap.add("size", "3");
+        portfolioMap.add("searchType", "0");
+        portfolioMap.add("searchKeyword", "하하");
+        mockMvc.perform(get("/api/jpa-portfolio/lists").queryParams(portfolioMap)
+                        .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.portfolioList.length()", greaterThan(0)));
+    }
+
+    @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 포트폴리오 조회 권한 테스트")
     public void 포트폴리오조회Api권한테스트() throws Exception {

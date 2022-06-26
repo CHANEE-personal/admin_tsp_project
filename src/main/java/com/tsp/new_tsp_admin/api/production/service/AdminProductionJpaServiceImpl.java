@@ -44,7 +44,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      *
      */
     @Override
-    @Cacheable("production")
+//    @Cacheable("production")
     public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) {
         return adminProductionJpaRepository.findProductionsList(productionMap);
     }
@@ -60,7 +60,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      *
      */
     @Override
-    @Cacheable("production")
+//    @Cacheable("production")
     public AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaRepository.findOneProduction(adminProductionEntity);
     }
