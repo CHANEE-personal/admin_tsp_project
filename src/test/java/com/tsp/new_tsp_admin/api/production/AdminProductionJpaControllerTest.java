@@ -64,13 +64,13 @@ class AdminProductionJpaControllerTest {
     private AdminProductionEntity adminProductionEntity;
     private AdminUserEntity adminUserEntity;
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return authorities;
     }
 
-    public void createAdminProduction() {
+    void createAdminProduction() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
@@ -94,7 +94,7 @@ class AdminProductionJpaControllerTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
@@ -107,7 +107,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 조회 테스트")
-    public void 프로덕션조회Api테스트() throws Exception {
+    void 프로덕션조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-production/lists")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -118,7 +118,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 검색 조회 테스트")
-    public void 프로덕션검색조회Api테스트() throws Exception {
+    void 프로덕션검색조회Api테스트() throws Exception {
         // 검색 테스트
         LinkedMultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
         paramMap.add("jpaStartPage", "1");
@@ -135,7 +135,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 프로덕션 조회 권한 테스트")
-    public void 프로덕션조회Api권한테스트() throws Exception {
+    void 프로덕션조회Api권한테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-production/lists")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -145,7 +145,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 상세 조회 테스트")
-    public void 프로덕션상세조회Api테스트() throws Exception {
+    void 프로덕션상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-production/1")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -158,7 +158,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 프로덕션 상세 조회 권한 테스트")
-    public void 프로덕션상세조회Api권한테스트() throws Exception {
+    void 프로덕션상세조회Api권한테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-production/1")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -168,7 +168,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 등록 테스트")
-    public void 프로덕션등록Api테스트() throws Exception {
+    void 프로덕션등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-production")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -182,7 +182,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 프로덕션 등록 권한 테스트")
-    public void 프로덕션등록Api권한테스트() throws Exception {
+    void 프로덕션등록Api권한테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-production")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -194,7 +194,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 수정 테스트")
-    public void 프로덕션수정Api테스트() throws Exception {
+    void 프로덕션수정Api테스트() throws Exception {
         em.persist(adminProductionEntity);
 
         adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
@@ -212,7 +212,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 프로덕션 수정 권한 테스트")
-    public void 프로덕션수정Api권한테스트() throws Exception {
+    void 프로덕션수정Api권한테스트() throws Exception {
         em.persist(adminProductionEntity);
 
         adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
@@ -228,7 +228,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 삭제 테스트")
-    public void 프로덕션삭제Api테스트() throws Exception {
+    void 프로덕션삭제Api테스트() throws Exception {
         em.persist(adminProductionEntity);
 
         mockMvc.perform(delete("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
@@ -242,7 +242,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 프로덕션 삭제 권한 테스트")
-    public void 프로덕션삭제Api권한테스트() throws Exception {
+    void 프로덕션삭제Api권한테스트() throws Exception {
         em.persist(adminProductionEntity);
 
         mockMvc.perform(delete("/api/jpa-production/{idx}", adminProductionEntity.getIdx())

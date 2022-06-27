@@ -66,13 +66,13 @@ class AdminUserJpaControllerTest {
     private JwtUtil jwtUtil;
 
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return authorities;
     }
 
-    public void createUser() {
+    void createUser() {
         passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
@@ -92,7 +92,7 @@ class AdminUserJpaControllerTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
@@ -105,7 +105,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 회원 조회 테스트")
-    public void Admin회원조회() throws Exception {
+    void Admin회원조회() throws Exception {
         mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -115,7 +115,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 회원 조회 권한 테스트")
-    public void Admin회원조회권한테스트() throws Exception {
+    void Admin회원조회권한테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -125,7 +125,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("로그인 테스트")
-    public void 로그인테스트() throws Exception {
+    void 로그인테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-user/login")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -140,7 +140,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원가입 테스트")
-    public void 회원가입테스트() throws Exception {
+    void 회원가입테스트() throws Exception {
         AdminUserEntity newAdminUserEntity = builder()
                 .userId("test")
                 .password("test")
@@ -166,7 +166,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("관리자 회원가입 권한 예외 테스트")
-    public void 회원가입권한테스트() throws Exception {
+    void 회원가입권한테스트() throws Exception {
         adminUserEntity = builder()
                 .userId("test")
                 .password("test")
@@ -186,7 +186,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원수정 테스트")
-    public void 회원수정테스트() throws Exception {
+    void 회원수정테스트() throws Exception {
         AdminUserEntity updateAdminUserEntity = builder()
                 .idx(adminUserEntity.getIdx())
                 .userId("admin03")
@@ -209,7 +209,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("관리자 회원수정 권한 예외 테스트")
-    public void 회원수정권한테스트() throws Exception {
+    void 회원수정권한테스트() throws Exception {
         AdminUserEntity updateAdminUserEntity = builder()
                 .idx(adminUserEntity.getIdx())
                 .userId("admin03")
@@ -230,7 +230,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원탈퇴 테스트")
-    public void 회원탈퇴테스트() throws Exception {
+    void 회원탈퇴테스트() throws Exception {
         AdminUserEntity deleteAdminUserEntity = builder().idx(adminUserEntity.getIdx()).build();
 
         mockMvc.perform(put("/api/jpa-user")
@@ -244,7 +244,7 @@ class AdminUserJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("관리자 회원탈퇴 권한 테스트")
-    public void 회원탈퇴권한테스트() throws Exception {
+    void 회원탈퇴권한테스트() throws Exception {
         AdminUserEntity deleteAdminUserEntity = builder().idx(adminUserEntity.getIdx()).build();
 
         mockMvc.perform(put("/api/jpa-user")
@@ -257,7 +257,7 @@ class AdminUserJpaControllerTest {
 
     @Test
     @DisplayName("JWT 토큰 발급 테스트")
-    public void 토큰발급테스트() throws Exception {
+    void 토큰발급테스트() throws Exception {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest();
         authenticationRequest.setUserId("admin01");
         authenticationRequest.setPassword("pass1234");

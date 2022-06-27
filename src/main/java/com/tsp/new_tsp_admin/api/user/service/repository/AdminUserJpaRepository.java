@@ -4,7 +4,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.user.mapper.UserMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.common.StringUtils;
@@ -78,7 +77,6 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
     public AdminUserEntity findOneUser(String id) {
         try {
             return queryFactory.selectFrom(adminUserEntity)
@@ -152,7 +150,6 @@ public class AdminUserJpaRepository {
     @Transactional
     public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) {
         try {
-//            AdminUserEntity adminUser = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
             em.merge(adminUserEntity);
             em.flush();
             em.clear();
