@@ -49,8 +49,8 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/lists")
-    public Map<String, Object> getSupportList(Map<String, Object> paramMap,
-                                                            Page page) throws Exception {
+    public Map<String, Object> getSupportList(@RequestParam(required = false) Map<String, Object> paramMap,
+                                                Page page) throws Exception {
         // 페이징 및 검색
         Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
 

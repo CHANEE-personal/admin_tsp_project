@@ -58,7 +58,7 @@ public class AdminModelJpaController {
     @GetMapping(value = "/lists/{categoryCd}")
     public Map<String, Object> getModelList(@PathVariable("categoryCd")
                                             @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                            @RequestParam Map<String, Object> paramMap,
+                                            @RequestParam(required = false) Map<String, Object> paramMap,
                                             Page page) throws Exception {
         // 페이징 및 검색
         Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);

@@ -15,9 +15,9 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/api/jpa-portfolio")
@@ -47,8 +47,8 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ConcurrentHashMap<String, Object> getPortfolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
-        ConcurrentHashMap<String, Object> portfolioMap = new ConcurrentHashMap<>();
+    public Map<String, Object> getPortfolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
+        Map<String, Object> portfolioMap = new HashMap<>();
 
         Long portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
 
