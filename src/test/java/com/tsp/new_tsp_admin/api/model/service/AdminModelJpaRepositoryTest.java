@@ -111,7 +111,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 리스트 조회 테스트")
-    public void 모델리스트조회테스트() {
+    void 모델리스트조회테스트() {
 
         // given
         Map<String, Object> modelMap = new HashMap<>();
@@ -120,12 +120,12 @@ class AdminModelJpaRepositoryTest {
         modelMap.put("size", 3);
 
         // then
-        assertThat(adminModelJpaRepository.findModelsList(modelMap).size()).isGreaterThan(0);
+        assertThat(adminModelJpaRepository.findModelsList(modelMap)).isNotEmpty();
     }
 
     @Test
     @DisplayName("모델 리스트 조회 예외 테스트")
-    public void 모델리스트조회예외테스트() {
+    void 모델리스트조회예외테스트() {
 
         // given
         Map<String, Object> modelMap = new HashMap<>();
@@ -138,7 +138,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 상세 조회 테스트")
-    public void 모델상세조회테스트() {
+    void 모델상세조회테스트() {
 
         // given
         adminModelEntity = builder().idx(143).categoryCd(2).build();
@@ -164,10 +164,6 @@ class AdminModelJpaRepositoryTest {
                     assertNotNull(adminModelDTO.getModelEngName());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getModelDescription()).isEqualTo("　");
-                    assertNotNull(adminModelDTO.getModelDescription());
-                },
-                () -> {
                     assertThat(adminModelDTO.getHeight()).isEqualTo("173");
                     assertNotNull(adminModelDTO.getHeight());
                 },
@@ -178,10 +174,6 @@ class AdminModelJpaRepositoryTest {
                 () -> {
                     assertThat(adminModelDTO.getShoes()).isEqualTo("240");
                     assertNotNull(adminModelDTO.getShoes());
-                },
-                () -> {
-                    assertThat(adminModelDTO.getVisible()).isEqualTo("Y");
-                    assertNotNull(adminModelDTO.getVisible());
                 });
 
         assertThat(adminModelDTO.getModelImage().get(0).getTypeName()).isEqualTo("model");
@@ -197,7 +189,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 상세 조회 예외 테스트")
-    public void 모델상세조회예외테스트() {
+    void 모델상세조회예외테스트() {
         // given
         adminModelEntity = builder().categoryCd(-1).build();
 
@@ -208,7 +200,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 BDD 조회 테스트")
-    public void 모델BDD조회테스트() {
+    void 모델BDD조회테스트() {
 
         // given
         ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
@@ -238,7 +230,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 상세 BDD 조회 테스트")
-    public void 모델상세BDD조회테스트() {
+    void 모델상세BDD조회테스트() {
 
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
@@ -288,7 +280,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 등록 테스트")
-    public void 모델등록테스트() {
+    void 모델등록테스트() {
         // given
         adminModelJpaRepository.insertModel(adminModelEntity);
 
@@ -306,7 +298,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 등록 CreatedBy 테스트")
-    public void 모델등록CreatedBy테스트() {
+    void 모델등록CreatedBy테스트() {
         // given
         adminModelJpaRepository.insertModel(adminModelEntity);
 
@@ -320,7 +312,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 등록 예외 테스트")
-    public void 모델등록예외테스트() {
+    void 모델등록예외테스트() {
         adminModelEntity = builder()
                 .categoryCd(-1)
                 .categoryAge("2")
@@ -345,7 +337,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 수정 테스트")
-    public void 모델수정테스트() {
+    void 모델수정테스트() {
         Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = builder()
@@ -385,7 +377,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 수정 예외 테스트")
-    public void 모델수정예외테스트() {
+    void 모델수정예외테스트() {
         adminModelEntity = builder()
                 .categoryCd(-1)
                 .categoryAge("2")
@@ -410,7 +402,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 삭제 테스트")
-    public void 모델삭제테스트() {
+    void 모델삭제테스트() {
         em.persist(adminModelEntity);
 
         // when
@@ -429,7 +421,7 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 이미지 등록 테스트")
-    public void 모델이미지등록테스트() {
+    void 모델이미지등록테스트() {
         Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -449,11 +441,11 @@ class AdminModelJpaRepositoryTest {
 
     @Test
     @DisplayName("모델 공통 코드 조회 테스트")
-    public void 모델공통코드조회테스트() {
+    void 모델공통코드조회테스트() {
         CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
                 .categoryCd(1).visible("Y").cmmType("model").build();
 
         // then
-        assertThat(adminModelJpaRepository.modelCommonCode(commonCodeEntity).size()).isGreaterThan(0);
+        assertThat(adminModelJpaRepository.modelCommonCode(commonCodeEntity)).isNotEmpty();
     }
 }

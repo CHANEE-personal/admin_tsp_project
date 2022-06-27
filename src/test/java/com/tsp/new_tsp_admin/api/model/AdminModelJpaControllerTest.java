@@ -69,13 +69,13 @@ class AdminModelJpaControllerTest {
     private AdminModelEntity adminModelEntity;
     private AdminUserEntity adminUserEntity;
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return authorities;
     }
 
-    public void createAdminModel() {
+    void createAdminModel() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
@@ -111,7 +111,7 @@ class AdminModelJpaControllerTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
@@ -124,7 +124,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 조회 테스트")
-    public void 모델조회Api테스트() throws Exception {
+    void 모델조회Api테스트() throws Exception {
         MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
         modelMap.put("jpaStartPage", Collections.singletonList("1"));
         modelMap.put("size", Collections.singletonList("3"));
@@ -137,7 +137,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 검색 조회 테스트")
-    public void 모델검색조회Api테스트() throws Exception {
+    void 모델검색조회Api테스트() throws Exception {
         // 검색 테스트
         LinkedMultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
         paramMap.add("jpaStartPage", "1");
@@ -154,7 +154,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 조회 예외 테스트")
-    public void 모델조회Api예외테스트() throws Exception {
+    void 모델조회Api예외테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-model/lists/-1")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -165,7 +165,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 모델 조회 권한 테스트")
-    public void 모델조회Api권한테스트() throws Exception {
+    void 모델조회Api권한테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-model/lists/-1")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -175,7 +175,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 상세 조회 테스트")
-    public void 모델상세조회Api테스트() throws Exception {
+    void 모델상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-model/2/143")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -192,7 +192,7 @@ class AdminModelJpaControllerTest {
     }
     @Test
     @DisplayName("Admin 모델 상세 조회 예외 테스트")
-    public void 모델상세조회Api예외테스트() throws Exception {
+    void 모델상세조회Api예외테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-model/-1/1")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -203,7 +203,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 모델 상세 조회 권한 테스트")
-    public void 모델상세조회Api권한테스트() throws Exception {
+    void 모델상세조회Api권한테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-model/2/143")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -213,7 +213,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 등록 테스트")
-    public void 모델등록Api테스트() throws Exception {
+    void 모델등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-model")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -236,7 +236,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("CreatedBy, CreationTimestamp 테스트")
-    public void CreatedByAndCreationTimestamp테스트() throws Exception {
+    void CreatedByAndCreationTimestamp테스트() throws Exception {
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin02")
                 .password("pass1234")
@@ -276,7 +276,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 등록 예외 테스트")
-    public void 모델등록Api예외테스트() throws Exception {
+    void 모델등록Api예외테스트() throws Exception {
         AdminModelEntity exAdminModelEntity = builder()
                 .categoryCd(-1)
                 .categoryAge("2")
@@ -308,7 +308,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 모델 등록 권한 테스트")
-    public void 모델등록Api권한테스트() throws Exception {
+    void 모델등록Api권한테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-model")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -320,7 +320,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 수정 테스트")
-    public void 모델수정Api테스트() throws Exception {
+    void 모델수정Api테스트() throws Exception {
         em.persist(adminModelEntity);
 
         adminModelEntity = builder()
@@ -356,7 +356,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("LastModifiedBy, UpdateTimestamp 테스트")
-    public void LastModifiedByAndUpdateTimestamp테스트() throws Exception {
+    void LastModifiedByAndUpdateTimestamp테스트() throws Exception {
 
         em.persist(adminModelEntity);
 
@@ -408,7 +408,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 수정 예외 테스트")
-    public void 모델수정Api예외테스트() throws Exception {
+    void 모델수정Api예외테스트() throws Exception {
         em.persist(adminModelEntity);
 
         adminModelEntity = builder()
@@ -443,7 +443,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 모델 수정 권한 테스트")
-    public void 모델수정Api권한테스트() throws Exception {
+    void 모델수정Api권한테스트() throws Exception {
         em.persist(adminModelEntity);
 
         adminModelEntity = builder()
@@ -476,7 +476,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 삭제 테스트")
-    public void 모델삭제Api테스트() throws Exception {
+    void 모델삭제Api테스트() throws Exception {
         em.persist(adminModelEntity);
 
         mockMvc.perform(delete("/api/jpa-model/{idx}", adminModelEntity.getIdx())
@@ -490,7 +490,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 모델 삭제 권한 테스트")
-    public void 모델삭제Api권한테스트() throws Exception {
+    void 모델삭제Api권한테스트() throws Exception {
         em.persist(adminModelEntity);
 
         mockMvc.perform(delete("/api/jpa-model/{idx}", adminModelEntity.getIdx())
@@ -504,7 +504,7 @@ class AdminModelJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 이미지 등록 테스트")
-    public void 모델이미지등록Api테스트() throws Exception {
+    void 모델이미지등록Api테스트() throws Exception {
 
         List<MultipartFile> imageFiles = List.of(
                 new MockMultipartFile("0522045010647","0522045010647.png",
@@ -523,7 +523,7 @@ class AdminModelJpaControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void 모델공통코드조회테스트() throws Exception {
+    void 모델공통코드조회테스트() throws Exception {
         CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
                 .categoryCd(1).visible("Y").cmmType("model").build();
 
