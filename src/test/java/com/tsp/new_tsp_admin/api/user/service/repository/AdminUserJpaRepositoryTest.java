@@ -104,6 +104,7 @@ class AdminUserJpaRepositoryTest {
         // verify
         verify(mockAdminUserJpaRepository, times(4)).findUserList(userMap);
         verify(mockAdminUserJpaRepository, atLeastOnce()).findUserList(userMap);
+        verifyNoMoreInteractions(mockAdminUserJpaRepository);
     }
 
     @Test
@@ -148,6 +149,7 @@ class AdminUserJpaRepositoryTest {
         // verify
         verify(mockAdminUserJpaRepository, times(4)).findOneUser(bddUserEntity.getUserId());
         verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(bddUserEntity.getUserId());
+        verifyNoMoreInteractions(mockAdminUserJpaRepository);
     }
 
     @Test
@@ -212,6 +214,7 @@ class AdminUserJpaRepositoryTest {
 
         // verify
         verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        verifyNoMoreInteractions(mockAdminUserJpaRepository);
     }
 
     @Test
@@ -249,6 +252,7 @@ class AdminUserJpaRepositoryTest {
         // verify
         verify(mockAdminUserJpaRepository, times(2)).findOneUser(newAdminUserEntity.getUserId());
         verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(newAdminUserEntity.getUserId());
+        verifyNoMoreInteractions(mockAdminUserJpaRepository);
     }
 
     @Test

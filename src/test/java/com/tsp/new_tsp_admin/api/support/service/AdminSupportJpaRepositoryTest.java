@@ -143,6 +143,7 @@ class AdminSupportJpaRepositoryTest {
         // verify
         verify(mockAdminSupportJpaRepository, times(3)).findOneSupportModel(adminSupportEntity);
         verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
     }
 
     @Test
@@ -162,5 +163,6 @@ class AdminSupportJpaRepositoryTest {
         // verify
         verify(mockAdminSupportJpaRepository, times(2)).findOneSupportModel(adminSupportEntity);
         verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
     }
 }

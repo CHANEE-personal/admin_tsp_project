@@ -153,6 +153,7 @@ class AdminProductionJpaRepositoryTest {
         // verify
         verify(mockAdminProductionJpaRepository, times(4)).findProductionsList(productionMap);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findProductionsList(productionMap);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
     }
 
     @Test
@@ -189,6 +190,7 @@ class AdminProductionJpaRepositoryTest {
         // verify
         verify(mockAdminProductionJpaRepository, times(9)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
     }
 
     @Test
@@ -207,6 +209,7 @@ class AdminProductionJpaRepositoryTest {
         // verify
         verify(mockAdminProductionJpaRepository, times(3)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
     }
 
     @Test
@@ -254,6 +257,7 @@ class AdminProductionJpaRepositoryTest {
         // verify
         verify(mockAdminProductionJpaRepository, times(2)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
     }
 
     @Test
@@ -277,5 +281,6 @@ class AdminProductionJpaRepositoryTest {
         // verify
         verify(mockAdminProductionJpaRepository, times(2)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
     }
 }

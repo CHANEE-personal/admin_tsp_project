@@ -150,6 +150,7 @@ class AdminPortfolioJpaRepositoryTest {
         // verify
         verify(mockAdminPortfolioJpaRepository, times(3)).findPortfoliosList(portfolioMap);
         verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findPortfoliosList(portfolioMap);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
     }
 
     @Test
@@ -183,6 +184,7 @@ class AdminPortfolioJpaRepositoryTest {
         // verify
         verify(mockAdminPortfolioJpaRepository, times(5)).findOnePortfolio(adminPortFolioEntity);
         verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
     }
 
     @Test
@@ -199,6 +201,7 @@ class AdminPortfolioJpaRepositoryTest {
         // verify
         verify(mockAdminPortfolioJpaRepository, times(4)).findOnePortfolio(adminPortFolioEntity);
         verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
     }
 
     @Test
@@ -246,6 +249,7 @@ class AdminPortfolioJpaRepositoryTest {
         // verify
         verify(mockAdminPortfolioJpaRepository, times(4)).findOnePortfolio(adminPortFolioEntity);
         verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
     }
 
     @Test
@@ -262,5 +266,6 @@ class AdminPortfolioJpaRepositoryTest {
         // verify
         verify(mockAdminPortfolioJpaRepository, times(1)).findOnePortfolio(adminPortFolioEntity);
         verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
     }
 }

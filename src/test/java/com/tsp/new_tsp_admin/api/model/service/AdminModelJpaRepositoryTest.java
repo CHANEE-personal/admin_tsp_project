@@ -225,6 +225,7 @@ class AdminModelJpaRepositoryTest {
         // verify
         verify(mockAdminModelJpaRepository, times(3)).findModelsList(modelMap);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findModelsList(modelMap);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
     }
 
     @Test
@@ -275,6 +276,7 @@ class AdminModelJpaRepositoryTest {
         // verify
         verify(mockAdminModelJpaRepository, times(15)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
     }
 
     @Test
@@ -293,6 +295,7 @@ class AdminModelJpaRepositoryTest {
         // verify
         verify(mockAdminModelJpaRepository, times(2)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
     }
 
     @Test
@@ -372,6 +375,7 @@ class AdminModelJpaRepositoryTest {
         // verify
         verify(mockAdminModelJpaRepository, times(2)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
     }
 
     @Test
@@ -416,6 +420,7 @@ class AdminModelJpaRepositoryTest {
         // verify
         verify(mockAdminModelJpaRepository, times(2)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
     }
 
     @Test
