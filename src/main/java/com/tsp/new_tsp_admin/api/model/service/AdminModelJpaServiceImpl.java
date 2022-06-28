@@ -35,7 +35,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
-    public Long findModelsCount(Map<String, Object> modelMap) {
+    public int findModelsCount(Map<String, Object> modelMap) {
         try {
             return adminModelJpaRepository.findModelsCount(modelMap);
         } catch (Exception e) {

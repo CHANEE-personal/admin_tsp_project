@@ -112,12 +112,11 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 리스트 조회 테스트")
     void 모델리스트조회테스트() {
-
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", 1);
-        modelMap.put("jpaStartPage", 1);
-        modelMap.put("size", 3);
+        modelMap.put("jpaStartPage", 0);
+        modelMap.put("size", 100);
 
         // then
         assertThat(adminModelJpaRepository.findModelsList(modelMap)).isNotEmpty();
