@@ -93,9 +93,6 @@ public class AdminModelJpaRepository {
      */
     @Transactional(readOnly = true)
     public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
-
-        System.out.println("===modelMap===");
-        System.out.println(modelMap.get("size"));
         try {
             List<AdminModelEntity> modelList = queryFactory
                     .selectFrom(adminModelEntity)
