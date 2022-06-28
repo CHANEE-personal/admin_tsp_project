@@ -49,7 +49,7 @@ class AdminSupportJpaRepositoryTest {
     private AdminSupportEntity adminSupportEntity;
     private AdminSupportDTO adminSupportDTO;
 
-    public void createSupport() {
+    void createSupport() {
         adminSupportEntity = builder()
                 .supportName("조찬희")
                 .supportHeight(170)
@@ -62,14 +62,14 @@ class AdminSupportJpaRepositoryTest {
     }
 
     @BeforeEach
-    public void init() {
+    void init() {
         queryFactory = new JPAQueryFactory(em);
         createSupport();
     }
 
     @Test
     @DisplayName("지원모델 리스트 조회 테스트")
-    public void 지원모델리스트조회테스트() {
+    void 지원모델리스트조회테스트() {
 
         // given
         Map<String, Object> supportMap = new HashMap<>();
@@ -77,12 +77,12 @@ class AdminSupportJpaRepositoryTest {
         supportMap.put("size", 3);
 
         // then
-        assertThat(adminSupportJpaRepository.findSupportsList(supportMap).size()).isGreaterThan(0);
+        assertThat(adminSupportJpaRepository.findSupportsList(supportMap)).isNotEmpty();
     }
 
     @Test
     @DisplayName("지원모델 상세 조회 테스트")
-    public void 지원모델상세조회테스트() {
+    void 지원모델상세조회테스트() {
 
         // given
         adminSupportEntity = builder().idx(1).build();
@@ -95,7 +95,7 @@ class AdminSupportJpaRepositoryTest {
 
     @Test
     @DisplayName("지원모델 BDD 조회 테스트")
-    public void 지원모델BDD조회테스트() {
+    void 지원모델BDD조회테스트() {
 
         // given
         ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();
@@ -115,7 +115,7 @@ class AdminSupportJpaRepositoryTest {
 
     @Test
     @DisplayName("지원모델 수정 테스트")
-    public void 지원모델수정테스트() {
+    void 지원모델수정테스트() {
         em.persist(adminSupportEntity);
         Integer idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
 
@@ -147,7 +147,7 @@ class AdminSupportJpaRepositoryTest {
 
     @Test
     @DisplayName("지원 모델 삭제 테스트")
-    public void 지원모델삭제테스트() {
+    void 지원모델삭제테스트() {
         em.persist(adminSupportEntity);
 
         // when

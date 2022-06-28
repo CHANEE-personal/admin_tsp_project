@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.common;
 
-import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

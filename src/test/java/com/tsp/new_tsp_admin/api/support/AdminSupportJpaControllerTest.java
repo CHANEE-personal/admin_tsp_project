@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,13 +65,13 @@ class AdminSupportJpaControllerTest {
 	private AdminSupportEntity adminSupportEntity;
 	private AdminUserEntity adminUserEntity;
 
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		return authorities;
 	}
 
-	public void createAdminSupport() {
+	void createAdminSupport() {
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
 		String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
@@ -99,7 +98,7 @@ class AdminSupportJpaControllerTest {
 	}
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
 				.addFilter(new CharacterEncodingFilter("UTF-8", true))
 				.apply(springSecurity())
@@ -112,7 +111,7 @@ class AdminSupportJpaControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원 모델 조회 테스트")
-	public void 지원모델조회Api테스트() throws Exception {
+	void 지원모델조회Api테스트() throws Exception {
 		MultiValueMap<String, String> supportMap = new LinkedMultiValueMap<>();
 		supportMap.put("jpaStartPage", Collections.singletonList("1"));
 		supportMap.put("size", Collections.singletonList("3"));
@@ -125,7 +124,7 @@ class AdminSupportJpaControllerTest {
 	@Test
 	@WithMockUser(roles = "USER")
 	@DisplayName("Admin 지원 모델 조회 권한 테스트")
-	public void 지원모델조회Api권한테스트() throws Exception {
+	void 지원모델조회Api권한테스트() throws Exception {
 		MultiValueMap<String, String> supportMap = new LinkedMultiValueMap<>();
 		supportMap.put("jpaStartPage", Collections.singletonList("1"));
 		supportMap.put("size", Collections.singletonList("3"));
@@ -135,10 +134,9 @@ class AdminSupportJpaControllerTest {
 				.andExpect(status().isForbidden());
 	}
 
-	@Disabled
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원 모델 상세 조회 테스트")
-	public void 지원모델상세조회Api테스트() throws Exception {
+	void 지원모델상세조회Api테스트() throws Exception {
 		mockMvc.perform(get("/api/jpa-support/1")
 				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
@@ -148,7 +146,7 @@ class AdminSupportJpaControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원 모델 수정 테스트")
-	public void 지원모델수정Api테스트() throws Exception {
+	void 지원모델수정Api테스트() throws Exception {
 		em.persist(adminSupportEntity);
 
 		adminSupportEntity = builder()
@@ -174,7 +172,7 @@ class AdminSupportJpaControllerTest {
 	@Test
 	@WithMockUser(roles = "USER")
 	@DisplayName("Admin 지원 모델 수정 권한 테스트")
-	public void 지원모델수정Api권한테스트() throws Exception {
+	void 지원모델수정Api권한테스트() throws Exception {
 		em.persist(adminSupportEntity);
 
 		adminSupportEntity = builder()
@@ -198,7 +196,7 @@ class AdminSupportJpaControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원모델 삭제 테스트")
-	public void 지원모델삭제Api테스트() throws Exception {
+	void 지원모델삭제Api테스트() throws Exception {
 		em.persist(adminSupportEntity);
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
@@ -212,7 +210,7 @@ class AdminSupportJpaControllerTest {
 	@Test
 	@WithMockUser(roles = "USER")
 	@DisplayName("Admin 지원모델 삭제 권한 테스트")
-	public void 지원모델삭제Api권한테스트() throws Exception {
+	void 지원모델삭제Api권한테스트() throws Exception {
 		em.persist(adminSupportEntity);
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
