@@ -52,12 +52,12 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    public Long findSupportsCount(Map<String, Object> supportMap) {
+    public int findSupportsCount(Map<String, Object> supportMap) {
 
         try {
             return queryFactory.selectFrom(adminSupportEntity)
                     .where(searchSupport(supportMap))
-                    .fetchCount();
+                    .fetch().size();
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
         }

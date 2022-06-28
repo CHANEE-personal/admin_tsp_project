@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.support.service;
 
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 
@@ -19,7 +18,7 @@ public interface AdminSupportJpaService {
      * </pre>
      *
      */
-    Long findSupportsCount(Map<String, Object> modelMap) throws Exception;
+    int findSupportsCount(Map<String, Object> modelMap) throws Exception;
 
     /**
      * <pre>

@@ -25,7 +25,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      *
      */
     @Override
-    public Long findSupportsCount(Map<String, Object> supportMap) throws Exception {
+    public int findSupportsCount(Map<String, Object> supportMap) {
         return adminSupportJpaRepository.findSupportsCount(supportMap);
     }
 
@@ -40,7 +40,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      *
      */
     @Override
-    public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws Exception {
+    public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) {
         return adminSupportJpaRepository.findSupportsList(supportMap);
     }
 
@@ -55,7 +55,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      *
      */
     @Override
-    public AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) throws Exception {
+    public AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) {
         return adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
     }
 
@@ -70,7 +70,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      *
      */
     @Override
-    public AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) throws Exception {
+    public AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) {
         return adminSupportJpaRepository.deleteSupportModel(adminSupportEntity);
     }
 }
