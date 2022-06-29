@@ -18,7 +18,7 @@ public interface AdminProductionJpaService {
      * </pre>
      *
      */
-    Long findProductionsCount(Map<String, Object> productionMap);
+    int findProductionsCount(Map<String, Object> productionMap);
 
     /**
      * <pre>

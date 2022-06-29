@@ -50,7 +50,6 @@ public class AdminUserJpaRepository {
      */
     @Transactional(readOnly = true)
     public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
-
         try {
             List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
                     .where(adminUserEntity.visible.eq("Y"))
@@ -115,7 +114,6 @@ public class AdminUserJpaRepository {
      *
      */
     public String adminLogin(AdminUserEntity existAdminUserEntity) {
-
         try {
             final String db_pw = StringUtils.nullStrToStr(findOneUser(existAdminUserEntity.getUserId()).getPassword());
             String result;
@@ -197,9 +195,9 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
-
         try {
             //회원 등록
             em.persist(adminUserEntity);

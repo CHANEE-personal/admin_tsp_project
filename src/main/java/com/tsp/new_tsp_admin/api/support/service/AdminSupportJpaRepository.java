@@ -53,7 +53,6 @@ public class AdminSupportJpaRepository {
      *
      */
     public int findSupportsCount(Map<String, Object> supportMap) {
-
         try {
             return queryFactory.selectFrom(adminSupportEntity)
                     .where(searchSupport(supportMap))
@@ -74,7 +73,6 @@ public class AdminSupportJpaRepository {
      *
      */
     public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) {
-
         try {
             List<AdminSupportEntity> supportList = queryFactory.selectFrom(adminSupportEntity)
                     .where(searchSupport(supportMap))
@@ -102,7 +100,6 @@ public class AdminSupportJpaRepository {
      *
      */
     public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
-
         try {
             //모델 상세 조회
             AdminSupportEntity findOneSupportModel = queryFactory.selectFrom(adminSupportEntity)
@@ -152,7 +149,6 @@ public class AdminSupportJpaRepository {
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) {
-
         try {
             adminSupportEntity = em.find(AdminSupportEntity.class, adminSupportEntity.getIdx());
             em.remove(adminSupportEntity);

@@ -55,12 +55,10 @@ public class AdminProductionJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public Long findProductionsCount(Map<String, Object> productionMap) {
-
+    public int findProductionsCount(Map<String, Object> productionMap) {
         try {
             return queryFactory.selectFrom(adminProductionEntity)
-                    .where(searchProduction(productionMap))
-                    .fetchCount();
+                    .where(searchProduction(productionMap)).fetch().size();
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST, e);
         }
@@ -107,7 +105,6 @@ public class AdminProductionJpaRepository {
      */
     @Transactional(readOnly = true)
     public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) {
-
         try {
             AdminProductionEntity findOneProduction = queryFactory
                     .selectFrom(adminProductionEntity)
@@ -135,6 +132,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         try {
@@ -156,6 +154,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public Integer insertProductionImage(CommonImageEntity commonImageEntity) {
         try {
@@ -180,7 +179,6 @@ public class AdminProductionJpaRepository {
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminProductionDTO updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
-
         try {
             em.merge(existAdminProductionEntity);
             em.flush();
@@ -205,7 +203,6 @@ public class AdminProductionJpaRepository {
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminProductionDTO deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
-
         try {
             adminProductionEntity = em.find(AdminProductionEntity.class, adminProductionEntity.getIdx());
             em.remove(adminProductionEntity);

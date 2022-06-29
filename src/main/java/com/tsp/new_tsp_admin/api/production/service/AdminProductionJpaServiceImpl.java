@@ -29,7 +29,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @Cacheable("production")
-    public Long findProductionsCount(Map<String, Object> productionMap) {
+    public int findProductionsCount(Map<String, Object> productionMap) {
         return adminProductionJpaRepository.findProductionsCount(productionMap);
     }
 

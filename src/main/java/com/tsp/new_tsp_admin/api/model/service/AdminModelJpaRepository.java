@@ -71,7 +71,6 @@ public class AdminModelJpaRepository {
      */
     @Transactional(readOnly = true)
     public int findModelsCount(Map<String, Object> modelMap) {
-
         try {
             return queryFactory.selectFrom(adminModelEntity)
                     .where(searchModel(modelMap)).fetch().size();
@@ -122,7 +121,6 @@ public class AdminModelJpaRepository {
      */
     @Transactional(readOnly = true)
     public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) {
-
         try {
             //모델 상세 조회
             AdminModelEntity findOneModel = queryFactory
@@ -151,6 +149,7 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
+    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         try {
@@ -197,7 +196,6 @@ public class AdminModelJpaRepository {
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
-
         try {
             JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
@@ -235,7 +233,6 @@ public class AdminModelJpaRepository {
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) {
-
         try {
             em.merge(existAdminModelEntity);
             em.flush();
@@ -281,7 +278,6 @@ public class AdminModelJpaRepository {
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteModel(AdminModelEntity existAdminModelEntity) {
-
         try {
             JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
@@ -310,7 +306,6 @@ public class AdminModelJpaRepository {
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO deleteModelByEm(AdminModelEntity adminModelEntity) {
-
         try {
             adminModelEntity = em.find(AdminModelEntity.class, adminModelEntity.getIdx());
             em.remove(adminModelEntity);
