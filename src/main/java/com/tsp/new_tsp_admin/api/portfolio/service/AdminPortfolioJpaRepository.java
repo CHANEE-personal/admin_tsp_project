@@ -61,7 +61,7 @@ public class AdminPortfolioJpaRepository {
                     .where(searchPortfolio(portfolioMap))
                     .fetchCount();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
         }
     }
 
@@ -90,7 +90,7 @@ public class AdminPortfolioJpaRepository {
 
             return PortFolioMapper.INSTANCE.toDtoList(portfolioList);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
         }
     }
 
@@ -120,7 +120,7 @@ public class AdminPortfolioJpaRepository {
 
             return PortFolioMapper.INSTANCE.toDto(findOnePortfolio);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL, e);
         }
     }
 
@@ -141,7 +141,7 @@ public class AdminPortfolioJpaRepository {
 
             return PortFolioMapper.INSTANCE.toDto(adminPortfolioEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+            throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, e);
         }
     }
 
@@ -162,7 +162,7 @@ public class AdminPortfolioJpaRepository {
 
             return commonImageEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+            throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, e);
         }
     }
 
@@ -186,7 +186,7 @@ public class AdminPortfolioJpaRepository {
 
             return PortFolioMapper.INSTANCE.toDto(existAdminPortfolioEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_PORTFOLIO);
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_PORTFOLIO, e);
         }
     }
 
@@ -210,7 +210,7 @@ public class AdminPortfolioJpaRepository {
 
             return PortFolioMapper.INSTANCE.toDto(adminPortfolioEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
         }
     }
 }

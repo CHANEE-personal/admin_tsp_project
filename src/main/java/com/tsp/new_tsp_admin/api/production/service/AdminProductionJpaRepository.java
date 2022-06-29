@@ -62,7 +62,7 @@ public class AdminProductionJpaRepository {
                     .where(searchProduction(productionMap))
                     .fetchCount();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST, e);
         }
     }
 
@@ -91,7 +91,7 @@ public class AdminProductionJpaRepository {
 
             return ProductionMapper.INSTANCE.toDtoList(productionList);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST, e);
         }
     }
 
@@ -121,7 +121,7 @@ public class AdminProductionJpaRepository {
 
             return ProductionMapper.INSTANCE.toDto(findOneProduction);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION);
+            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION, e);
         }
     }
 
@@ -142,7 +142,7 @@ public class AdminProductionJpaRepository {
 
             return ProductionMapper.INSTANCE.toDto(adminProductionEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+            throw new TspException(ApiExceptionType.ERROR_PRODUCTION, e);
         }
     }
 
@@ -163,7 +163,7 @@ public class AdminProductionJpaRepository {
 
             return commonImageEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+            throw new TspException(ApiExceptionType.ERROR_PRODUCTION, e);
         }
     }
 
@@ -188,7 +188,7 @@ public class AdminProductionJpaRepository {
 
             return ProductionMapper.INSTANCE.toDto(existAdminProductionEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL, e);
         }
     }
 
@@ -214,7 +214,7 @@ public class AdminProductionJpaRepository {
 
             return ProductionMapper.INSTANCE.toDto(adminProductionEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION, e);
         }
     }
 }

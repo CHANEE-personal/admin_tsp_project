@@ -34,7 +34,7 @@ public class MyUserDetailsService implements UserDetailsService {
                     AuthorityUtils.createAuthorityList("ROLE_ADMIN"));
         } catch (Exception e) {
             e.printStackTrace();
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER);
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
         }
     }
 }

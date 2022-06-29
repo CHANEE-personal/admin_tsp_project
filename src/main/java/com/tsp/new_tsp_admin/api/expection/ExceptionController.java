@@ -7,8 +7,4 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ExceptionController {
-    @GetMapping("/exception/entrypoint")
-    public void entryPoint() {
-        throw new TspException(ApiExceptionType.NO_LOGIN);
-    }
 }

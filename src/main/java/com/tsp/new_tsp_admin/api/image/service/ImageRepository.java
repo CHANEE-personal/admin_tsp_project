@@ -110,7 +110,7 @@ public class ImageRepository {
 
             return commonImageEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_IMAGE);
+            throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
         }
     }
 
@@ -157,7 +157,7 @@ public class ImageRepository {
                         try {
                             new File(uploadPath).mkdir();
                         } catch (Exception e) {
-                            throw new TspException(ApiExceptionType.ERROR_IMAGE);
+                            throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
                         }
                     }
 
@@ -209,7 +209,7 @@ public class ImageRepository {
                         mainCnt++;
                     }
                 } catch (Exception e) {
-                    throw new TspException(ApiExceptionType.ERROR_IMAGE);
+                    throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
                 }
             }
         }
@@ -236,7 +236,7 @@ public class ImageRepository {
 
             return exCommonImageEntity;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_IMAGE);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_IMAGE, e);
         }
     }
 }

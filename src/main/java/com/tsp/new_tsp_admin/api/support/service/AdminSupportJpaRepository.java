@@ -59,7 +59,7 @@ public class AdminSupportJpaRepository {
                     .where(searchSupport(supportMap))
                     .fetch().size();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST, e);
         }
     }
 
@@ -87,7 +87,7 @@ public class AdminSupportJpaRepository {
 
             return SupportMapper.INSTANCE.toDtoList(supportList);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST, e);
         }
     }
 
@@ -111,7 +111,7 @@ public class AdminSupportJpaRepository {
 
             return SupportMapper.INSTANCE.toDto(findOneSupportModel);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT);
+            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT, e);
         }
     }
 
@@ -135,7 +135,7 @@ public class AdminSupportJpaRepository {
 
             return SupportMapper.INSTANCE.toDto(existAdminSupportEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_SUPPORT);
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_SUPPORT, e);
         }
     }
 
@@ -161,7 +161,7 @@ public class AdminSupportJpaRepository {
 
             return SupportMapper.INSTANCE.toDto(adminSupportEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_SUPPORT);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_SUPPORT, e);
         }
     }
 }

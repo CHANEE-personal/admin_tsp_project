@@ -39,7 +39,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return adminModelJpaRepository.findModelsCount(modelMap);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
         }
     }
 
@@ -59,7 +59,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return adminModelJpaRepository.findModelsList(modelMap);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
         }
     }
 
@@ -79,7 +79,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return adminModelJpaRepository.findOneModel(adminModelEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL, e);
         }
     }
 
@@ -99,7 +99,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return adminModelJpaRepository.insertModel(adminModelEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_MODEL, e);
         }
     }
 
@@ -119,7 +119,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return adminModelJpaRepository.updateModelByEm(adminModelEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL, e);
         }
     }
 
@@ -139,7 +139,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return adminModelJpaRepository.deleteModelByEm(adminModelEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
         }
     }
 
@@ -158,7 +158,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return imageRepository.uploadImageFile(commonImageEntity, fileName, "insert");
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_IMAGE);
+            throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
         }
     }
 

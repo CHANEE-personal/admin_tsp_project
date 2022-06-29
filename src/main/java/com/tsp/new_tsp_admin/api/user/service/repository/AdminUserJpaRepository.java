@@ -63,7 +63,7 @@ public class AdminUserJpaRepository {
 
             return UserMapper.INSTANCE.toDtoList(userList);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER_LIST, e);
         }
     }
 
@@ -84,7 +84,7 @@ public class AdminUserJpaRepository {
                     .fetchOne();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER);
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
         }
     }
 
@@ -132,7 +132,7 @@ public class AdminUserJpaRepository {
             }
             return result;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER);
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
         }
     }
 
@@ -156,7 +156,7 @@ public class AdminUserJpaRepository {
 
             return adminUserEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_USER);
+            throw new TspException(ApiExceptionType.ERROR_USER, e);
         }
     }
 
@@ -184,7 +184,7 @@ public class AdminUserJpaRepository {
 
             return existAdminUserEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_USER);
+            throw new TspException(ApiExceptionType.ERROR_USER, e);
         }
     }
 
@@ -207,7 +207,7 @@ public class AdminUserJpaRepository {
 
             return UserMapper.INSTANCE.toDto(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_USER);
+            throw new TspException(ApiExceptionType.ERROR_USER, e);
         }
     }
 
@@ -231,7 +231,7 @@ public class AdminUserJpaRepository {
 
             return UserMapper.INSTANCE.toDto(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_USER);
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_USER, e);
         }
     }
 
@@ -256,7 +256,7 @@ public class AdminUserJpaRepository {
 
             return UserMapper.INSTANCE.toDto(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_USER);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_USER, e);
         }
     }
 }

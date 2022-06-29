@@ -76,7 +76,7 @@ public class AdminModelJpaRepository {
             return queryFactory.selectFrom(adminModelEntity)
                     .where(searchModel(modelMap)).fetch().size();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
         }
     }
 
@@ -107,7 +107,7 @@ public class AdminModelJpaRepository {
             return ModelMapper.INSTANCE.toDtoList(modelList);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
         }
     }
 
@@ -138,7 +138,7 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDto(findOneModel);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
+            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL, e);
         }
     }
 
@@ -159,8 +159,7 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDto(adminModelEntity);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new TspException(ApiExceptionType.ERROR_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_MODEL, e);
         }
     }
 
@@ -182,7 +181,7 @@ public class AdminModelJpaRepository {
 
             return ModelImageMapper.INSTANCE.toDto(commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_MODEL, e);
         }
     }
 
@@ -220,7 +219,7 @@ public class AdminModelJpaRepository {
 
             return existAdminModelEntity;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL, e);
         }
     }
 
@@ -245,7 +244,7 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDto(existAdminModelEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL, e);
         }
     }
 
@@ -266,7 +265,7 @@ public class AdminModelJpaRepository {
                     .where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
                     .fetch();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_COMMON);
+            throw new TspException(ApiExceptionType.NOT_FOUND_COMMON, e);
         }
     }
 
@@ -295,7 +294,7 @@ public class AdminModelJpaRepository {
                     .set(adminModelEntity.updater, "1")
                     .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
         }
     }
 
@@ -321,7 +320,7 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDto(adminModelEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
         }
     }
 }

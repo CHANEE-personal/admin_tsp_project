@@ -36,7 +36,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.findUserList(userMap);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER_LIST);
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER_LIST, e);
         }
     }
 
@@ -55,7 +55,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.adminLogin(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER);
+            throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
         }
     }
 
@@ -92,7 +92,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.insertAdminUser(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_USER);
+            throw new TspException(ApiExceptionType.ERROR_USER, e);
         }
     }
 
@@ -112,7 +112,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.updateAdminUser(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_USER);
+            throw new TspException(ApiExceptionType.ERROR_UPDATE_USER, e);
         }
     }
 
@@ -132,7 +132,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_USER);
+            throw new TspException(ApiExceptionType.ERROR_DELETE_USER, e);
         }
     }
 }
