@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @Converter
@@ -19,8 +20,9 @@ public class CustomConverter implements AttributeConverter<List<CareerJson>, Str
 
     @Override
     public String convertToDatabaseColumn(List<CareerJson> attribute) {
-        if (attribute == null)
+        if (attribute == null) {
             return null;
+        }
 
         try {
             return objectMapper.writeValueAsString(attribute);
@@ -31,10 +33,9 @@ public class CustomConverter implements AttributeConverter<List<CareerJson>, Str
 
     @Override
     public List<CareerJson> convertToEntityAttribute(String dbData) {
-        if (dbData == null)
-            return null;
-        if (dbData.isEmpty())
-            return null;
+        if (dbData == null || dbData.isEmpty()) {
+            return Collections.emptyList();
+        }
 
         try {
             return objectMapper.readValue(dbData, List.class);

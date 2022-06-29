@@ -50,25 +50,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 
-//	@ExceptionHandler(MethodArgumentNotValidException.class)
-//	@ResponseStatus(HttpStatus.BAD_REQUEST)
-//	public ResponseEntity<ErrorResponse> validException(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status) {
-//		Map<String, Object> body = new HashMap<>();
-//		body.put("timestamp", new Date());
-//		body.put("status", status.value());
-//
-//		List<String> errors = ex.getBindingResult()
-//				.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
-//				.collect(Collectors.toList());
-//
-//		body.put("errors", errors);
-//
-//		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, body);
-//
-//		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-//
-//	}
-
 	/**
 	 * <pre>
 	 * 1. MethodName : handleConstraintViolation
@@ -78,8 +59,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	 * 5. 작성일       : 2022. 01. 15.
 	 * </pre>
 	 *
-	 * @param e
-	 * @param request
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException e, WebRequest request) {
@@ -95,10 +74,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	 * 5. 작성일       : 2022. 01. 15.
 	 * </pre>
 	 *
-	 * @param ex
-	 * @param headers
-	 * @param status
-	 * @param request
 	 */
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(
