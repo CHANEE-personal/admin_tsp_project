@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_COMMON_LIST;
+
 @Service
 @RequiredArgsConstructor
 public class AdminModelJpaServiceImpl implements AdminModelJpaService {
@@ -174,6 +176,10 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity) {
-        return adminModelJpaRepository.modelCommonCode(commonCodeEntity);
+        try {
+            return adminModelJpaRepository.modelCommonCode(commonCodeEntity);
+        } catch (TspException e) {
+            throw new TspException(NOT_FOUND_COMMON_LIST, e);
+        }
     }
 }
