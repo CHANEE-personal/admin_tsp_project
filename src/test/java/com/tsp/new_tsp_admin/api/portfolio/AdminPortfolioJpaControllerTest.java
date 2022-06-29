@@ -112,8 +112,8 @@ class AdminPortfolioJpaControllerTest {
     @DisplayName("Admin 포트폴리오 조회 테스트")
     void 포트폴리오조회Api테스트() throws Exception {
         MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
-        portfolioMap.put("jpaStartPage", Collections.singletonList("1"));
-        portfolioMap.put("size", Collections.singletonList("3"));
+        portfolioMap.add("jpaStartPage", "1");
+        portfolioMap.add("size", "3");
         mockMvc.perform(get("/api/jpa-portfolio/lists").params(portfolioMap)
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -142,8 +142,8 @@ class AdminPortfolioJpaControllerTest {
     @DisplayName("Admin 포트폴리오 조회 권한 테스트")
     void 포트폴리오조회Api권한테스트() throws Exception {
         MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
-        portfolioMap.put("jpaStartPage", Collections.singletonList("1"));
-        portfolioMap.put("size", Collections.singletonList("3"));
+        portfolioMap.add("jpaStartPage", "1");
+        portfolioMap.add("size", "3");
         mockMvc.perform(get("/api/jpa-portfolio/lists").params(portfolioMap)
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())

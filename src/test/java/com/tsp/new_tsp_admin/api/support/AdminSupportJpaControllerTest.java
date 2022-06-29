@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -113,8 +114,8 @@ class AdminSupportJpaControllerTest {
 	@DisplayName("Admin 지원 모델 조회 테스트")
 	void 지원모델조회Api테스트() throws Exception {
 		MultiValueMap<String, String> supportMap = new LinkedMultiValueMap<>();
-		supportMap.put("jpaStartPage", Collections.singletonList("1"));
-		supportMap.put("size", Collections.singletonList("3"));
+		supportMap.add("jpaStartPage", "1");
+		supportMap.add("size", "3");
 		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
 				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
@@ -126,8 +127,8 @@ class AdminSupportJpaControllerTest {
 	@DisplayName("Admin 지원 모델 조회 권한 테스트")
 	void 지원모델조회Api권한테스트() throws Exception {
 		MultiValueMap<String, String> supportMap = new LinkedMultiValueMap<>();
-		supportMap.put("jpaStartPage", Collections.singletonList("1"));
-		supportMap.put("size", Collections.singletonList("3"));
+		supportMap.add("jpaStartPage", "1");
+		supportMap.add("size", "3");
 		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
 				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
@@ -161,7 +162,7 @@ class AdminSupportJpaControllerTest {
 
 		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
 				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -187,7 +188,7 @@ class AdminSupportJpaControllerTest {
 
 		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
 				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
 				.andExpect(status().isForbidden());
@@ -201,7 +202,7 @@ class AdminSupportJpaControllerTest {
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
 				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
 				.andExpect(status().isOk());
@@ -215,7 +216,7 @@ class AdminSupportJpaControllerTest {
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
 				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
 				.andExpect(status().isForbidden());

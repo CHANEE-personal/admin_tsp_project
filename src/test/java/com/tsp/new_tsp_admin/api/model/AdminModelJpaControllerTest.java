@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -216,7 +217,7 @@ class AdminModelJpaControllerTest {
     void 모델등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-model")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -245,7 +246,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(post("/api/jpa-user/login")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -254,7 +255,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(post("/api/jpa-model")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -297,7 +298,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(post("/api/jpa-model")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(exAdminModelEntity)))
                 .andDo(print())
                 .andExpect(jsonPath("$.code").value("ERROR_MODEL"))
@@ -311,7 +312,7 @@ class AdminModelJpaControllerTest {
     void 모델등록Api권한테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-model")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
@@ -344,7 +345,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(put("/api/jpa-model/{idx}", adminModelEntity.getIdx())
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -368,7 +369,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(post("/api/jpa-user/login")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -396,7 +397,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(put("/api/jpa-model/1")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -432,7 +433,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(put("/api/jpa-model/1")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(jsonPath("$.code").value("ERROR_UPDATE_MODEL"))
@@ -467,7 +468,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(put("/api/jpa-model/{idx}", adminModelEntity.getIdx())
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
@@ -481,7 +482,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(delete("/api/jpa-model/{idx}", adminModelEntity.getIdx())
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -495,7 +496,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(delete("/api/jpa-model/{idx}", adminModelEntity.getIdx())
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
@@ -529,7 +530,7 @@ class AdminModelJpaControllerTest {
 
         mockMvc.perform(get("/api/jpa-model/common")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(commonCodeEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
