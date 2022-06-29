@@ -83,7 +83,6 @@ public class AdminUserJpaRepository {
                     .where(adminUserEntity.userId.eq(id))
                     .fetchOne();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
         }
     }

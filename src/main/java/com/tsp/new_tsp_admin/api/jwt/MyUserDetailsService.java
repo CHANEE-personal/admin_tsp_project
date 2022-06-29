@@ -33,7 +33,6 @@ public class MyUserDetailsService implements UserDetailsService {
             return new User(adminUserEntity.getName(), adminUserEntity.getPassword(),
                     AuthorityUtils.createAuthorityList("ROLE_ADMIN"));
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
         }
     }

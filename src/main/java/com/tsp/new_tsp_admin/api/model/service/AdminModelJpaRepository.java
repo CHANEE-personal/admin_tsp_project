@@ -106,7 +106,6 @@ public class AdminModelJpaRepository {
 
             return ModelMapper.INSTANCE.toDtoList(modelList);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
         }
     }
