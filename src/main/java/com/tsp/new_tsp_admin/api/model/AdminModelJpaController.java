@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.*;
+import static java.lang.Math.ceil;
 
 
 @Validated
@@ -33,7 +34,6 @@ import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.*;
 @RequestMapping("/api/jpa-model")
 @RequiredArgsConstructor
 public class AdminModelJpaController {
-
     private final AdminModelJpaService adminModelJpaService;
     private final SearchCommon searchCommon;
 
@@ -73,7 +73,7 @@ public class AdminModelJpaController {
         // 리스트 수
         modelMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        modelMap.put("perPageListCnt", Math.ceil((this.adminModelJpaService.findModelsCount(modelMap) - 1) / page.getSize() + 1));
+        modelMap.put("perPageListCnt", ceil((this.adminModelJpaService.findModelsCount(modelMap) - 1) / page.getSize() + 1));
         // 전체 아이템 수
         modelMap.put("modelListTotalCnt", this.adminModelJpaService.findModelsCount(modelMap));
 

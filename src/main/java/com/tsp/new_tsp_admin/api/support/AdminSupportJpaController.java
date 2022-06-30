@@ -19,13 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.ceil;
+
 @Validated
 @RestController
 @Api(tags = "지원모델관련 API")
 @RequestMapping("/api/jpa-support")
 @RequiredArgsConstructor
 public class AdminSupportJpaController {
-
     private final AdminSupportJpaService adminSupportJpaService;
     private final SearchCommon searchCommon;
 
@@ -62,7 +63,7 @@ public class AdminSupportJpaController {
         // 리스트 수
         supportMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        supportMap.put("perPageListCnt", Math.ceil((this.adminSupportJpaService.findSupportsCount(supportMap) - 1) / page.getSize() + 1));
+        supportMap.put("perPageListCnt", ceil((this.adminSupportJpaService.findSupportsCount(supportMap) - 1) / page.getSize() + 1));
         // 전체 아이템 수
         supportMap.put("modelListTotalCnt", this.adminSupportJpaService.findSupportsCount(supportMap));
 

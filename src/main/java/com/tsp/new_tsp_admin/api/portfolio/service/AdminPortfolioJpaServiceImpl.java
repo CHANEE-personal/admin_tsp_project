@@ -28,7 +28,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @Cacheable("portfolio")
-    public Long findPortfoliosCount(Map<String, Object> portfolioMap) {
+    public int findPortfoliosCount(Map<String, Object> portfolioMap) {
         return adminPortfolioJpaRepository.findPortfoliosCount(portfolioMap);
     }
 

@@ -21,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.rmi.ServerError;
@@ -35,7 +34,6 @@ import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 @RequestMapping("/api/jpa-user")
 @RequiredArgsConstructor
 public class AdminUserJpaController {
-
     private final AdminUserJpaService adminUserJpaService;
     private final AuthenticationManager authenticationManager;
     private final MyUserDetailsService userDetailsService;
@@ -86,8 +84,7 @@ public class AdminUserJpaController {
     })
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest,
-                                                   HttpServletRequest request,
-                                                   HttpServletResponse response) throws Exception {
+                                     HttpServletResponse response) throws Exception {
         Map<String, Object> userMap = new HashMap<>();
 
         AdminUserEntity adminUserEntity = builder()

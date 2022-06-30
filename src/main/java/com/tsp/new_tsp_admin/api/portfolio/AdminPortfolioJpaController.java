@@ -19,12 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.ceil;
+
 @RestController
 @RequestMapping("/api/jpa-portfolio")
 @Api(tags = "포트폴리오관련 API")
 @RequiredArgsConstructor
 public class AdminPortfolioJpaController {
-
     private final AdminPortfolioJpaService adminPortfolioJpaService;
     private final SearchCommon searchCommon;
 
@@ -50,7 +51,7 @@ public class AdminPortfolioJpaController {
     public Map<String, Object> getPortfolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
         Map<String, Object> portfolioMap = new HashMap<>();
 
-        Long portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
+        int portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
 
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
 
@@ -61,7 +62,7 @@ public class AdminPortfolioJpaController {
         // 리스트 수
         portfolioMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        portfolioMap.put("perPageListCnt", Math.ceil((portfolioCnt - 1) / page.getSize() + 1));
+        portfolioMap.put("perPageListCnt", ceil((portfolioCnt - 1) / page.getSize() + 1));
         // 전체 아이템 수
         portfolioMap.put("portfolioListCnt", portfolioCnt);
 
@@ -112,7 +113,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminPortFolioDTO insertPortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
+    public AdminPortFolioDTO insertPortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) {
         return this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
     }
 
@@ -135,7 +136,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminPortFolioDTO updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
+    public AdminPortFolioDTO updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
     }
 
@@ -159,7 +160,7 @@ public class AdminPortfolioJpaController {
     })
     @DeleteMapping("/{idx}")
     public AdminPortFolioDTO deletePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
-                                             @PathVariable("idx") Integer idx) throws Exception {
+                                             @PathVariable("idx") Integer idx) {
         adminPortFolioEntity.setIdx(idx);
         return adminPortfolioJpaService.deletePortfolio(adminPortFolioEntity);
     }

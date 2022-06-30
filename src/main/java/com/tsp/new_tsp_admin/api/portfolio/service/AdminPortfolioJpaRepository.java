@@ -55,11 +55,11 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public Long findPortfoliosCount(Map<String, Object> portfolioMap) {
+    public int findPortfoliosCount(Map<String, Object> portfolioMap) {
         try {
             return queryFactory.selectFrom(adminPortFolioEntity)
                     .where(searchPortfolio(portfolioMap))
-                    .fetchCount();
+                    .fetch().size();
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
         }

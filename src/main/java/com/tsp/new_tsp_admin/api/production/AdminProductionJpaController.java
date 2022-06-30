@@ -19,12 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.ceil;
+
 @RestController
 @RequestMapping("/api/jpa-production")
 @Api(tags = "프로덕션관련 API")
 @RequiredArgsConstructor
 public class AdminProductionJpaController {
-
     private final AdminProductionJpaService adminProductionJpaService;
     private final SearchCommon searchCommon;
 
@@ -50,7 +51,7 @@ public class AdminProductionJpaController {
     public Map<String, Object> getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
         Map<String, Object> productionMap = new HashMap<>();
 
-        Long productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
+        int productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
 
         List<AdminProductionDTO> productionList = new ArrayList<>();
 
@@ -61,7 +62,7 @@ public class AdminProductionJpaController {
         // 리스트 수
         productionMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        productionMap.put("perPageListCnt", Math.ceil((productionCnt - 1) / page.getSize() + 1));
+        productionMap.put("perPageListCnt", ceil((productionCnt - 1) / page.getSize() + 1));
         // 전체 아이템 수
         productionMap.put("productionListCnt", productionCnt);
 
