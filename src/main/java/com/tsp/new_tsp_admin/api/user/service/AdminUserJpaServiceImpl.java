@@ -3,8 +3,6 @@ package com.tsp.new_tsp_admin.api.user.service;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
-import com.tsp.new_tsp_admin.exception.ApiExceptionType;
-import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -17,7 +15,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class AdminUserJpaServiceImpl implements AdminUserJpaService {
-
     private final AdminUserJpaRepository adminUserJpaRepository;
 
     /**
@@ -33,11 +30,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @Override
     @Cacheable("user")
     public List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap) {
-        try {
-            return adminUserJpaRepository.findUserList(userMap);
-        } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER_LIST, e);
-        }
+        return adminUserJpaRepository.findUserList(userMap);
     }
 
     /**
@@ -52,11 +45,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     public String adminLogin(AdminUserEntity adminUserEntity) {
-        try {
-            return adminUserJpaRepository.adminLogin(adminUserEntity);
-        } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
-        }
+        return adminUserJpaRepository.adminLogin(adminUserEntity);
     }
 
     /**
@@ -89,11 +78,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @Override
     @CachePut("user")
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
-        try {
-            return adminUserJpaRepository.insertAdminUser(adminUserEntity);
-        } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_USER, e);
-        }
+        return adminUserJpaRepository.insertAdminUser(adminUserEntity);
     }
 
     /**
@@ -109,11 +94,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @Override
     @CachePut("user")
     public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
-        try {
-            return adminUserJpaRepository.updateAdminUser(adminUserEntity);
-        } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_USER, e);
-        }
+        return adminUserJpaRepository.updateAdminUser(adminUserEntity);
     }
 
     /**
@@ -129,10 +110,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @Override
     @CacheEvict("user")
     public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
-        try {
-            return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
-        } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_USER, e);
-        }
+        return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
     }
 }

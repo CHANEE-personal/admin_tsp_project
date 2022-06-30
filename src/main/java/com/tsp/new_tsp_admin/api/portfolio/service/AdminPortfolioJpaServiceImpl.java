@@ -14,7 +14,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
-
     private final AdminPortfolioJpaRepository adminPortfolioJpaRepository;
 
     /**

@@ -84,7 +84,6 @@ public class ImageRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
     public Integer maxSubCnt(CommonImageEntity exCommonImageEntity) {
         return queryFactory.selectFrom(commonImageEntity)
                 .select(commonImageEntity.fileNum.max())
@@ -125,7 +124,7 @@ public class ImageRepository {
      *
      */
     public String uploadImageFile(CommonImageEntity commonImageEntity,
-                                  List<MultipartFile> files, String flag) throws Exception {
+                                  List<MultipartFile> files, String flag) {
         String ext;        // 파일 확장자
         String fileId;      // 파일명
         String fileMask;    // 파일 Mask
@@ -133,17 +132,13 @@ public class ImageRepository {
         int mainCnt = 0;
 
         File dir = new File(uploadPath);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+        if (!dir.exists()) dir.mkdirs();
 
         if (files != null) {
-            if ("update".equals(flag)) {
-                if ("production".equals(commonImageEntity.getTypeName())) {
-                    commonImageEntity.setImageType("main");
-                    commonImageEntity.setTypeIdx(commonImageEntity.getIdx());
-                    deleteImage(commonImageEntity);
-                }
+            if ("update".equals(flag) && "production".equals(commonImageEntity.getTypeName())) {
+                commonImageEntity.setImageType("main");
+                commonImageEntity.setTypeIdx(commonImageEntity.getIdx());
+                deleteImage(commonImageEntity);
             }
 
             for (MultipartFile file : files) {
@@ -226,7 +221,6 @@ public class ImageRepository {
      * </pre>
      *
      */
-    @Transactional
     public CommonImageEntity deleteImage(CommonImageEntity exCommonImageEntity) {
         try {
             exCommonImageEntity = em.find(CommonImageEntity.class, exCommonImageEntity.getIdx());

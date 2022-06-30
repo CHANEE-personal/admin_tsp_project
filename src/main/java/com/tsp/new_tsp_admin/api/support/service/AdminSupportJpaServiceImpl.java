@@ -11,7 +11,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
-
     private final AdminSupportJpaRepository adminSupportJpaRepository;
 
     /**
