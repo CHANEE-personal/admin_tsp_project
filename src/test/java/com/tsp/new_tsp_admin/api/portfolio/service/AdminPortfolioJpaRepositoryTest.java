@@ -14,8 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -56,7 +58,7 @@ class AdminPortfolioJpaRepositoryTest {
     private CommonImageEntity commonImageEntity;
     private CommonImageDTO commonImageDTO;
 
-    public void createPortfolioAndImage() {
+    void createPortfolioAndImage() {
         adminPortFolioEntity = builder()
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
@@ -82,13 +84,14 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @BeforeEach
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
         queryFactory = new JPAQueryFactory(em);
         createPortfolioAndImage();
     }
 
     @Test
-    public void 포트폴리오조회테스트() throws Exception {
+    void 포트폴리오조회테스트() throws Exception {
 
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
@@ -100,7 +103,7 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    public void 포트폴리오상세조회테스트() throws Exception {
+    void 포트폴리오상세조회테스트() throws Exception {
 
         // given
         adminPortFolioEntity = builder().idx(1).build();
@@ -124,7 +127,7 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    public void 포트폴리오BDD조회테스트() throws Exception {
+    void 포트폴리오BDD조회테스트() throws Exception {
 
         // given
         ConcurrentHashMap<String, Object> portfolioMap = new ConcurrentHashMap<>();
@@ -154,7 +157,7 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    public void 포트폴리오상세BDD조회테스트() throws Exception {
+    void 포트폴리오상세BDD조회테스트() throws Exception {
 
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
@@ -188,7 +191,7 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    public void 포트폴리오등록테스트() throws Exception {
+    void 포트폴리오등록테스트() throws Exception {
         adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
 
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
@@ -205,7 +208,7 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    public void 포트폴리오이미지등록테스트() throws Exception {
+    void 포트폴리오이미지등록테스트() throws Exception {
         Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -222,7 +225,7 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    public void 포트폴리오수정테스트() throws Exception {
+    void 포트폴리오수정테스트() throws Exception {
         Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminPortFolioEntity = builder()
@@ -253,7 +256,7 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    public void 포트폴리오삭제테스트() throws Exception {
+    void 포트폴리오삭제테스트() throws Exception {
         em.persist(adminPortFolioEntity);
 
         // when

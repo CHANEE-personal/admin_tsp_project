@@ -9,9 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -95,7 +97,8 @@ class AdminProductionJpaControllerTest {
     }
 
     @BeforeEach
-    void setup() {
+    @EventListener(ApplicationReadyEvent.class)
+    public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())

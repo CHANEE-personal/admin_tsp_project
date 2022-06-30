@@ -103,7 +103,7 @@ dependencies {
     // flywaydb
     compile "org.flywaydb:flyway-core:8.5.12"
 
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
+//    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 }
 
 // build시 junit 제외

@@ -15,8 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -57,7 +59,7 @@ class AdminProductionJpaRepositoryTest {
     private CommonImageEntity commonImageEntity;
     private CommonImageDTO commonImageDTO;
 
-    public void createProductionAndImage() {
+    void createProductionAndImage() {
         adminProductionEntity = builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
@@ -80,13 +82,14 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @BeforeEach
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
         queryFactory = new JPAQueryFactory(em);
         createProductionAndImage();
     }
 
     @Test
-    public void 프로덕션리스트조회테스트() throws Exception {
+    void 프로덕션리스트조회테스트() throws Exception {
 
         // given
         Map<String, Object> productionMap = new HashMap<>();
@@ -98,7 +101,7 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    public void 프로덕션상세조회테스트() throws Exception {
+    void 프로덕션상세조회테스트() throws Exception {
 
         // given
         adminProductionEntity = builder().idx(1).build();
@@ -127,7 +130,7 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    public void 프로덕션BDD조회테스트() throws Exception {
+    void 프로덕션BDD조회테스트() throws Exception {
 
         // given
         ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
@@ -157,7 +160,7 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    public void 프로덕션상세BDD조회테스트() throws Exception {
+    void 프로덕션상세BDD조회테스트() throws Exception {
 
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
@@ -194,7 +197,7 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    public void 프로덕션등록테스트() throws Exception {
+    void 프로덕션등록테스트() throws Exception {
         // given
         adminProductionJpaRepository.insertProduction(adminProductionEntity);
 
@@ -213,7 +216,7 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    public void 프로덕션이미지등록테스트() throws Exception {
+    void 프로덕션이미지등록테스트() throws Exception {
         Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -232,7 +235,7 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    public void 프로덕션수정테스트() throws Exception {
+    void 프로덕션수정테스트() throws Exception {
         // given
         Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
@@ -261,7 +264,7 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    public void 프로덕션삭제테스트() throws Exception {
+    void 프로덕션삭제테스트() throws Exception {
         em.persist(adminProductionEntity);
 
         adminProductionDTO = AdminProductionDTO.builder()

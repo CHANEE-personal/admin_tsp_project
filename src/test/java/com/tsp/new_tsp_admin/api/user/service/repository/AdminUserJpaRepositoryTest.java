@@ -11,8 +11,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -51,12 +53,13 @@ class AdminUserJpaRepositoryTest {
     private AdminUserEntity adminUserEntity;
     private AdminUserDTO adminUserDTO;
 
-    public void createUser() {
+    void createUser() {
         adminUserEntity = builder().idx(2).userId("admin01").build();
         adminUserDTO = UserMapperImpl.INSTANCE.toDto(adminUserEntity);
     }
 
     @BeforeEach
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
         queryFactory = new JPAQueryFactory(em);
         createUser();
@@ -64,7 +67,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 조회 테스트")
-    public void 유저조회테스트() {
+    void 유저조회테스트() {
         // given
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
@@ -75,7 +78,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 BDD 조회 테스트")
-    public void 유저BDD조회테스트() {
+    void 유저BDD조회테스트() {
         // given
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
@@ -109,7 +112,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 상세 조회 테스트")
-    public void 유저상세조회테스트() {
+    void 유저상세조회테스트() {
 
         AdminUserEntity adminUser = adminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
@@ -124,7 +127,7 @@ class AdminUserJpaRepositoryTest {
     }
     @Test
     @DisplayName("유저 상세 BDD 조회 테스트")
-    public void 유저상세BDD조회테스트() {
+    void 유저상세BDD조회테스트() {
         // given
         adminUserEntity = builder().idx(1).userId("test").build();
 
@@ -154,7 +157,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 로그인 테스트")
-    public void 유저로그인테스트() {
+    void 유저로그인테스트() {
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin02")
                 .password("pass1234")
@@ -165,7 +168,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 토큰을 이용한 회원 조회")
-    public void 유저토큰을이용한회원조회테스트() {
+    void 유저토큰을이용한회원조회테스트() {
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin01")
                 .idx(2)
@@ -178,7 +181,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 토큰 저장 테스트")
-    public void 유저토큰저장테스트() {
+    void 유저토큰저장테스트() {
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
@@ -191,7 +194,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 회원가입 테스트")
-    public void 유저회원가입테스트() {
+    void 유저회원가입테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
@@ -219,7 +222,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 회원수정 테스트")
-    public void 유저회원수정테스트() {
+    void 유저회원수정테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
@@ -257,7 +260,7 @@ class AdminUserJpaRepositoryTest {
 
     @Test
     @DisplayName("유저 회원탈퇴 테스트")
-    public void 유저탈퇴테스트() {
+    void 유저탈퇴테스트() {
         assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity).getIdx()).isEqualTo(adminUserDTO.getIdx());
     }
 }
