@@ -4,8 +4,6 @@ import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,7 +14,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.TestPropertySource;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,7 +77,7 @@ class JwtUtilTest {
     @DisplayName("토큰 유효성 테스트")
     public void validateTokenTest() {
         String token = jwtUtil.generateToken(userDetails);
-        assertTrue(jwtUtil.validateToken(token, userDetails));
+        assertTrue(jwtUtil.validateToken(token));
     }
 
     @Test

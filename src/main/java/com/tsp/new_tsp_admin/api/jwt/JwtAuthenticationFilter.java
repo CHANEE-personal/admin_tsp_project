@@ -38,11 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             // 유효한 토큰인지 검사
             if (accessToken != null) {
-                if (jwtUtil.validateToken(accessToken, userDetails)) {
+                if (Boolean.TRUE.equals(jwtUtil.validateToken(accessToken))) {
                     this.setAuthentication(accessToken);
                 } else {
                     if (refreshToken != null) {
-                        boolean validateRefreshToken = jwtUtil.validateToken(refreshToken, userDetails);
+                        boolean validateRefreshToken = jwtUtil.validateToken(refreshToken);
 
                         if (validateRefreshToken) {
                             String newAccessToken = jwtUtil.generateToken(userDetails);
