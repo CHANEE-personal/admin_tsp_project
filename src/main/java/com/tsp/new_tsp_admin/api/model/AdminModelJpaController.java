@@ -156,6 +156,29 @@ public class AdminModelJpaController {
 
     /**
      * <pre>
+     * 1. MethodName : deleteModelImage
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 모델 Image 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     */
+    @ApiOperation(value = "모델 이미지 삭제", notes = "모델 이미지를 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "모델 이미지 삭제성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @DeleteMapping(value = "/{idx}/images")
+    public Integer deleteModelImage(@PathVariable("idx") Integer idx) throws Exception {
+        return this.adminModelJpaService.deleteModelImage(idx);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : updateModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 수정

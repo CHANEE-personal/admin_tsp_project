@@ -133,6 +133,21 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : deleteModelImage
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 이미지 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     */
+    @Override
+    public Integer deleteModelImage(Integer idx) {
+        return imageRepository.deleteModelImage(idx);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : modelCommonCode
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 공통 코드 조회

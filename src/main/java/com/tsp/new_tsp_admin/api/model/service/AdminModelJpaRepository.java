@@ -72,8 +72,7 @@ public class AdminModelJpaRepository {
     @Transactional(readOnly = true)
     public int findModelsCount(Map<String, Object> modelMap) {
         try {
-            return queryFactory.selectFrom(adminModelEntity)
-                    .where(searchModel(modelMap)).fetch().size();
+            return queryFactory.selectFrom(adminModelEntity).where(searchModel(modelMap)).fetch().size();
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
         }
@@ -101,7 +100,8 @@ public class AdminModelJpaRepository {
                     .limit(StringUtil.getInt(modelMap.get("size"),0))
                     .fetch();
 
-            modelList.forEach(list -> modelList.get(modelList.indexOf(list)).setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
+            modelList.forEach(list -> modelList.get(modelList.indexOf(list))
+                    .setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
 
             return ModelMapper.INSTANCE.toDtoList(modelList);
         } catch (Exception e) {

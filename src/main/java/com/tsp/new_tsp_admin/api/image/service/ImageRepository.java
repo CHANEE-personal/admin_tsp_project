@@ -114,6 +114,31 @@ public class ImageRepository {
 
     /**
      * <pre>
+     * 1. MethodName : deleteModelImage
+     * 2. ClassName  : ImageRepository.java
+     * 3. Comment    : 관리자 모델 이미지 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 07.
+     * </pre>
+     *
+     */
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    public Integer deleteModelImage(Integer idx) {
+        try {
+            em.remove(em.find(CommonImageEntity.class, idx));
+            em.flush();
+            em.clear();
+
+            return idx;
+        } catch (Exception e) {
+            throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
+        }
+    }
+
+
+    /**
+     * <pre>
      * 1. MethodName : uploadImageFile
      * 2. ClassName  : ImageServiceImpl.java
      * 3. Comment    : 이미지 파일 업로드

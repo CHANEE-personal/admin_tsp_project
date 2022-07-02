@@ -2,15 +2,16 @@ package com.tsp.new_tsp_admin.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
+import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -45,8 +46,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @Transactional
@@ -54,7 +54,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdminModelJpaControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -131,8 +130,8 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 조회 테스트")
     void 모델조회Api테스트() throws Exception {
         MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
-        modelMap.put("jpaStartPage", Collections.singletonList("1"));
-        modelMap.put("size", Collections.singletonList("3"));
+        modelMap.add("jpaStartPage", "1");
+        modelMap.add("size", "3");
         mockMvc.perform(get("/api/jpa-model/lists/1").queryParams(modelMap)
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -362,7 +361,6 @@ class AdminModelJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("LastModifiedBy, UpdateTimestamp 테스트")
     void LastModifiedByAndUpdateTimestamp테스트() throws Exception {
-
         em.persist(adminModelEntity);
 
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
@@ -489,7 +487,8 @@ class AdminModelJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(StringUtil.getString(adminModelEntity.getIdx())));
     }
 
     @Test
@@ -523,7 +522,32 @@ class AdminModelJpaControllerTest {
                         .file("images", imageFiles.get(1).getBytes())
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("Y"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 모델 이미지 삭제 테스트")
+    void 모델이미지삭제Api테스트() throws Exception {
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("model")
+                .build();
+
+        em.persist(commonImageEntity);
+
+        mockMvc.perform(delete("/api/jpa-model/{idx}/images", commonImageEntity.getIdx())
+                        .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE))
+//                        .content(objectMapper.writeValueAsString(commonImageEntity)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(StringUtil.getString(commonImageEntity.getIdx(),"")));
     }
 
     @Test
