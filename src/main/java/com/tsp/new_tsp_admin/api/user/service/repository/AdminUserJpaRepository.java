@@ -32,7 +32,6 @@ import static com.tsp.new_tsp_admin.api.domain.user.QAdminUserEntity.adminUserEn
 @RequiredArgsConstructor
 @Repository
 public class AdminUserJpaRepository {
-
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
     private final PasswordEncoder passwordEncoder;
@@ -58,7 +57,8 @@ public class AdminUserJpaRepository {
                     .limit(StringUtil.getInt(userMap.get("size"), 0))
                     .fetch();
 
-            userList.forEach(list -> userList.get(userList.indexOf(list)).setRnum(StringUtil.getInt(userMap.get("startPage"), 1)*(StringUtil.getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
+            userList.forEach(list -> userList.get(userList.indexOf(list))
+                    .setRnum(StringUtil.getInt(userMap.get("startPage"), 1)*(StringUtil.getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
 
             return UserMapper.INSTANCE.toDtoList(userList);
         } catch (Exception e) {
@@ -246,8 +246,7 @@ public class AdminUserJpaRepository {
     @Transactional
     public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
         try {
-            adminUserEntity = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
-            em.remove(adminUserEntity);
+            em.remove(em.find(AdminUserEntity.class, adminUserEntity.getIdx()));
             em.flush();
             em.clear();
 

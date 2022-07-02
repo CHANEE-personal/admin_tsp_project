@@ -24,7 +24,6 @@ import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.admin
 @RequiredArgsConstructor
 @Repository
 public class AdminSupportJpaRepository {
-
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
@@ -81,7 +80,8 @@ public class AdminSupportJpaRepository {
                     .limit(StringUtil.getInt(supportMap.get("size"),0))
                     .fetch();
 
-            supportList.forEach(list -> supportList.get(supportList.indexOf(list)).setRnum(StringUtil.getInt(supportMap.get("startPage"),1)*(StringUtil.getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
+            supportList.forEach(list -> supportList.get(supportList.indexOf(list))
+                    .setRnum(StringUtil.getInt(supportMap.get("startPage"),1)*(StringUtil.getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
 
             return SupportMapper.INSTANCE.toDtoList(supportList);
         } catch (Exception e) {
@@ -150,8 +150,7 @@ public class AdminSupportJpaRepository {
     @Transactional
     public AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) {
         try {
-            adminSupportEntity = em.find(AdminSupportEntity.class, adminSupportEntity.getIdx());
-            em.remove(adminSupportEntity);
+            em.remove(em.find(AdminSupportEntity.class, adminSupportEntity.getIdx()));
             em.flush();
             em.clear();
 

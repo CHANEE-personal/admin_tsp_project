@@ -26,7 +26,6 @@ import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.a
 @RequiredArgsConstructor
 @Repository
 public class AdminPortfolioJpaRepository {
-
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
@@ -86,7 +85,8 @@ public class AdminPortfolioJpaRepository {
                     .limit(StringUtil.getInt(portfolioMap.get("size"),0))
                     .fetch();
 
-            portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list)).setRnum(StringUtil.getInt(portfolioMap.get("startPage"),1)*(StringUtil.getInt(portfolioMap.get("size"),1))-(2-portfolioList.indexOf(list))));
+            portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
+                    .setRnum(StringUtil.getInt(portfolioMap.get("startPage"),1)*(StringUtil.getInt(portfolioMap.get("size"),1))-(2-portfolioList.indexOf(list))));
 
             return PortFolioMapper.INSTANCE.toDtoList(portfolioList);
         } catch (Exception e) {
@@ -203,8 +203,7 @@ public class AdminPortfolioJpaRepository {
     @Transactional
     public AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         try {
-            adminPortfolioEntity = em.find(AdminPortFolioEntity.class, adminPortfolioEntity.getIdx());
-            em.remove(adminPortfolioEntity);
+            em.remove(em.find(AdminPortFolioEntity.class, adminPortfolioEntity.getIdx()));
             em.flush();
             em.clear();
 

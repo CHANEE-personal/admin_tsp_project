@@ -307,8 +307,7 @@ public class AdminModelJpaRepository {
     @Transactional
     public AdminModelDTO deleteModelByEm(AdminModelEntity adminModelEntity) {
         try {
-            adminModelEntity = em.find(AdminModelEntity.class, adminModelEntity.getIdx());
-            em.remove(adminModelEntity);
+            em.remove(em.find(AdminModelEntity.class, adminModelEntity.getIdx()));
             em.flush();
             em.clear();
 

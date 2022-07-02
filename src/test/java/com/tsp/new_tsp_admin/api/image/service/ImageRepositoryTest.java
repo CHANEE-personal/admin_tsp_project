@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("이미지 Repository Test")
 class ImageRepositoryTest {
-
     @Autowired
     private ImageRepository imageRepository;
 

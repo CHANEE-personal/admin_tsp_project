@@ -26,7 +26,6 @@ import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity
 @RequiredArgsConstructor
 @Repository
 public class AdminProductionJpaRepository {
-
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
@@ -85,7 +84,8 @@ public class AdminProductionJpaRepository {
                     .limit(StringUtil.getInt(productionMap.get("size"),0))
                     .fetch();
 
-            productionList.forEach(list -> productionList.get(productionList.indexOf(list)).setRnum(StringUtil.getInt(productionMap.get("startPage"),1)*(StringUtil.getInt(productionMap.get("size"),1))-(2-productionList.indexOf(list))));
+            productionList.forEach(list -> productionList.get(productionList.indexOf(list))
+                    .setRnum(StringUtil.getInt(productionMap.get("startPage"),1)*(StringUtil.getInt(productionMap.get("size"),1))-(2-productionList.indexOf(list))));
 
             return ProductionMapper.INSTANCE.toDtoList(productionList);
         } catch (Exception e) {
@@ -204,8 +204,7 @@ public class AdminProductionJpaRepository {
     @Transactional
     public AdminProductionDTO deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
         try {
-            adminProductionEntity = em.find(AdminProductionEntity.class, adminProductionEntity.getIdx());
-            em.remove(adminProductionEntity);
+            em.remove(em.find(AdminProductionEntity.class, adminProductionEntity.getIdx()));
             em.flush();
             em.clear();
 
