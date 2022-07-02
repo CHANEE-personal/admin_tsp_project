@@ -28,7 +28,6 @@ import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonI
 @RequiredArgsConstructor
 @Repository
 public class ImageRepository {
-
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 

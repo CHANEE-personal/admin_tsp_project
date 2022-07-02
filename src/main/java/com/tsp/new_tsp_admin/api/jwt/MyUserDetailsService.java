@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
-
     private final AdminUserJpaRepository adminUserJpaRepository;
 
     @Override
