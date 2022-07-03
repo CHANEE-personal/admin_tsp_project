@@ -32,7 +32,6 @@ import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminMode
 @RequiredArgsConstructor
 @Repository
 public class AdminModelJpaRepository {
-
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
