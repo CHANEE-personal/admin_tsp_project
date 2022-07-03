@@ -175,9 +175,9 @@ public class AdminUserJpaRepository {
             JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
             update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
-                    .set(adminUserEntity.updater, "1")
-                    .set(adminUserEntity.updateTime, new Date())
-                    .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
+                  .set(adminUserEntity.updater, "1")
+                  .set(adminUserEntity.updateTime, new Date())
+                  .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
 
             return existAdminUserEntity.getIdx();
         } catch (Exception e) {
