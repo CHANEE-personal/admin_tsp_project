@@ -34,7 +34,6 @@ import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
@@ -97,7 +96,7 @@ class AdminProductionJpaRepositoryTest {
         productionMap.put("size", 3);
 
         // then
-        assertThat(adminProductionJpaRepository.findProductionsList(productionMap).size()).isGreaterThan(0);
+        assertThat(adminProductionJpaRepository.findProductionsList(productionMap)).isNotEmpty();
     }
 
     @Test

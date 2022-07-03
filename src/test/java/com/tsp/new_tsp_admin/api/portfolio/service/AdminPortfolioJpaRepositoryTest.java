@@ -33,7 +33,6 @@ import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.bu
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
@@ -99,7 +98,7 @@ class AdminPortfolioJpaRepositoryTest {
         portfolioMap.put("size", 3);
 
         // then
-        assertThat(adminPortfolioJpaRepository.findPortfoliosList(portfolioMap).size()).isGreaterThan(0);
+        assertThat(adminPortfolioJpaRepository.findPortfoliosList(portfolioMap)).isNotEmpty();
     }
 
     @Test

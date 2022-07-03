@@ -24,13 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
@@ -73,7 +71,7 @@ class AdminUserJpaRepositoryTest {
         userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
 
-        assertThat(adminUserJpaRepository.findUserList(userMap).size()).isGreaterThan(0);
+        assertThat(adminUserJpaRepository.findUserList(userMap)).isNotEmpty();
     }
 
     @Test
