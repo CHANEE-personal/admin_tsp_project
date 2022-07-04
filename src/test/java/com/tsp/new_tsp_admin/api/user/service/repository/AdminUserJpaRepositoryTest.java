@@ -40,14 +40,11 @@ import static org.mockito.Mockito.*;
 class AdminUserJpaRepositoryTest {
     @Autowired
     private AdminUserJpaRepository adminUserJpaRepository;
-
     @Mock
     private AdminUserJpaRepository mockAdminUserJpaRepository;
-
     @Autowired
     private EntityManager em;
     JPAQueryFactory queryFactory;
-
     private AdminUserEntity adminUserEntity;
     private AdminUserDTO adminUserDTO;
 
@@ -111,9 +108,10 @@ class AdminUserJpaRepositoryTest {
     @Test
     @DisplayName("유저 상세 조회 테스트")
     void 유저상세조회테스트() {
-
+        // given
         AdminUserEntity adminUser = adminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
+        // then
         assertAll(() -> assertThat(adminUser.getIdx()).isEqualTo(2),
                 () -> {
                     assertThat(adminUser.getUserId()).isEqualTo("admin01");
@@ -156,35 +154,42 @@ class AdminUserJpaRepositoryTest {
     @Test
     @DisplayName("유저 로그인 테스트")
     void 유저로그인테스트() {
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        // given
+        AdminUserEntity adminUserEntity = builder()
                 .userId("admin02")
                 .password("pass1234")
                 .build();
 
+        // then
         assertThat(adminUserJpaRepository.adminLogin(adminUserEntity)).isEqualTo("Y");
     }
 
     @Test
     @DisplayName("유저 토큰을 이용한 회원 조회")
     void 유저토큰을이용한회원조회테스트() {
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        // given
+        AdminUserEntity adminUserEntity = builder()
                 .userId("admin01")
                 .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
                 .build();
 
+        // when
         adminUserJpaRepository.insertUserTokenByEm(adminUserEntity);
+        // then
         assertThat(adminUserJpaRepository.findOneUserByToken(adminUserEntity.getUserToken())).isEqualTo(adminUserEntity.getUserId());
     }
 
     @Test
     @DisplayName("유저 토큰 저장 테스트")
     void 유저토큰저장테스트() {
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        // given
+        AdminUserEntity adminUserEntity = builder()
                 .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
                 .build();
 
+        // then
         assertThat(adminUserJpaRepository.insertUserTokenByEm(adminUserEntity)).isEqualTo(adminUserEntity.getIdx());
         assertNotNull(adminUserEntity.getUserToken());
         assertNotNull(adminUserEntity.getUserRefreshToken());
@@ -194,7 +199,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 회원가입 테스트")
     void 유저회원가입테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        AdminUserEntity adminUserEntity = builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -222,7 +227,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 회원수정 테스트")
     void 유저회원수정테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        AdminUserEntity adminUserEntity = builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -232,7 +237,7 @@ class AdminUserJpaRepositoryTest {
 
         Integer idx = adminUserJpaRepository.insertAdminUser(adminUserEntity).getIdx();
 
-        AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
+        AdminUserEntity newAdminUserEntity = builder()
                 .idx(idx)
                 .userId("test1")
                 .password("test1")
