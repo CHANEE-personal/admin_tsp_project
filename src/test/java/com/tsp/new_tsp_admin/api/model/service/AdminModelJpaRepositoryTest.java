@@ -28,7 +28,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -127,7 +126,6 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 리스트 조회 예외 테스트")
     void 모델리스트조회예외테스트() {
-
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", -1);
@@ -140,13 +138,13 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() {
-
         // given
         adminModelEntity = builder().idx(143).categoryCd(2).build();
 
         // when
         adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
 
+        // then
         assertAll(() -> assertThat(adminModelDTO.getIdx()).isEqualTo(143),
                 () -> {
                     assertThat(adminModelDTO.getCategoryCd()).isEqualTo(2);
@@ -202,9 +200,8 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 BDD 조회 테스트")
     void 모델BDD조회테스트() {
-
         // given
-        ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
+        Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", 1);
         modelMap.put("jpaStartPage", 1);
         modelMap.put("size", 3);
@@ -233,7 +230,6 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 상세 BDD 조회 테스트")
     void 모델상세BDD조회테스트() {
-
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
@@ -408,6 +404,7 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 삭제 테스트")
     void 모델삭제테스트() {
+        // given
         em.persist(adminModelEntity);
 
         // when

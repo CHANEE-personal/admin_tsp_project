@@ -37,7 +37,6 @@ import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
@@ -56,16 +55,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AdminModelJpaControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private WebApplicationContext wac;
-
     @Autowired
     private EntityManager em;
-
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -509,7 +504,6 @@ class AdminModelJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 이미지 등록 테스트")
     void 모델이미지등록Api테스트() throws Exception {
-
         List<MultipartFile> imageFiles = List.of(
                 new MockMultipartFile("0522045010647","0522045010647.png",
                         "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
