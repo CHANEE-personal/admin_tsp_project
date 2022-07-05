@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,19 +47,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdminProductionJpaControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private WebApplicationContext wac;
-
     @Autowired
     private EntityManager em;
-
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -75,7 +69,6 @@ class AdminProductionJpaControllerTest {
 
     void createAdminProduction() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
-        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
         adminUserEntity = AdminUserEntity.builder()
                 .userId("admin04")
@@ -83,7 +76,7 @@ class AdminProductionJpaControllerTest {
                 .name("test")
                 .email("test@test.com")
                 .role(Role.ROLE_ADMIN)
-                .userToken(token)
+                .userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
                 .visible("Y")
                 .build();
 

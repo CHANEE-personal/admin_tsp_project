@@ -5,8 +5,8 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapperImpl;
+import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapper;
+import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapperImpl;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,10 +44,8 @@ import static org.mockito.Mockito.*;
 class AdminProductionJpaRepositoryTest {
     @Autowired
     private AdminProductionJpaRepository adminProductionJpaRepository;
-
     @Mock
     private AdminProductionJpaRepository mockAdminProductionJpaRepository;
-
     @Autowired
     private EntityManager em;
     JPAQueryFactory queryFactory;
@@ -67,7 +64,7 @@ class AdminProductionJpaRepositoryTest {
 
         adminProductionDTO = ProductionMapperImpl.INSTANCE.toDto(adminProductionEntity);
 
-        commonImageEntity = commonImageEntity = CommonImageEntity.builder()
+        commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
@@ -77,7 +74,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        commonImageDTO = ModelImageMapperImpl.INSTANCE.toDto(commonImageEntity);
+        commonImageDTO = ProductionImageMapperImpl.INSTANCE.toDto(commonImageEntity);
     }
 
     @BeforeEach
@@ -88,7 +85,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    void 프로덕션리스트조회테스트() throws Exception {
+    @DisplayName("프로덕션리스트조회테스트")
+    void 프로덕션리스트조회테스트() {
 
         // given
         Map<String, Object> productionMap = new HashMap<>();
@@ -100,8 +98,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    void 프로덕션상세조회테스트() throws Exception {
-
+    @DisplayName("프로덕션상세조회테스트")
+    void 프로덕션상세조회테스트() {
         // given
         adminProductionEntity = builder().idx(1).build();
 
@@ -129,10 +127,10 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    void 프로덕션BDD조회테스트() throws Exception {
-
+    @DisplayName("프로덕션BDD조회테스트")
+    void 프로덕션BDD조회테스트() {
         // given
-        ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
+        Map<String, Object> productionMap = new HashMap<>();
         productionMap.put("jpaStartPage", 1);
         productionMap.put("size", 3);
 
@@ -159,8 +157,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    void 프로덕션상세BDD조회테스트() throws Exception {
-
+    @DisplayName("프로덕션상세BDD조회테스트")
+    void 프로덕션상세BDD조회테스트() {
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
@@ -172,7 +170,7 @@ class AdminProductionJpaRepositoryTest {
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
-                .productionImage(ModelImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .productionImage(ProductionImageMapper.INSTANCE.toDtoList(commonImageEntityList))
                 .build();
 
         // when
@@ -196,7 +194,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    void 프로덕션등록테스트() throws Exception {
+    @DisplayName("프로덕션등록테스트")
+    void 프로덕션등록테스트() {
         // given
         adminProductionJpaRepository.insertProduction(adminProductionEntity);
 
@@ -215,7 +214,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    void 프로덕션이미지등록테스트() throws Exception {
+    @DisplayName("프로덕션이미지등록테스트")
+    void 프로덕션이미지등록테스트() {
         Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -234,7 +234,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    void 프로덕션수정테스트() throws Exception {
+    @DisplayName("프로덕션수정테스트")
+    void 프로덕션수정테스트() {
         // given
         Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
@@ -263,7 +264,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    void 프로덕션삭제테스트() throws Exception {
+    @DisplayName("프로덕션삭제테스트")
+    void 프로덕션삭제테스트() {
         em.persist(adminProductionEntity);
 
         adminProductionDTO = AdminProductionDTO.builder()
