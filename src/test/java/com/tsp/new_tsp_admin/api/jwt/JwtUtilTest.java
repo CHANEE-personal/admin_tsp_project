@@ -6,10 +6,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.context.event.EventListener;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.TestPropertySource;
@@ -25,8 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class JwtUtilTest {
-
-    private final MockHttpServletRequest request = new MockHttpServletRequest();
     private final MockHttpServletResponse response = new MockHttpServletResponse();
 
     @Value("${spring.jwt.secret}")
@@ -42,6 +41,7 @@ class JwtUtilTest {
     private UserDetails userDetails;
 
     @BeforeEach
+    @EventListener(ApplicationReadyEvent.class)
     public void setUp() {
         authenticationRequest.setUserId("admin02");
         authenticationRequest.setPassword("pass1234");
@@ -50,42 +50,51 @@ class JwtUtilTest {
 
     @Test
     @DisplayName("토큰 만료 테스트")
-    public void isTokenExpiredTest() {
+    void isTokenExpiredTest() {
         String token = jwtUtil.generateToken(userDetails);
         assertFalse(jwtUtil.isTokenExpired(token));
     }
 
     @Test
     @DisplayName("토큰 생성 테스트")
-    public void generateTokenTest() {
+    void generateTokenTest() {
         assertNotNull(jwtUtil.generateToken(userDetails));
     }
 
     @Test
     @DisplayName("리프레시 토큰 생성 테스트")
-    public void generateRefreshTokenTest() {
+    void generateRefreshTokenTest() {
         assertNotNull(jwtUtil.generateToken(userDetails));
     }
 
     @Test
-    public void extractAllClaimsTest() {
+    void extractAllClaimsTest() {
         String token = jwtUtil.generateToken(userDetails);
         assertNotNull(jwtUtil.extractAllClaims(token));
     }
 
     @Test
     @DisplayName("토큰 유효성 테스트")
-    public void validateTokenTest() {
+    void validateTokenTest() {
         String token = jwtUtil.generateToken(userDetails);
         assertTrue(jwtUtil.validateToken(token));
     }
 
     @Test
     @DisplayName("엑세스 토큰 헤더 설정 테스트")
-    public void setHeaderAccessTokenTest() throws Exception {
+    void setHeaderAccessTokenTest() {
         String token = jwtUtil.generateToken(userDetails);
         jwtUtil.setHeaderAccessToken(response, token);
         assertNotNull(response.getHeader("authorization"));
-        assertThat("bearer " + token).isEqualTo(response.getHeader("authorization"));
+        assertThat("Bearer " + token).isEqualTo(response.getHeader("authorization"));
+    }
+
+    @Test
+    @DisplayName("엑세스 리프레시 토큰 헤더 설정 테스트")
+    void setHeaderRefreshTokenTest() {
+        String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+        jwtUtil.setHeaderRefreshToken(response, refreshToken);
+        assertNotNull(response.getHeader("refreshToken"));
+        assertThat("Bearer " + refreshToken).isEqualTo(response.getHeader("refreshToken"));
     }
 }

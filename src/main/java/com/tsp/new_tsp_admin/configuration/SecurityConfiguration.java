@@ -21,6 +21,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import static org.springframework.security.config.BeanIds.AUTHENTICATION_MANAGER;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -44,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * </pre>
      *
      */
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Bean(name = AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

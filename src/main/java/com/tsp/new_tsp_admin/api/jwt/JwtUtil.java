@@ -37,6 +37,16 @@ public class JwtUtil implements Serializable {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : extractAllClaims
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : JWT 토큰이 유효한 토큰인지 검사한 후, 토큰에 담긴 Payload 값을 가져온다
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public Claims extractAllClaims(String token) throws ExpiredJwtException {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey(SECRET_KEY))
@@ -59,6 +69,16 @@ public class JwtUtil implements Serializable {
         return null;
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : isTokenExpired
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : 만료된 토큰인지 체크
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public Boolean isTokenExpired(String token) {
         try {
             final Date expiration = extractAllClaims(token).getExpiration();
@@ -68,14 +88,44 @@ public class JwtUtil implements Serializable {
         }
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : generateToken
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : 토큰 발급
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public String generateToken(UserDetails userDetails) {
         return doGenerateToken(userDetails.getUsername(), TOKEN_VALIDATION_SECOND);
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : generateRefreshToken
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : 리프레시 토큰 재발급
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public String generateRefreshToken(UserDetails userDetails) {
         return doGenerateToken(userDetails.getUsername(), REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : doGenerateToken
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : 토큰 발급
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public String doGenerateToken(String username, long expireTime) {
 
         Claims claims = Jwts.claims();
@@ -89,6 +139,16 @@ public class JwtUtil implements Serializable {
                 .compact();
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : validateToken
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : JWT 토큰 검증
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public Boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
@@ -108,18 +168,45 @@ public class JwtUtil implements Serializable {
         return false;
     }
 
-    // JWT 에서 인증 정보 조회
+    /**
+     * <pre>
+     * 1. MethodName : getAuthentication
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : JWT 에서 인증 정보 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(adminUserJpaRepository.findOneUserByToken(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // 엑세스 토큰 헤더 설정
+    /**
+     * <pre>
+     * 1. MethodName : setHeaderAccessToken
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : Header 토큰 정보 세팅
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
         response.setHeader("authorization", "Bearer " + accessToken);
     }
 
-    // 리프레시 토큰 헤더 설정
+    /**
+     * <pre>
+     * 1. MethodName : setHeaderRefreshToken
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : Header 리프레시 토큰 정보 세팅
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
         response.setHeader("refreshToken", "Bearer " + refreshToken);
     }
