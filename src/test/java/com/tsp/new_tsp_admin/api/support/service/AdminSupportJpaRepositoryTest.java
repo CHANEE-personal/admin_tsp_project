@@ -40,10 +40,8 @@ import static org.mockito.Mockito.*;
 class AdminSupportJpaRepositoryTest {
     @Autowired
     private AdminSupportJpaRepository adminSupportJpaRepository;
-
     @Mock
     AdminSupportJpaRepository mockAdminSupportJpaRepository;
-
     @Autowired
     private EntityManager em;
     JPAQueryFactory queryFactory;
@@ -73,7 +71,6 @@ class AdminSupportJpaRepositoryTest {
     @Test
     @DisplayName("지원모델 리스트 조회 테스트")
     void 지원모델리스트조회테스트() {
-
         // given
         Map<String, Object> supportMap = new HashMap<>();
         supportMap.put("jpaStartPage", 1);
@@ -86,22 +83,21 @@ class AdminSupportJpaRepositoryTest {
     @Test
     @DisplayName("지원모델 상세 조회 테스트")
     void 지원모델상세조회테스트() {
-
         // given
         adminSupportEntity = builder().idx(1).build();
 
         // when
         adminSupportDTO = adminSupportJpaRepository.findOneSupportModel(adminSupportEntity);
 
+        // then
         assertThat(adminSupportDTO.getIdx()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("지원모델 BDD 조회 테스트")
     void 지원모델BDD조회테스트() {
-
         // given
-        ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();
+        Map<String, Object> supportMap = new HashMap<>();
         supportMap.put("jpaStartPage", 1);
         supportMap.put("size", 3);
 
@@ -119,6 +115,7 @@ class AdminSupportJpaRepositoryTest {
     @Test
     @DisplayName("지원모델 수정 테스트")
     void 지원모델수정테스트() {
+        // given
         em.persist(adminSupportEntity);
         Integer idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
 
@@ -136,6 +133,7 @@ class AdminSupportJpaRepositoryTest {
 
         adminSupportDTO = SupportMapperImpl.INSTANCE.toDto(adminSupportEntity);
 
+        // when
         when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
 
         // then
@@ -152,6 +150,7 @@ class AdminSupportJpaRepositoryTest {
     @Test
     @DisplayName("지원 모델 삭제 테스트")
     void 지원모델삭제테스트() {
+        // given
         em.persist(adminSupportEntity);
 
         // when

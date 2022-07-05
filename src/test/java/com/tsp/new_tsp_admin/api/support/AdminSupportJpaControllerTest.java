@@ -47,19 +47,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdminSupportJpaControllerTest {
-
 	@Autowired
 	private MockMvc mockMvc;
-
 	@Autowired
 	private ObjectMapper objectMapper;
-
 	@Autowired
 	private WebApplicationContext wac;
-
 	@Autowired
 	private EntityManager em;
-
 	@Autowired
 	private JwtUtil jwtUtil;
 
@@ -74,7 +69,6 @@ class AdminSupportJpaControllerTest {
 
 	void createAdminSupport() {
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
-		String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
 		adminUserEntity = AdminUserEntity.builder()
 				.userId("admin04")
@@ -82,7 +76,7 @@ class AdminSupportJpaControllerTest {
 				.name("test")
 				.email("test@test.com")
 				.role(Role.ROLE_ADMIN)
-				.userToken(token)
+				.userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
 				.visible("Y")
 				.build();
 
