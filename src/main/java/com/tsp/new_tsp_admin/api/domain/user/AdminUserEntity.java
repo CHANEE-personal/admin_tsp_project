@@ -17,6 +17,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static javax.persistence.GenerationType.*;
+
 @Entity
 @Getter
 @Setter
@@ -30,7 +32,7 @@ public class AdminUserEntity {
 	@Transient
 	private Integer rnum;
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = IDENTITY)
 	@Column(name = "idx")
 	private Integer idx;
 

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
@@ -32,7 +33,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private Integer rnum;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
     private Integer idx;
 

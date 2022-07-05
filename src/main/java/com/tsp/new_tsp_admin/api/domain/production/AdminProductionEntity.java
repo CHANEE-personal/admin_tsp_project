@@ -13,6 +13,8 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.GenerationType.*;
+
 @Entity
 @Getter
 @Setter
@@ -25,7 +27,7 @@ public class AdminProductionEntity extends NewCommonMappedClass {
 	@Transient
 	private Integer rnum;
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = IDENTITY)
 	@Column(name = "idx")
 	private Integer idx;
 
