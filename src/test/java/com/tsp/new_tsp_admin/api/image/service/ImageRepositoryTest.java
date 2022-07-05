@@ -9,8 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -37,12 +39,13 @@ class ImageRepositoryTest {
     JPAQueryFactory queryFactory;
 
     @BeforeEach
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
         queryFactory = new JPAQueryFactory(em);
     }
 
     @Test
-    public void 파일넘버최대값조회() throws Exception {
+    void 파일넘버최대값조회() {
         // given
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -65,7 +68,7 @@ class ImageRepositoryTest {
     }
 
     @Test
-    public void 이미지등록테스트() throws Exception {
+    void 이미지등록테스트() {
         // given
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -90,7 +93,7 @@ class ImageRepositoryTest {
     }
 
     @Test
-    public void 이미지삭제테스트() throws Exception {
+    void 이미지삭제테스트() {
         // given
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -109,6 +112,7 @@ class ImageRepositoryTest {
 
         CommonImageEntity commonImageEntity1 = imageRepository.deleteImage(commonImageEntity);
 
+        // then
         assertThat(mockImageRepository.findOneImage(commonImageEntity).getImageType()).isEqualTo(commonImageEntity1.getImageType());
     }
 }

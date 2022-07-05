@@ -2,9 +2,11 @@ package com.tsp.new_tsp_admin.api.jwt;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.*;
@@ -23,17 +25,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PasswordEncoderTest {
+class PasswordEncoderTest {
 
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    @EventListener(ApplicationReadyEvent.class)
+    public void setUp() {
         passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Test
-    public void delegatingPasswordEncoding() {
+    void delegatingPasswordEncoding() {
         // given
         String password = "pass1234";
 
@@ -45,13 +48,13 @@ public class PasswordEncoderTest {
     }
 
     @Test
-    public void defaultDelegatingPasswordEncoder() {
+    void defaultDelegatingPasswordEncoder() {
         String encodedPassword = passwordEncoder.encode("pass1234");
-        assertThat(encodedPassword.startsWith("{bcrypt}")).isTrue();
+        assertThat(encodedPassword).startsWith("{bcrypt}");
     }
 
     @Test
-    public void match() {
+    void match() {
         String password = "password";
         String encPassword1 = "{pbkdf2}7a07c208fc2a407fb89cc3b6effb1b759da575a85f65dda9cd426f1ad14b56e6afaeeea6f9269569";
         String encPassword2 = "{bcrypt}$2a$10$Ot44NE6k1kO5bfNHTP0m8ejdpGr8ooHGT90lOD2/LpGIzfiS3p6oq";
@@ -63,7 +66,7 @@ public class PasswordEncoderTest {
     }
 
     @Test
-    public void 사용한_비밀번호변환기_접두사가없으면오류발생() {
+    void 사용한_비밀번호변환기_접두사가없으면오류발생() {
         String password = "password";
         String encPassword1 = "7a07c208fc2a407fb89cc3b6effb1b759da575a85f65dda9cd426f1ad14b56e6afaeeea6f9269569";   // pbkdf2
         String encPassword2 = "$2a$10$Ot44NE6k1kO5bfNHTP0m8ejdpGr8ooHGT90lOD2/LpGIzfiS3p6oq";                       // bcrypt
@@ -75,7 +78,7 @@ public class PasswordEncoderTest {
     }
 
     @Test
-    public void 암호변환기ID가_없는경우는_다음과같이() {
+    void 암호변환기ID가_없는경우는_다음과같이() {
         String password = "password";
         String encPassword = "$2a$10$Ot44NE6k1kO5bfNHTP0m8ejdpGr8ooHGT90lOD2/LpGIzfiS3p6oq";                       // bcrypt
 
@@ -85,7 +88,7 @@ public class PasswordEncoderTest {
     }
 
     @Test
-    public void customDelegatingPasswordEncoder() {
+    void customDelegatingPasswordEncoder() {
         Map<String, PasswordEncoder> encoders = new HashMap<>();
         String idForEncode = "bcrypt";
         encoders.put(idForEncode, new BCryptPasswordEncoder());
