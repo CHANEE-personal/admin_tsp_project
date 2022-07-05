@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,10 +43,8 @@ import static org.mockito.Mockito.*;
 class AdminPortfolioJpaRepositoryTest {
     @Autowired
     private AdminPortfolioJpaRepository adminPortfolioJpaRepository;
-
     @Mock
     private AdminPortfolioJpaRepository mockAdminPortfolioJpaRepository;
-
     @Autowired
     private EntityManager em;
     JPAQueryFactory queryFactory;
@@ -90,8 +87,8 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    void 포트폴리오조회테스트() throws Exception {
-
+    @DisplayName("포트폴리오조회테스트")
+    void 포트폴리오조회테스트() {
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
         portfolioMap.put("jpaStartPage", 1);
@@ -102,8 +99,8 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    void 포트폴리오상세조회테스트() throws Exception {
-
+    @DisplayName("포트폴리오상세조회테스트")
+    void 포트폴리오상세조회테스트() {
         // given
         adminPortFolioEntity = builder().idx(1).build();
 
@@ -126,10 +123,10 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    void 포트폴리오BDD조회테스트() throws Exception {
-
+    @DisplayName("포트폴리오BDD조회테스트")
+    void 포트폴리오BDD조회테스트() {
         // given
-        ConcurrentHashMap<String, Object> portfolioMap = new ConcurrentHashMap<>();
+        Map<String, Object> portfolioMap = new HashMap<>();
         portfolioMap.put("jpaStartPage", 1);
         portfolioMap.put("size", 3);
 
@@ -156,7 +153,8 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    void 포트폴리오상세BDD조회테스트() throws Exception {
+    @DisplayName("포트폴리오상세BDD조회테스트")
+    void 포트폴리오상세BDD조회테스트() {
 
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
@@ -190,11 +188,15 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    void 포트폴리오등록테스트() throws Exception {
+    @DisplayName("포트폴리오등록테스트")
+    void 포트폴리오등록테스트() {
+        // given
         adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
 
+        // when
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
 
+        // then
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트");
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getDescription()).isEqualTo("포트폴리오 테스트");
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getHashTag()).isEqualTo("#test");
@@ -207,7 +209,9 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    void 포트폴리오이미지등록테스트() throws Exception {
+    @DisplayName("포트폴리오이미지등록테스트")
+    void 포트폴리오이미지등록테스트() {
+        // given
         Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
@@ -220,11 +224,14 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
+        // then
         assertNotNull(adminPortfolioJpaRepository.insertPortfolioImage(commonImageEntity));
     }
 
     @Test
-    void 포트폴리오수정테스트() throws Exception {
+    @DisplayName("포트폴리오수정테스트")
+    void 포트폴리오수정테스트() {
+        // given
         Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminPortFolioEntity = builder()
@@ -241,6 +248,7 @@ class AdminPortfolioJpaRepositoryTest {
 
         adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
 
+        // when
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
 
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트1");
@@ -255,7 +263,9 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    void 포트폴리오삭제테스트() throws Exception {
+    @DisplayName("포트폴리오삭제테스트")
+    void 포트폴리오삭제테스트() {
+        // given
         em.persist(adminPortFolioEntity);
 
         // when
@@ -263,6 +273,7 @@ class AdminPortfolioJpaRepositoryTest {
 
         AdminPortFolioDTO adminPortFolioDTO1 = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
 
+        // then
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo(adminPortFolioDTO1.getTitle());
 
         // verify

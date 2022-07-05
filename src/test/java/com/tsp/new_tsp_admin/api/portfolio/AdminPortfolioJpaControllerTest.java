@@ -31,7 +31,6 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
@@ -47,19 +46,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
 class AdminPortfolioJpaControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private WebApplicationContext wac;
-
     @Autowired
     private EntityManager em;
-
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -74,7 +68,6 @@ class AdminPortfolioJpaControllerTest {
 
     void createAdminPortfolio() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
-        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
         adminUserEntity = builder()
                 .userId("admin04")
@@ -82,7 +75,7 @@ class AdminPortfolioJpaControllerTest {
                 .name("test")
                 .email("test@test.com")
                 .role(Role.ROLE_ADMIN)
-                .userToken(token)
+                .userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
                 .visible("Y")
                 .build();
 
