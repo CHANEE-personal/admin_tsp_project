@@ -81,7 +81,7 @@ public interface AdminModelJpaService {
      * </pre>
      *
      */
-    AdminModelDTO deleteModel(AdminModelEntity adminModelEntity) throws Exception;
+    Integer deleteModel(Integer idx) throws Exception;
 
     /**
      * <pre>

@@ -219,10 +219,8 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public AdminModelDTO deleteModel(@RequestBody AdminModelEntity adminModelEntity,
-                                     @PathVariable("idx") Integer idx) throws Exception {
-        adminModelEntity.setIdx(idx);
-        return adminModelJpaService.deleteModel(adminModelEntity);
+    public Integer deleteModel(@PathVariable("idx") Integer idx) throws Exception {
+        return adminModelJpaService.deleteModel(idx);
     }
 
     /**

@@ -304,13 +304,13 @@ public class AdminModelJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelDTO deleteModelByEm(AdminModelEntity adminModelEntity) {
+    public Integer deleteModelByEm(Integer idx) {
         try {
-            em.remove(em.find(AdminModelEntity.class, adminModelEntity.getIdx()));
+            em.remove(em.find(AdminModelEntity.class, idx));
             em.flush();
             em.clear();
 
-            return ModelMapper.INSTANCE.toDto(adminModelEntity);
+            return idx;
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
         }

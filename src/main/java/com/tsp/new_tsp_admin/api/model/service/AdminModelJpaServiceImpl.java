@@ -112,8 +112,8 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CacheEvict("model")
-    public AdminModelDTO deleteModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.deleteModelByEm(adminModelEntity);
+    public Integer deleteModel(Integer idx) {
+        return adminModelJpaRepository.deleteModelByEm(idx);
     }
 
     /**
