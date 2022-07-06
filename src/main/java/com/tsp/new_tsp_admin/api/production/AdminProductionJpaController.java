@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Math.ceil;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/jpa-production")
@@ -112,8 +113,8 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PostMapping
-    public AdminProductionDTO insertProduction(@RequestBody AdminProductionEntity adminProductionEntity) throws Exception {
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    public AdminProductionDTO insertProduction(@RequestBody AdminProductionEntity adminProductionEntity) {
         return this.adminProductionJpaService.insertProduction(adminProductionEntity);
     }
 
@@ -135,8 +136,8 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PutMapping("/{idx}")
-    public AdminProductionDTO updateProduction(@RequestBody AdminProductionEntity adminProductionEntity) throws Exception {
+    @PutMapping(value ="/{idx}", consumes = APPLICATION_JSON_VALUE)
+    public AdminProductionDTO updateProduction(@RequestBody AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaService.updateProduction(adminProductionEntity);
     }
 
@@ -158,10 +159,8 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @DeleteMapping("/{idx}")
-    public AdminProductionDTO deleteProduction(@RequestBody AdminProductionEntity adminProductionEntity,
-                                               @PathVariable("idx") Integer idx) throws Exception {
-        adminProductionEntity.setIdx(idx);
-        return adminProductionJpaService.deleteProduction(adminProductionEntity);
+    @DeleteMapping(value = "/{idx}")
+    public Integer deleteProduction(@PathVariable("idx") Integer idx) {
+        return adminProductionJpaService.deleteProduction(idx);
     }
 }

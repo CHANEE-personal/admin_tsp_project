@@ -78,5 +78,5 @@ public interface AdminProductionJpaService {
      * </pre>
      *
      */
-    AdminProductionDTO deleteProduction(AdminProductionEntity adminProductionEntity);
+    Integer deleteProduction(Integer idx);
 }

@@ -108,7 +108,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @CacheEvict("production")
-    public AdminProductionDTO deleteProduction(AdminProductionEntity adminProductionEntity) {
-        return adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity);
+    public Integer deleteProduction(Integer idx) {
+        return adminProductionJpaRepository.deleteProductionByEm(idx);
     }
 }

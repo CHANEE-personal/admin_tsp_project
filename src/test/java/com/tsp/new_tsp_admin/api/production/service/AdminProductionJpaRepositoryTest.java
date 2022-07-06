@@ -8,6 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapper;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapperImpl;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionMapperImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.mockito.Mockito.*;
 
+@Slf4j
 @DataJpaTest
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
@@ -268,23 +270,10 @@ class AdminProductionJpaRepositoryTest {
     void 프로덕션삭제테스트() {
         em.persist(adminProductionEntity);
 
-        adminProductionDTO = AdminProductionDTO.builder()
-                .title("프로덕션 테스트")
-                .description("프로덕션 테스트")
-                .visible("Y")
-                .build();
+        Integer entityIdx = adminProductionEntity.getIdx();
+        Integer idx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
 
-        // when
-        when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
-
-        AdminProductionDTO adminProductionDTO1 = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity);
-
-        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo(adminProductionDTO1.getTitle());
-        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo(adminProductionDTO1.getDescription());
-
-        // verify
-        verify(mockAdminProductionJpaRepository, times(2)).findOneProduction(adminProductionEntity);
-        verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
-        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
+        // then
+        assertThat(entityIdx).isEqualTo(idx);
     }
 }

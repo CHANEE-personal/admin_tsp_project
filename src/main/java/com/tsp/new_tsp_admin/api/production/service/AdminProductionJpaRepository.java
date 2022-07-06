@@ -202,13 +202,13 @@ public class AdminProductionJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminProductionDTO deleteProductionByEm(AdminProductionEntity adminProductionEntity) {
+    public Integer deleteProductionByEm(Integer idx) {
         try {
-            em.remove(em.find(AdminProductionEntity.class, adminProductionEntity.getIdx()));
+            em.remove(em.find(AdminProductionEntity.class, idx));
             em.flush();
             em.clear();
 
-            return ProductionMapper.INSTANCE.toDto(adminProductionEntity);
+            return idx;
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION, e);
         }
