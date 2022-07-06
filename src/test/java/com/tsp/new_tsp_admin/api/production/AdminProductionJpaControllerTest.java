@@ -230,8 +230,6 @@ class AdminProductionJpaControllerTest {
 
         mockMvc.perform(delete("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
-//                .contentType(APPLICATION_JSON_VALUE)
-//                .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

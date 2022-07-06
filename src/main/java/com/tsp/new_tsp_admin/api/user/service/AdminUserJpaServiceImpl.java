@@ -109,7 +109,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @CacheEvict("user")
-    public AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) {
-        return adminUserJpaRepository.deleteAdminUser(adminUserEntity);
+    public Integer deleteAdminUser(Integer idx) {
+        return adminUserJpaRepository.deleteAdminUser(idx);
     }
 }

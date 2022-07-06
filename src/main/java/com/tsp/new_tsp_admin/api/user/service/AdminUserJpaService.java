@@ -78,5 +78,5 @@ public interface AdminUserJpaService {
      * </pre>
      *
      */
-    AdminUserDTO deleteAdminUser(AdminUserEntity adminUserEntity) throws Exception;
+    Integer deleteAdminUser(Integer idx) throws Exception;
 }

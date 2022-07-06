@@ -228,9 +228,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("관리자 회원탈퇴 테스트")
     void 회원탈퇴테스트() throws Exception {
         mockMvc.perform(put("/api/jpa-user")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(builder().idx(adminUserEntity.getIdx()).build())))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

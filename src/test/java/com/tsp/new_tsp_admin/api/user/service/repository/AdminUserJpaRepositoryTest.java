@@ -264,6 +264,6 @@ class AdminUserJpaRepositoryTest {
     @Test
     @DisplayName("유저 회원탈퇴 테스트")
     void 유저탈퇴테스트() {
-        assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity).getIdx()).isEqualTo(adminUserDTO.getIdx());
+        assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity.getIdx())).isEqualTo(adminUserDTO.getIdx());
     }
 }
