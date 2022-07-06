@@ -3,7 +3,6 @@ package com.tsp.new_tsp_admin.api.portfolio;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,7 +33,9 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
+import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -74,7 +74,7 @@ class AdminPortfolioJpaControllerTest {
                 .password("pass1234")
                 .name("test")
                 .email("test@test.com")
-                .role(Role.ROLE_ADMIN)
+                .role(ROLE_ADMIN)
                 .userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
                 .visible("Y")
                 .build();
@@ -173,7 +173,7 @@ class AdminPortfolioJpaControllerTest {
     void 포트폴리오등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-portfolio")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -190,7 +190,7 @@ class AdminPortfolioJpaControllerTest {
     void 포트폴리오등록Api권한테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-portfolio")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
@@ -214,7 +214,7 @@ class AdminPortfolioJpaControllerTest {
 
         mockMvc.perform(put("/api/jpa-portfolio/{idx}", adminPortFolioEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -243,7 +243,7 @@ class AdminPortfolioJpaControllerTest {
 
         mockMvc.perform(put("/api/jpa-portfolio/{idx}", adminPortFolioEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());

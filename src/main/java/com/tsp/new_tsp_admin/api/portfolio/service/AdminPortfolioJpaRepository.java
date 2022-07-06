@@ -5,9 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
-import com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
-import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +19,8 @@ import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
+import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.*;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -54,13 +54,13 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public int findPortfoliosCount(Map<String, Object> portfolioMap) {
+    public int findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException {
         try {
             return queryFactory.selectFrom(adminPortFolioEntity)
                     .where(searchPortfolio(portfolioMap))
                     .fetch().size();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
+            throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
         }
     }
 
@@ -75,7 +75,7 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
+    public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws TspException {
         try {
             List<AdminPortFolioEntity> portfolioList =  queryFactory
                     .selectFrom(adminPortFolioEntity)
@@ -88,9 +88,9 @@ public class AdminPortfolioJpaRepository {
             portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
                     .setRnum(StringUtil.getInt(portfolioMap.get("startPage"),1)*(StringUtil.getInt(portfolioMap.get("size"),1))-(2-portfolioList.indexOf(list))));
 
-            return PortFolioMapper.INSTANCE.toDtoList(portfolioList);
+            return INSTANCE.toDtoList(portfolioList);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
+            throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
         }
     }
 
@@ -105,7 +105,7 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+    public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) throws TspException {
 
         try {
             // 포트폴리오 상세 조회
@@ -118,9 +118,9 @@ public class AdminPortfolioJpaRepository {
                             .and(commonImageEntity.typeName.eq("portfolio"))))
                     .fetchOne();
 
-            return PortFolioMapper.INSTANCE.toDto(findOnePortfolio);
+            return INSTANCE.toDto(findOnePortfolio);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL, e);
+            throw new TspException(NOT_FOUND_MODEL, e);
         }
     }
 
@@ -135,13 +135,13 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional
-    public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
+    public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) throws TspException {
         try {
             em.persist(adminPortfolioEntity);
 
-            return PortFolioMapper.INSTANCE.toDto(adminPortfolioEntity);
+            return INSTANCE.toDto(adminPortfolioEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, e);
+            throw new TspException(ERROR_PORTFOLIO, e);
         }
     }
 
@@ -156,13 +156,13 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional
-    public Integer insertPortfolioImage(CommonImageEntity commonImageEntity) {
+    public Integer insertPortfolioImage(CommonImageEntity commonImageEntity) throws TspException {
         try {
             em.persist(commonImageEntity);
 
             return commonImageEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, e);
+            throw new TspException(ERROR_PORTFOLIO, e);
         }
     }
 
@@ -178,15 +178,15 @@ public class AdminPortfolioJpaRepository {
      */
     @Modifying
     @Transactional
-    public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+    public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) throws TspException {
         try{
             em.merge(existAdminPortfolioEntity);
             em.flush();
             em.clear();
 
-            return PortFolioMapper.INSTANCE.toDto(existAdminPortfolioEntity);
+            return INSTANCE.toDto(existAdminPortfolioEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_PORTFOLIO, e);
+            throw new TspException(ERROR_UPDATE_PORTFOLIO, e);
         }
     }
 
@@ -201,7 +201,7 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional
-    public Integer deletePortfolio(Integer idx) {
+    public Integer deletePortfolio(Integer idx) throws TspException {
         try {
             em.remove(em.find(AdminPortFolioEntity.class, idx));
             em.flush();
@@ -209,7 +209,7 @@ public class AdminPortfolioJpaRepository {
 
             return idx;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
+            throw new TspException(ERROR_DELETE_PORTFOLIO, e);
         }
     }
 }

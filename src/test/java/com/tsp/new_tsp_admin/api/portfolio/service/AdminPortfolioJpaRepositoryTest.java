@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
+import com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper;
 import com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapperImpl;
 import com.tsp.new_tsp_admin.api.portfolio.mapper.PortfolioImageMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
+import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -64,7 +66,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminPortFolioDTO = PortFolioMapperImpl.INSTANCE.toDto(adminPortFolioEntity);
+        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .idx(1)
@@ -244,7 +246,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminPortFolioDTO adminPortFolioDTO = PortFolioMapperImpl.INSTANCE.toDto(adminPortFolioEntity);
+        AdminPortFolioDTO adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
 
         adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
 
