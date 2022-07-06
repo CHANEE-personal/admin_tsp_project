@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
+import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -75,7 +76,7 @@ class AdminProductionJpaControllerTest {
                 .password("pass1234")
                 .name("test")
                 .email("test@test.com")
-                .role(Role.ROLE_ADMIN)
+                .role(ROLE_ADMIN)
                 .userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
                 .visible("Y")
                 .build();

@@ -5,9 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
-import com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
-import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +19,9 @@ import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
+import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_PRODUCTION_LIST;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -54,12 +55,12 @@ public class AdminProductionJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public int findProductionsCount(Map<String, Object> productionMap) {
+    public int findProductionsCount(Map<String, Object> productionMap) throws TspException {
         try {
             return queryFactory.selectFrom(adminProductionEntity)
                     .where(searchProduction(productionMap)).fetch().size();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST, e);
+            throw new TspException(NOT_FOUND_PRODUCTION_LIST, e);
         }
     }
 
@@ -74,7 +75,7 @@ public class AdminProductionJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) {
+    public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) throws TspException {
         try {
             List<AdminProductionEntity> productionList = queryFactory
                     .selectFrom(adminProductionEntity)
@@ -87,9 +88,9 @@ public class AdminProductionJpaRepository {
             productionList.forEach(list -> productionList.get(productionList.indexOf(list))
                     .setRnum(StringUtil.getInt(productionMap.get("startPage"),1)*(StringUtil.getInt(productionMap.get("size"),1))-(2-productionList.indexOf(list))));
 
-            return ProductionMapper.INSTANCE.toDtoList(productionList);
+            return INSTANCE.toDtoList(productionList);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST, e);
+            throw new TspException(NOT_FOUND_PRODUCTION_LIST, e);
         }
     }
 
@@ -104,7 +105,7 @@ public class AdminProductionJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) {
+    public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) throws TspException {
         try {
             AdminProductionEntity findOneProduction = queryFactory
                     .selectFrom(adminProductionEntity)
@@ -116,9 +117,9 @@ public class AdminProductionJpaRepository {
                             .and(commonImageEntity.typeName.eq("production")))
                     .fetchOne();
 
-            return ProductionMapper.INSTANCE.toDto(findOneProduction);
+            return INSTANCE.toDto(findOneProduction);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION, e);
+            throw new TspException(NOT_FOUND_PRODUCTION, e);
         }
     }
 
@@ -134,13 +135,13 @@ public class AdminProductionJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) throws TspException {
         try {
             em.persist(adminProductionEntity);
 
-            return ProductionMapper.INSTANCE.toDto(adminProductionEntity);
+            return INSTANCE.toDto(adminProductionEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_PRODUCTION, e);
+            throw new TspException(ERROR_PRODUCTION, e);
         }
     }
 
@@ -156,13 +157,13 @@ public class AdminProductionJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer insertProductionImage(CommonImageEntity commonImageEntity) {
+    public Integer insertProductionImage(CommonImageEntity commonImageEntity) throws TspException {
         try {
             em.persist(commonImageEntity);
 
             return commonImageEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_PRODUCTION, e);
+            throw new TspException(ERROR_PRODUCTION, e);
         }
     }
 
@@ -178,15 +179,15 @@ public class AdminProductionJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminProductionDTO updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
+    public AdminProductionDTO updateProductionByEm(AdminProductionEntity existAdminProductionEntity) throws TspException {
         try {
             em.merge(existAdminProductionEntity);
             em.flush();
             em.clear();
 
-            return ProductionMapper.INSTANCE.toDto(existAdminProductionEntity);
+            return INSTANCE.toDto(existAdminProductionEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL, e);
+            throw new TspException(ERROR_UPDATE_MODEL, e);
         }
     }
 
@@ -202,7 +203,7 @@ public class AdminProductionJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteProductionByEm(Integer idx) {
+    public Integer deleteProductionByEm(Integer idx) throws TspException {
         try {
             em.remove(em.find(AdminProductionEntity.class, idx));
             em.flush();
@@ -210,7 +211,7 @@ public class AdminProductionJpaRepository {
 
             return idx;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION, e);
+            throw new TspException(ERROR_DELETE_PRODUCTION, e);
         }
     }
 }
