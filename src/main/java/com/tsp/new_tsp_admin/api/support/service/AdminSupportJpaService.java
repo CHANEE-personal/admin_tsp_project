@@ -54,5 +54,5 @@ public interface AdminSupportJpaService {
      * </pre>
      *
      */
-    AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
+    Integer deleteSupportModel(Integer idx) throws Exception;
 }

@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
+import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,8 +39,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @Transactional
@@ -196,11 +196,10 @@ class AdminSupportJpaControllerTest {
 		em.persist(adminSupportEntity);
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
-				.contentType(APPLICATION_JSON_VALUE)
-				.content(objectMapper.writeValueAsString(adminSupportEntity)))
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().string(StringUtil.getString(adminSupportEntity.getIdx())));;
 	}
 
 	@Test
@@ -210,9 +209,7 @@ class AdminSupportJpaControllerTest {
 		em.persist(adminSupportEntity);
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
-				.contentType(APPLICATION_JSON_VALUE)
-				.content(objectMapper.writeValueAsString(adminSupportEntity)))
+				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isForbidden());
 	}

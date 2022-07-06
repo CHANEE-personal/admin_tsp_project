@@ -69,7 +69,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      *
      */
     @Override
-    public AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) {
-        return adminSupportJpaRepository.deleteSupportModel(adminSupportEntity);
+    public Integer deleteSupportModel(Integer idx) {
+        return adminSupportJpaRepository.deleteSupportModel(idx);
     }
 }

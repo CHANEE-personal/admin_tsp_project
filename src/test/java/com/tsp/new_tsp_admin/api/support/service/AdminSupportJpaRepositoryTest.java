@@ -153,18 +153,10 @@ class AdminSupportJpaRepositoryTest {
         // given
         em.persist(adminSupportEntity);
 
-        // when
-        when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
-
-        AdminSupportDTO adminSupportDTO1 = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity);
+        Integer entityIdx = adminSupportEntity.getIdx();
+        Integer deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
 
         // then
-        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo(adminSupportDTO1.getSupportName());
-        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportMessage()).isEqualTo(adminSupportDTO1.getSupportMessage());
-
-        // verify
-        verify(mockAdminSupportJpaRepository, times(2)).findOneSupportModel(adminSupportEntity);
-        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
-        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+        assertThat(deleteIdx).isEqualTo(entityIdx);
     }
 }

@@ -148,13 +148,13 @@ public class AdminSupportJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminSupportDTO deleteSupportModel(AdminSupportEntity adminSupportEntity) {
+    public Integer deleteSupportModel(Integer idx) {
         try {
-            em.remove(em.find(AdminSupportEntity.class, adminSupportEntity.getIdx()));
+            em.remove(em.find(AdminSupportEntity.class, idx));
             em.flush();
             em.clear();
 
-            return SupportMapper.INSTANCE.toDto(adminSupportEntity);
+            return idx;
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_SUPPORT, e);
         }
