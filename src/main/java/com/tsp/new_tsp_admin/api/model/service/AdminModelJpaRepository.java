@@ -9,9 +9,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
-import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +25,9 @@ import java.util.Map;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonCodeEntity.commonCodeEntity;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
+import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL_LIST;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -69,11 +70,11 @@ public class AdminModelJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public int findModelsCount(Map<String, Object> modelMap) {
+    public int findModelsCount(Map<String, Object> modelMap) throws TspException {
         try {
             return queryFactory.selectFrom(adminModelEntity).where(searchModel(modelMap)).fetch().size();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
+            throw new TspException(NOT_FOUND_MODEL_LIST, e);
         }
     }
 
@@ -89,7 +90,7 @@ public class AdminModelJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
+    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws TspException {
         try {
             List<AdminModelEntity> modelList = queryFactory
                     .selectFrom(adminModelEntity)
@@ -102,9 +103,9 @@ public class AdminModelJpaRepository {
             modelList.forEach(list -> modelList.get(modelList.indexOf(list))
                     .setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
 
-            return ModelMapper.INSTANCE.toDtoList(modelList);
+            return INSTANCE.toDtoList(modelList);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
+            throw new TspException(NOT_FOUND_MODEL_LIST, e);
         }
     }
 
@@ -119,7 +120,7 @@ public class AdminModelJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) {
+    public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) throws TspException {
         try {
             //모델 상세 조회
             AdminModelEntity findOneModel = queryFactory
@@ -132,9 +133,9 @@ public class AdminModelJpaRepository {
                             .and(commonImageEntity.typeName.eq("model")))
                     .fetchOne();
 
-            return ModelMapper.INSTANCE.toDto(findOneModel);
+            return INSTANCE.toDto(findOneModel);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_MODEL, e);
+            throw new TspException(NOT_FOUND_MODEL, e);
         }
     }
 
@@ -150,13 +151,13 @@ public class AdminModelJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
+    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) throws TspException {
         try {
             em.persist(adminModelEntity);
 
-            return ModelMapper.INSTANCE.toDto(adminModelEntity);
+            return INSTANCE.toDto(adminModelEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_MODEL, e);
+            throw new TspException(ERROR_MODEL, e);
         }
     }
 
@@ -172,13 +173,13 @@ public class AdminModelJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
+    public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) throws TspException {
         try {
             em.persist(commonImageEntity);
 
             return ModelImageMapper.INSTANCE.toDto(commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_MODEL, e);
+            throw new TspException(ERROR_MODEL, e);
         }
     }
 
@@ -194,7 +195,7 @@ public class AdminModelJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
+    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) throws TspException {
         try {
             JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
@@ -215,7 +216,7 @@ public class AdminModelJpaRepository {
 
             return existAdminModelEntity;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL, e);
+            throw new TspException(ERROR_UPDATE_MODEL, e);
         }
     }
 
@@ -231,15 +232,15 @@ public class AdminModelJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) {
+    public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) throws TspException {
         try {
             em.merge(existAdminModelEntity);
             em.flush();
             em.clear();
 
-            return ModelMapper.INSTANCE.toDto(existAdminModelEntity);
+            return INSTANCE.toDto(existAdminModelEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_MODEL, e);
+            throw new TspException(ERROR_UPDATE_MODEL, e);
         }
     }
 
@@ -253,14 +254,14 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
+    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) throws TspException {
         try {
             return queryFactory
                     .selectFrom(commonCodeEntity)
                     .where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
                     .fetch();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_COMMON, e);
+            throw new TspException(NOT_FOUND_COMMON, e);
         }
     }
 
@@ -276,7 +277,7 @@ public class AdminModelJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteModel(AdminModelEntity existAdminModelEntity) {
+    public Long deleteModel(AdminModelEntity existAdminModelEntity) throws TspException {
         try {
             JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
@@ -288,7 +289,7 @@ public class AdminModelJpaRepository {
                     .set(adminModelEntity.updater, "1")
                     .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
+            throw new TspException(ERROR_DELETE_MODEL, e);
         }
     }
 
@@ -304,7 +305,7 @@ public class AdminModelJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteModelByEm(Integer idx) {
+    public Integer deleteModelByEm(Integer idx) throws TspException {
         try {
             em.remove(em.find(AdminModelEntity.class, idx));
             em.flush();
@@ -312,7 +313,7 @@ public class AdminModelJpaRepository {
 
             return idx;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
+            throw new TspException(ERROR_DELETE_MODEL, e);
         }
     }
 }
