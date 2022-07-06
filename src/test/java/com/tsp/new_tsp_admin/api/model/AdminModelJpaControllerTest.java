@@ -478,9 +478,7 @@ class AdminModelJpaControllerTest {
         em.persist(adminModelEntity);
 
         mockMvc.perform(delete("/api/jpa-model/{idx}", adminModelEntity.getIdx())
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminModelEntity)))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(StringUtil.getString(adminModelEntity.getIdx())));

@@ -268,17 +268,10 @@ class AdminPortfolioJpaRepositoryTest {
         // given
         em.persist(adminPortFolioEntity);
 
-        // when
-        when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
-
-        AdminPortFolioDTO adminPortFolioDTO1 = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
+        Integer entityIdx = adminPortFolioEntity.getIdx();
+        Integer deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
 
         // then
-        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo(adminPortFolioDTO1.getTitle());
-
-        // verify
-        verify(mockAdminPortfolioJpaRepository, times(1)).findOnePortfolio(adminPortFolioEntity);
-        verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
-        verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
+        assertThat(deleteIdx).isEqualTo(entityIdx);
     }
 }

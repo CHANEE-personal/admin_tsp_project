@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
+import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,8 +39,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @Transactional
@@ -256,11 +256,10 @@ class AdminPortfolioJpaControllerTest {
         em.persist(adminPortFolioEntity);
 
         mockMvc.perform(delete("/api/jpa-portfolio/{idx}", adminPortFolioEntity.getIdx())
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(StringUtil.getString(adminPortFolioEntity.getIdx())));
     }
 
     @Test
@@ -270,9 +269,7 @@ class AdminPortfolioJpaControllerTest {
         em.persist(adminPortFolioEntity);
 
         mockMvc.perform(delete("/api/jpa-portfolio/{idx}", adminPortFolioEntity.getIdx())
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminPortFolioEntity)))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }

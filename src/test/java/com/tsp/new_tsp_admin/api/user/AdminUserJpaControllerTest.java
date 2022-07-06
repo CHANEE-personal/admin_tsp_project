@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
+import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -230,7 +231,8 @@ class AdminUserJpaControllerTest {
         mockMvc.perform(put("/api/jpa-user")
                 .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(StringUtil.getString(adminUserEntity.getIdx())));
     }
 
     @Test
@@ -238,9 +240,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("관리자 회원탈퇴 권한 테스트")
     void 회원탈퇴권한테스트() throws Exception {
         mockMvc.perform(put("/api/jpa-user")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(builder().idx(adminUserEntity.getIdx()).build())))
+                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }

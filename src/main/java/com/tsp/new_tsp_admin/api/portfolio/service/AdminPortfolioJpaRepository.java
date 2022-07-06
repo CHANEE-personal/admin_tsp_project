@@ -201,13 +201,13 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional
-    public AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortfolioEntity) {
+    public Integer deletePortfolio(Integer idx) {
         try {
-            em.remove(em.find(AdminPortFolioEntity.class, adminPortfolioEntity.getIdx()));
+            em.remove(em.find(AdminPortFolioEntity.class, idx));
             em.flush();
             em.clear();
 
-            return PortFolioMapper.INSTANCE.toDto(adminPortfolioEntity);
+            return idx;
         } catch (Exception e) {
             throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
         }

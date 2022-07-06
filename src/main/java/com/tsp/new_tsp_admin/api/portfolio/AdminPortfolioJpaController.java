@@ -159,9 +159,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public AdminPortFolioDTO deletePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity,
-                                             @PathVariable("idx") Integer idx) {
-        adminPortFolioEntity.setIdx(idx);
-        return adminPortfolioJpaService.deletePortfolio(adminPortFolioEntity);
+    public Integer deletePortfolio(@PathVariable("idx") Integer idx) {
+        return adminPortfolioJpaService.deletePortfolio(idx);
     }
 }

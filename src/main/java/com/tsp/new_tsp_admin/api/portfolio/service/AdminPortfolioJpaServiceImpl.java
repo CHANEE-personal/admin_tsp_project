@@ -108,7 +108,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @CacheEvict("portfolio")
-    public AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
-        return adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity);
+    public Integer deletePortfolio(Integer idx) {
+        return adminPortfolioJpaRepository.deletePortfolio(idx);
     }
 }

@@ -78,5 +78,5 @@ public interface AdminPortfolioJpaService {
      * </pre>
      *
      */
-    AdminPortFolioDTO deletePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    Integer deletePortfolio(Integer idx);
 }
