@@ -85,8 +85,8 @@ class JwtUtilTest {
     void setHeaderAccessTokenTest() {
         String token = jwtUtil.generateToken(userDetails);
         jwtUtil.setHeaderAccessToken(response, token);
-        assertNotNull(response.getHeader("authorization"));
-        assertThat("Bearer " + token).isEqualTo(response.getHeader("authorization"));
+        assertNotNull(response.getHeader("Authorization"));
+        assertThat("Bearer " + token).isEqualTo(response.getHeader("Authorization"));
     }
 
     @Test

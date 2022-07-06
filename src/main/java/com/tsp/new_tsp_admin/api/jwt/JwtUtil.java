@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -56,14 +57,14 @@ public class JwtUtil implements Serializable {
     }
 
     public String resolveAccessToken(HttpServletRequest request) {
-        if (request.getHeader("authorization") != null)   {
-            return request.getHeader("authorization").substring(7);
+        if (request.getHeader("Authorization") != null && !Objects.equals(request.getHeader("Authorization"), ""))   {
+            return request.getHeader("Authorization").substring(7);
         }
         return null;
     }
 
     public String resolveRefreshToken(HttpServletRequest request) {
-        if (request.getHeader("refreshToken") != null) {
+        if (request.getHeader("refreshToken") != null && !Objects.equals(request.getHeader("refreshToken"), "")) {
             return request.getHeader("refreshToken").substring(7);
         }
         return null;
@@ -151,7 +152,7 @@ public class JwtUtil implements Serializable {
      */
     public Boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(getSigningKey(SECRET_KEY)).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
@@ -194,7 +195,7 @@ public class JwtUtil implements Serializable {
      *
      */
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("Authorization", "Bearer " + accessToken);
     }
 
     /**

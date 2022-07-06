@@ -104,7 +104,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("Admin 회원 조회 테스트")
     void Admin회원조회() throws Exception {
         mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -114,7 +114,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("Admin 회원 조회 권한 테스트")
     void Admin회원조회권한테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -124,7 +124,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("로그인 테스트")
     void 로그인테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-user/login")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
@@ -148,7 +148,7 @@ class AdminUserJpaControllerTest {
                 .build();
 
         mockMvc.perform(post("/api/jpa-user")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(newAdminUserEntity)))
                 .andDo(print())
@@ -173,7 +173,7 @@ class AdminUserJpaControllerTest {
                 .build();
 
         mockMvc.perform(post("/api/jpa-user")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
@@ -194,7 +194,7 @@ class AdminUserJpaControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/jpa-user/{idx}", updateAdminUserEntity.getIdx())
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(updateAdminUserEntity)))
                 .andDo(print())
@@ -217,7 +217,7 @@ class AdminUserJpaControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/jpa-user/{idx}", updateAdminUserEntity.getIdx())
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
@@ -229,7 +229,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("관리자 회원탈퇴 테스트")
     void 회원탈퇴테스트() throws Exception {
         mockMvc.perform(put("/api/jpa-user")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(StringUtil.getString(adminUserEntity.getIdx())));
@@ -240,7 +240,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("관리자 회원탈퇴 권한 테스트")
     void 회원탈퇴권한테스트() throws Exception {
         mockMvc.perform(put("/api/jpa-user")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -249,7 +249,7 @@ class AdminUserJpaControllerTest {
     @DisplayName("JWT 토큰 발급 테스트")
     void 토큰발급테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-user/refresh")
-                .header("authorization", "Bearer " + adminUserEntity.getUserToken())
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(AuthenticationRequest.builder().userId("admin01").password("pass1234").build())))
                 .andDo(print())

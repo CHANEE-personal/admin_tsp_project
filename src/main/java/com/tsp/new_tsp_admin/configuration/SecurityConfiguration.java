@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -75,8 +74,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 그 외
         http.authorizeRequests()
-                .antMatchers("/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/api/jpa-model").hasRole("ADMIN")
+                .antMatchers("/api/jpa-production").hasRole("ADMIN")
+                .antMatchers("/api/jpa-portfolio").hasRole("ADMIN")
+                .antMatchers("/api/jpa-support").hasRole("ADMIN")
                 .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().formLogin().disable().headers().frameOptions().disable().and().csrf().disable();

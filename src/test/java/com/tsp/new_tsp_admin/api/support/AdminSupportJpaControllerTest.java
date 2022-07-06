@@ -112,7 +112,7 @@ class AdminSupportJpaControllerTest {
 		supportMap.add("jpaStartPage", "1");
 		supportMap.add("size", "3");
 		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
@@ -125,7 +125,7 @@ class AdminSupportJpaControllerTest {
 		supportMap.add("jpaStartPage", "1");
 		supportMap.add("size", "3");
 		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isForbidden());
 	}
@@ -134,7 +134,7 @@ class AdminSupportJpaControllerTest {
 	@DisplayName("Admin 지원 모델 상세 조회 테스트")
 	void 지원모델상세조회Api테스트() throws Exception {
 		mockMvc.perform(get("/api/jpa-support/1")
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
@@ -156,7 +156,7 @@ class AdminSupportJpaControllerTest {
 				.build();
 
 		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
+				.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
 				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
@@ -182,7 +182,7 @@ class AdminSupportJpaControllerTest {
 				.build();
 
 		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken())
+				.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
 				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
@@ -196,7 +196,7 @@ class AdminSupportJpaControllerTest {
 		em.persist(adminSupportEntity);
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string(StringUtil.getString(adminSupportEntity.getIdx())));;
@@ -209,7 +209,7 @@ class AdminSupportJpaControllerTest {
 		em.persist(adminSupportEntity);
 
 		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
-				.header("authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isForbidden());
 	}

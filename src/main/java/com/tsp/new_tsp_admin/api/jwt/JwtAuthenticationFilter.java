@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static java.lang.Boolean.TRUE;
+
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
@@ -33,12 +35,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String accessToken = jwtUtil.resolveAccessToken(request);
             String refreshToken = jwtUtil.resolveRefreshToken(request);
 
-            String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-
             // 유효한 토큰인지 검사
             if (accessToken != null) {
-                if (Boolean.TRUE.equals(jwtUtil.validateToken(accessToken))) {
+                String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+
+                if (TRUE.equals(jwtUtil.validateToken(accessToken))) {
                     this.setAuthentication(accessToken);
                 } else {
                     if (refreshToken != null) {
