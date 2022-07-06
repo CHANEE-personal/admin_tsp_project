@@ -3,7 +3,6 @@ package com.tsp.new_tsp_admin.api.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
-import com.tsp.new_tsp_admin.api.domain.user.Role;
 import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +34,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
+import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -79,7 +79,7 @@ class AdminUserJpaControllerTest {
                 .password("pass1234")
                 .name("test")
                 .email("test@test.com")
-                .role(Role.ROLE_ADMIN)
+                .role(ROLE_ADMIN)
                 .userToken(token)
                 .visible("Y")
                 .build();
@@ -143,7 +143,7 @@ class AdminUserJpaControllerTest {
                 .password("test")
                 .name("test")
                 .email("test@test.com")
-                .role(Role.ROLE_ADMIN)
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
+import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,7 +51,7 @@ class AdminUserJpaRepositoryTest {
 
     void createUser() {
         adminUserEntity = builder().idx(2).userId("admin01").build();
-        adminUserDTO = UserMapperImpl.INSTANCE.toDto(adminUserEntity);
+        adminUserDTO = INSTANCE.toDto(adminUserEntity);
     }
 
     @BeforeEach
