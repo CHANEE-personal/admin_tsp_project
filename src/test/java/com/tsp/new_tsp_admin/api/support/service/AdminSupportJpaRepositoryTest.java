@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.*;
+import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -58,7 +59,7 @@ class AdminSupportJpaRepositoryTest {
                 .supportSize3("31-24-31")
                 .build();
 
-        adminSupportDTO = SupportMapperImpl.INSTANCE.toDto(adminSupportEntity);
+        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
     }
 
     @BeforeEach
@@ -131,7 +132,7 @@ class AdminSupportJpaRepositoryTest {
 
         adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
 
-        adminSupportDTO = SupportMapperImpl.INSTANCE.toDto(adminSupportEntity);
+        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
 
         // when
         when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);

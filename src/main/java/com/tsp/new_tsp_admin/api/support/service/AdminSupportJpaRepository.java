@@ -4,9 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
-import com.tsp.new_tsp_admin.api.support.mapper.SupportMapper;
 import com.tsp.new_tsp_admin.common.StringUtil;
-import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.adminSupportEntity;
+import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -51,13 +51,13 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    public int findSupportsCount(Map<String, Object> supportMap) {
+    public int findSupportsCount(Map<String, Object> supportMap) throws TspException {
         try {
             return queryFactory.selectFrom(adminSupportEntity)
                     .where(searchSupport(supportMap))
                     .fetch().size();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST, e);
+            throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
         }
     }
 
@@ -71,7 +71,7 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) {
+    public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws TspException {
         try {
             List<AdminSupportEntity> supportList = queryFactory.selectFrom(adminSupportEntity)
                     .where(searchSupport(supportMap))
@@ -83,9 +83,9 @@ public class AdminSupportJpaRepository {
             supportList.forEach(list -> supportList.get(supportList.indexOf(list))
                     .setRnum(StringUtil.getInt(supportMap.get("startPage"),1)*(StringUtil.getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
 
-            return SupportMapper.INSTANCE.toDtoList(supportList);
+            return INSTANCE.toDtoList(supportList);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST, e);
+            throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
         }
     }
 
@@ -99,16 +99,16 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
+    public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) throws TspException {
         try {
             //모델 상세 조회
             AdminSupportEntity findOneSupportModel = queryFactory.selectFrom(adminSupportEntity)
                     .where(adminSupportEntity.idx.eq(existAdminSupportEntity.getIdx()))
                     .fetchOne();
 
-            return SupportMapper.INSTANCE.toDto(findOneSupportModel);
+            return INSTANCE.toDto(findOneSupportModel);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT, e);
+            throw new TspException(NOT_FOUND_SUPPORT, e);
         }
     }
 
@@ -124,15 +124,15 @@ public class AdminSupportJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminSupportDTO updateSupportModel(AdminSupportEntity existAdminSupportEntity) {
+    public AdminSupportDTO updateSupportModel(AdminSupportEntity existAdminSupportEntity) throws TspException {
         try {
             em.merge(existAdminSupportEntity);
             em.flush();
             em.clear();
 
-            return SupportMapper.INSTANCE.toDto(existAdminSupportEntity);
+            return INSTANCE.toDto(existAdminSupportEntity);
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_UPDATE_SUPPORT, e);
+            throw new TspException(ERROR_UPDATE_SUPPORT, e);
         }
     }
 
@@ -148,7 +148,7 @@ public class AdminSupportJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteSupportModel(Integer idx) {
+    public Integer deleteSupportModel(Integer idx) throws TspException {
         try {
             em.remove(em.find(AdminSupportEntity.class, idx));
             em.flush();
@@ -156,7 +156,7 @@ public class AdminSupportJpaRepository {
 
             return idx;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_SUPPORT, e);
+            throw new TspException(ERROR_DELETE_SUPPORT, e);
         }
     }
 }
