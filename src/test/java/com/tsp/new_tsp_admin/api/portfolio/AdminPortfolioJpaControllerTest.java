@@ -40,6 +40,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @SpringBootTest
 @Transactional
@@ -94,7 +95,7 @@ class AdminPortfolioJpaControllerTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+        this.mockMvc = webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .alwaysDo(print())

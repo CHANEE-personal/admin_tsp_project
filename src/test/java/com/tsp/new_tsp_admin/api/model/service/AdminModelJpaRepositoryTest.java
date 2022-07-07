@@ -8,6 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelMapperImpl;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -30,6 +31,7 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
+import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -88,7 +90,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelDTO = ModelMapperImpl.INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .idx(1)
@@ -361,7 +363,7 @@ class AdminModelJpaRepositoryTest {
 
         adminModelJpaRepository.updateModelByEm(adminModelEntity);
 
-        adminModelDTO = ModelMapperImpl.INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);

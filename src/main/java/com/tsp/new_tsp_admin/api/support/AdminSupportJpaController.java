@@ -42,7 +42,7 @@ public class AdminSupportJpaController {
      *
      */
     @ApiOperation(value = "지원모델 조회", notes = "지원모델을 조회한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -83,7 +83,7 @@ public class AdminSupportJpaController {
      *
      */
     @ApiOperation(value = "지원모델 수정", notes = "지원모델을 수정한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 수정성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -106,7 +106,7 @@ public class AdminSupportJpaController {
      *
      */
     @ApiOperation(value = "지원모델 삭제", notes = "지원모델을 삭제한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 삭제성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
