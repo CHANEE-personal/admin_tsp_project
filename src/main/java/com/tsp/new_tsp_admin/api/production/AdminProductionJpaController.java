@@ -42,7 +42,7 @@ public class AdminProductionJpaController {
      *
      */
     @ApiOperation(value = "프로덕션 조회", notes = "프로덕션을 조회한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -84,7 +84,7 @@ public class AdminProductionJpaController {
      *
      */
     @ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -107,7 +107,7 @@ public class AdminProductionJpaController {
      *
      */
     @ApiOperation(value = "프로덕션 저장", notes = "프로덕션을 저장한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "프로덕션 등록성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -130,7 +130,7 @@ public class AdminProductionJpaController {
      *
      */
     @ApiOperation(value = "프로덕션 수정", notes = "프로덕션을 수정한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "프로덕션 등록성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -153,7 +153,7 @@ public class AdminProductionJpaController {
      *
      */
     @ApiOperation(value = "프로덕션 삭제", notes = "프로덕션을 삭제한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "프로덕션 삭제성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),

@@ -41,7 +41,7 @@ public class AdminPortfolioJpaController {
      *
      */
     @ApiOperation(value = "포트폴리오 조회", notes = "포트폴리오를 조회한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -83,7 +83,7 @@ public class AdminPortfolioJpaController {
      *
      */
     @ApiOperation(value = "포트폴리오 상세 조회", notes = "포트폴리오를 상세 조회한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -106,7 +106,7 @@ public class AdminPortfolioJpaController {
      *
      */
     @ApiOperation(value = "포트폴리오 저장", notes = "포트폴리오를 저장한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "포트폴리오 등록성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -129,7 +129,7 @@ public class AdminPortfolioJpaController {
      *
      */
     @ApiOperation(value = "포트폴리오 수정", notes = "포트폴리오를 수정한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "포트폴리오 수정성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
@@ -152,7 +152,7 @@ public class AdminPortfolioJpaController {
      *
      */
     @ApiOperation(value = "포트폴리오 삭제", notes = "포트폴리오를 삭제한다.")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "포트폴리오 삭제성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),

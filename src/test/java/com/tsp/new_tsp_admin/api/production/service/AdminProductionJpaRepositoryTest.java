@@ -31,16 +31,18 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
+import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.mockito.Mockito.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
 @Slf4j
 @DataJpaTest
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("프로덕션 Repository Test")
 class AdminProductionJpaRepositoryTest {
@@ -64,7 +66,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminProductionDTO = ProductionMapperImpl.INSTANCE.toDto(adminProductionEntity);
+        adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -89,7 +91,6 @@ class AdminProductionJpaRepositoryTest {
     @Test
     @DisplayName("프로덕션리스트조회테스트")
     void 프로덕션리스트조회테스트() {
-
         // given
         Map<String, Object> productionMap = new HashMap<>();
         productionMap.put("jpaStartPage", 1);
@@ -248,7 +249,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminProductionDTO adminProductionDTO = ProductionMapperImpl.INSTANCE.toDto(adminProductionEntity);
+        AdminProductionDTO adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
 
         adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
 
