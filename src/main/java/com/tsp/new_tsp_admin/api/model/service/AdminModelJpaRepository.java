@@ -9,7 +9,6 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +71,7 @@ public class AdminModelJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public int findModelsCount(Map<String, Object> modelMap) throws TspException {
+    public Integer findModelsCount(Map<String, Object> modelMap) throws TspException {
         try {
             return queryFactory.selectFrom(adminModelEntity).where(searchModel(modelMap)).fetch().size();
         } catch (Exception e) {

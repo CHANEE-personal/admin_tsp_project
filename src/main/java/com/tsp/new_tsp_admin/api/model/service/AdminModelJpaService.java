@@ -21,7 +21,7 @@ public interface AdminModelJpaService {
      * </pre>
      *
      */
-    int findModelsCount(Map<String, Object> modelMap) throws Exception;
+    Integer findModelsCount(Map<String, Object> modelMap) throws Exception;
 
     /**
      * <pre>
