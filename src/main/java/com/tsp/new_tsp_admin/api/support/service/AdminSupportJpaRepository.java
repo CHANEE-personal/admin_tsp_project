@@ -4,12 +4,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
-import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -19,7 +16,6 @@ import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.admin
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -52,14 +48,10 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    public Integer findSupportsCount(Map<String, Object> supportMap) throws TspException {
-        try {
-            return queryFactory.selectFrom(adminSupportEntity)
-                    .where(searchSupport(supportMap))
-                    .fetch().size();
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
-        }
+    public Integer findSupportsCount(Map<String, Object> supportMap) {
+        return queryFactory.selectFrom(adminSupportEntity)
+                .where(searchSupport(supportMap))
+                .fetch().size();
     }
 
     /**
@@ -72,22 +64,18 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws TspException {
-        try {
-            List<AdminSupportEntity> supportList = queryFactory.selectFrom(adminSupportEntity)
-                    .where(searchSupport(supportMap))
-                    .orderBy(adminSupportEntity.idx.desc())
-                    .offset(getInt(supportMap.get("jpaStartPage"),0))
-                    .limit(getInt(supportMap.get("size"),0))
-                    .fetch();
+    public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) {
+        List<AdminSupportEntity> supportList = queryFactory.selectFrom(adminSupportEntity)
+                .where(searchSupport(supportMap))
+                .orderBy(adminSupportEntity.idx.desc())
+                .offset(getInt(supportMap.get("jpaStartPage"),0))
+                .limit(getInt(supportMap.get("size"),0))
+                .fetch();
 
-            supportList.forEach(list -> supportList.get(supportList.indexOf(list))
-                    .setRnum(getInt(supportMap.get("startPage"),1)*(getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
+        supportList.forEach(list -> supportList.get(supportList.indexOf(list))
+                .setRnum(getInt(supportMap.get("startPage"),1)*(getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
 
-            return INSTANCE.toDtoList(supportList);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
-        }
+        return INSTANCE.toDtoList(supportList);
     }
 
     /**
@@ -100,17 +88,13 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) throws TspException {
-        try {
-            //모델 상세 조회
-            AdminSupportEntity findOneSupportModel = queryFactory.selectFrom(adminSupportEntity)
-                    .where(adminSupportEntity.idx.eq(existAdminSupportEntity.getIdx()))
-                    .fetchOne();
+    public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
+        //모델 상세 조회
+        AdminSupportEntity findOneSupportModel = queryFactory.selectFrom(adminSupportEntity)
+                .where(adminSupportEntity.idx.eq(existAdminSupportEntity.getIdx()))
+                .fetchOne();
 
-            return INSTANCE.toDto(findOneSupportModel);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_SUPPORT, e);
-        }
+        return INSTANCE.toDto(findOneSupportModel);
     }
 
     /**
@@ -123,18 +107,12 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public AdminSupportDTO updateSupportModel(AdminSupportEntity existAdminSupportEntity) throws TspException {
-        try {
-            em.merge(existAdminSupportEntity);
-            em.flush();
-            em.clear();
+    public AdminSupportDTO updateSupportModel(AdminSupportEntity existAdminSupportEntity) {
+        em.merge(existAdminSupportEntity);
+        em.flush();
+        em.clear();
 
-            return INSTANCE.toDto(existAdminSupportEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_SUPPORT, e);
-        }
+        return INSTANCE.toDto(existAdminSupportEntity);
     }
 
     /**
@@ -147,17 +125,11 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public Integer deleteSupportModel(Integer idx) throws TspException {
-        try {
-            em.remove(em.find(AdminSupportEntity.class, idx));
-            em.flush();
-            em.clear();
+    public Integer deleteSupportModel(Integer idx) {
+        em.remove(em.find(AdminSupportEntity.class, idx));
+        em.flush();
+        em.clear();
 
-            return idx;
-        } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_SUPPORT, e);
-        }
+        return idx;
     }
 }

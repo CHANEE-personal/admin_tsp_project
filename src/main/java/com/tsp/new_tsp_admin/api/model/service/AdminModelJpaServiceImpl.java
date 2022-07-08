@@ -5,15 +5,20 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
+import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +37,13 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
-    public Integer findModelsCount(Map<String, Object> modelMap) {
-        return adminModelJpaRepository.findModelsCount(modelMap);
+    @Transactional(readOnly = true)
+    public Integer findModelsCount(Map<String, Object> modelMap) throws TspException {
+        try {
+            return adminModelJpaRepository.findModelsCount(modelMap);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL_LIST, e);
+        }
     }
 
     /**
@@ -48,8 +58,13 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Cacheable("model")
-    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
-        return adminModelJpaRepository.findModelsList(modelMap);
+    @Transactional(readOnly = true)
+    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws TspException {
+        try {
+            return adminModelJpaRepository.findModelsList(modelMap);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL_LIST, e);
+        }
     }
 
     /**
@@ -64,8 +79,13 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Cacheable("model")
-    public AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.findOneModel(adminModelEntity);
+    @Transactional(readOnly = true)
+    public AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) throws TspException {
+        try {
+            return adminModelJpaRepository.findOneModel(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL, e);
+        }
     }
 
     /**
@@ -80,8 +100,14 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CachePut("model")
-    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.insertModel(adminModelEntity);
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) throws TspException {
+        try {
+            return adminModelJpaRepository.insertModel(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_MODEL, e);
+        }
     }
 
     /**
@@ -96,8 +122,14 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CachePut("model")
-    public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.updateModelByEm(adminModelEntity);
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) throws TspException {
+        try {
+            return adminModelJpaRepository.updateModelByEm(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_UPDATE_MODEL, e);
+        }
     }
 
     /**
@@ -112,8 +144,14 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CacheEvict("model")
-    public Integer deleteModel(Integer idx) {
-        return adminModelJpaRepository.deleteModelByEm(idx);
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public Integer deleteModel(Integer idx) throws TspException {
+        try {
+            return adminModelJpaRepository.deleteModelByEm(idx);
+        } catch (Exception e) {
+            throw new TspException(ERROR_DELETE_MODEL, e);
+        }
     }
 
     /**
@@ -127,8 +165,14 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
-    public String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {
-        return imageRepository.uploadImageFile(commonImageEntity, fileName, "insert");
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws TspException {
+        try {
+            return imageRepository.uploadImageFile(commonImageEntity, fileName, "insert");
+        } catch (Exception e) {
+            throw new TspException(ERROR_MODEL, e);
+        }
     }
 
     /**
@@ -157,7 +201,12 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      *
      */
     @Override
-    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity) {
-        return adminModelJpaRepository.modelCommonCode(commonCodeEntity);
+    @Transactional(readOnly = true)
+    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity) throws TspException {
+        try {
+            return adminModelJpaRepository.modelCommonCode(commonCodeEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_COMMON_LIST, e);
+        }
     }
 }

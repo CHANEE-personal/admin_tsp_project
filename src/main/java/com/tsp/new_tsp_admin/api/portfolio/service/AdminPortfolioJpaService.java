@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
+import com.tsp.new_tsp_admin.exception.TspException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface AdminPortfolioJpaService {
      * </pre>
      *
      */
-    Integer findPortfoliosCount(Map<String, Object> portfolioMap);
+    Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException;
 
     /**
      * <pre>
@@ -30,7 +31,7 @@ public interface AdminPortfolioJpaService {
      * </pre>
      *
      */
-    List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap);
+    List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws TspException;
 
     /**
      * <pre>
@@ -42,7 +43,7 @@ public interface AdminPortfolioJpaService {
      * </pre>
      *
      */
-    AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
 
     /**
      * <pre>
@@ -54,7 +55,7 @@ public interface AdminPortfolioJpaService {
      * </pre>
      *
      */
-    AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
 
     /**
      * <pre>
@@ -66,7 +67,7 @@ public interface AdminPortfolioJpaService {
      * </pre>
      *
      */
-    AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
 
     /**
      * <pre>
@@ -78,5 +79,5 @@ public interface AdminPortfolioJpaService {
      * </pre>
      *
      */
-    Integer deletePortfolio(Integer idx);
+    Integer deletePortfolio(Integer idx) throws TspException;
 }

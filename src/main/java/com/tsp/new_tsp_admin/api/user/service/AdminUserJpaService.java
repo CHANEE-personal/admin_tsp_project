@@ -10,7 +10,7 @@ public interface AdminUserJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : getAdminUserList
+     * 1. MethodName : findUsersList
      * 2. ClassName  : AdminUserJpaService.java
      * 3. Comment    : Admin User 조회
      * 4. 작성자       : CHO
@@ -18,7 +18,31 @@ public interface AdminUserJpaService {
      * </pre>
      *
      */
-    List<AdminUserDTO> getAdminUserList(Map<String, Object> userMap) throws Exception;
+    List<AdminUserDTO> findUsersList(Map<String, Object> userMap) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneUser
+     * 2. ClassName  : AdminUserJpaService.java
+     * 3. Comment    : Admin User 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     */
+    AdminUserEntity findOneUser(String id) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneUserByToken
+     * 2. ClassName  : AdminUserJpaService.java
+     * 3. Comment    : token을 활용한 Admin User 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     */
+    String findOneUserByToken(String token) throws Exception;
 
     /**
      * <pre>

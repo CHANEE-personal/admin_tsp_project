@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
+import com.tsp.new_tsp_admin.exception.TspException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface AdminProductionJpaService {
      * </pre>
      *
      */
-    int findProductionsCount(Map<String, Object> productionMap);
+    Integer findProductionsCount(Map<String, Object> productionMap) throws TspException;
 
     /**
      * <pre>
@@ -30,7 +31,7 @@ public interface AdminProductionJpaService {
      * </pre>
      *
      */
-    List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap);
+    List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) throws TspException;
 
     /**
      * <pre>
@@ -42,7 +43,7 @@ public interface AdminProductionJpaService {
      * </pre>
      *
      */
-    AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity);
+    AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) throws TspException;
 
     /**
      * <pre>
@@ -54,7 +55,7 @@ public interface AdminProductionJpaService {
      * </pre>
      *
      */
-    AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity);
+    AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) throws TspException;
 
     /**
      * <pre>
@@ -78,5 +79,5 @@ public interface AdminProductionJpaService {
      * </pre>
      *
      */
-    Integer deleteProduction(Integer idx);
+    Integer deleteProduction(Integer idx) throws TspException;
 }

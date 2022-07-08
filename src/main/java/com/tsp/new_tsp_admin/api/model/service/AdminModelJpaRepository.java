@@ -9,7 +9,6 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
-import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,8 +26,6 @@ import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminMode
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL_LIST;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -70,13 +67,8 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
-    public Integer findModelsCount(Map<String, Object> modelMap) throws TspException {
-        try {
-            return queryFactory.selectFrom(adminModelEntity).where(searchModel(modelMap)).fetch().size();
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_LIST, e);
-        }
+    public Integer findModelsCount(Map<String, Object> modelMap) {
+        return queryFactory.selectFrom(adminModelEntity).where(searchModel(modelMap)).fetch().size();
     }
 
 
@@ -90,24 +82,19 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws TspException {
-        try {
-            List<AdminModelEntity> modelList = queryFactory
-                    .selectFrom(adminModelEntity)
-                    .orderBy(adminModelEntity.idx.desc())
-                    .where(searchModel(modelMap).and(adminModelEntity.visible.eq("Y")))
-                    .offset(getInt(modelMap.get("jpaStartPage"),0))
-                    .limit(getInt(modelMap.get("size"),0))
-                    .fetch();
+    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
+        List<AdminModelEntity> modelList = queryFactory
+                .selectFrom(adminModelEntity)
+                .orderBy(adminModelEntity.idx.desc())
+                .where(searchModel(modelMap).and(adminModelEntity.visible.eq("Y")))
+                .offset(getInt(modelMap.get("jpaStartPage"),0))
+                .limit(getInt(modelMap.get("size"),0))
+                .fetch();
 
-            modelList.forEach(list -> modelList.get(modelList.indexOf(list))
-                    .setRnum(getInt(modelMap.get("startPage"),1)*(getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
+        modelList.forEach(list -> modelList.get(modelList.indexOf(list))
+                .setRnum(getInt(modelMap.get("startPage"),1)*(getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
 
-            return INSTANCE.toDtoList(modelList);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_LIST, e);
-        }
+        return INSTANCE.toDtoList(modelList);
     }
 
     /**
@@ -120,24 +107,19 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
-    public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) throws TspException {
-        try {
-            //모델 상세 조회
-            AdminModelEntity findOneModel = queryFactory
-                    .selectFrom(adminModelEntity)
-                    .orderBy(adminModelEntity.idx.desc())
-                    .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
-                    .fetchJoin()
-                    .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())
-                            .and(adminModelEntity.visible.eq("Y"))
-                            .and(commonImageEntity.typeName.eq("model")))
-                    .fetchOne();
+    public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) {
+        //모델 상세 조회
+        AdminModelEntity findOneModel = queryFactory
+                .selectFrom(adminModelEntity)
+                .orderBy(adminModelEntity.idx.desc())
+                .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
+                .fetchJoin()
+                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())
+                        .and(adminModelEntity.visible.eq("Y"))
+                        .and(commonImageEntity.typeName.eq("model")))
+                .fetchOne();
 
-            return INSTANCE.toDto(findOneModel);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL, e);
-        }
+        return INSTANCE.toDto(findOneModel);
     }
 
     /**
@@ -150,16 +132,9 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) throws TspException {
-        try {
-            em.persist(adminModelEntity);
-
-            return INSTANCE.toDto(adminModelEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_MODEL, e);
-        }
+    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
+        em.persist(adminModelEntity);
+        return INSTANCE.toDto(adminModelEntity);
     }
 
     /**
@@ -172,16 +147,10 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) throws TspException {
-        try {
-            em.persist(commonImageEntity);
+    public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
+        em.persist(commonImageEntity);
 
-            return ModelImageMapper.INSTANCE.toDto(commonImageEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_MODEL, e);
-        }
+        return ModelImageMapper.INSTANCE.toDto(commonImageEntity);
     }
 
     /**
@@ -196,29 +165,25 @@ public class AdminModelJpaRepository {
      */
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) throws TspException {
-        try {
-            JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
+    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
+        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-            existAdminModelEntity.setUpdater("1");
-            existAdminModelEntity.setUpdateTime(new Date());
+        existAdminModelEntity.setUpdater("1");
+        existAdminModelEntity.setUpdateTime(new Date());
 
-            update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
-                    .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
-                    .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
-                    .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
-                    .set(adminModelEntity.height, existAdminModelEntity.getHeight())
-                    .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
-                    .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
-                    .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
-                    .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                    .set(adminModelEntity.updater, "1")
-                    .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
+        update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
+                .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
+                .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
+                .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
+                .set(adminModelEntity.height, existAdminModelEntity.getHeight())
+                .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
+                .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
+                .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
+                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
+                .set(adminModelEntity.updater, "1")
+                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
 
-            return existAdminModelEntity;
-        } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_MODEL, e);
-        }
+        return existAdminModelEntity;
     }
 
     /**
@@ -231,18 +196,12 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) throws TspException {
-        try {
-            em.merge(existAdminModelEntity);
-            em.flush();
-            em.clear();
+    public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) {
+        em.merge(existAdminModelEntity);
+        em.flush();
+        em.clear();
 
-            return INSTANCE.toDto(existAdminModelEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_MODEL, e);
-        }
+        return INSTANCE.toDto(existAdminModelEntity);
     }
 
     /**
@@ -255,16 +214,11 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
-    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) throws TspException {
-        try {
-            return queryFactory
-                    .selectFrom(commonCodeEntity)
-                    .where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
-                    .fetch();
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_COMMON, e);
-        }
+    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
+        return queryFactory
+                .selectFrom(commonCodeEntity)
+                .where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
+                .fetch();
     }
 
     /**
@@ -277,22 +231,16 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public Long deleteModel(AdminModelEntity existAdminModelEntity) throws TspException {
-        try {
-            JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
+    public Long deleteModel(AdminModelEntity existAdminModelEntity) {
+        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-            existAdminModelEntity.setUpdater("1");
-            existAdminModelEntity.setUpdateTime(new Date());
+        existAdminModelEntity.setUpdater("1");
+        existAdminModelEntity.setUpdateTime(new Date());
 
-            return update.set(adminModelEntity.visible, "N")
-                    .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                    .set(adminModelEntity.updater, "1")
-                    .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
-        } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_MODEL, e);
-        }
+        return update.set(adminModelEntity.visible, "N")
+                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
+                .set(adminModelEntity.updater, "1")
+                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
     }
 
     /**
@@ -305,17 +253,11 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public Integer deleteModelByEm(Integer idx) throws TspException {
-        try {
-            em.remove(em.find(AdminModelEntity.class, idx));
-            em.flush();
-            em.clear();
+    public Integer deleteModelByEm(Integer idx) {
+        em.remove(em.find(AdminModelEntity.class, idx));
+        em.flush();
+        em.clear();
 
-            return idx;
-        } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_MODEL, e);
-        }
+        return idx;
     }
 }

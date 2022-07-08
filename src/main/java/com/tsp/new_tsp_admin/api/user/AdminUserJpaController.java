@@ -43,7 +43,7 @@ public class AdminUserJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : userEntityList
+     * 1. MethodName : findUsersList
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : Admin User 조회
      * 4. 작성자       : CHO
@@ -60,9 +60,9 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping
-    public List<AdminUserDTO> userEntityList(@RequestParam(required = false) Map<String, Object> paramMap,
+    public List<AdminUserDTO> findUsersList(@RequestParam(required = false) Map<String, Object> paramMap,
                                              Page page) throws Exception {
-        return adminUserJpaService.getAdminUserList(searchCommon.searchCommon(page, paramMap));
+        return adminUserJpaService.findUsersList(searchCommon.searchCommon(page, paramMap));
     }
 
     /**

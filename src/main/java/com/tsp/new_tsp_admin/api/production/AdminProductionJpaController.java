@@ -53,7 +53,7 @@ public class AdminProductionJpaController {
     public Map<String, Object> getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
         Map<String, Object> productionMap = new HashMap<>();
 
-        int productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
+        Integer productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
 
         List<AdminProductionDTO> productionList = new ArrayList<>();
 

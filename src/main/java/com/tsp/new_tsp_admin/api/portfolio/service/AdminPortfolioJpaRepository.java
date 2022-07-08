@@ -8,7 +8,6 @@ import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,15 +53,10 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
-    public Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException {
-        try {
-            return queryFactory.selectFrom(adminPortFolioEntity)
-                    .where(searchPortfolio(portfolioMap))
-                    .fetch().size();
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
-        }
+    public Integer findPortfoliosCount(Map<String, Object> portfolioMap) {
+        return queryFactory.selectFrom(adminPortFolioEntity)
+                .where(searchPortfolio(portfolioMap))
+                .fetch().size();
     }
 
     /**
@@ -76,23 +70,19 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws TspException {
-        try {
-            List<AdminPortFolioEntity> portfolioList =  queryFactory
-                    .selectFrom(adminPortFolioEntity)
-                    .orderBy(adminPortFolioEntity.idx.desc())
-                    .where(searchPortfolio(portfolioMap))
-                    .offset(getInt(portfolioMap.get("jpaStartPage"),0))
-                    .limit(getInt(portfolioMap.get("size"),0))
-                    .fetch();
+    public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
+        List<AdminPortFolioEntity> portfolioList =  queryFactory
+                .selectFrom(adminPortFolioEntity)
+                .orderBy(adminPortFolioEntity.idx.desc())
+                .where(searchPortfolio(portfolioMap))
+                .offset(getInt(portfolioMap.get("jpaStartPage"),0))
+                .limit(getInt(portfolioMap.get("size"),0))
+                .fetch();
 
-            portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
-                    .setRnum(getInt(portfolioMap.get("startPage"),1)*(getInt(portfolioMap.get("size"),1))-(2-portfolioList.indexOf(list))));
+        portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
+                .setRnum(getInt(portfolioMap.get("startPage"),1)*(getInt(portfolioMap.get("size"),1))-(2-portfolioList.indexOf(list))));
 
-            return INSTANCE.toDtoList(portfolioList);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
-        }
+        return INSTANCE.toDtoList(portfolioList);
     }
 
     /**
@@ -105,23 +95,18 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
-    public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) throws TspException {
-        try {
-            // 포트폴리오 상세 조회
-            AdminPortFolioEntity findOnePortfolio = queryFactory
-                    .selectFrom(adminPortFolioEntity)
-                    .leftJoin(adminPortFolioEntity.commonImageEntityList, commonImageEntity)
-                    .fetchJoin()
-                    .where(adminPortFolioEntity.idx.eq(existAdminPortfolioEntity.getIdx())
-                            .and(adminPortFolioEntity.visible.eq("Y")
-                            .and(commonImageEntity.typeName.eq("portfolio"))))
-                    .fetchOne();
+    public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+        // 포트폴리오 상세 조회
+        AdminPortFolioEntity findOnePortfolio = queryFactory
+                .selectFrom(adminPortFolioEntity)
+                .leftJoin(adminPortFolioEntity.commonImageEntityList, commonImageEntity)
+                .fetchJoin()
+                .where(adminPortFolioEntity.idx.eq(existAdminPortfolioEntity.getIdx())
+                        .and(adminPortFolioEntity.visible.eq("Y")
+                        .and(commonImageEntity.typeName.eq("portfolio"))))
+                .fetchOne();
 
-            return INSTANCE.toDto(findOnePortfolio);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL, e);
-        }
+        return INSTANCE.toDto(findOnePortfolio);
     }
 
     /**
@@ -134,15 +119,10 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
-    @Transactional
-    public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) throws TspException {
-        try {
-            em.persist(adminPortfolioEntity);
+    public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
+        em.persist(adminPortfolioEntity);
 
-            return INSTANCE.toDto(adminPortfolioEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_PORTFOLIO, e);
-        }
+        return INSTANCE.toDto(adminPortfolioEntity);
     }
 
     /**
@@ -176,18 +156,12 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
-    @Modifying
-    @Transactional
-    public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) throws TspException {
-        try{
-            em.merge(existAdminPortfolioEntity);
-            em.flush();
-            em.clear();
+    public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+        em.merge(existAdminPortfolioEntity);
+        em.flush();
+        em.clear();
 
-            return INSTANCE.toDto(existAdminPortfolioEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_PORTFOLIO, e);
-        }
+        return INSTANCE.toDto(existAdminPortfolioEntity);
     }
 
     /**
@@ -200,16 +174,11 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      *
      */
-    @Transactional
-    public Integer deletePortfolio(Integer idx) throws TspException {
-        try {
-            em.remove(em.find(AdminPortFolioEntity.class, idx));
-            em.flush();
-            em.clear();
+    public Integer deletePortfolio(Integer idx) {
+        em.remove(em.find(AdminPortFolioEntity.class, idx));
+        em.flush();
+        em.clear();
 
-            return idx;
-        } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_PORTFOLIO, e);
-        }
+        return idx;
     }
 }

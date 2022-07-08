@@ -1,6 +1,8 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
+import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
+import com.tsp.new_tsp_admin.exception.TspException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -20,6 +22,8 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -28,7 +32,7 @@ public class JwtUtil implements Serializable {
     public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 24 * 2;
 
     private final MyUserDetailsService myUserDetailsService;
-    private final AdminUserJpaRepository adminUserJpaRepository;
+    private final AdminUserJpaService adminUserJpaService;
 
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
@@ -179,9 +183,13 @@ public class JwtUtil implements Serializable {
      * </pre>
      *
      */
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(adminUserJpaRepository.findOneUserByToken(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    public Authentication getAuthentication(String token) throws TspException {
+        try {
+            UserDetails userDetails = myUserDetailsService.loadUserByUsername(adminUserJpaService.findOneUserByToken(token));
+            return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_USER, e);
+        }
     }
 
     /**

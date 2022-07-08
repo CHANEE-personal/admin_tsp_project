@@ -26,9 +26,6 @@ import java.util.Objects;
 import static com.tsp.new_tsp_admin.api.domain.user.QAdminUserEntity.adminUserEntity;
 import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER_LIST;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,23 +46,18 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
-    public List<AdminUserDTO> findUserList(Map<String, Object> userMap) throws TspException {
-        try {
-            List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
-                    .where(adminUserEntity.visible.eq("Y"))
-                    .orderBy(adminUserEntity.idx.desc())
-                    .offset(getInt(userMap.get("jpaStartPage"), 0))
-                    .limit(getInt(userMap.get("size"), 0))
-                    .fetch();
+    public List<AdminUserDTO> findUsersList(Map<String, Object> userMap) {
+        List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
+                .where(adminUserEntity.visible.eq("Y"))
+                .orderBy(adminUserEntity.idx.desc())
+                .offset(getInt(userMap.get("jpaStartPage"), 0))
+                .limit(getInt(userMap.get("size"), 0))
+                .fetch();
 
-            userList.forEach(list -> userList.get(userList.indexOf(list))
-                    .setRnum(getInt(userMap.get("startPage"), 1)*(getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
+        userList.forEach(list -> userList.get(userList.indexOf(list))
+                .setRnum(getInt(userMap.get("startPage"), 1)*(getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
 
-            return INSTANCE.toDtoList(userList);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER_LIST, e);
-        }
+        return INSTANCE.toDtoList(userList);
     }
 
     /**
@@ -78,14 +70,10 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    public AdminUserEntity findOneUser(String id) throws TspException {
-        try {
-            return queryFactory.selectFrom(adminUserEntity)
-                    .where(adminUserEntity.userId.eq(id))
-                    .fetchOne();
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER, e);
-        }
+    public AdminUserEntity findOneUser(String id) {
+        return queryFactory.selectFrom(adminUserEntity)
+                .where(adminUserEntity.userId.eq(id))
+                .fetchOne();
     }
 
     /**
@@ -98,7 +86,6 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Transactional(readOnly = true)
     public String findOneUserByToken(String token) {
         return Objects.requireNonNull(queryFactory.selectFrom(adminUserEntity)
                 .where(adminUserEntity.userToken.eq(token))
@@ -115,24 +102,20 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    public String adminLogin(AdminUserEntity existAdminUserEntity) throws TspException {
-        try {
-            final String db_pw = StringUtils.nullStrToStr(findOneUser(existAdminUserEntity.getUserId()).getPassword());
-            String result;
+    public String adminLogin(AdminUserEntity existAdminUserEntity) {
+        final String db_pw = StringUtils.nullStrToStr(findOneUser(existAdminUserEntity.getUserId()).getPassword());
+        String result;
 
-            if (passwordEncoder.matches(existAdminUserEntity.getPassword(), db_pw)) {
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(existAdminUserEntity.getUserId(), existAdminUserEntity.getPassword())
-                );
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                result = "Y";
-            } else {
-                result = "N";
-            }
-            return result;
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER, e);
+        if (passwordEncoder.matches(existAdminUserEntity.getPassword(), db_pw)) {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(existAdminUserEntity.getUserId(), existAdminUserEntity.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            result = "Y";
+        } else {
+            result = "N";
         }
+        return result;
     }
 
     /**
@@ -145,18 +128,12 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) throws TspException {
-        try {
-            em.merge(adminUserEntity);
-            em.flush();
-            em.clear();
+    public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) {
+        em.merge(adminUserEntity);
+        em.flush();
+        em.clear();
 
-            return adminUserEntity.getIdx();
-        } catch (Exception e) {
-            throw new TspException(ERROR_USER, e);
-        }
+        return adminUserEntity.getIdx();
     }
 
     /**
@@ -169,22 +146,15 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
     public Integer insertUserToken(AdminUserEntity existAdminUserEntity) throws TspException {
+        JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
-        try {
-            JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
+        update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
+              .set(adminUserEntity.updater, "1")
+              .set(adminUserEntity.updateTime, new Date())
+              .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
 
-            update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
-                  .set(adminUserEntity.updater, "1")
-                  .set(adminUserEntity.updateTime, new Date())
-                  .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
-
-            return existAdminUserEntity.getIdx();
-        } catch (Exception e) {
-            throw new TspException(ERROR_USER, e);
-        }
+        return existAdminUserEntity.getIdx();
     }
 
     /**
@@ -197,17 +167,11 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) throws TspException {
-        try {
-            //회원 등록
-            em.persist(adminUserEntity);
+    public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
+        //회원 등록
+        em.persist(adminUserEntity);
 
-            return INSTANCE.toDto(adminUserEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_USER, e);
-        }
+        return INSTANCE.toDto(adminUserEntity);
     }
 
     /**
@@ -220,18 +184,12 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) throws TspException {
-        try {
-            em.merge(adminUserEntity);
-            em.flush();
-            em.clear();
+    public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
+        em.merge(adminUserEntity);
+        em.flush();
+        em.clear();
 
-            return INSTANCE.toDto(adminUserEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_USER, e);
-        }
+        return INSTANCE.toDto(adminUserEntity);
     }
 
     /**
@@ -244,17 +202,11 @@ public class AdminUserJpaRepository {
      * </pre>
      *
      */
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    public Integer deleteAdminUser(Integer idx) throws TspException {
-        try {
-            em.remove(em.find(AdminUserEntity.class, idx));
-            em.flush();
-            em.clear();
+    public Integer deleteAdminUser(Integer idx) {
+        em.remove(em.find(AdminUserEntity.class, idx));
+        em.flush();
+        em.clear();
 
-            return idx;
-        } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_USER, e);
-        }
+        return idx;
     }
 }

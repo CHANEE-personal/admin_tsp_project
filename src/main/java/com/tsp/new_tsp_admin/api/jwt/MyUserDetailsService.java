@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -18,13 +19,14 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
+    private final AdminUserJpaService adminUserJpaService;
     private final AdminUserJpaRepository adminUserJpaRepository;
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
         try {
-            AdminUserEntity adminUserEntity = adminUserJpaRepository.findOneUser(id);
+            AdminUserEntity adminUserEntity = adminUserJpaService.findOneUser(id);
             adminUserEntity.setUserRefreshToken(adminUserEntity.getUserToken());
             adminUserJpaRepository.insertUserTokenByEm(adminUserEntity);
 

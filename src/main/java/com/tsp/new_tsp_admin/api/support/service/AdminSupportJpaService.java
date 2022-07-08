@@ -34,6 +34,18 @@ public interface AdminSupportJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findOneSupportModel
+     * 2. ClassName  : AdminSupportJpaService.java
+     * 3. Comment    : 관리자 지원모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     */
+    AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : updateSupportModel
      * 2. ClassName  : AdminSupportJpaService.java
      * 3. Comment    : 관리자 지원모델 수정

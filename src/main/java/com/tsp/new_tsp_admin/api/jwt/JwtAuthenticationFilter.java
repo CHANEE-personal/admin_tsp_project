@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
-import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
+import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
+import com.tsp.new_tsp_admin.exception.TspException;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
 import static java.lang.Boolean.TRUE;
 
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private AdminUserJpaRepository adminUserJpaRepository;
+    private AdminUserJpaService adminUserJpaService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -37,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             // 유효한 토큰인지 검사
             if (accessToken != null) {
-                String userId = adminUserJpaRepository.findOneUserByToken(accessToken);
+                String userId = adminUserJpaService.findOneUserByToken(accessToken);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
                 if (TRUE.equals(jwtUtil.validateToken(accessToken))) {
@@ -58,6 +60,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("Security exception for user {} - {}", e.getClaims().getSubject(), e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             log.debug("Exception " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_USER, e);
         }
         filterChain.doFilter(request, response);
     }
