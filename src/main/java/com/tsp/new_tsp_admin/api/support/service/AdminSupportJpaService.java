@@ -18,7 +18,7 @@ public interface AdminSupportJpaService {
      * </pre>
      *
      */
-    int findSupportsCount(Map<String, Object> modelMap) throws Exception;
+    Integer findSupportsCount(Map<String, Object> modelMap) throws Exception;
 
     /**
      * <pre>
