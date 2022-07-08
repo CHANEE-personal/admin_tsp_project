@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +19,8 @@ import java.util.Map;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
 import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
+import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
+import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_PRODUCTION_LIST;
 
@@ -31,8 +32,8 @@ public class AdminProductionJpaRepository {
     private final EntityManager em;
 
     private BooleanExpression searchProduction(Map<String, Object> productionMap) {
-        String searchType = StringUtil.getString(productionMap.get("searchType"),"");
-        String searchKeyword = StringUtil.getString(productionMap.get("searchKeyword"),"");
+        String searchType = getString(productionMap.get("searchType"),"");
+        String searchKeyword = getString(productionMap.get("searchKeyword"),"");
 
         if ("0".equals(searchType)) {
             return adminProductionEntity.title.contains(searchKeyword)
@@ -81,12 +82,12 @@ public class AdminProductionJpaRepository {
                     .selectFrom(adminProductionEntity)
                     .orderBy(adminProductionEntity.idx.desc())
                     .where(searchProduction(productionMap))
-                    .offset(StringUtil.getInt(productionMap.get("jpaStartPage"),0))
-                    .limit(StringUtil.getInt(productionMap.get("size"),0))
+                    .offset(getInt(productionMap.get("jpaStartPage"),0))
+                    .limit(getInt(productionMap.get("size"),0))
                     .fetch();
 
             productionList.forEach(list -> productionList.get(productionList.indexOf(list))
-                    .setRnum(StringUtil.getInt(productionMap.get("startPage"),1)*(StringUtil.getInt(productionMap.get("size"),1))-(2-productionList.indexOf(list))));
+                    .setRnum(getInt(productionMap.get("startPage"),1)*(getInt(productionMap.get("size"),1))-(2-productionList.indexOf(list))));
 
             return INSTANCE.toDtoList(productionList);
         } catch (Exception e) {

@@ -4,7 +4,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.common.StringUtils;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +25,7 @@ import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.api.domain.user.QAdminUserEntity.adminUserEntity;
 import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
+import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER_LIST;
@@ -55,12 +55,12 @@ public class AdminUserJpaRepository {
             List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
                     .where(adminUserEntity.visible.eq("Y"))
                     .orderBy(adminUserEntity.idx.desc())
-                    .offset(StringUtil.getInt(userMap.get("jpaStartPage"), 0))
-                    .limit(StringUtil.getInt(userMap.get("size"), 0))
+                    .offset(getInt(userMap.get("jpaStartPage"), 0))
+                    .limit(getInt(userMap.get("size"), 0))
                     .fetch();
 
             userList.forEach(list -> userList.get(userList.indexOf(list))
-                    .setRnum(StringUtil.getInt(userMap.get("startPage"), 1)*(StringUtil.getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
+                    .setRnum(getInt(userMap.get("startPage"), 1)*(getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
 
             return INSTANCE.toDtoList(userList);
         } catch (Exception e) {

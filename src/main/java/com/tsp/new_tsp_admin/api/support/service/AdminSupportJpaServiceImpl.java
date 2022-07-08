@@ -24,7 +24,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      *
      */
     @Override
-    public int findSupportsCount(Map<String, Object> supportMap) {
+    public Integer findSupportsCount(Map<String, Object> supportMap) {
         return adminSupportJpaRepository.findSupportsCount(supportMap);
     }
 

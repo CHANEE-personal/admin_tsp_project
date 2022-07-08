@@ -18,7 +18,7 @@ public interface AdminPortfolioJpaService {
      * </pre>
      *
      */
-    int findPortfoliosCount(Map<String, Object> portfolioMap);
+    Integer findPortfoliosCount(Map<String, Object> portfolioMap);
 
     /**
      * <pre>

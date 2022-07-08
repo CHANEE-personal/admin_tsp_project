@@ -52,7 +52,7 @@ public class AdminPortfolioJpaController {
     public Map<String, Object> getPortfolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
         Map<String, Object> portfolioMap = new HashMap<>();
 
-        int portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
+        Integer portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
 
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
 

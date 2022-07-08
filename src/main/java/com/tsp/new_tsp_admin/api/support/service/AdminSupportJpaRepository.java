@@ -4,7 +4,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,8 @@ import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.adminSupportEntity;
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
+import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
+import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Slf4j
@@ -28,8 +29,8 @@ public class AdminSupportJpaRepository {
     private final EntityManager em;
 
     private BooleanExpression searchSupport(Map<String, Object> supportMap) {
-        String searchType = StringUtil.getString(supportMap.get("searchType"),"");
-        String searchKeyword = StringUtil.getString(supportMap.get("searchKeyword"),"");
+        String searchType = getString(supportMap.get("searchType"),"");
+        String searchKeyword = getString(supportMap.get("searchKeyword"),"");
 
         if ("0".equals(searchType)) {
             return adminSupportEntity.supportName.contains(searchKeyword)
@@ -51,7 +52,7 @@ public class AdminSupportJpaRepository {
      * </pre>
      *
      */
-    public int findSupportsCount(Map<String, Object> supportMap) throws TspException {
+    public Integer findSupportsCount(Map<String, Object> supportMap) throws TspException {
         try {
             return queryFactory.selectFrom(adminSupportEntity)
                     .where(searchSupport(supportMap))
@@ -76,12 +77,12 @@ public class AdminSupportJpaRepository {
             List<AdminSupportEntity> supportList = queryFactory.selectFrom(adminSupportEntity)
                     .where(searchSupport(supportMap))
                     .orderBy(adminSupportEntity.idx.desc())
-                    .offset(StringUtil.getInt(supportMap.get("jpaStartPage"),0))
-                    .limit(StringUtil.getInt(supportMap.get("size"),0))
+                    .offset(getInt(supportMap.get("jpaStartPage"),0))
+                    .limit(getInt(supportMap.get("size"),0))
                     .fetch();
 
             supportList.forEach(list -> supportList.get(supportList.indexOf(list))
-                    .setRnum(StringUtil.getInt(supportMap.get("startPage"),1)*(StringUtil.getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
+                    .setRnum(getInt(supportMap.get("startPage"),1)*(getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
 
             return INSTANCE.toDtoList(supportList);
         } catch (Exception e) {

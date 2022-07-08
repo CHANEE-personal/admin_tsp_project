@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +19,8 @@ import java.util.Map;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
 import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.*;
+import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
+import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Slf4j
@@ -30,8 +31,8 @@ public class AdminPortfolioJpaRepository {
     private final EntityManager em;
 
     private BooleanExpression searchPortfolio(Map<String, Object> portfolioMap) {
-        String searchType = StringUtil.getString(portfolioMap.get("searchType"),"");
-        String searchKeyword = StringUtil.getString(portfolioMap.get("searchKeyword"),"");
+        String searchType = getString(portfolioMap.get("searchType"),"");
+        String searchKeyword = getString(portfolioMap.get("searchKeyword"),"");
 
         if ("0".equals(searchType)) {
             return adminPortFolioEntity.title.contains(searchKeyword)
@@ -54,7 +55,7 @@ public class AdminPortfolioJpaRepository {
      *
      */
     @Transactional(readOnly = true)
-    public int findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException {
+    public Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException {
         try {
             return queryFactory.selectFrom(adminPortFolioEntity)
                     .where(searchPortfolio(portfolioMap))
@@ -81,12 +82,12 @@ public class AdminPortfolioJpaRepository {
                     .selectFrom(adminPortFolioEntity)
                     .orderBy(adminPortFolioEntity.idx.desc())
                     .where(searchPortfolio(portfolioMap))
-                    .offset(StringUtil.getInt(portfolioMap.get("jpaStartPage"),0))
-                    .limit(StringUtil.getInt(portfolioMap.get("size"),0))
+                    .offset(getInt(portfolioMap.get("jpaStartPage"),0))
+                    .limit(getInt(portfolioMap.get("size"),0))
                     .fetch();
 
             portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
-                    .setRnum(StringUtil.getInt(portfolioMap.get("startPage"),1)*(StringUtil.getInt(portfolioMap.get("size"),1))-(2-portfolioList.indexOf(list))));
+                    .setRnum(getInt(portfolioMap.get("startPage"),1)*(getInt(portfolioMap.get("size"),1))-(2-portfolioList.indexOf(list))));
 
             return INSTANCE.toDtoList(portfolioList);
         } catch (Exception e) {
@@ -106,7 +107,6 @@ public class AdminPortfolioJpaRepository {
      */
     @Transactional(readOnly = true)
     public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) throws TspException {
-
         try {
             // 포트폴리오 상세 조회
             AdminPortFolioEntity findOnePortfolio = queryFactory
