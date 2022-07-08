@@ -255,6 +255,7 @@ public class AdminModelJpaRepository {
      * </pre>
      *
      */
+    @Transactional(readOnly = true)
     public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) throws TspException {
         try {
             return queryFactory
