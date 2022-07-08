@@ -26,6 +26,8 @@ import static com.tsp.new_tsp_admin.api.domain.common.QCommonCodeEntity.commonCo
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
+import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
+import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL_LIST;
 
@@ -37,9 +39,9 @@ public class AdminModelJpaRepository {
     private final EntityManager em;
 
     private BooleanExpression searchModel(Map<String, Object> modelMap) {
-        String searchType = StringUtil.getString(modelMap.get("searchType"),"");
-        String searchKeyword = StringUtil.getString(modelMap.get("searchKeyword"),"");
-        Integer categoryCd = StringUtil.getInt(modelMap.get("categoryCd"),0);
+        String searchType = getString(modelMap.get("searchType"),"");
+        String searchKeyword = getString(modelMap.get("searchKeyword"),"");
+        Integer categoryCd = getInt(modelMap.get("categoryCd"),0);
 
         if ("0".equals(searchType)) {
             return adminModelEntity.modelKorName.contains(searchKeyword)
@@ -96,12 +98,12 @@ public class AdminModelJpaRepository {
                     .selectFrom(adminModelEntity)
                     .orderBy(adminModelEntity.idx.desc())
                     .where(searchModel(modelMap).and(adminModelEntity.visible.eq("Y")))
-                    .offset(StringUtil.getInt(modelMap.get("jpaStartPage"),0))
-                    .limit(StringUtil.getInt(modelMap.get("size"),0))
+                    .offset(getInt(modelMap.get("jpaStartPage"),0))
+                    .limit(getInt(modelMap.get("size"),0))
                     .fetch();
 
             modelList.forEach(list -> modelList.get(modelList.indexOf(list))
-                    .setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
+                    .setRnum(getInt(modelMap.get("startPage"),1)*(getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
 
             return INSTANCE.toDtoList(modelList);
         } catch (Exception e) {
