@@ -7,7 +7,6 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapper;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapperImpl;
-import com.tsp.new_tsp_admin.api.production.mapper.ProductionMapperImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
