@@ -62,7 +62,6 @@ class AdminUserJpaControllerTest {
     @Autowired
     private JwtUtil jwtUtil;
 
-
     Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
