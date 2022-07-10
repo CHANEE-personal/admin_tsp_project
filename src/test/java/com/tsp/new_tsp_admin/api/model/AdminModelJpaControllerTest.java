@@ -41,6 +41,7 @@ import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -511,7 +512,7 @@ class AdminModelJpaControllerTest {
         mockMvc.perform(multipart("/api/jpa-model/1/images")
                         .file("images", imageFiles.get(0).getBytes())
                         .file("images", imageFiles.get(1).getBytes())
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+                .contentType(MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("Y"));
@@ -535,7 +536,6 @@ class AdminModelJpaControllerTest {
         mockMvc.perform(delete("/api/jpa-model/{idx}/images", commonImageEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE))
-//                        .content(objectMapper.writeValueAsString(commonImageEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(StringUtil.getString(commonImageEntity.getIdx(),"")));

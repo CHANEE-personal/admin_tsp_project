@@ -48,14 +48,11 @@ class AdminModelJpaRepositoryTest {
     private AdminModelJpaRepository adminModelJpaRepository;
     @Autowired
     private AdminUserJpaRepository adminUserJpaRepository;
-
     @Mock
     private AdminModelJpaRepository mockAdminModelJpaRepository;
-
     @Autowired
     private EntityManager em;
     JPAQueryFactory queryFactory;
-
     private AdminModelEntity adminModelEntity;
     private AdminModelDTO adminModelDTO;
     private CommonImageEntity commonImageEntity;
