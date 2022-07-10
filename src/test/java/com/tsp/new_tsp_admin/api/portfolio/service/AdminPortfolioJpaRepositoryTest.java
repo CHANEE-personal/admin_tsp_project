@@ -49,7 +49,6 @@ class AdminPortfolioJpaRepositoryTest {
     @Autowired
     private EntityManager em;
     JPAQueryFactory queryFactory;
-
     private AdminPortFolioEntity adminPortFolioEntity;
     private AdminPortFolioDTO adminPortFolioDTO;
     private CommonImageEntity commonImageEntity;

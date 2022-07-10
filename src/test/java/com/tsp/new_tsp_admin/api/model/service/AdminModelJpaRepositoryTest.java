@@ -30,6 +30,7 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
+import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -86,7 +87,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = INSTANCE.toDto(adminModelEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .idx(1)
@@ -359,7 +360,7 @@ class AdminModelJpaRepositoryTest {
 
         adminModelJpaRepository.updateModelByEm(adminModelEntity);
 
-        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = INSTANCE.toDto(adminModelEntity);
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);

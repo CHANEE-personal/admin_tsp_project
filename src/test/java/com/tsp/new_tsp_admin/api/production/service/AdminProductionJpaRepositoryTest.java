@@ -52,7 +52,6 @@ class AdminProductionJpaRepositoryTest {
     @Autowired
     private EntityManager em;
     JPAQueryFactory queryFactory;
-
     private AdminProductionEntity adminProductionEntity;
     private AdminProductionDTO adminProductionDTO;
     private CommonImageEntity commonImageEntity;
@@ -230,9 +229,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer imageIdx = adminProductionJpaRepository.insertProductionImage(commonImageEntity);
-
-        assertNotNull(imageIdx);
+        assertNotNull(adminProductionJpaRepository.insertProductionImage(commonImageEntity));
     }
 
     @Test
