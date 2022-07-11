@@ -78,6 +78,17 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
         }
     }
 
+    @Override
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) throws TspException {
+        try {
+            return adminSupportJpaRepository.insertSupportModel(adminSupportEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_SUPPORT, e);
+        }
+    }
+
     /**
      * <pre>
      * 1. MethodName : updateSupportModel

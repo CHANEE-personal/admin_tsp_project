@@ -39,6 +39,7 @@ public enum ApiExceptionType implements BaseExceptionType {
 
 	// Support 관련 Type
 	ERROR_DELETE_SUPPORT("ERROR_DELETE_SUPPORT", 500,"지원모델 삭제 에러"),
+	ERROR_SUPPORT("ERROR_SUPPORT", 500, "지원모델 등록 에러"),
 	ERROR_UPDATE_SUPPORT("ERROR_UPDATE_SUPPORT", 500, "지원모델 수정 에러"),
 	NOT_FOUND_SUPPORT("NOT_FOUND_SUPPORT", 200, "해당 지원서 없음"),
 	NOT_FOUND_SUPPORT_LIST("NOT_FOUND_SUPPORT_LIST", 200, "지원서 리스트 없음"),
