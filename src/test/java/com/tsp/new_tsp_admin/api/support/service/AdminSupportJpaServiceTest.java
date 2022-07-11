@@ -23,7 +23,6 @@ import java.util.Map;
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
