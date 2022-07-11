@@ -110,6 +110,7 @@ class AdminSupportJpaServiceTest {
 
         // then
         assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
+        assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportPhone()).isEqualTo("010-9466-2702");
     }
 
     @Test
