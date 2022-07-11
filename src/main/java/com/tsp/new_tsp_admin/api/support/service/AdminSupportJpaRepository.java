@@ -99,6 +99,22 @@ public class AdminSupportJpaRepository {
 
     /**
      * <pre>
+     * 1. MethodName : insertSupportModel
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     *
+     */
+    public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
+        em.persist(adminSupportEntity);
+
+        return INSTANCE.toDto(adminSupportEntity);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : updateSupportModel
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 수정
