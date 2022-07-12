@@ -49,18 +49,12 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminUserJpaControllerTest {
     private AdminUserEntity adminUserEntity;
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
-    private WebApplicationContext wac;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
-    private EntityManager em;
-    @Autowired
-    private JwtUtil jwtUtil;
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
+    @Autowired private WebApplicationContext wac;
+    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired private EntityManager em;
+    @Autowired private JwtUtil jwtUtil;
 
     Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

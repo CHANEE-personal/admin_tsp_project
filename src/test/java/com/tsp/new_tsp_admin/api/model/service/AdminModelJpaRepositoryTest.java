@@ -8,7 +8,6 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,14 +44,10 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @ExtendWith(MockitoExtension.class)
 @DisplayName("모델 Repository Test")
 class AdminModelJpaRepositoryTest {
-    @Autowired
-    private AdminModelJpaRepository adminModelJpaRepository;
-    @Autowired
-    private AdminUserJpaRepository adminUserJpaRepository;
-    @Mock
-    private AdminModelJpaRepository mockAdminModelJpaRepository;
-    @Autowired
-    private EntityManager em;
+    @Autowired private AdminModelJpaRepository adminModelJpaRepository;
+    @Autowired private AdminUserJpaRepository adminUserJpaRepository;
+    @Mock private AdminModelJpaRepository mockAdminModelJpaRepository;
+    @Autowired private EntityManager em;
     JPAQueryFactory queryFactory;
     private AdminModelEntity adminModelEntity;
     private AdminModelDTO adminModelDTO;

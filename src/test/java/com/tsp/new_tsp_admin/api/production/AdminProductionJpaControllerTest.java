@@ -48,16 +48,11 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminProductionJpaControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
-    private WebApplicationContext wac;
-    @Autowired
-    private EntityManager em;
-    @Autowired
-    private JwtUtil jwtUtil;
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
+    @Autowired private WebApplicationContext wac;
+    @Autowired private EntityManager em;
+    @Autowired private JwtUtil jwtUtil;
 
     private AdminProductionEntity adminProductionEntity;
     private AdminUserEntity adminUserEntity;

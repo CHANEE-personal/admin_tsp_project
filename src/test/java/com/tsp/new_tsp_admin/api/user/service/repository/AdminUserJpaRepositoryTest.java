@@ -39,12 +39,9 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @ExtendWith(MockitoExtension.class)
 @DisplayName("회원 Repository Test")
 class AdminUserJpaRepositoryTest {
-    @Autowired
-    private AdminUserJpaRepository adminUserJpaRepository;
-    @Mock
-    private AdminUserJpaRepository mockAdminUserJpaRepository;
-    @Autowired
-    private EntityManager em;
+    @Autowired private AdminUserJpaRepository adminUserJpaRepository;
+    @Mock private AdminUserJpaRepository mockAdminUserJpaRepository;
+    @Autowired private EntityManager em;
     JPAQueryFactory queryFactory;
     private AdminUserEntity adminUserEntity;
     private AdminUserDTO adminUserDTO;
