@@ -35,12 +35,8 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 class AdminPortfolioJpaServiceTest {
     AdminPortFolioEntity adminPortFolioEntity;
     AdminPortFolioDTO adminPortFolioDTO;
-
-    @Autowired
-    private AdminPortfolioJpaService adminPortfolioJpaService;
-
-    @Mock
-    private AdminPortfolioJpaService mockAdminPortfolioJpaService;
+    @Autowired private AdminPortfolioJpaService adminPortfolioJpaService;
+    @Mock private AdminPortfolioJpaService mockAdminPortfolioJpaService;
 
     void createPortfolio() {
         adminPortFolioEntity = builder()

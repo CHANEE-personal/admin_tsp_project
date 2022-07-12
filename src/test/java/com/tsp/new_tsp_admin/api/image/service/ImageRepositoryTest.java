@@ -28,14 +28,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("이미지 Repository Test")
 class ImageRepositoryTest {
-    @Autowired
-    private ImageRepository imageRepository;
-
-    @Mock
-    private ImageRepository mockImageRepository;
-
-    @Autowired
-    private EntityManager em;
+    @Autowired private ImageRepository imageRepository;
+    @Mock private ImageRepository mockImageRepository;
+    @Autowired private EntityManager em;
     JPAQueryFactory queryFactory;
 
     @BeforeEach

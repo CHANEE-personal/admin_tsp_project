@@ -36,11 +36,8 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 class AdminModelJpaServiceTest {
     AdminModelEntity adminModelEntity;
     AdminModelDTO adminModelDTO;
-    @Autowired
-    private AdminModelJpaService adminModelJpaService;
-
-    @Mock
-    private AdminModelJpaService mockAdminModelJpaService;
+    @Autowired private AdminModelJpaService adminModelJpaService;
+    @Mock private AdminModelJpaService mockAdminModelJpaService;
 
     public void createModel() {
         adminModelEntity = builder()

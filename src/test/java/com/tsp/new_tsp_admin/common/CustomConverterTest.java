@@ -22,9 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CustomConverterTest {
-
-    @Autowired
-    private CustomConverter customConverter;
+    @Autowired private CustomConverter customConverter;
 
     @Test
     @DisplayName("convertToDataBaseColumnTest")

@@ -21,14 +21,9 @@ import static java.lang.Boolean.TRUE;
 
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    @Autowired
-    private AdminUserJpaService adminUserJpaService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private MyUserDetailsService userDetailsService;
+    @Autowired private AdminUserJpaService adminUserJpaService;
+    @Autowired private JwtUtil jwtUtil;
+    @Autowired private MyUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

@@ -28,11 +28,8 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminUserJpaServiceTest {
-    @Autowired
-    private AdminUserJpaService adminUserJpaService;
-
-    @Mock
-    private AdminUserJpaService mockAdminUserJpaService;
+    @Autowired private AdminUserJpaService adminUserJpaService;
+    @Mock private AdminUserJpaService mockAdminUserJpaService;
 
     @Test
     @DisplayName("관리자 회원 리스트 조회 테스트")

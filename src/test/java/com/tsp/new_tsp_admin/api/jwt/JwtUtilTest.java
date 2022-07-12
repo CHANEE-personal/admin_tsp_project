@@ -27,15 +27,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class JwtUtilTest {
     private final MockHttpServletResponse response = new MockHttpServletResponse();
-
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
-
-    @Autowired
-    private MyUserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    @Autowired private MyUserDetailsService userDetailsService;
+    @Autowired private JwtUtil jwtUtil;
 
     private final AuthenticationRequest authenticationRequest = new AuthenticationRequest();
     private UserDetails userDetails;
