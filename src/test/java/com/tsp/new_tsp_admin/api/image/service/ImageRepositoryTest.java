@@ -20,11 +20,12 @@ import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
 @DataJpaTest
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("이미지 Repository Test")
 class ImageRepositoryTest {

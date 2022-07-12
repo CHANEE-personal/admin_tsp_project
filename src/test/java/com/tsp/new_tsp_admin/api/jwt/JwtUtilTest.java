@@ -19,12 +19,13 @@ import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 class JwtUtilTest {
     private final MockHttpServletResponse response = new MockHttpServletResponse();
     @Value("${spring.jwt.secret}")

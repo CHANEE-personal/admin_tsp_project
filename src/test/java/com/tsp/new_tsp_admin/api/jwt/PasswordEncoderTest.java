@@ -19,14 +19,15 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 class PasswordEncoderTest {
-
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
@@ -39,10 +40,8 @@ class PasswordEncoderTest {
     void delegatingPasswordEncoding() {
         // given
         String password = "pass1234";
-
         // when
         String encodedPassword = passwordEncoder.encode(password);
-
         // then
         assertThat(passwordEncoder.matches(password, encodedPassword)).isTrue();
     }

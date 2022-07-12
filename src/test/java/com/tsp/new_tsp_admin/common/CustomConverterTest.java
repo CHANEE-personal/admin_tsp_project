@@ -15,12 +15,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 class CustomConverterTest {
     @Autowired private CustomConverter customConverter;
 
