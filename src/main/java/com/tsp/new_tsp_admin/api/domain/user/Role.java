@@ -1,8 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public enum Role {

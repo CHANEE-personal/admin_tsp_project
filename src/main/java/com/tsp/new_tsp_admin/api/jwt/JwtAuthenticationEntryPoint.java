@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
+
 @Slf4j
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -21,10 +24,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         log.error("Responding with unauthorized error. Message - {}", authException.getMessage());
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
         Map<String, Object> errorResult = new HashMap<>();
-        errorResult.put("errorCode", ApiExceptionType.NO_LOGIN.getHttpStatus());
-        errorResult.put("message", ApiExceptionType.NO_LOGIN.getErrorMessage());
+        errorResult.put("errorCode", NO_LOGIN.getHttpStatus());
+        errorResult.put("message", NO_LOGIN.getErrorMessage());
         String result = objectMapper.writeValueAsString(errorResult);
 
         response.setContentType("application/json");

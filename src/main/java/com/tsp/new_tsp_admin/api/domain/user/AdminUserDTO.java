@@ -18,7 +18,6 @@ import lombok.experimental.SuperBuilder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel
 public class AdminUserDTO extends NewCommonDTO {
-
 	@ApiModelProperty(required = true, value = "rnum", hidden = true)
 	Integer rnum;
 
@@ -40,12 +39,12 @@ public class AdminUserDTO extends NewCommonDTO {
 	@ApiModelProperty(required = true, value = "user visible", hidden = true)
 	String visible;
 
-	@ApiModelProperty(required = false, value = "user Token", hidden = true)
+	@ApiModelProperty(value = "user Token", hidden = true)
 	String userToken;
 
-	@ApiModelProperty(required = false, value = "user refresh Token", hidden = true)
+	@ApiModelProperty(value = "user refresh Token", hidden = true)
 	String userRefreshToken;
 
-	@ApiModelProperty(required = false, value = "role", hidden = true)
+	@ApiModelProperty(value = "role", hidden = true)
 	Role role;
 }

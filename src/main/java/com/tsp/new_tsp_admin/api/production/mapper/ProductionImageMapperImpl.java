@@ -7,13 +7,12 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductionImageMapperImpl implements ProductionImageMapper {
+import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.*;
 
+public class ProductionImageMapperImpl implements ProductionImageMapper {
     @Override
     public CommonImageDTO toDto(CommonImageEntity entity) {
-        if (entity == null) {
-            return null;
-        }
+        if (entity == null) return null;
 
         return CommonImageDTO.builder()
                 .idx(entity.getIdx())
@@ -32,11 +31,9 @@ public class ProductionImageMapperImpl implements ProductionImageMapper {
 
     @Override
     public CommonImageEntity toEntity(CommonImageDTO dto) {
-        if(dto == null) {
-            return null;
-        }
+        if(dto == null) return null;
 
-        return CommonImageEntity.builder()
+        return builder()
                 .idx(dto.getIdx())
                 .typeIdx(dto.getTypeIdx())
                 .typeName(dto.getTypeName())
@@ -52,9 +49,7 @@ public class ProductionImageMapperImpl implements ProductionImageMapper {
 
     @Override
     public List<CommonImageDTO> toDtoList(List<CommonImageEntity> entityList) {
-        if(entityList == null) {
-            return null;
-        }
+        if(entityList == null) return null;
 
         List<CommonImageDTO> list = new ArrayList<>(entityList.size());
         for(CommonImageEntity commonImageEntity : entityList) {
@@ -66,9 +61,7 @@ public class ProductionImageMapperImpl implements ProductionImageMapper {
 
     @Override
     public List<CommonImageEntity> toEntityList(List<CommonImageDTO> dtoList) {
-        if(dtoList == null) {
-            return null;
-        }
+        if(dtoList == null) return null;
 
         List<CommonImageEntity> list = new ArrayList<>(dtoList.size());
         for(CommonImageDTO commonImageDTO : dtoList) {

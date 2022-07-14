@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.exception;
 
 public interface BaseExceptionType {
-
 	// errorCode
 	String getErrorCode();
 	// HttpStatus

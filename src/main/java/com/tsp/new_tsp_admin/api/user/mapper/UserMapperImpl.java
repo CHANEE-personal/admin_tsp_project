@@ -6,13 +6,12 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserMapperImpl implements UserMapper {
+import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
 
+public class UserMapperImpl implements UserMapper {
 	@Override
 	public AdminUserDTO toDto(AdminUserEntity entity) {
-		if (entity == null) {
-			return null;
-		}
+		if (entity == null) return null;
 
 		return AdminUserDTO.builder()
 				.idx(entity.getIdx())
@@ -33,11 +32,9 @@ public class UserMapperImpl implements UserMapper {
 
 	@Override
 	public AdminUserEntity toEntity(AdminUserDTO dto) {
-		if (dto == null) {
-			return null;
-		}
+		if (dto == null) return null;
 
-		return AdminUserEntity.builder()
+		return builder()
 				.idx(dto.getIdx())
 				.userId(dto.getUserId())
 				.password(dto.getPassword())
@@ -56,9 +53,7 @@ public class UserMapperImpl implements UserMapper {
 
 	@Override
 	public List<AdminUserDTO> toDtoList(List<AdminUserEntity> entityList) {
-		if (entityList == null) {
-			return null;
-		}
+		if (entityList == null) return null;
 
 		List<AdminUserDTO> list = new ArrayList<>(entityList.size());
 		for (AdminUserEntity adminUserEntity : entityList) {
@@ -70,9 +65,7 @@ public class UserMapperImpl implements UserMapper {
 
 	@Override
 	public List<AdminUserEntity> toEntityList(List<AdminUserDTO> dtoList) {
-		if (dtoList == null) {
-			return null;
-		}
+		if (dtoList == null) return null;
 
 		List<AdminUserEntity> list = new ArrayList<>(dtoList.size());
 		for (AdminUserDTO adminUserDTO : dtoList) {

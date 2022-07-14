@@ -19,16 +19,20 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import static com.tsp.new_tsp_admin.exception.ApiExceptionHandler.Error.create;
+import static java.util.Arrays.stream;
+import static java.util.Locale.KOREA;
+import static java.util.Objects.*;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-
 	private final MessageSource messageSource;
 
 	@Getter
@@ -44,9 +48,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 	}
 
-	@ExceptionHandler({TspException.class})
+	@ExceptionHandler(value = {TspException.class})
 	public ResponseEntity<Error> exception(TspException tspException) {
-		return new ResponseEntity<>(Error.create(tspException.getBaseExceptionType()), HttpStatus.OK);
+		return new ResponseEntity<>(create(tspException.getBaseExceptionType()), OK);
 	}
 
 
@@ -60,9 +64,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	 * </pre>
 	 *
 	 */
-	@ExceptionHandler(ConstraintViolationException.class)
+	@ExceptionHandler(value = ConstraintViolationException.class)
 	protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException e, WebRequest request) {
-		return handleExceptionInternal(e, messageSource.getMessage("modelCategory.Range", new String[]{}, Locale.KOREA), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+		return handleExceptionInternal(e, messageSource.getMessage("modelCategory.Range", new String[]{}, KOREA), new HttpHeaders(), BAD_REQUEST, request);
 	}
 
 	/**
@@ -82,7 +86,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
 		for (ObjectError error : allErrors) {
-			String message = Arrays.stream(Objects.requireNonNull(error.getCodes()))
+			String message = stream(requireNonNull(error.getCodes()))
 					.map(c -> {
 						Object[] arguments = error.getArguments();
 						Locale locale = LocaleContextHolder.getLocale();

@@ -3,13 +3,13 @@ package com.tsp.new_tsp_admin.api.production.mapper;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.common.StructMapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-public interface ProductionMapper extends StructMapper<AdminProductionDTO, AdminProductionEntity> {
+import static org.mapstruct.factory.Mappers.getMapper;
 
-	ProductionMapper INSTANCE = Mappers.getMapper(ProductionMapper.class);
+public interface ProductionMapper extends StructMapper<AdminProductionDTO, AdminProductionEntity> {
+	ProductionMapper INSTANCE = getMapper(ProductionMapper.class);
 
 	@Override
 	AdminProductionDTO toDto(AdminProductionEntity entity);

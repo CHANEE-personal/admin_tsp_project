@@ -7,12 +7,12 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+
+import static java.util.List.*;
 
 @Configuration
 @EnableCaching
 public class CacheConfiguration {
-
     /**
      * <pre>
      * 1. MethodName : cacheManager
@@ -26,7 +26,7 @@ public class CacheConfiguration {
     @Bean
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
-        cacheManager.setCaches(List.of(
+        cacheManager.setCaches(of(
                 new ConcurrentMapCache("user"),
                 new ConcurrentMapCache("model"),
                 new ConcurrentMapCache("production"),

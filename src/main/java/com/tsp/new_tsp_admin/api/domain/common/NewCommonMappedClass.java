@@ -16,15 +16,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 
+import static javax.persistence.TemporalType.TIMESTAMP;
+
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(value = AuditingEntityListener.class)
 public abstract class NewCommonMappedClass {
-
 	@CreatedBy
 	@Column(name = "creator", updatable = false)
 	@ApiModelProperty(required = true, value = "등록자")
@@ -37,14 +38,14 @@ public abstract class NewCommonMappedClass {
 
 	@CreationTimestamp
 	@Column(name = "create_time", updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(value = TIMESTAMP)
 	@ApiModelProperty(required = true, value = "등록 일자")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 
 	@UpdateTimestamp
 	@Column(name = "update_time", insertable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TIMESTAMP)
 	@ApiModelProperty(required = true, value = "수정 일자")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updateTime;

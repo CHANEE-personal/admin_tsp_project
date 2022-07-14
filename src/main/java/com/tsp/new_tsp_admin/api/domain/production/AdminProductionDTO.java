@@ -21,7 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 @ApiModel
 public class AdminProductionDTO extends NewCommonDTO {
-
 	@ApiModelProperty(required = true, value = "rnum", hidden = true)
 	Integer rnum;
 

@@ -7,13 +7,12 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductionMapperImpl implements ProductionMapper {
+import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 
+public class ProductionMapperImpl implements ProductionMapper {
 	@Override
 	public AdminProductionDTO toDto(AdminProductionEntity entity) {
-		if(entity == null) {
-			return null;
-		}
+		if(entity == null) return null;
 
 		return AdminProductionDTO.builder()
 				.rnum(entity.getRnum())
@@ -25,17 +24,15 @@ public class ProductionMapperImpl implements ProductionMapper {
 				.createTime(entity.getCreateTime())
 				.updater(entity.getUpdater())
 				.updateTime(entity.getUpdateTime())
-				.productionImage(ProductionImageMapperImpl.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
+				.productionImage(ProductionImageMapper.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
 				.build();
 	}
 
 	@Override
 	public AdminProductionEntity toEntity(AdminProductionDTO dto) {
-		if(dto == null) {
-			return null;
-		}
+		if(dto == null) return null;
 
-		return AdminProductionEntity.builder()
+		return builder()
 				.rnum(dto.getRnum())
 				.idx(dto.getIdx())
 				.title(dto.getTitle())
@@ -50,9 +47,7 @@ public class ProductionMapperImpl implements ProductionMapper {
 
 	@Override
 	public List<AdminProductionDTO> toDtoList(List<AdminProductionEntity> entityList) {
-		if(entityList == null) {
-			return null;
-		}
+		if(entityList == null) return null;
 
 		List<AdminProductionDTO> list = new ArrayList<>(entityList.size());
 		for(AdminProductionEntity adminProductionEntity : entityList) {
@@ -64,9 +59,7 @@ public class ProductionMapperImpl implements ProductionMapper {
 
 	@Override
 	public List<AdminProductionEntity> toEntityList(List<AdminProductionDTO> dtoList) {
-		if(dtoList == null) {
-			return null;
-		}
+		if(dtoList == null) return null;
 
 		List<AdminProductionEntity> list = new ArrayList<>(dtoList.size());
 		for(AdminProductionDTO adminProductionDTO : dtoList) {

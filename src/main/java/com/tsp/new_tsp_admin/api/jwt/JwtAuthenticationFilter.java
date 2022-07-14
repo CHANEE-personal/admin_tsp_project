@@ -6,7 +6,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,6 +17,8 @@ import java.io.IOException;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
 import static java.lang.Boolean.TRUE;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -53,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (ExpiredJwtException e) {
             log.info("Security exception for user {} - {}", e.getClaims().getSubject(), e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(SC_UNAUTHORIZED);
             log.debug("Exception " + e.getMessage(), e);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_USER, e);
@@ -64,6 +65,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void setAuthentication(String token) {
         Authentication authentication = jwtUtil.getAuthentication(token);
         // SecurityContext에 Authentication 객체 저장
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        getContext().setAuthentication(authentication);
     }
 }

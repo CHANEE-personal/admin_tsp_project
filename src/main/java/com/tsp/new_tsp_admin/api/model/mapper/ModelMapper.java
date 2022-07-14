@@ -4,14 +4,14 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.common.StructMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
+import static org.mapstruct.factory.Mappers.getMapper;
+
 @Mapper
 public interface ModelMapper extends StructMapper<AdminModelDTO, AdminModelEntity> {
-
-    ModelMapper INSTANCE = Mappers.getMapper(ModelMapper.class);
+    ModelMapper INSTANCE = getMapper(ModelMapper.class);
 
     @Override
     AdminModelDTO toDto(AdminModelEntity entity);

@@ -18,14 +18,11 @@ import java.util.List;
 @Getter
 @Setter
 public class AuthenticationRequest implements UserDetails {
-
     private AdminUserEntity adminUserEntity;
 
     private static final long serialVersionUID = 5926468583005150707L;
-    @JsonProperty("userId")
-    private String userId;
-    @JsonProperty("password")
-    private String password;
+    @JsonProperty("userId") private String userId;
+    @JsonProperty("password") private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

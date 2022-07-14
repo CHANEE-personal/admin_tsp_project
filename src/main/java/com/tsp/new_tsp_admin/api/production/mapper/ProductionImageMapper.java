@@ -4,14 +4,14 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.common.StructMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
+import static org.mapstruct.factory.Mappers.getMapper;
+
 @Mapper
 public interface ProductionImageMapper extends StructMapper<CommonImageDTO, CommonImageEntity> {
-
-    ProductionImageMapper INSTANCE = Mappers.getMapper(ProductionImageMapper.class);
+    ProductionImageMapper INSTANCE = getMapper(ProductionImageMapper.class);
 
     @Override
     CommonImageDTO toDto(CommonImageEntity entity);

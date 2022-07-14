@@ -23,6 +23,12 @@ import java.util.Date;
 import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
+import static io.jsonwebtoken.Jwts.builder;
+import static io.jsonwebtoken.Jwts.parserBuilder;
+import static io.jsonwebtoken.SignatureAlgorithm.HS256;
+import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
+import static java.lang.System.currentTimeMillis;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 @Component
@@ -30,7 +36,6 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
 public class JwtUtil implements Serializable {
     public final static long TOKEN_VALIDATION_SECOND = 1000L * 10;
     public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 24 * 2;
-
     private final MyUserDetailsService myUserDetailsService;
     private final AdminUserJpaService adminUserJpaService;
 
@@ -38,8 +43,7 @@ public class JwtUtil implements Serializable {
     private String SECRET_KEY;
 
     private Key getSigningKey(String secretKey) {
-        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return hmacShaKeyFor(secretKey.getBytes(UTF_8));
     }
 
     /**
@@ -53,7 +57,7 @@ public class JwtUtil implements Serializable {
      *
      */
     public Claims extractAllClaims(String token) throws ExpiredJwtException {
-        return Jwts.parserBuilder()
+        return parserBuilder()
                 .setSigningKey(getSigningKey(SECRET_KEY))
                 .build()
                 .parseClaimsJws(token)
@@ -86,8 +90,7 @@ public class JwtUtil implements Serializable {
      */
     public Boolean isTokenExpired(String token) {
         try {
-            final Date expiration = extractAllClaims(token).getExpiration();
-            return expiration.before(new Date());
+            return extractAllClaims(token).getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             return false;
         }
@@ -136,11 +139,11 @@ public class JwtUtil implements Serializable {
         Claims claims = Jwts.claims();
         claims.put("username", username);
 
-        return Jwts.builder()
+        return builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
-                .signWith(getSigningKey(SECRET_KEY), SignatureAlgorithm.HS256)
+                .setIssuedAt(new Date(currentTimeMillis()))
+                .setExpiration(new Date(currentTimeMillis() + expireTime))
+                .signWith(getSigningKey(SECRET_KEY), HS256)
                 .compact();
     }
 

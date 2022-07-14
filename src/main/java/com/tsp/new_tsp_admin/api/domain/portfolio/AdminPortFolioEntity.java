@@ -26,7 +26,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Table(name = "tsp_portfolio")
 public class AdminPortFolioEntity extends NewCommonMappedClass {
-
 	@Transient
 	private Integer rnum;
 

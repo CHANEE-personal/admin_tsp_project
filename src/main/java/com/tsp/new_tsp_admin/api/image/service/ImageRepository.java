@@ -18,11 +18,14 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
-
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.ERROR_DELETE_IMAGE;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.ERROR_IMAGE;
+import static java.lang.Runtime.getRuntime;
+import static java.lang.System.currentTimeMillis;
+import static java.util.Locale.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,12 +48,8 @@ public class ImageRepository {
      *
      */
     public String currentDate() {
-        String pattern = "MMddHHmmssSSS";
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.KOREA);
-        Timestamp ts = new Timestamp(System.currentTimeMillis());
-
-        return simpleDateFormat.format(ts.getTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddHHmmssSSS", KOREA);
+        return simpleDateFormat.format(new Timestamp(currentTimeMillis()).getTime());
     }
 
     /**
@@ -108,7 +107,7 @@ public class ImageRepository {
 
             return commonImageEntity.getIdx();
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
+            throw new TspException(ERROR_IMAGE, e);
         }
     }
 
@@ -132,7 +131,7 @@ public class ImageRepository {
 
             return idx;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
+            throw new TspException(ERROR_IMAGE, e);
         }
     }
 
@@ -176,7 +175,7 @@ public class ImageRepository {
                         try {
                             new File(uploadPath).mkdir();
                         } catch (Exception e) {
-                            throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
+                            throw new TspException(ERROR_IMAGE, e);
                         }
                     }
 
@@ -203,7 +202,7 @@ public class ImageRepository {
                     String filePath = uploadPath + fileMask;
                     file.transferTo(new File(filePath));
 
-                    Runtime.getRuntime().exec("chmod -R 755 " + filePath);
+                    getRuntime().exec("chmod -R 755 " + filePath);
 
                     commonImageEntity.setFileNum(mainCnt);
                     commonImageEntity.setFileName(file.getOriginalFilename());
@@ -228,7 +227,7 @@ public class ImageRepository {
                         mainCnt++;
                     }
                 } catch (Exception e) {
-                    throw new TspException(ApiExceptionType.ERROR_IMAGE, e);
+                    throw new TspException(ERROR_IMAGE, e);
                 }
             }
         }
@@ -247,14 +246,13 @@ public class ImageRepository {
      */
     public CommonImageEntity deleteImage(CommonImageEntity exCommonImageEntity) {
         try {
-            exCommonImageEntity = em.find(CommonImageEntity.class, exCommonImageEntity.getIdx());
-            em.remove(exCommonImageEntity);
+            em.remove(em.find(CommonImageEntity.class, exCommonImageEntity.getIdx()));
             em.flush();
             em.clear();
 
             return exCommonImageEntity;
         } catch (Exception e) {
-            throw new TspException(ApiExceptionType.ERROR_DELETE_IMAGE, e);
+            throw new TspException(ERROR_DELETE_IMAGE, e);
         }
     }
 }

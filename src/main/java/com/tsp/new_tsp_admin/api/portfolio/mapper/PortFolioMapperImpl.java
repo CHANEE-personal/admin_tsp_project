@@ -6,8 +6,8 @@ import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PortFolioMapperImpl implements PortFolioMapper {
 
+public class PortFolioMapperImpl implements PortFolioMapper {
 	@Override
 	public AdminPortFolioDTO toDto(AdminPortFolioEntity entity) {
 		if (entity == null) {
@@ -27,7 +27,7 @@ public class PortFolioMapperImpl implements PortFolioMapper {
 				.createTime(entity.getCreateTime())
 				.updater(entity.getUpdater())
 				.updateTime(entity.getUpdateTime())
-				.portfolioImage(PortfolioImageMapperImpl.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
+				.portfolioImage(PortfolioImageMapper.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
 				.build();
 	}
 
@@ -56,10 +56,7 @@ public class PortFolioMapperImpl implements PortFolioMapper {
 
 	@Override
 	public List<AdminPortFolioDTO> toDtoList(List<AdminPortFolioEntity> entityList) {
-
-		if(entityList == null) {
-			return null;
-		}
+		if(entityList == null) return null;
 
 		List<AdminPortFolioDTO> list = new ArrayList<>(entityList.size());
 		for(AdminPortFolioEntity adminPortFolioEntity : entityList) {
@@ -71,10 +68,7 @@ public class PortFolioMapperImpl implements PortFolioMapper {
 
 	@Override
 	public List<AdminPortFolioEntity> toEntityList(List<AdminPortFolioDTO> dtoList) {
-
-		if(dtoList == null) {
-			return null;
-		}
+		if(dtoList == null) return null;
 
 		List<AdminPortFolioEntity> list = new ArrayList<>(dtoList.size());
 		for(AdminPortFolioDTO adminPortFolioDTO : dtoList) {

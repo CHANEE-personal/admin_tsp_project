@@ -11,7 +11,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.*;
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Getter
@@ -22,7 +24,6 @@ import static javax.persistence.GenerationType.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "tsp_admin")
 public class AdminUserEntity {
-
 	@Transient
 	private Integer rnum;
 
@@ -56,7 +57,7 @@ public class AdminUserEntity {
 	@Column(name = "user_refresh_token")
 	private String userRefreshToken;
 
-	@Enumerated(EnumType.STRING)
+	@Enumerated(value = STRING)
 	private Role role;
 
 	@Column(name = "creator", updatable = false)
@@ -68,13 +69,13 @@ public class AdminUserEntity {
 	private String updater;
 
 	@Column(name = "create_time", updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(value = TIMESTAMP)
 	@ApiModelProperty(required = true, value = "등록 일자")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 
 	@Column(name = "update_time", insertable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TIMESTAMP)
 	@ApiModelProperty(required = true, value = "수정 일자")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updateTime;

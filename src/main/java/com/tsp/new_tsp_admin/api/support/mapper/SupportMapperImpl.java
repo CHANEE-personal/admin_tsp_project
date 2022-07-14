@@ -6,13 +6,12 @@ import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupportMapperImpl implements SupportMapper {
+import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.*;
 
+public class SupportMapperImpl implements SupportMapper {
 	@Override
 	public AdminSupportDTO toDto(AdminSupportEntity entity) {
-		if(entity == null) {
-			return null;
-		}
+		if(entity == null) return null;
 
 		return AdminSupportDTO.builder()
 				.rnum(entity.getRnum())
@@ -30,11 +29,9 @@ public class SupportMapperImpl implements SupportMapper {
 
 	@Override
 	public AdminSupportEntity toEntity(AdminSupportDTO dto) {
-		if(dto == null) {
-			return null;
-		}
+		if(dto == null) return null;
 
-		return AdminSupportEntity.builder()
+		return builder()
 				.rnum(dto.getRnum())
 				.idx(dto.getIdx())
 				.supportName(dto.getSupportName())
@@ -50,9 +47,7 @@ public class SupportMapperImpl implements SupportMapper {
 
 	@Override
 	public List<AdminSupportDTO> toDtoList(List<AdminSupportEntity> entityList) {
-		if(entityList == null) {
-			return null;
-		}
+		if(entityList == null) return null;
 
 		List<AdminSupportDTO> list = new ArrayList<>(entityList.size());
 		for(AdminSupportEntity adminSupportEntity : entityList) {
@@ -64,9 +59,7 @@ public class SupportMapperImpl implements SupportMapper {
 
 	@Override
 	public List<AdminSupportEntity> toEntityList(List<AdminSupportDTO> dtoList) {
-		if(dtoList == null) {
-			return null;
-		}
+		if(dtoList == null) return null;
 
 		List<AdminSupportEntity> list = new ArrayList<>(dtoList.size());
 		for(AdminSupportDTO adminSupportDTO : dtoList) {

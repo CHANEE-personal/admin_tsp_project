@@ -7,9 +7,10 @@ import org.mapstruct.Mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
+
 @Mapper
 public class ModelMapperImpl implements ModelMapper {
-
     @Override
     public AdminModelDTO toDto(AdminModelEntity entity) {
         return AdminModelDTO.builder().idx(entity.getIdx())
@@ -34,18 +35,15 @@ public class ModelMapperImpl implements ModelMapper {
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
                 .updateTime(entity.getUpdateTime())
-                .modelImage(ModelImageMapperImpl.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
+                .modelImage(ModelImageMapper.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
                 .build();
     }
 
     @Override
     public AdminModelEntity toEntity(AdminModelDTO dto) {
+        if(dto == null) return null;
 
-        if(dto == null) {
-            return null;
-        }
-
-        return AdminModelEntity.builder()
+        return builder()
                 .rnum(dto.getRnum())
                 .idx(dto.getIdx())
                 .categoryCd(dto.getCategoryCd())
@@ -73,10 +71,7 @@ public class ModelMapperImpl implements ModelMapper {
 
     @Override
     public List<AdminModelDTO> toDtoList(List<AdminModelEntity> entityList) {
-
-        if(entityList == null) {
-            return null;
-        }
+        if(entityList == null) return null;
 
         List<AdminModelDTO> list = new ArrayList<>(entityList.size());
         for(AdminModelEntity adminModelEntity : entityList) {
@@ -88,10 +83,7 @@ public class ModelMapperImpl implements ModelMapper {
 
     @Override
     public List<AdminModelEntity> toEntityList(List<AdminModelDTO> dtoList) {
-
-        if(dtoList == null) {
-            return null;
-        }
+        if(dtoList == null) return null;
 
         List<AdminModelEntity> list = new ArrayList<>(dtoList.size());
         for(AdminModelDTO adminModelDTO : dtoList) {

@@ -8,6 +8,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Getter
 @Setter
 @Entity
@@ -17,7 +19,7 @@ import javax.persistence.*;
 @Table(name = "tsp_cmm_code")
 public class CommonCodeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
     Integer idx;
 

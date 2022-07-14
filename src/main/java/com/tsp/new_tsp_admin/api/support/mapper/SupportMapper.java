@@ -3,13 +3,13 @@ package com.tsp.new_tsp_admin.api.support.mapper;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.common.StructMapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-public interface SupportMapper extends StructMapper<AdminSupportDTO, AdminSupportEntity> {
+import static org.mapstruct.factory.Mappers.getMapper;
 
-	SupportMapper INSTANCE = Mappers.getMapper(SupportMapper.class);
+public interface SupportMapper extends StructMapper<AdminSupportDTO, AdminSupportEntity> {
+	SupportMapper INSTANCE = getMapper(SupportMapper.class);
 
 	@Override
 	AdminSupportDTO toDto(AdminSupportEntity entity);

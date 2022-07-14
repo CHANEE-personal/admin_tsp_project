@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class TspCommonAop {
-
 	/**
 	 * <pre>
 	 * 1. MethodName : cut
@@ -27,7 +26,7 @@ public class TspCommonAop {
 	 *
 	 */
 	@Pointcut("execution(* com.tsp.new_tsp_admin..api..*.*(..))")
-	private void cut(){}
+	private void cut(){ /* TODO document why this method is empty */ }
 
 	/**
 	 * <pre>

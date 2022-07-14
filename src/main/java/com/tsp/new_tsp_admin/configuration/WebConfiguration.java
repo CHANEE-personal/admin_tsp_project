@@ -12,9 +12,10 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import static org.springframework.validation.DefaultMessageCodesResolver.Format.*;
+
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
-
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS =
             {"classpath:/static/",
                     "classpath:/public/",
@@ -76,7 +77,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public MessageCodesResolver getMessageCodesResolver() {
         DefaultMessageCodesResolver codesResolver = new DefaultMessageCodesResolver();
-        codesResolver.setMessageCodeFormatter(DefaultMessageCodesResolver.Format.POSTFIX_ERROR_CODE);
+        codesResolver.setMessageCodeFormatter(POSTFIX_ERROR_CODE);
         return codesResolver;
     }
 
@@ -92,8 +93,7 @@ public class WebConfiguration implements WebMvcConfigurer {
      */
     @Bean
     public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource =
-                new ReloadableResourceBundleMessageSource();
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.addBasenames("classpath:messages/modelMessage");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;

@@ -26,10 +26,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static io.jsonwebtoken.Jwts.builder;
+import static io.jsonwebtoken.SignatureAlgorithm.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.security.core.context.SecurityContextHolder.clearContext;
+
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter {
-
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
@@ -61,15 +65,15 @@ public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
+                                            Authentication authResult) throws IOException {
         Claims claims = Jwts.claims();
         claims.put("username", ((User)authResult.getPrincipal()).getUsername());
 
-        String token = Jwts.builder()
+        String token = builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000L * 10))
-                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
+                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(UTF_8)), HS256)
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + token);
@@ -81,7 +85,7 @@ public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        SecurityContextHolder.clearContext();
+        clearContext();
         getFailureHandler().onAuthenticationFailure(request, response, failed);
     }
 }

@@ -23,7 +23,6 @@ import java.util.List;
 @AllArgsConstructor
 @ApiModel(value = "모델 관련 변수")
 public class AdminModelDTO extends NewCommonDTO {
-
     @ApiModelProperty(required = true, value = "rnum", hidden = true)
     private Integer rnum;
 
@@ -88,7 +87,7 @@ public class AdminModelDTO extends NewCommonDTO {
     private String modelKorSecondName;
 
     @Convert(converter = CustomConverter.class)
-    @ApiModelProperty(required = false, value = "model career")
+    @ApiModelProperty(value = "model career")
     private ArrayList<CareerJson> careerList;
 
     @NotNull(message = "모델 상태 선택은 필수입니다.")

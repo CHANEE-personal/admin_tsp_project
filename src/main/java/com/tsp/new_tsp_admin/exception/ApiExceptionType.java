@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ApiExceptionType implements BaseExceptionType {

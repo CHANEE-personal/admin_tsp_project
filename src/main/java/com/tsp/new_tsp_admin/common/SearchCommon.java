@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
+import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class SearchCommon {
-
     /**
      * <pre>
      * 1. MethodName : searchCommon
@@ -27,15 +29,15 @@ public class SearchCommon {
         Map<String, Object> searchMap = new HashMap<>();
 
         // 페이징 처리
-        page.setPage(StringUtil.getInt(page.getPage(), 1));
-        page.setSize(StringUtil.getInt(page.getSize(), 10));
+        page.setPage(getInt(page.getPage(), 1));
+        page.setSize(getInt(page.getSize(), 10));
 
         // 검색 조건
-        searchMap.put("searchType", StringUtil.getString(paramMap.get("searchType"), ""));
-        searchMap.put("searchKeyword", StringUtil.getString(paramMap.get("searchKeyword"), ""));
-        searchMap.put("jpaStartPage", StringUtil.getInt(page.getStartPage(), 0));
-        searchMap.put("startPage", StringUtil.getInt(page.getPage(), 1));
-        searchMap.put("size", StringUtil.getInt(page.getSize(), 10));
+        searchMap.put("searchType", getString(paramMap.get("searchType"), ""));
+        searchMap.put("searchKeyword", getString(paramMap.get("searchKeyword"), ""));
+        searchMap.put("jpaStartPage", getInt(page.getStartPage(), 0));
+        searchMap.put("startPage", getInt(page.getPage(), 1));
+        searchMap.put("size", getInt(page.getSize(), 10));
 
         return searchMap;
     }
