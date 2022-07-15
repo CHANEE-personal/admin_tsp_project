@@ -28,8 +28,6 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @AutoConfigureTestDatabase(replace = NONE)
 class JwtUtilTest {
     private final MockHttpServletResponse response = new MockHttpServletResponse();
-    @Value("${spring.jwt.secret}")
-    private String SECRET_KEY;
     @Autowired private MyUserDetailsService userDetailsService;
     @Autowired private JwtUtil jwtUtil;
 

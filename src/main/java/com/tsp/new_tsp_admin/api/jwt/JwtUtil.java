@@ -1,10 +1,8 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
 import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
-import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +15,12 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
+import static io.jsonwebtoken.Jwts.*;
 import static io.jsonwebtoken.Jwts.builder;
 import static io.jsonwebtoken.Jwts.parserBuilder;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
@@ -131,7 +129,7 @@ public class JwtUtil implements Serializable {
      */
     public String doGenerateToken(String username, long expireTime) {
 
-        Claims claims = Jwts.claims();
+        Claims claims = claims();
         claims.put("username", username);
 
         return builder()
@@ -153,7 +151,7 @@ public class JwtUtil implements Serializable {
      */
     public Boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(getSigningKey(SECRET_KEY)).parseClaimsJws(token);
+            parser().setSigningKey(getSigningKey(SECRET_KEY)).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());

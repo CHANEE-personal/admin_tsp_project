@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,7 +34,7 @@ class PasswordEncoderTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void setUp() {
-        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        passwordEncoder = createDelegatingPasswordEncoder();
     }
 
     @Test
@@ -81,7 +82,7 @@ class PasswordEncoderTest {
         String password = "password";
         String encPassword = "$2a$10$Ot44NE6k1kO5bfNHTP0m8ejdpGr8ooHGT90lOD2/LpGIzfiS3p6oq";                       // bcrypt
 
-        DelegatingPasswordEncoder delegatingPasswordEncoder = (DelegatingPasswordEncoder) PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        DelegatingPasswordEncoder delegatingPasswordEncoder = (DelegatingPasswordEncoder) createDelegatingPasswordEncoder();
         delegatingPasswordEncoder.setDefaultPasswordEncoderForMatches(new BCryptPasswordEncoder());
         assertThat(delegatingPasswordEncoder.matches(password, encPassword)).isTrue();
     }

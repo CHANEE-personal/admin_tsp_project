@@ -18,6 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
@@ -43,7 +44,7 @@ class ImageRepositoryTest {
     @Test
     void 파일넘버최대값조회() {
         // given
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+        CommonImageEntity commonImageEntity = builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
@@ -66,7 +67,7 @@ class ImageRepositoryTest {
     @Test
     void 이미지등록테스트() {
         // given
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+        CommonImageEntity commonImageEntity = builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
@@ -91,7 +92,7 @@ class ImageRepositoryTest {
     @Test
     void 이미지삭제테스트() {
         // given
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+        CommonImageEntity commonImageEntity = builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")

@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 
+import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
@@ -28,7 +29,7 @@ class CustomConverterTest {
     @Test
     @DisplayName("convertToDataBaseColumnTest")
     void convertToDataBaseColumnTest() {
-        List<CareerJson> careerList = List.of(new CareerJson("title", "text"));
+        List<CareerJson> careerList = of(new CareerJson("title", "text"));
         assertThat(customConverter.convertToDatabaseColumn(careerList))
                 .isEqualTo("[{\"title\":\"title\",\"txt\":\"text\"}]");
     }
