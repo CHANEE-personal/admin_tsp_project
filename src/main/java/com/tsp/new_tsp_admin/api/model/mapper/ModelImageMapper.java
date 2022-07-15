@@ -11,7 +11,6 @@ import static org.mapstruct.factory.Mappers.getMapper;
 
 @Mapper
 public interface ModelImageMapper extends StructMapper<CommonImageDTO, CommonImageEntity> {
-
 	ModelImageMapper INSTANCE = getMapper(ModelImageMapper.class);
 
 	@Override
