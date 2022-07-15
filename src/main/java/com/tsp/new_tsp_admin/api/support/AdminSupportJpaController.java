@@ -39,7 +39,6 @@ public class AdminSupportJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @ApiOperation(value = "지원모델 조회", notes = "지원모델을 조회한다.")
     @ApiResponses(value = {
@@ -50,7 +49,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/lists")
-    public Map<String, Object> getSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> getSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         // 페이징 및 검색
         Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
 
@@ -80,7 +79,6 @@ public class AdminSupportJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @ApiOperation(value = "지원모델 수정", notes = "지원모델을 수정한다.")
     @ApiResponses(value = {
@@ -91,7 +89,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminSupportDTO updateSupportModel(@RequestBody AdminSupportEntity adminSupportEntity) throws Exception {
+    public AdminSupportDTO updateSupportModel(@RequestBody AdminSupportEntity adminSupportEntity) {
         return adminSupportJpaService.updateSupportModel(adminSupportEntity);
     }
 
@@ -103,7 +101,6 @@ public class AdminSupportJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @ApiOperation(value = "지원모델 삭제", notes = "지원모델을 삭제한다.")
     @ApiResponses(value = {
@@ -114,7 +111,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteSupportModel(@PathVariable("idx") Integer idx) throws Exception {
+    public Integer deleteSupportModel(@PathVariable("idx") Integer idx) {
         return adminSupportJpaService.deleteSupportModel(idx);
     }
 }

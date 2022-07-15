@@ -26,7 +26,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Transactional(readOnly = true)
@@ -46,7 +45,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Transactional(readOnly = true)
@@ -66,7 +64,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Transactional(readOnly = true)
@@ -97,7 +94,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Modifying(clearAutomatically = true)
@@ -118,7 +114,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Modifying(clearAutomatically = true)

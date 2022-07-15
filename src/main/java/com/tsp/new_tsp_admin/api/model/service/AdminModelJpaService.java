@@ -19,7 +19,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     Integer findModelsCount(Map<String, Object> modelMap) throws Exception;
 
@@ -31,7 +30,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws Exception;
 
@@ -43,7 +41,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) throws Exception;
 
@@ -55,7 +52,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     AdminModelDTO insertModel(AdminModelEntity adminModelEntity) throws Exception;
 
@@ -67,7 +63,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     AdminModelDTO updateModel(AdminModelEntity adminModelEntity) throws Exception;
 
@@ -79,7 +74,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     Integer deleteModel(Integer idx) throws Exception;
 
@@ -91,7 +85,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception;
 
@@ -103,7 +96,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     Integer deleteModelImage(Integer idx) throws Exception;
 
@@ -115,7 +107,6 @@ public interface AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity) throws Exception;
 }

@@ -31,7 +31,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Cacheable("user")
@@ -52,7 +51,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Cacheable("user")
@@ -65,6 +63,15 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         }
     }
 
+    /**
+     * <pre>
+     * 1. MethodName : findOneUserByToken
+     * 2. ClassName  : AdminUserJpaServiceImpl.java
+     * 3. Comment    : 관리자 토큰을 이용한 유저 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
     @Override
     @Transactional(readOnly = true)
     public String findOneUserByToken(String token) throws TspException {
@@ -83,7 +90,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Transactional(readOnly = true)
@@ -103,7 +109,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @CachePut("user")
@@ -126,7 +131,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     @Override
     @CachePut("user")
@@ -148,7 +152,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     @Override
     @CachePut("user")
@@ -170,7 +173,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     @Override
     @CacheEvict("user")

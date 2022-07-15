@@ -16,7 +16,6 @@ public interface AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     List<AdminUserDTO> findUsersList(Map<String, Object> userMap) throws Exception;
 
@@ -28,7 +27,6 @@ public interface AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     AdminUserEntity findOneUser(String id) throws Exception;
 
@@ -40,7 +38,6 @@ public interface AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     String findOneUserByToken(String token) throws Exception;
 
@@ -52,7 +49,6 @@ public interface AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     String adminLogin(AdminUserEntity adminUserEntity) throws Exception;
 
@@ -64,7 +60,6 @@ public interface AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     void insertToken(AdminUserEntity adminUserEntity) throws Exception;
 
@@ -76,7 +71,6 @@ public interface AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) throws Exception;
 
@@ -88,7 +82,6 @@ public interface AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) throws Exception;
 
@@ -100,7 +93,6 @@ public interface AdminUserJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     Integer deleteAdminUser(Integer idx) throws Exception;
 }

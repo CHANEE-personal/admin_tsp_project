@@ -35,9 +35,9 @@ public class AdminModelJpaRepository {
     private final EntityManager em;
 
     private BooleanExpression searchModel(Map<String, Object> modelMap) {
-        String searchType = getString(modelMap.get("searchType"),"");
-        String searchKeyword = getString(modelMap.get("searchKeyword"),"");
-        Integer categoryCd = getInt(modelMap.get("categoryCd"),0);
+        String searchType = getString(modelMap.get("searchType"), "");
+        String searchKeyword = getString(modelMap.get("searchKeyword"), "");
+        Integer categoryCd = getInt(modelMap.get("categoryCd"), 0);
 
         if ("0".equals(searchType)) {
             return adminModelEntity.modelKorName.contains(searchKeyword)
@@ -49,7 +49,7 @@ public class AdminModelJpaRepository {
                     .or(adminModelEntity.modelEngName.contains(searchKeyword))
                     .and(adminModelEntity.categoryCd.eq(categoryCd));
         } else {
-            if(!"".equals(searchKeyword)) {
+            if (!"".equals(searchKeyword)) {
                 return adminModelEntity.modelDescription.contains(searchKeyword).and(adminModelEntity.categoryCd.eq(categoryCd));
             } else {
                 return adminModelEntity.categoryCd.eq(categoryCd);
@@ -65,7 +65,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public Integer findModelsCount(Map<String, Object> modelMap) {
         return queryFactory.selectFrom(adminModelEntity).where(searchModel(modelMap)).fetch().size();
@@ -80,19 +79,18 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
         List<AdminModelEntity> modelList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
                 .where(searchModel(modelMap).and(adminModelEntity.visible.eq("Y")))
-                .offset(getInt(modelMap.get("jpaStartPage"),0))
-                .limit(getInt(modelMap.get("size"),0))
+                .offset(getInt(modelMap.get("jpaStartPage"), 0))
+                .limit(getInt(modelMap.get("size"), 0))
                 .fetch();
 
         modelList.forEach(list -> modelList.get(modelList.indexOf(list))
-                .setRnum(getInt(modelMap.get("startPage"),1)*(getInt(modelMap.get("size"),1))-(2-modelList.indexOf(list))));
+                .setRnum(getInt(modelMap.get("startPage"), 1) * (getInt(modelMap.get("size"), 1)) - (2 - modelList.indexOf(list))));
 
         return INSTANCE.toDtoList(modelList);
     }
@@ -105,7 +103,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) {
         //모델 상세 조회
@@ -130,7 +127,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         em.persist(adminModelEntity);
@@ -145,7 +141,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
         em.persist(commonImageEntity);
@@ -161,7 +156,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @Modifying(clearAutomatically = true)
     @Transactional
@@ -194,7 +188,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) {
         em.merge(existAdminModelEntity);
@@ -212,7 +205,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
         return queryFactory
@@ -229,7 +221,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     public Long deleteModel(AdminModelEntity existAdminModelEntity) {
         JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
@@ -251,7 +242,6 @@ public class AdminModelJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     public Integer deleteModelByEm(Integer idx) {
         em.remove(em.find(AdminModelEntity.class, idx));

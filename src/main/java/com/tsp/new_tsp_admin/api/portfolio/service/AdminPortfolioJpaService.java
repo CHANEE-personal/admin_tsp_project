@@ -17,7 +17,6 @@ public interface AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
-     *
      */
     Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException;
 
@@ -29,7 +28,6 @@ public interface AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
-     *
      */
     List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws TspException;
 
@@ -41,7 +39,6 @@ public interface AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
 
@@ -53,7 +50,6 @@ public interface AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
 
@@ -65,7 +61,6 @@ public interface AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
 
@@ -77,7 +72,6 @@ public interface AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     Integer deletePortfolio(Integer idx) throws TspException;
 }

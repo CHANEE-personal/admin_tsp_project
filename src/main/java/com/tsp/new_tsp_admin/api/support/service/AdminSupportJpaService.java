@@ -17,7 +17,6 @@ public interface AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     Integer findSupportsCount(Map<String, Object> supportMap) throws TspException;
 
@@ -29,7 +28,6 @@ public interface AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws TspException;
 
@@ -41,7 +39,6 @@ public interface AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) throws TspException;
 
@@ -53,7 +50,6 @@ public interface AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) throws TspException;
 
@@ -65,7 +61,6 @@ public interface AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) throws TspException;
 
@@ -77,7 +72,6 @@ public interface AdminSupportJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     Integer deleteSupportModel(Integer idx) throws TspException;
 }

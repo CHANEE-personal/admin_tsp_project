@@ -32,7 +32,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
-     *
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -57,7 +56,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
-     *
      */
     @Bean
     public MethodValidationPostProcessor methodValidationPostProcessor() {
@@ -72,7 +70,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
-     *
      */
     @Override
     public MessageCodesResolver getMessageCodesResolver() {
@@ -89,7 +86,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
-     *
      */
     @Bean
     public MessageSource messageSource() {
@@ -107,7 +103,6 @@ public class WebConfiguration implements WebMvcConfigurer {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 01. 15.
      * </pre>
-     *
      */
     @Bean
     public LocalValidatorFactoryBean getValidator(MessageSource messageSource) {

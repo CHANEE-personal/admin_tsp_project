@@ -31,8 +31,8 @@ public class AdminProductionJpaRepository {
     private final EntityManager em;
 
     private BooleanExpression searchProduction(Map<String, Object> productionMap) {
-        String searchType = getString(productionMap.get("searchType"),"");
-        String searchKeyword = getString(productionMap.get("searchKeyword"),"");
+        String searchType = getString(productionMap.get("searchType"), "");
+        String searchKeyword = getString(productionMap.get("searchKeyword"), "");
 
         if ("0".equals(searchType)) {
             return adminProductionEntity.title.contains(searchKeyword)
@@ -52,7 +52,6 @@ public class AdminProductionJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     public Integer findProductionsCount(Map<String, Object> productionMap) {
         return queryFactory.selectFrom(adminProductionEntity)
@@ -67,19 +66,18 @@ public class AdminProductionJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) {
         List<AdminProductionEntity> productionList = queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.desc())
                 .where(searchProduction(productionMap))
-                .offset(getInt(productionMap.get("jpaStartPage"),0))
-                .limit(getInt(productionMap.get("size"),0))
+                .offset(getInt(productionMap.get("jpaStartPage"), 0))
+                .limit(getInt(productionMap.get("size"), 0))
                 .fetch();
 
         productionList.forEach(list -> productionList.get(productionList.indexOf(list))
-                .setRnum(getInt(productionMap.get("startPage"),1)*(getInt(productionMap.get("size"),1))-(2-productionList.indexOf(list))));
+                .setRnum(getInt(productionMap.get("startPage"), 1) * (getInt(productionMap.get("size"), 1)) - (2 - productionList.indexOf(list))));
 
         return INSTANCE.toDtoList(productionList);
     }
@@ -92,7 +90,6 @@ public class AdminProductionJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) {
         AdminProductionEntity findOneProduction = queryFactory
@@ -116,7 +113,6 @@ public class AdminProductionJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         em.persist(adminProductionEntity);
@@ -132,7 +128,6 @@ public class AdminProductionJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
-     *
      */
     @Modifying(clearAutomatically = true)
     @Transactional
@@ -154,7 +149,6 @@ public class AdminProductionJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     public AdminProductionDTO updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
         em.merge(existAdminProductionEntity);
@@ -172,7 +166,6 @@ public class AdminProductionJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     public Integer deleteProductionByEm(Integer idx) {
         em.remove(em.find(AdminProductionEntity.class, idx));

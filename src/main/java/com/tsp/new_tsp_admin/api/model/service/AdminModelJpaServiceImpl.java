@@ -34,7 +34,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Transactional(readOnly = true)
@@ -54,7 +53,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Cacheable("model")
@@ -75,7 +73,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Cacheable("model")
@@ -96,7 +93,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @Override
     @CachePut("model")
@@ -118,7 +114,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @Override
     @CachePut("model")
@@ -140,7 +135,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     @Override
     @CacheEvict("model")
@@ -162,7 +156,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @Override
     @Modifying(clearAutomatically = true)
@@ -183,7 +176,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @Override
     public Integer deleteModelImage(Integer idx) {
@@ -198,7 +190,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @Override
     @Transactional(readOnly = true)

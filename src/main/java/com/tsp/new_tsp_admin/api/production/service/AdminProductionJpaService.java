@@ -17,7 +17,6 @@ public interface AdminProductionJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     Integer findProductionsCount(Map<String, Object> productionMap) throws TspException;
 
@@ -29,7 +28,6 @@ public interface AdminProductionJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) throws TspException;
 
@@ -41,7 +39,6 @@ public interface AdminProductionJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
-     *
      */
     AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) throws TspException;
 
@@ -53,7 +50,6 @@ public interface AdminProductionJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
-     *
      */
     AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) throws TspException;
 
@@ -65,7 +61,6 @@ public interface AdminProductionJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
-     *
      */
     AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity);
 
@@ -77,7 +72,6 @@ public interface AdminProductionJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     Integer deleteProduction(Integer idx) throws TspException;
 }

@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -26,6 +25,7 @@ import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.*;
 import static java.lang.Math.ceil;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
 
@@ -46,7 +46,6 @@ public class AdminModelJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @ApiOperation(value = "모델 조회", notes = "모델을 조회한다.")
     @ApiResponses(value = {
@@ -91,7 +90,6 @@ public class AdminModelJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
     @ApiResponses(value = {
@@ -116,7 +114,6 @@ public class AdminModelJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @ApiOperation(value = "모델 저장", notes = "모델을 저장한다.")
     @ApiResponses(value = {
@@ -139,7 +136,6 @@ public class AdminModelJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @ApiOperation(value = "모델 이미지 저장", notes = "모델 이미지를 저장한다.")
     @ApiResponses(value = {
@@ -149,7 +145,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PostMapping(value = "/{idx}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
     public String insertModelImage(@PathVariable("idx") Integer idx,
                                    @RequestParam("images") List<MultipartFile> fileName) throws Exception {
         return this.adminModelJpaService.insertModelImage(CommonImageEntity.builder().typeName("model").typeIdx(idx).visible("Y").build(), fileName);
@@ -163,7 +159,6 @@ public class AdminModelJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @ApiOperation(value = "모델 이미지 삭제", notes = "모델 이미지를 삭제한다.")
     @ApiResponses(value = {
@@ -186,7 +181,6 @@ public class AdminModelJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
     @ApiResponses(value = {
@@ -209,7 +203,6 @@ public class AdminModelJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     @ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
     @ApiResponses(value = {
@@ -232,7 +225,6 @@ public class AdminModelJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @ApiOperation(value = "모델 공통 코드 조회", notes = "모델을 공통 코드를 조회한다.")
     @ApiResponses(value = {

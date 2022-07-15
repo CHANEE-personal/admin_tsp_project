@@ -9,17 +9,17 @@ import java.util.List;
 import static org.mapstruct.factory.Mappers.getMapper;
 
 public interface UserMapper extends StructMapper<AdminUserDTO, AdminUserEntity> {
-	UserMapper INSTANCE = getMapper(UserMapper.class);
+    UserMapper INSTANCE = getMapper(UserMapper.class);
 
-	@Override
-	AdminUserDTO toDto(AdminUserEntity entity);
+    @Override
+    AdminUserDTO toDto(AdminUserEntity entity);
 
-	@Override
-	AdminUserEntity toEntity(AdminUserDTO dto);
+    @Override
+    AdminUserEntity toEntity(AdminUserDTO dto);
 
-	@Override
-	List<AdminUserDTO> toDtoList(List<AdminUserEntity> entityList);
+    @Override
+    List<AdminUserDTO> toDtoList(List<AdminUserEntity> entityList);
 
-	@Override
-	List<AdminUserEntity> toEntityList(List<AdminUserDTO> dtoList);
+    @Override
+    List<AdminUserEntity> toEntityList(List<AdminUserDTO> dtoList);
 }

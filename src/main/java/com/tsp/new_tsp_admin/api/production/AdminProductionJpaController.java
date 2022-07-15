@@ -39,7 +39,6 @@ public class AdminProductionJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     @ApiOperation(value = "프로덕션 조회", notes = "프로덕션을 조회한다.")
     @ApiResponses(value = {
@@ -81,7 +80,6 @@ public class AdminProductionJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
-     *
      */
     @ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
     @ApiResponses(value = {
@@ -104,7 +102,6 @@ public class AdminProductionJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
-     *
      */
     @ApiOperation(value = "프로덕션 저장", notes = "프로덕션을 저장한다.")
     @ApiResponses(value = {
@@ -127,7 +124,6 @@ public class AdminProductionJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
-     *
      */
     @ApiOperation(value = "프로덕션 수정", notes = "프로덕션을 수정한다.")
     @ApiResponses(value = {
@@ -137,7 +133,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PutMapping(value ="/{idx}", consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
     public AdminProductionDTO updateProduction(@RequestBody AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaService.updateProduction(adminProductionEntity);
     }
@@ -150,7 +146,6 @@ public class AdminProductionJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     @ApiOperation(value = "프로덕션 삭제", notes = "프로덕션을 삭제한다.")
     @ApiResponses(value = {

@@ -41,7 +41,7 @@ public class ModelMapperImpl implements ModelMapper {
 
     @Override
     public AdminModelEntity toEntity(AdminModelDTO dto) {
-        if(dto == null) return null;
+        if (dto == null) return null;
 
         return builder()
                 .rnum(dto.getRnum())
@@ -71,10 +71,10 @@ public class ModelMapperImpl implements ModelMapper {
 
     @Override
     public List<AdminModelDTO> toDtoList(List<AdminModelEntity> entityList) {
-        if(entityList == null) return null;
+        if (entityList == null) return null;
 
         List<AdminModelDTO> list = new ArrayList<>(entityList.size());
-        for(AdminModelEntity adminModelEntity : entityList) {
+        for (AdminModelEntity adminModelEntity : entityList) {
             list.add(toDto(adminModelEntity));
         }
 
@@ -83,10 +83,10 @@ public class ModelMapperImpl implements ModelMapper {
 
     @Override
     public List<AdminModelEntity> toEntityList(List<AdminModelDTO> dtoList) {
-        if(dtoList == null) return null;
+        if (dtoList == null) return null;
 
         List<AdminModelEntity> list = new ArrayList<>(dtoList.size());
-        for(AdminModelDTO adminModelDTO : dtoList) {
+        for (AdminModelDTO adminModelDTO : dtoList) {
             list.add(toEntity(adminModelDTO));
         }
 

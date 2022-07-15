@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.util.Objects;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpStatus.ACCEPTED;
 
 @Component
@@ -19,7 +20,7 @@ import static org.springframework.http.HttpStatus.ACCEPTED;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        response.setStatus(Objects.requireNonNull(ACCEPTED).value());
+        response.setStatus(requireNonNull(ACCEPTED).value());
         response.setCharacterEncoding(UTF_8.toString());
 
         PrintWriter writer = response.getWriter();

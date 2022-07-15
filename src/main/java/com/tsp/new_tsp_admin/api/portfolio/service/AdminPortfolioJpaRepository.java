@@ -30,8 +30,8 @@ public class AdminPortfolioJpaRepository {
     private final EntityManager em;
 
     private BooleanExpression searchPortfolio(Map<String, Object> portfolioMap) {
-        String searchType = getString(portfolioMap.get("searchType"),"");
-        String searchKeyword = getString(portfolioMap.get("searchKeyword"),"");
+        String searchType = getString(portfolioMap.get("searchType"), "");
+        String searchKeyword = getString(portfolioMap.get("searchKeyword"), "");
 
         if ("0".equals(searchType)) {
             return adminPortFolioEntity.title.contains(searchKeyword)
@@ -51,7 +51,6 @@ public class AdminPortfolioJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 12.
      * </pre>
-     *
      */
     public Integer findPortfoliosCount(Map<String, Object> portfolioMap) {
         return queryFactory.selectFrom(adminPortFolioEntity)
@@ -67,20 +66,19 @@ public class AdminPortfolioJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
-     *
      */
     @Transactional(readOnly = true)
     public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
-        List<AdminPortFolioEntity> portfolioList =  queryFactory
+        List<AdminPortFolioEntity> portfolioList = queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .orderBy(adminPortFolioEntity.idx.desc())
                 .where(searchPortfolio(portfolioMap))
-                .offset(getInt(portfolioMap.get("jpaStartPage"),0))
-                .limit(getInt(portfolioMap.get("size"),0))
+                .offset(getInt(portfolioMap.get("jpaStartPage"), 0))
+                .limit(getInt(portfolioMap.get("size"), 0))
                 .fetch();
 
         portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
-                .setRnum(getInt(portfolioMap.get("startPage"),1)*(getInt(portfolioMap.get("size"),1))-(2-portfolioList.indexOf(list))));
+                .setRnum(getInt(portfolioMap.get("startPage"), 1) * (getInt(portfolioMap.get("size"), 1)) - (2 - portfolioList.indexOf(list))));
 
         return INSTANCE.toDtoList(portfolioList);
     }
@@ -93,7 +91,6 @@ public class AdminPortfolioJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
-     *
      */
     public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
         // 포트폴리오 상세 조회
@@ -103,7 +100,7 @@ public class AdminPortfolioJpaRepository {
                 .fetchJoin()
                 .where(adminPortFolioEntity.idx.eq(existAdminPortfolioEntity.getIdx())
                         .and(adminPortFolioEntity.visible.eq("Y")
-                        .and(commonImageEntity.typeName.eq("portfolio"))))
+                                .and(commonImageEntity.typeName.eq("portfolio"))))
                 .fetchOne();
 
         return INSTANCE.toDto(findOnePortfolio);
@@ -117,7 +114,6 @@ public class AdminPortfolioJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
-     *
      */
     public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         em.persist(adminPortfolioEntity);
@@ -133,7 +129,6 @@ public class AdminPortfolioJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
-     *
      */
     @Transactional
     public Integer insertPortfolioImage(CommonImageEntity commonImageEntity) throws TspException {
@@ -154,7 +149,6 @@ public class AdminPortfolioJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
-     *
      */
     public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
         em.merge(existAdminPortfolioEntity);
@@ -172,7 +166,6 @@ public class AdminPortfolioJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
-     *
      */
     public Integer deletePortfolio(Integer idx) {
         em.remove(em.find(AdminPortFolioEntity.class, idx));

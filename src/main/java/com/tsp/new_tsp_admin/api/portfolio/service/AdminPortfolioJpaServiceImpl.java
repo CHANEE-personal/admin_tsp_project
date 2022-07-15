@@ -29,7 +29,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
-     *
      */
     @Override
     @Cacheable("portfolio")
@@ -50,13 +49,12 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
-     *
      */
     @Override
     @Cacheable("portfolio")
     @Transactional(readOnly = true)
     public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws TspException {
-        try  {
+        try {
             return adminPortfolioJpaRepository.findPortfoliosList(portfolioMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
@@ -71,7 +69,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     @Override
     @Cacheable("portfolio")
@@ -92,7 +89,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     @Override
     @CachePut("portfolio")
@@ -114,7 +110,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     @Override
     @CachePut("portfolio")
@@ -136,7 +131,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     @Override
     @CacheEvict("portfolio")

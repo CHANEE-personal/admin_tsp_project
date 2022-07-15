@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,8 +22,10 @@ public class AuthenticationRequest implements UserDetails {
     private AdminUserEntity adminUserEntity;
 
     private static final long serialVersionUID = 5926468583005150707L;
-    @JsonProperty("userId") private String userId;
-    @JsonProperty("password") private String password;
+    @JsonProperty("userId")
+    private String userId;
+    @JsonProperty("password")
+    private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

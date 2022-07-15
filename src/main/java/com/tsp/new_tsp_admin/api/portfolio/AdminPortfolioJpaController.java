@@ -38,7 +38,6 @@ public class AdminPortfolioJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
-     *
      */
     @ApiOperation(value = "포트폴리오 조회", notes = "포트폴리오를 조회한다.")
     @ApiResponses(value = {
@@ -56,7 +55,7 @@ public class AdminPortfolioJpaController {
 
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
 
-        if(portfolioCnt > 0) {
+        if (portfolioCnt > 0) {
             portfolioList = this.adminPortfolioJpaService.findPortfoliosList(searchCommon.searchCommon(page, paramMap));
         }
 
@@ -80,7 +79,6 @@ public class AdminPortfolioJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     @ApiOperation(value = "포트폴리오 상세 조회", notes = "포트폴리오를 상세 조회한다.")
     @ApiResponses(value = {
@@ -103,7 +101,6 @@ public class AdminPortfolioJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     @ApiOperation(value = "포트폴리오 저장", notes = "포트폴리오를 저장한다.")
     @ApiResponses(value = {
@@ -126,7 +123,6 @@ public class AdminPortfolioJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     @ApiOperation(value = "포트폴리오 수정", notes = "포트폴리오를 수정한다.")
     @ApiResponses(value = {
@@ -149,7 +145,6 @@ public class AdminPortfolioJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
-     *
      */
     @ApiOperation(value = "포트폴리오 삭제", notes = "포트폴리오를 삭제한다.")
     @ApiResponses(value = {

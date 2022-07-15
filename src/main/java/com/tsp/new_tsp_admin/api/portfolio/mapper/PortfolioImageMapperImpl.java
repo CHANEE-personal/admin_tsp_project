@@ -11,7 +11,6 @@ import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
 
 @Mapper
 public class PortfolioImageMapperImpl implements PortfolioImageMapper {
-
     @Override
     public CommonImageDTO toDto(CommonImageEntity entity) {
         if (entity == null) return null;
@@ -33,7 +32,7 @@ public class PortfolioImageMapperImpl implements PortfolioImageMapper {
 
     @Override
     public CommonImageEntity toEntity(CommonImageDTO dto) {
-        if(dto == null) return null;
+        if (dto == null) return null;
 
         return builder()
                 .idx(dto.getIdx())
@@ -51,10 +50,10 @@ public class PortfolioImageMapperImpl implements PortfolioImageMapper {
 
     @Override
     public List<CommonImageDTO> toDtoList(List<CommonImageEntity> entityList) {
-        if(entityList == null) return null;
+        if (entityList == null) return null;
 
         List<CommonImageDTO> list = new ArrayList<>(entityList.size());
-        for(CommonImageEntity commonImageEntity : entityList) {
+        for (CommonImageEntity commonImageEntity : entityList) {
             list.add(toDto(commonImageEntity));
         }
 
@@ -63,10 +62,10 @@ public class PortfolioImageMapperImpl implements PortfolioImageMapper {
 
     @Override
     public List<CommonImageEntity> toEntityList(List<CommonImageDTO> dtoList) {
-        if(dtoList == null) return null;
+        if (dtoList == null) return null;
 
         List<CommonImageEntity> list = new ArrayList<>(dtoList.size());
-        for(CommonImageDTO commonImageDTO : dtoList) {
+        for (CommonImageDTO commonImageDTO : dtoList) {
             list.add(toEntity(commonImageDTO));
         }
 

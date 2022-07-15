@@ -22,7 +22,6 @@ public class SearchCommon {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 08. 08.
      * </pre>
-     *
      */
     public Map<String, Object> searchCommon(Page page, Map<String, Object> paramMap) {
 

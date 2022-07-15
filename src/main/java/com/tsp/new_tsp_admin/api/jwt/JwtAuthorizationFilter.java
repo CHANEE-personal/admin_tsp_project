@@ -28,6 +28,8 @@ import java.util.Date;
 
 import static io.jsonwebtoken.Jwts.builder;
 import static io.jsonwebtoken.SignatureAlgorithm.*;
+import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
+import static java.lang.System.currentTimeMillis;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.security.core.context.SecurityContextHolder.clearContext;
 
@@ -67,13 +69,13 @@ public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter
                                             FilterChain chain,
                                             Authentication authResult) throws IOException {
         Claims claims = Jwts.claims();
-        claims.put("username", ((User)authResult.getPrincipal()).getUsername());
+        claims.put("username", ((User) authResult.getPrincipal()).getUsername());
 
         String token = builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000L * 10))
-                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(UTF_8)), HS256)
+                .setIssuedAt(new Date(currentTimeMillis()))
+                .setExpiration(new Date(currentTimeMillis() + 1000L * 10))
+                .signWith(hmacShaKeyFor(SECRET_KEY.getBytes(UTF_8)), HS256)
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + token);

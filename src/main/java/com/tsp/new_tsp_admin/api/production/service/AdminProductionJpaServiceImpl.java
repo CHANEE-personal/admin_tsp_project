@@ -29,7 +29,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     @Override
     @Cacheable("production")
@@ -50,7 +49,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
-     *
      */
     @Override
     @Cacheable("production")
@@ -71,7 +69,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
-     *
      */
     @Override
     @Cacheable("production")
@@ -92,7 +89,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
-     *
      */
     @Override
     @CachePut("production")
@@ -114,7 +110,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
-     *
      */
     @Override
     @CachePut("production")
@@ -136,7 +131,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
-     *
      */
     @Override
     @CacheEvict("production")

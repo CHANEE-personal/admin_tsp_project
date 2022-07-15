@@ -9,17 +9,17 @@ import java.util.List;
 import static org.mapstruct.factory.Mappers.getMapper;
 
 public interface ProductionMapper extends StructMapper<AdminProductionDTO, AdminProductionEntity> {
-	ProductionMapper INSTANCE = getMapper(ProductionMapper.class);
+    ProductionMapper INSTANCE = getMapper(ProductionMapper.class);
 
-	@Override
-	AdminProductionDTO toDto(AdminProductionEntity entity);
+    @Override
+    AdminProductionDTO toDto(AdminProductionEntity entity);
 
-	@Override
-	AdminProductionEntity toEntity(AdminProductionDTO dto);
+    @Override
+    AdminProductionEntity toEntity(AdminProductionDTO dto);
 
-	@Override
-	List<AdminProductionDTO> toDtoList(List<AdminProductionEntity> entityList);
+    @Override
+    List<AdminProductionDTO> toDtoList(List<AdminProductionEntity> entityList);
 
-	@Override
-	List<AdminProductionEntity> toEntityList(List<AdminProductionDTO> dtoList);
+    @Override
+    List<AdminProductionEntity> toEntityList(List<AdminProductionDTO> dtoList);
 }

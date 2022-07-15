@@ -54,7 +54,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public Claims extractAllClaims(String token) throws ExpiredJwtException {
         return parserBuilder()
@@ -65,7 +64,7 @@ public class JwtUtil implements Serializable {
     }
 
     public String resolveAccessToken(HttpServletRequest request) {
-        if (request.getHeader("Authorization") != null && !Objects.equals(request.getHeader("Authorization"), ""))   {
+        if (request.getHeader("Authorization") != null && !Objects.equals(request.getHeader("Authorization"), "")) {
             return request.getHeader("Authorization").substring(7);
         }
         return null;
@@ -86,7 +85,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public Boolean isTokenExpired(String token) {
         try {
@@ -104,7 +102,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public String generateToken(UserDetails userDetails) {
         return doGenerateToken(userDetails.getUsername(), TOKEN_VALIDATION_SECOND);
@@ -118,7 +115,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public String generateRefreshToken(UserDetails userDetails) {
         return doGenerateToken(userDetails.getUsername(), REFRESH_TOKEN_VALIDATION_SECOND);
@@ -132,7 +128,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public String doGenerateToken(String username, long expireTime) {
 
@@ -155,7 +150,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public Boolean validateToken(String token) {
         try {
@@ -184,7 +178,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public Authentication getAuthentication(String token) throws TspException {
         try {
@@ -203,7 +196,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
         response.setHeader("Authorization", "Bearer " + accessToken);
@@ -217,7 +209,6 @@ public class JwtUtil implements Serializable {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
         response.setHeader("refreshToken", "Bearer " + refreshToken);

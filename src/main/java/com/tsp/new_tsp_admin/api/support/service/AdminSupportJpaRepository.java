@@ -25,8 +25,8 @@ public class AdminSupportJpaRepository {
     private final EntityManager em;
 
     private BooleanExpression searchSupport(Map<String, Object> supportMap) {
-        String searchType = getString(supportMap.get("searchType"),"");
-        String searchKeyword = getString(supportMap.get("searchKeyword"),"");
+        String searchType = getString(supportMap.get("searchType"), "");
+        String searchKeyword = getString(supportMap.get("searchKeyword"), "");
 
         if ("0".equals(searchType)) {
             return adminSupportEntity.supportName.contains(searchKeyword)
@@ -46,7 +46,6 @@ public class AdminSupportJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public Integer findSupportsCount(Map<String, Object> supportMap) {
         return queryFactory.selectFrom(adminSupportEntity)
@@ -62,18 +61,17 @@ public class AdminSupportJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) {
         List<AdminSupportEntity> supportList = queryFactory.selectFrom(adminSupportEntity)
                 .where(searchSupport(supportMap))
                 .orderBy(adminSupportEntity.idx.desc())
-                .offset(getInt(supportMap.get("jpaStartPage"),0))
-                .limit(getInt(supportMap.get("size"),0))
+                .offset(getInt(supportMap.get("jpaStartPage"), 0))
+                .limit(getInt(supportMap.get("size"), 0))
                 .fetch();
 
         supportList.forEach(list -> supportList.get(supportList.indexOf(list))
-                .setRnum(getInt(supportMap.get("startPage"),1)*(getInt(supportMap.get("size"),1))-(2-supportList.indexOf(list))));
+                .setRnum(getInt(supportMap.get("startPage"), 1) * (getInt(supportMap.get("size"), 1)) - (2 - supportList.indexOf(list))));
 
         return INSTANCE.toDtoList(supportList);
     }
@@ -86,7 +84,6 @@ public class AdminSupportJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
         //모델 상세 조회
@@ -105,7 +102,6 @@ public class AdminSupportJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         em.persist(adminSupportEntity);
@@ -121,7 +117,6 @@ public class AdminSupportJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public AdminSupportDTO updateSupportModel(AdminSupportEntity existAdminSupportEntity) {
         em.merge(existAdminSupportEntity);
@@ -139,7 +134,6 @@ public class AdminSupportJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public Integer deleteSupportModel(Integer idx) {
         em.remove(em.find(AdminSupportEntity.class, idx));

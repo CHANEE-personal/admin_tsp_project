@@ -24,59 +24,60 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "tsp_admin")
 public class AdminUserEntity {
-	@Transient
-	private Integer rnum;
+    @Transient
+    private Integer rnum;
 
-	@Id @GeneratedValue(strategy = IDENTITY)
-	@Column(name = "idx")
-	private Integer idx;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "idx")
+    private Integer idx;
 
-	@Column(name = "user_id")
-	@NotEmpty(message = "유저 ID 입력은 필수입니다.")
-	private String userId;
+    @Column(name = "user_id")
+    @NotEmpty(message = "유저 ID 입력은 필수입니다.")
+    private String userId;
 
-	@Column(name = "password")
-	@NotEmpty(message = "유저 Password 입력은 필수입니다.")
-	private String password;
+    @Column(name = "password")
+    @NotEmpty(message = "유저 Password 입력은 필수입니다.")
+    private String password;
 
-	@Column(name = "name")
-	@NotEmpty(message = "유저 이름 입력은 필수입니다.")
-	private String name;
+    @Column(name = "name")
+    @NotEmpty(message = "유저 이름 입력은 필수입니다.")
+    private String name;
 
-	@Column(name = "email")
-	@Email
-	@NotEmpty(message = "유저 이메일 입력은 필수입니다.")
-	private String email;
+    @Column(name = "email")
+    @Email
+    @NotEmpty(message = "유저 이메일 입력은 필수입니다.")
+    private String email;
 
-	@Column(name = "visible")
-	private String visible;
+    @Column(name = "visible")
+    private String visible;
 
-	@Column(name = "user_token")
-	private String userToken;
+    @Column(name = "user_token")
+    private String userToken;
 
-	@Column(name = "user_refresh_token")
-	private String userRefreshToken;
+    @Column(name = "user_refresh_token")
+    private String userRefreshToken;
 
-	@Enumerated(value = STRING)
-	private Role role;
+    @Enumerated(value = STRING)
+    private Role role;
 
-	@Column(name = "creator", updatable = false)
-	@ApiModelProperty(required = true, value = "등록자")
-	private String creator;
+    @Column(name = "creator", updatable = false)
+    @ApiModelProperty(required = true, value = "등록자")
+    private String creator;
 
-	@Column(name = "updater", insertable = false)
-	@ApiModelProperty(required = true, value = "수정자")
-	private String updater;
+    @Column(name = "updater", insertable = false)
+    @ApiModelProperty(required = true, value = "수정자")
+    private String updater;
 
-	@Column(name = "create_time", updatable = false)
-	@Temporal(value = TIMESTAMP)
-	@ApiModelProperty(required = true, value = "등록 일자")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date createTime;
+    @Column(name = "create_time", updatable = false)
+    @Temporal(value = TIMESTAMP)
+    @ApiModelProperty(required = true, value = "등록 일자")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createTime;
 
-	@Column(name = "update_time", insertable = false)
-	@Temporal(TIMESTAMP)
-	@ApiModelProperty(required = true, value = "수정 일자")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date updateTime;
+    @Column(name = "update_time", insertable = false)
+    @Temporal(value = TIMESTAMP)
+    @ApiModelProperty(required = true, value = "수정 일자")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updateTime;
 }

@@ -44,7 +44,6 @@ public class ImageRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     public String currentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddHHmmssSSS", KOREA);
@@ -59,15 +58,14 @@ public class ImageRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @Transactional(readOnly = true)
     public CommonImageEntity findOneImage(CommonImageEntity exCommonImageEntity) {
         return queryFactory
                 .selectFrom(commonImageEntity)
                 .where(commonImageEntity.idx.eq(exCommonImageEntity.getIdx())
-                .and(commonImageEntity.visible.eq("Y"))
-                .and(commonImageEntity.typeName.eq(exCommonImageEntity.getTypeName())))
+                        .and(commonImageEntity.visible.eq("Y"))
+                        .and(commonImageEntity.typeName.eq(exCommonImageEntity.getTypeName())))
                 .fetchOne();
     }
 
@@ -79,7 +77,6 @@ public class ImageRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     public Integer maxSubCnt(CommonImageEntity exCommonImageEntity) {
         return queryFactory.selectFrom(commonImageEntity)
@@ -96,7 +93,6 @@ public class ImageRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @Transactional
     @Modifying(clearAutomatically = true)
@@ -118,7 +114,6 @@ public class ImageRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     @Transactional
     @Modifying(clearAutomatically = true)
@@ -143,7 +138,6 @@ public class ImageRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     public String uploadImageFile(CommonImageEntity commonImageEntity,
                                   List<MultipartFile> files, String flag) {
@@ -210,16 +204,16 @@ public class ImageRepository {
                     commonImageEntity.setFilePath(filePath);
 
                     CommonImageEntity newCommonImageEntity = CommonImageEntity.builder()
-                                    .imageType(commonImageEntity.getImageType())
-                                    .typeIdx(commonImageEntity.getTypeIdx())
-                                    .typeName("model")
-                                    .fileNum(commonImageEntity.getFileNum())
-                                    .fileName(commonImageEntity.getFileName())
-                                    .fileSize(commonImageEntity.getFileSize())
-                                    .fileMask(commonImageEntity.getFileMask())
-                                    .filePath(commonImageEntity.getFilePath())
-                                    .visible(commonImageEntity.getVisible())
-                                    .build();
+                            .imageType(commonImageEntity.getImageType())
+                            .typeIdx(commonImageEntity.getTypeIdx())
+                            .typeName("model")
+                            .fileNum(commonImageEntity.getFileNum())
+                            .fileName(commonImageEntity.getFileName())
+                            .fileSize(commonImageEntity.getFileSize())
+                            .fileMask(commonImageEntity.getFileMask())
+                            .filePath(commonImageEntity.getFilePath())
+                            .visible(commonImageEntity.getVisible())
+                            .build();
 
                     em.persist(newCommonImageEntity);
                     if (newCommonImageEntity.getIdx() > 0) {
@@ -241,7 +235,6 @@ public class ImageRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
-     *
      */
     public CommonImageEntity deleteImage(CommonImageEntity exCommonImageEntity) {
         try {

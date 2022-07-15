@@ -23,26 +23,27 @@ import static javax.persistence.GenerationType.*;
 @AllArgsConstructor
 @Table(name = "tsp_production")
 public class AdminProductionEntity extends NewCommonMappedClass {
-	@Transient
-	private Integer rnum;
+    @Transient
+    private Integer rnum;
 
-	@Id @GeneratedValue(strategy = IDENTITY)
-	@Column(name = "idx")
-	private Integer idx;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "idx")
+    private Integer idx;
 
-	@Column(name = "title")
-	@NotEmpty(message = "프로덕션 제목 입력은 필수입니다.")
-	private String title;
+    @Column(name = "title")
+    @NotEmpty(message = "프로덕션 제목 입력은 필수입니다.")
+    private String title;
 
-	@Column(name = "description")
-	@Lob
-	@NotEmpty(message = "프로덕션 상세내용 입력은 필수입니다.")
-	private String description;
+    @Column(name = "description")
+    @Lob
+    @NotEmpty(message = "프로덕션 상세내용 입력은 필수입니다.")
+    private String description;
 
-	@Column(name = "visible")
-	private String visible;
+    @Column(name = "visible")
+    private String visible;
 
-	@OneToMany(mappedBy = "adminProductionEntity")
-	private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
+    @OneToMany(mappedBy = "adminProductionEntity")
+    private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
 }

@@ -26,27 +26,27 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener.class)
 public abstract class NewCommonMappedClass {
-	@CreatedBy
-	@Column(name = "creator", updatable = false)
-	@ApiModelProperty(required = true, value = "등록자")
-	private String creator;
+    @CreatedBy
+    @Column(name = "creator", updatable = false)
+    @ApiModelProperty(required = true, value = "등록자")
+    private String creator;
 
-	@LastModifiedBy
-	@Column(name = "updater", insertable = false)
-	@ApiModelProperty(required = true, value = "수정자")
-	private String updater;
+    @LastModifiedBy
+    @Column(name = "updater", insertable = false)
+    @ApiModelProperty(required = true, value = "수정자")
+    private String updater;
 
-	@CreationTimestamp
-	@Column(name = "create_time", updatable = false)
-	@Temporal(value = TIMESTAMP)
-	@ApiModelProperty(required = true, value = "등록 일자")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date createTime;
+    @CreationTimestamp
+    @Column(name = "create_time", updatable = false)
+    @Temporal(value = TIMESTAMP)
+    @ApiModelProperty(required = true, value = "등록 일자")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createTime;
 
-	@UpdateTimestamp
-	@Column(name = "update_time", insertable = false)
-	@Temporal(TIMESTAMP)
-	@ApiModelProperty(required = true, value = "수정 일자")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date updateTime;
+    @UpdateTimestamp
+    @Column(name = "update_time", insertable = false)
+    @Temporal(TIMESTAMP)
+    @ApiModelProperty(required = true, value = "수정 일자")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updateTime;
 }

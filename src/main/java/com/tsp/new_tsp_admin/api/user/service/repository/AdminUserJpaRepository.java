@@ -26,6 +26,8 @@ import java.util.Objects;
 import static com.tsp.new_tsp_admin.api.domain.user.QAdminUserEntity.adminUserEntity;
 import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
+import static com.tsp.new_tsp_admin.common.StringUtils.nullStrToStr;
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,7 +46,6 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public List<AdminUserDTO> findUsersList(Map<String, Object> userMap) {
         List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
@@ -55,7 +56,7 @@ public class AdminUserJpaRepository {
                 .fetch();
 
         userList.forEach(list -> userList.get(userList.indexOf(list))
-                .setRnum(getInt(userMap.get("startPage"), 1)*(getInt(userMap.get("size"),1))-(2-userList.indexOf(list))));
+                .setRnum(getInt(userMap.get("startPage"), 1) * (getInt(userMap.get("size"), 1)) - (2 - userList.indexOf(list))));
 
         return INSTANCE.toDtoList(userList);
     }
@@ -68,7 +69,6 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     public AdminUserEntity findOneUser(String id) {
         return queryFactory.selectFrom(adminUserEntity)
@@ -84,7 +84,6 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     public String findOneUserByToken(String token) {
         return Objects.requireNonNull(queryFactory.selectFrom(adminUserEntity)
@@ -100,17 +99,16 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public String adminLogin(AdminUserEntity existAdminUserEntity) {
-        final String db_pw = StringUtils.nullStrToStr(findOneUser(existAdminUserEntity.getUserId()).getPassword());
+        final String db_pw = nullStrToStr(findOneUser(existAdminUserEntity.getUserId()).getPassword());
         String result;
 
         if (passwordEncoder.matches(existAdminUserEntity.getPassword(), db_pw)) {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(existAdminUserEntity.getUserId(), existAdminUserEntity.getPassword())
             );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            getContext().setAuthentication(authentication);
             result = "Y";
         } else {
             result = "N";
@@ -126,7 +124,6 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) {
         em.merge(adminUserEntity);
@@ -144,15 +141,14 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     public Integer insertUserToken(AdminUserEntity existAdminUserEntity) throws TspException {
         JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
         update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
-              .set(adminUserEntity.updater, "1")
-              .set(adminUserEntity.updateTime, new Date())
-              .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
+                .set(adminUserEntity.updater, "1")
+                .set(adminUserEntity.updateTime, new Date())
+                .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
 
         return existAdminUserEntity.getIdx();
     }
@@ -165,7 +161,6 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
         //회원 등록
@@ -182,7 +177,6 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
         em.merge(adminUserEntity);
@@ -200,7 +194,6 @@ public class AdminUserJpaRepository {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     public Integer deleteAdminUser(Integer idx) {
         em.remove(em.find(AdminUserEntity.class, idx));

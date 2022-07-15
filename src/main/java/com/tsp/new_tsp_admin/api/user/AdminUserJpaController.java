@@ -49,7 +49,6 @@ public class AdminUserJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @ApiOperation(value = "Admin 회원 조회", notes = "Admin 회원을 조회한다.")
     @ApiResponses(value = {
@@ -61,7 +60,7 @@ public class AdminUserJpaController {
     })
     @GetMapping
     public List<AdminUserDTO> findUsersList(@RequestParam(required = false) Map<String, Object> paramMap,
-                                             Page page) throws Exception {
+                                            Page page) throws Exception {
         return adminUserJpaService.findUsersList(searchCommon.searchCommon(page, paramMap));
     }
 
@@ -73,7 +72,6 @@ public class AdminUserJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     @ApiOperation(value = "Admin 회원 로그인 처리", notes = "Admin 회원을 로그인 처리한다.")
     @ApiResponses(value = {
@@ -122,7 +120,6 @@ public class AdminUserJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         // id, password 인증
@@ -158,7 +155,6 @@ public class AdminUserJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
-     *
      */
     private void authenticate(String id, String password) throws Exception {
         try {
@@ -181,7 +177,6 @@ public class AdminUserJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     @ApiOperation(value = "Admin 회원가입 처리", notes = "Admin 회원가입을 처리한다.")
     @ApiResponses(value = {
@@ -204,7 +199,6 @@ public class AdminUserJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     @ApiOperation(value = "Admin 회원 수정 처리", notes = "Admin 회원 수정을 처리한다.")
     @ApiResponses(value = {
@@ -227,7 +221,6 @@ public class AdminUserJpaController {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
-     *
      */
     @ApiOperation(value = "Admin 회원탈퇴 처리", notes = "Admin 회원탈퇴 처리한다.")
     @ApiResponses(value = {

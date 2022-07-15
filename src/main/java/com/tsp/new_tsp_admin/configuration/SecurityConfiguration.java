@@ -21,6 +21,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.config.BeanIds.AUTHENTICATION_MANAGER;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -43,7 +45,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     @Bean(name = AUTHENTICATION_MANAGER)
     @Override
@@ -59,11 +60,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/jpa-portfolio").hasRole("ADMIN")
                 .antMatchers("/api/jpa-support").hasRole("ADMIN")
                 .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().sessionManagement().sessionCreationPolicy(STATELESS)
                 .and().formLogin().disable().headers().frameOptions().disable().and().csrf().disable();
     }
 
@@ -105,7 +105,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
@@ -120,7 +119,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
