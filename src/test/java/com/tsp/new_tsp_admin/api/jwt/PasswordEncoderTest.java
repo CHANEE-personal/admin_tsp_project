@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.*;
 import org.springframework.test.context.TestPropertySource;
 
@@ -19,9 +18,9 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
+import static org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -92,7 +91,7 @@ class PasswordEncoderTest {
         Map<String, PasswordEncoder> encoders = new HashMap<>();
         String idForEncode = "bcrypt";
         encoders.put(idForEncode, new BCryptPasswordEncoder());
-        encoders.put("noop", NoOpPasswordEncoder.getInstance());
+        encoders.put("noop", getInstance());
         encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
         encoders.put("sha256", new StandardPasswordEncoder());
 
