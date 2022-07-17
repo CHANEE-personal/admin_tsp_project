@@ -71,7 +71,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @NotEmpty(message = "모델 상세 내용 입력은 필수입니다.")
     private String modelDescription;
 
-    @NotEmpty
+    @NotEmpty(message = "모델 노출 여부 선택은 필수입니다.")
     @Column(name = "visible")
     private String visible;
 

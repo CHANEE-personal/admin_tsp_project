@@ -50,6 +50,7 @@ public class AdminUserEntity {
     private String email;
 
     @Column(name = "visible")
+    @NotEmpty(message = "유저 사용 여부 선택은 필수입니다.")
     private String visible;
 
     @Column(name = "user_token")
