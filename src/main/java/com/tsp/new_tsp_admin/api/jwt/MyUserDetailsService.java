@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
 import static org.springframework.security.core.authority.AuthorityUtils.*;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor

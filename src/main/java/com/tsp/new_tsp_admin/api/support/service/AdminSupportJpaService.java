@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.support.service;
 
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
-import com.tsp.new_tsp_admin.exception.TspException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findSupportsCount(Map<String, Object> supportMap) throws TspException;
+    Integer findSupportsCount(Map<String, Object> supportMap) throws Exception;
 
     /**
      * <pre>
@@ -29,7 +28,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws TspException;
+    List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws Exception;
 
     /**
      * <pre>
@@ -40,7 +39,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) throws TspException;
+    AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
 
     /**
      * <pre>
@@ -51,7 +50,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) throws TspException;
+    AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
 
     /**
      * <pre>
@@ -62,7 +61,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) throws TspException;
+    AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
 
     /**
      * <pre>
@@ -73,5 +72,5 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer deleteSupportModel(Integer idx) throws TspException;
+    Integer deleteSupportModel(Integer idx) throws Exception;
 }

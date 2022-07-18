@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
-import com.tsp.new_tsp_admin.exception.TspException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    Integer findProductionsCount(Map<String, Object> productionMap) throws TspException;
+    Integer findProductionsCount(Map<String, Object> productionMap) throws Exception;
 
     /**
      * <pre>
@@ -29,7 +28,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) throws TspException;
+    List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) throws Exception;
 
     /**
      * <pre>
@@ -40,7 +39,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
      */
-    AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) throws TspException;
+    AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) throws Exception;
 
     /**
      * <pre>
@@ -51,7 +50,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
      */
-    AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) throws TspException;
+    AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) throws Exception;
 
     /**
      * <pre>
@@ -62,7 +61,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
      */
-    AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity);
+    AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity) throws Exception;
 
     /**
      * <pre>
@@ -73,5 +72,5 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    Integer deleteProduction(Integer idx) throws TspException;
+    Integer deleteProduction(Integer idx) throws Exception;
 }
