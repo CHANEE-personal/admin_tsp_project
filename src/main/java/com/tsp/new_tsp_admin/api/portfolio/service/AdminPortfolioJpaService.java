@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
-import com.tsp.new_tsp_admin.exception.TspException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException;
+    Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws Exception;
 
     /**
      * <pre>
@@ -29,7 +28,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws TspException;
+    List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws Exception;
 
     /**
      * <pre>
@@ -40,7 +39,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      */
-    AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
+    AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
 
     /**
      * <pre>
@@ -51,7 +50,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      */
-    AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
+    AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
 
     /**
      * <pre>
@@ -62,7 +61,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      */
-    AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException;
+    AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
 
     /**
      * <pre>
@@ -73,5 +72,5 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    Integer deletePortfolio(Integer idx) throws TspException;
+    Integer deletePortfolio(Integer idx) throws Exception;
 }

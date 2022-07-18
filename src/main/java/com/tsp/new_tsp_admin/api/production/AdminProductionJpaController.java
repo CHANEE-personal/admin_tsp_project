@@ -50,7 +50,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
+    public Map<String, Object> getProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         Map<String, Object> productionMap = new HashMap<>();
 
         Integer productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
@@ -91,7 +91,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminProductionDTO getProductionEdit(@PathVariable("idx") Integer idx) {
+    public AdminProductionDTO getProductionEdit(@PathVariable("idx") Integer idx) throws Exception {
         return adminProductionJpaService.findOneProduction(AdminProductionEntity.builder().idx(idx).build());
     }
 
@@ -113,7 +113,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public AdminProductionDTO insertProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO insertProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) throws Exception {
         return this.adminProductionJpaService.insertProduction(adminProductionEntity);
     }
 
@@ -135,7 +135,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
-    public AdminProductionDTO updateProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO updateProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) throws Exception {
         return adminProductionJpaService.updateProduction(adminProductionEntity);
     }
 
@@ -157,7 +157,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Integer deleteProduction(@PathVariable("idx") Integer idx) {
+    public Integer deleteProduction(@PathVariable("idx") Integer idx) throws Exception {
         return adminProductionJpaService.deleteProduction(idx);
     }
 }

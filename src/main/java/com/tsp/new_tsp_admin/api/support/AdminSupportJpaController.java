@@ -50,7 +50,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/lists")
-    public Map<String, Object> getSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public Map<String, Object> getSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         // 페이징 및 검색
         Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
 
@@ -90,7 +90,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminSupportDTO updateSupportModel(@Valid @RequestBody AdminSupportEntity adminSupportEntity) {
+    public AdminSupportDTO updateSupportModel(@Valid @RequestBody AdminSupportEntity adminSupportEntity) throws Exception {
         return adminSupportJpaService.updateSupportModel(adminSupportEntity);
     }
 
@@ -112,7 +112,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteSupportModel(@PathVariable("idx") Integer idx) {
+    public Integer deleteSupportModel(@PathVariable("idx") Integer idx) throws Exception {
         return adminSupportJpaService.deleteSupportModel(idx);
     }
 }

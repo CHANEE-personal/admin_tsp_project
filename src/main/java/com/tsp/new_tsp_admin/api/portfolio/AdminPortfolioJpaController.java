@@ -49,7 +49,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> getPortfolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
+    public Map<String, Object> getPortfolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
         Map<String, Object> portfolioMap = new HashMap<>();
 
         Integer portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
@@ -90,7 +90,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}")
-    public AdminPortFolioDTO getPortfolioEdit(@PathVariable("idx") Integer idx) {
+    public AdminPortFolioDTO getPortfolioEdit(@PathVariable("idx") Integer idx) throws Exception {
         return this.adminPortfolioJpaService.findOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -112,7 +112,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminPortFolioDTO insertPortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO insertPortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
         return this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
     }
 
@@ -134,7 +134,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminPortFolioDTO updatePortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO updatePortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
         return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
     }
 
@@ -156,7 +156,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deletePortfolio(@PathVariable("idx") Integer idx) {
+    public Integer deletePortfolio(@PathVariable("idx") Integer idx) throws Exception {
         return adminPortfolioJpaService.deletePortfolio(idx);
     }
 }

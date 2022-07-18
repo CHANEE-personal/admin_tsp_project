@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,14 +27,15 @@ public class AdminProductionDTO extends NewCommonDTO {
     @ApiModelProperty(required = true, value = "idx", hidden = true)
     Integer idx;
 
-    @NotNull(message = "제목 입력은 필수입니다.")
+    @NotEmpty(message = "제목 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "title")
     String title;
 
-    @NotNull(message = "상세 내용 입력은 필수입니다.")
+    @NotEmpty(message = "상세 내용 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "description")
     String description;
 
+    @NotEmpty(message = "프로덕션 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "visible")
     String visible;
 
