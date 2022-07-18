@@ -1,8 +1,6 @@
 package com.tsp.new_tsp_admin.api.jwt;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsp.new_tsp_admin.exception.ApiExceptionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
