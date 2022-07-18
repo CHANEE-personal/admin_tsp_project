@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +125,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminModelDTO insertModel(@RequestBody AdminModelEntity adminModelEntity) throws Exception {
+    public AdminModelDTO insertModel(@Valid @RequestBody AdminModelEntity adminModelEntity) throws Exception {
         return this.adminModelJpaService.insertModel(adminModelEntity);
     }
 
@@ -191,7 +192,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminModelDTO updateModel(@RequestBody AdminModelEntity adminModelEntity) throws Exception {
+    public AdminModelDTO updateModel(@Valid @RequestBody AdminModelEntity adminModelEntity) throws Exception {
         return adminModelJpaService.updateModel(adminModelEntity);
     }
 

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import java.rmi.ServerError;
 import java.util.HashMap;
@@ -187,7 +188,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminUserDTO insertAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
+    public AdminUserDTO insertAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) throws Exception {
         return adminUserJpaService.insertAdminUser(adminUserEntity);
     }
 
@@ -209,7 +210,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminUserDTO updateAdminUser(@RequestBody AdminUserEntity adminUserEntity) throws Exception {
+    public AdminUserDTO updateAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) throws Exception {
         return adminUserJpaService.updateAdminUser(adminUserEntity);
     }
 

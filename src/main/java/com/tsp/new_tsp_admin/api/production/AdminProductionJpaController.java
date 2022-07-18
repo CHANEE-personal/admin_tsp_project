@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,7 +113,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public AdminProductionDTO insertProduction(@RequestBody AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO insertProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
         return this.adminProductionJpaService.insertProduction(adminProductionEntity);
     }
 
@@ -134,7 +135,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
-    public AdminProductionDTO updateProduction(@RequestBody AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO updateProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaService.updateProduction(adminProductionEntity);
     }
 
