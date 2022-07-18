@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminSupportDTO updateSupportModel(@RequestBody AdminSupportEntity adminSupportEntity) {
+    public AdminSupportDTO updateSupportModel(@Valid @RequestBody AdminSupportEntity adminSupportEntity) {
         return adminSupportJpaService.updateSupportModel(adminSupportEntity);
     }
 

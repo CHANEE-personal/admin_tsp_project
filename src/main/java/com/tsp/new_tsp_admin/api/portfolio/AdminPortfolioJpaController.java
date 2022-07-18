@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,7 +112,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminPortFolioDTO insertPortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO insertPortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) {
         return this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
     }
 
@@ -133,7 +134,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminPortFolioDTO updatePortfolio(@RequestBody AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO updatePortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
     }
 
