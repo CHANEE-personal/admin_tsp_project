@@ -4,6 +4,9 @@ import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +50,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @Cacheable("user")
     @Transactional(readOnly = true)
     public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws TspException {
         try {
@@ -66,6 +70,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @Cacheable("user")
     @Transactional(readOnly = true)
     public AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) throws TspException {
         try {
@@ -76,6 +81,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     }
 
     @Override
+    @CachePut("support")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) throws TspException {
@@ -96,6 +102,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @CachePut("support")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) throws TspException {
@@ -116,6 +123,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @CacheEvict("user")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Integer deleteSupportModel(Integer idx) throws TspException {
