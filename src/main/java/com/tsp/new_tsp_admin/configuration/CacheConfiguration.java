@@ -29,7 +29,8 @@ public class CacheConfiguration {
                 new ConcurrentMapCache("user"),
                 new ConcurrentMapCache("model"),
                 new ConcurrentMapCache("production"),
-                new ConcurrentMapCache("portfolio")));
+                new ConcurrentMapCache("portfolio"),
+                new ConcurrentMapCache("support")));
         return cacheManager;
     }
 }
