@@ -91,7 +91,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminProductionDTO getProductionEdit(@PathVariable("idx") Integer idx) throws Exception {
+    public AdminProductionDTO getProductionEdit(@PathVariable Integer idx) throws Exception {
         return adminProductionJpaService.findOneProduction(AdminProductionEntity.builder().idx(idx).build());
     }
 
@@ -157,7 +157,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Integer deleteProduction(@PathVariable("idx") Integer idx) throws Exception {
+    public Integer deleteProduction(@PathVariable Integer idx) throws Exception {
         return adminProductionJpaService.deleteProduction(idx);
     }
 }

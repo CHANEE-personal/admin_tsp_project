@@ -112,7 +112,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteSupportModel(@PathVariable("idx") Integer idx) throws Exception {
+    public Integer deleteSupportModel(@PathVariable Integer idx) throws Exception {
         return adminSupportJpaService.deleteSupportModel(idx);
     }
 }

@@ -60,8 +60,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping
-    public List<AdminUserDTO> findUsersList(@RequestParam(required = false) Map<String, Object> paramMap,
-                                            Page page) throws Exception {
+    public List<AdminUserDTO> findUsersList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         return adminUserJpaService.findUsersList(searchCommon.searchCommon(page, paramMap));
     }
 
@@ -83,8 +82,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest,
-                                     HttpServletResponse response) throws Exception {
+    public Map<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
         Map<String, Object> userMap = new HashMap<>();
 
         AdminUserEntity adminUserEntity = builder()
@@ -232,7 +230,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public Integer deleteAdminUser(@PathVariable("idx") Integer idx) throws Exception {
+    public Integer deleteAdminUser(@PathVariable Integer idx) throws Exception {
         return adminUserJpaService.deleteAdminUser(idx);
     }
 }

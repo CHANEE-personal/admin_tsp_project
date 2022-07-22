@@ -49,7 +49,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> getPortfolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
+    public Map<String, Object> getPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         Map<String, Object> portfolioMap = new HashMap<>();
 
         Integer portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
@@ -90,7 +90,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}")
-    public AdminPortFolioDTO getPortfolioEdit(@PathVariable("idx") Integer idx) throws Exception {
+    public AdminPortFolioDTO getPortfolioEdit(@PathVariable Integer idx) throws Exception {
         return this.adminPortfolioJpaService.findOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -156,7 +156,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deletePortfolio(@PathVariable("idx") Integer idx) throws Exception {
+    public Integer deletePortfolio(@PathVariable Integer idx) throws Exception {
         return adminPortfolioJpaService.deletePortfolio(idx);
     }
 }

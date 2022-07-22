@@ -57,8 +57,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists/{categoryCd}")
-    public Map<String, Object> getModelList(@PathVariable("categoryCd")
-                                            @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+    public Map<String, Object> getModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                             @RequestParam(required = false) Map<String, Object> paramMap,
                                             Page page) throws Exception {
         // 페이징 및 검색
@@ -101,9 +100,8 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{categoryCd}/{idx}")
-    public AdminModelDTO getModelEdit(@PathVariable("categoryCd")
-                                      @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                      @PathVariable("idx") Integer idx) throws Exception {
+    public AdminModelDTO getModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+                                      @PathVariable Integer idx) throws Exception {
         return this.adminModelJpaService.findOneModel(builder().idx(idx).categoryCd(categoryCd).build());
     }
 
@@ -147,7 +145,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
-    public String insertModelImage(@PathVariable("idx") Integer idx,
+    public String insertModelImage(@PathVariable Integer idx,
                                    @RequestParam("images") List<MultipartFile> fileName) throws Exception {
         return this.adminModelJpaService.insertModelImage(CommonImageEntity.builder().typeName("model").typeIdx(idx).visible("Y").build(), fileName);
     }
@@ -170,7 +168,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}/images")
-    public Integer deleteModelImage(@PathVariable("idx") Integer idx) throws Exception {
+    public Integer deleteModelImage(@PathVariable Integer idx) throws Exception {
         return this.adminModelJpaService.deleteModelImage(idx);
     }
 
@@ -214,7 +212,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteModel(@PathVariable("idx") Integer idx) throws Exception {
+    public Integer deleteModel(@PathVariable Integer idx) throws Exception {
         return adminModelJpaService.deleteModel(idx);
     }
 
