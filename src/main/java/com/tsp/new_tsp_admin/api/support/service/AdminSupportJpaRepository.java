@@ -48,9 +48,7 @@ public class AdminSupportJpaRepository {
      * </pre>
      */
     public Integer findSupportsCount(Map<String, Object> supportMap) {
-        return queryFactory.selectFrom(adminSupportEntity)
-                .where(searchSupport(supportMap))
-                .fetch().size();
+        return queryFactory.selectFrom(adminSupportEntity).where(searchSupport(supportMap)).fetch().size();
     }
 
     /**
@@ -105,7 +103,6 @@ public class AdminSupportJpaRepository {
      */
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         em.persist(adminSupportEntity);
-
         return INSTANCE.toDto(adminSupportEntity);
     }
 

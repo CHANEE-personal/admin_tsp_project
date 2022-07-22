@@ -53,9 +53,7 @@ public class AdminPortfolioJpaRepository {
      * </pre>
      */
     public Integer findPortfoliosCount(Map<String, Object> portfolioMap) {
-        return queryFactory.selectFrom(adminPortFolioEntity)
-                .where(searchPortfolio(portfolioMap))
-                .fetch().size();
+        return queryFactory.selectFrom(adminPortFolioEntity).where(searchPortfolio(portfolioMap)).fetch().size();
     }
 
     /**
@@ -117,7 +115,6 @@ public class AdminPortfolioJpaRepository {
      */
     public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         em.persist(adminPortfolioEntity);
-
         return INSTANCE.toDto(adminPortfolioEntity);
     }
 

@@ -144,7 +144,6 @@ public class AdminModelJpaRepository {
      */
     public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
         em.persist(commonImageEntity);
-
         return ModelImageMapper.INSTANCE.toDto(commonImageEntity);
     }
 

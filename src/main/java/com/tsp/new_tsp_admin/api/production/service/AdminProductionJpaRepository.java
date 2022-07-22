@@ -54,8 +54,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      */
     public Integer findProductionsCount(Map<String, Object> productionMap) {
-        return queryFactory.selectFrom(adminProductionEntity)
-                .where(searchProduction(productionMap)).fetch().size();
+        return queryFactory.selectFrom(adminProductionEntity).where(searchProduction(productionMap)).fetch().size();
     }
 
     /**
@@ -116,7 +115,6 @@ public class AdminProductionJpaRepository {
      */
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         em.persist(adminProductionEntity);
-
         return INSTANCE.toDto(adminProductionEntity);
     }
 
