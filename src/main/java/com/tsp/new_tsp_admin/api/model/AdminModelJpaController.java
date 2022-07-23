@@ -58,8 +58,7 @@ public class AdminModelJpaController {
     })
     @GetMapping(value = "/lists/{categoryCd}")
     public Map<String, Object> getModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                            @RequestParam(required = false) Map<String, Object> paramMap,
-                                            Page page) throws Exception {
+                                            @RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         // 페이징 및 검색
         Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
         modelMap.put("categoryCd", categoryCd);
@@ -145,8 +144,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
-    public String insertModelImage(@PathVariable Integer idx,
-                                   @RequestParam("images") List<MultipartFile> fileName) throws Exception {
+    public String insertModelImage(@PathVariable Integer idx, @RequestParam("images") List<MultipartFile> fileName) throws Exception {
         return this.adminModelJpaService.insertModelImage(CommonImageEntity.builder().typeName("model").typeIdx(idx).visible("Y").build(), fileName);
     }
 
