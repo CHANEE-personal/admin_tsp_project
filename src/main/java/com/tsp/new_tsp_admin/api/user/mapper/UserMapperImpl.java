@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
 
 public class UserMapperImpl implements UserMapper {
     @Override
@@ -34,7 +33,7 @@ public class UserMapperImpl implements UserMapper {
     public AdminUserEntity toEntity(AdminUserDTO dto) {
         if (dto == null) return null;
 
-        return builder()
+        return AdminUserEntity.builder()
                 .idx(dto.getIdx())
                 .userId(dto.getUserId())
                 .password(dto.getPassword())

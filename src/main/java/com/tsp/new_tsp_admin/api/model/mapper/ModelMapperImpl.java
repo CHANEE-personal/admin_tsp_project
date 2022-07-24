@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 
 @Mapper
 public class ModelMapperImpl implements ModelMapper {
@@ -43,7 +42,7 @@ public class ModelMapperImpl implements ModelMapper {
     public AdminModelEntity toEntity(AdminModelDTO dto) {
         if (dto == null) return null;
 
-        return builder()
+        return AdminModelEntity.builder()
                 .rnum(dto.getRnum())
                 .idx(dto.getIdx())
                 .categoryCd(dto.getCategoryCd())

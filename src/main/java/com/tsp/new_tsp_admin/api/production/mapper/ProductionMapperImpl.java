@@ -7,7 +7,6 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 
 public class ProductionMapperImpl implements ProductionMapper {
     @Override
@@ -32,7 +31,7 @@ public class ProductionMapperImpl implements ProductionMapper {
     public AdminProductionEntity toEntity(AdminProductionDTO dto) {
         if (dto == null) return null;
 
-        return builder()
+        return AdminProductionEntity.builder()
                 .rnum(dto.getRnum())
                 .idx(dto.getIdx())
                 .title(dto.getTitle())

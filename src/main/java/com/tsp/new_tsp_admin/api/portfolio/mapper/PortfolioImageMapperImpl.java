@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
 
 @Mapper
 public class PortfolioImageMapperImpl implements PortfolioImageMapper {
@@ -34,7 +33,7 @@ public class PortfolioImageMapperImpl implements PortfolioImageMapper {
     public CommonImageEntity toEntity(CommonImageDTO dto) {
         if (dto == null) return null;
 
-        return builder()
+        return CommonImageEntity.builder()
                 .idx(dto.getIdx())
                 .typeIdx(dto.getTypeIdx())
                 .typeName(dto.getTypeName())
