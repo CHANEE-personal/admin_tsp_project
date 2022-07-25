@@ -1,10 +1,9 @@
-package com.tsp.new_tsp_admin.api.jwt;
+package com.tsp.new_tsp_admin.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,19 +22,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static io.jsonwebtoken.Jwts.builder;
-import static io.jsonwebtoken.SignatureAlgorithm.*;
+import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
 import static java.lang.System.currentTimeMillis;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.security.core.context.SecurityContextHolder.clearContext;
 
 @Slf4j
-@RequiredArgsConstructor
-public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
         setFilterProcessesUrl("/api/jpa-user/login");
     }

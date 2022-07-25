@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_admin.api.jwt;
+package com.tsp.new_tsp_admin.jwt;
 
 import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -21,7 +21,7 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Slf4j
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Autowired private AdminUserJpaService adminUserJpaService;
     @Autowired private JwtUtil jwtUtil;
     @Autowired private MyUserDetailsService userDetailsService;
@@ -57,6 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(SC_UNAUTHORIZED);
             log.debug("Exception " + e.getMessage(), e);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(NOT_FOUND_USER, e);
         }
         filterChain.doFilter(request, response);

@@ -1,8 +1,8 @@
 package com.tsp.new_tsp_admin.configuration;
 
-import com.tsp.new_tsp_admin.api.jwt.JwtAuthenticationEntryPoint;
-import com.tsp.new_tsp_admin.api.jwt.JwtAuthenticationFilter;
-import com.tsp.new_tsp_admin.api.jwt.JwtAuthorizationFilter;
+import com.tsp.new_tsp_admin.jwt.JwtAuthenticationEntryPoint;
+import com.tsp.new_tsp_admin.jwt.JwtAuthenticationFilter;
+import com.tsp.new_tsp_admin.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +28,38 @@ import static org.springframework.security.crypto.factory.PasswordEncoderFactori
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    /**
+     * <pre>
+     * 1. MethodName : jwtAuthenticationFilter
+     * 2. ClassName  : SecurityConfiguration.java
+     * 3. Comment    : jwt 인증 Filter
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager());
+        filter.setAuthenticationManager(authenticationManager());
+        return filter;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : jwtAuthorizationFilter
+     * 2. ClassName  : SecurityConfiguration.java
+     * 3. Comment    : 로그인 인증
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+        return new JwtAuthorizationFilter();
+    }
 
     @Override
     public void configure(WebSecurity web) {
@@ -66,10 +98,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // 로그인 인증 관련
-        http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-        // JWT 토큰 유효성 관련
-        http.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 그 외
         http.authorizeRequests()
                 .antMatchers("/api/jpa-model").hasRole("ADMIN")
@@ -79,6 +107,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(STATELESS)
                 .and().formLogin().disable().headers().frameOptions().disable().and().csrf().disable();
+
+        // 로그인 인증 관련
+        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // JWT 토큰 유효성 관련
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

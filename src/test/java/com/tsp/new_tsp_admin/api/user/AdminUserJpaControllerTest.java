@@ -3,7 +3,7 @@ package com.tsp.new_tsp_admin.api.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
-import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
+import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -267,13 +267,13 @@ class AdminUserJpaControllerTest {
         mockMvc.perform(delete("/api/jpa-user/{idx}", adminUserEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andDo(document("user/delete",					// (1)
-                        preprocessRequest(prettyPrint()),   // (2)
-                        preprocessResponse(prettyPrint()),  // (3)
+                .andDo(document("user/delete",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         relaxedRequestFields(
                                 fieldWithPath("idx").type(JsonFieldType.STRING).description("유저 idx")
                         ),
-                        relaxedResponseFields(						// (5)
+                        relaxedResponseFields(
 //                                fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
 //                                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                                 fieldWithPath("idx").type(JsonFieldType.STRING).description("유저 idx")

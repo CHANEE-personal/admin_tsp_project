@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_admin.api.jwt;
+package com.tsp.new_tsp_admin.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_admin.api.jwt;
+package com.tsp.new_tsp_admin.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

@@ -3,7 +3,7 @@ package com.tsp.new_tsp_admin.api.portfolio;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.jwt.JwtUtil;
+import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
