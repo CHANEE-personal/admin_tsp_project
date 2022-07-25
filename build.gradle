@@ -12,7 +12,9 @@ plugins {
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
     id 'java'
 
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+//    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+
+    id "org.asciidoctor.convert" version "1.5.9.2"
 }
 
 apply plugin: 'war'
@@ -40,6 +42,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.22'
 
     // restdocs 추가
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     providedRuntime 'org.springframework.boot:spring-boot-starter'
@@ -106,9 +109,14 @@ dependencies {
 //    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 }
 
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
 // build시 junit 제외
 test {
     exclude '**/*'
+    outputs.dir snippetsDir
 }
 
 //querydsl 추가 시작
@@ -134,8 +142,17 @@ compileQuerydsl.doFirst {
 
 // API 문서(html) 생성 Task
 asciidoctor {
-    sourceDir 'src/main/asciidoc'
-    attributes \
-    'snippets': file('target/snippets')
+//    sourceDir 'src/main/asciidoc'
+//    attributes \
+//    'snippets': file('target/snippets')
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
 }
 //querydsl 추가 끝

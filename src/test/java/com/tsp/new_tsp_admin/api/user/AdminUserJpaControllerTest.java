@@ -8,12 +8,17 @@ import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,7 +40,11 @@ import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -44,6 +53,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ExtendWith({RestDocumentationExtension.class})
+@AutoConfigureRestDocs // -> apply(documentationConfiguration(restDocumentation))
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = NONE)
@@ -83,10 +94,11 @@ class AdminUserJpaControllerTest {
 
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
-    public void setup() {
+    public void setup(RestDocumentationContextProvider restDocumentationContextProvider) {
         this.mockMvc = webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
+                .apply(documentationConfiguration(restDocumentationContextProvider))
                 .alwaysDo(print())
                 .build();
 
@@ -146,6 +158,21 @@ class AdminUserJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(newAdminUserEntity)))
                 .andDo(print())
+                .andDo(document("api",					// (1)
+                        preprocessRequest(prettyPrint()),   // (2)
+                        preprocessResponse(prettyPrint()),  // (3)
+                        relaxedRequestFields(
+                                fieldWithPath("userId").type(JsonFieldType.STRING).description("아이디"),
+                                fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+                        ),
+                        relaxedResponseFields(						// (5)
+//                                fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
+//                                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                                fieldWithPath("userId").type(JsonFieldType.STRING).description("아이디"),
+                                fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드")
+                        )))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value("test"))
                 .andExpect(jsonPath("$.password").value("test"))
