@@ -135,6 +135,7 @@ class AdminSupportJpaControllerTest {
 				.andExpect(status().isForbidden());
 	}
 
+	@Test
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원 모델 상세 조회 테스트")
 	void 지원모델상세조회Api테스트() throws Exception {
