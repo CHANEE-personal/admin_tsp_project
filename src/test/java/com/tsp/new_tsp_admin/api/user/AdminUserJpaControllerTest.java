@@ -53,8 +53,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ExtendWith({RestDocumentationExtension.class})
 @AutoConfigureRestDocs // -> apply(documentationConfiguration(restDocumentation))
+@ExtendWith({RestDocumentationExtension.class})
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = NONE)

@@ -8,11 +8,16 @@ import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,7 +39,9 @@ import java.util.List;
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -44,7 +51,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs // -> apply(documentationConfiguration(restDocumentation))
+@ExtendWith({RestDocumentationExtension.class})
 @TestPropertySource(locations = "classpath:application.properties")
+@AutoConfigureTestDatabase(replace = NONE)
 class AdminPortfolioJpaControllerTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
@@ -88,10 +98,11 @@ class AdminPortfolioJpaControllerTest {
 
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
-    public void setup() {
+    public void setup(RestDocumentationContextProvider restDocumentationContextProvider) {
         this.mockMvc = webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
+                .apply(documentationConfiguration(restDocumentationContextProvider))
                 .alwaysDo(print())
                 .build();
 
