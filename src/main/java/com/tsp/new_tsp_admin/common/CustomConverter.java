@@ -31,9 +31,7 @@ public class CustomConverter implements AttributeConverter<List<CareerJson>, Str
 
     @Override
     public List<CareerJson> convertToEntityAttribute(String dbData) {
-        if (dbData == null || dbData.isEmpty()) {
-            return emptyList();
-        }
+        if (dbData == null || dbData.isEmpty()) return emptyList();
 
         try {
             return objectMapper.readValue(dbData, List.class);

@@ -58,7 +58,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 리스트 조회 테스트")
-    void 지원모델리스트조회테스트() {
+    void 지원모델리스트조회테스트() throws Exception {
         // given
         Map<String, Object> supportMap = new HashMap<>();
         supportMap.put("jpaStartPage", 1);
@@ -71,7 +71,7 @@ class AdminSupportJpaServiceTest {
     @Test
     @Disabled
     @DisplayName("지원모델 상세 조회 테스트")
-    void 지원모델상세조회테스트() {
+    void 지원모델상세조회테스트() throws Exception {
         // given
         adminSupportEntity = builder().idx(1).build();
 
@@ -84,7 +84,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 수정 테스트")
-    void 지원모델수정테스트() {
+    void 지원모델수정테스트() throws Exception {
         Integer idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         adminSupportEntity = builder()
@@ -110,7 +110,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 삭제 테스트")
-    void 지원모델삭제테스트() {
+    void 지원모델삭제테스트() throws Exception {
         // given
         Integer idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 

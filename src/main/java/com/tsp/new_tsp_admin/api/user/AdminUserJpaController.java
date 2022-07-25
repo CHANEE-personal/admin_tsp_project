@@ -229,7 +229,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PutMapping("/{idx}")
+    @DeleteMapping("/{idx}")
     public Integer deleteAdminUser(@PathVariable Integer idx) throws Exception {
         return adminUserJpaService.deleteAdminUser(idx);
     }

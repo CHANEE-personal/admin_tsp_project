@@ -55,7 +55,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 리스트 조회 테스트")
-    void 프로덕션리스트조회테스트() {
+    void 프로덕션리스트조회테스트() throws Exception {
         // given
         Map<String, Object> productionMap = new HashMap<>();
         productionMap.put("jpaStartPage", 1);
@@ -66,7 +66,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 상세 조회 테스트")
-    void 프로덕션상세조회테스트() {
+    void 프로덕션상세조회테스트() throws Exception {
         // given
         adminProductionEntity = builder().idx(119).build();
 
@@ -75,7 +75,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 등록 테스트")
-    void 프로덕션등록테스트() {
+    void 프로덕션등록테스트() throws Exception {
         // given
         adminProductionJpaService.insertProduction(adminProductionEntity);
 
@@ -89,7 +89,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 수정 테스트")
-    void 프로덕션수정테스트() {
+    void 프로덕션수정테스트() throws Exception {
         // given
         Integer idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
@@ -114,7 +114,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 삭제 테스트")
-    void 프로덕션삭제테스트() {
+    void 프로덕션삭제테스트() throws Exception {
         Integer idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
         assertThat(adminProductionJpaService.deleteProduction(idx)).isNotNull();

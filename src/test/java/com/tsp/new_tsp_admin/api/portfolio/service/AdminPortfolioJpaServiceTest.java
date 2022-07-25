@@ -59,7 +59,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 리스트 조회 테스트")
-    void 포트폴리오리스트조회테스트() {
+    void 포트폴리오리스트조회테스트() throws Exception {
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
         portfolioMap.put("jpaStartPage", 1);
@@ -71,7 +71,7 @@ class AdminPortfolioJpaServiceTest {
     @Test
     @Disabled
     @DisplayName("포트폴리오 상세 조회 테스트")
-    void 포트폴리오상세조회테스트() {
+    void 포트폴리오상세조회테스트() throws Exception {
         // given
         adminPortFolioEntity = builder().idx(1).build();
 
@@ -80,7 +80,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 등록 테스트")
-    void 포트폴리오등록테스트() {
+    void 포트폴리오등록테스트() throws Exception {
         // given
         adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
 
@@ -96,7 +96,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 수정 테스트")
-    void 포트폴리오수정테스트() {
+    void 포트폴리오수정테스트() throws Exception {
         // given
         Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
@@ -123,7 +123,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 삭제 테스트")
-    void 포트폴리오삭제테스트() {
+    void 포트폴리오삭제테스트() throws Exception {
         Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
         assertThat(adminPortfolioJpaService.deletePortfolio(idx)).isNotNull();
