@@ -128,7 +128,6 @@ public class AdminProductionJpaRepository {
      * </pre>
      */
     @Modifying(clearAutomatically = true)
-    @Transactional
     public Integer insertProductionImage(CommonImageEntity commonImageEntity) {
         try {
             em.persist(commonImageEntity);

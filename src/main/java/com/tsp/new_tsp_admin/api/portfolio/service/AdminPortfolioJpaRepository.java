@@ -65,7 +65,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
      */
-    @Transactional(readOnly = true)
     public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
         List<AdminPortFolioEntity> portfolioList = queryFactory
                 .selectFrom(adminPortFolioEntity)
@@ -127,7 +126,6 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    @Transactional
     public Integer insertPortfolioImage(CommonImageEntity commonImageEntity) throws TspException {
         try {
             em.persist(commonImageEntity);

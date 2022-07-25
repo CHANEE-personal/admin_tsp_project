@@ -59,7 +59,7 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public CommonImageEntity findOneImage(CommonImageEntity exCommonImageEntity) {
         return queryFactory
                 .selectFrom(commonImageEntity)
@@ -94,7 +94,7 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    @Transactional
+//    @Transactional
     @Modifying(clearAutomatically = true)
     public Integer insertImage(CommonImageEntity commonImageEntity) {
         try {
@@ -115,7 +115,7 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    @Transactional
+//    @Transactional
     @Modifying(clearAutomatically = true)
     public Integer deleteModelImage(Integer idx) {
         try {

@@ -67,9 +67,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 로그인 인증 관련
-        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         // JWT 토큰 유효성 관련
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 그 외
         http.authorizeRequests()
                 .antMatchers("/api/jpa-model").hasRole("ADMIN")
@@ -93,33 +93,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : jwtAuthorizationFilter
-     * 2. ClassName  : SecurityConfiguration.java
-     * 3. Comment    : 로그인 인증
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
-     * </pre>
-     */
-    @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
-        return new JwtAuthorizationFilter(authenticationManager());
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : jwtAuthenticationFilter
-     * 2. ClassName  : SecurityConfiguration.java
-     * 3. Comment    : jwt 인증 Filter
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
-     * </pre>
-     */
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
     }
 }

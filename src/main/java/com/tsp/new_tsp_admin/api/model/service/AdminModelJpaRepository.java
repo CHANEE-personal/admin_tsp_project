@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.Date;
@@ -157,7 +156,6 @@ public class AdminModelJpaRepository {
      * </pre>
      */
     @Modifying(clearAutomatically = true)
-    @Transactional
     public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
         JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 

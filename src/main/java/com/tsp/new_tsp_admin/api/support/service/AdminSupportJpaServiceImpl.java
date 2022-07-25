@@ -50,7 +50,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("user")
+    @Cacheable("support")
     @Transactional(readOnly = true)
     public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws TspException {
         try {
@@ -70,7 +70,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("user")
+    @Cacheable("support")
     @Transactional(readOnly = true)
     public AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) throws TspException {
         try {
@@ -123,7 +123,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("user")
+    @CacheEvict("support")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Integer deleteSupportModel(Integer idx) throws TspException {

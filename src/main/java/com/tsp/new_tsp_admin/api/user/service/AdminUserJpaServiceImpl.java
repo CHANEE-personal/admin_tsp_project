@@ -19,7 +19,6 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     private final AdminUserJpaRepository adminUserJpaRepository;
 
