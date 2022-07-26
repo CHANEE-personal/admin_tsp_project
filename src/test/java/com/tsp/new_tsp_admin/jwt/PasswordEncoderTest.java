@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_admin.api.jwt;
+package com.tsp.new_tsp_admin.jwt;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

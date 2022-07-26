@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static io.jsonwebtoken.Jwts.builder;
+import static io.jsonwebtoken.Jwts.claims;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
 import static java.lang.System.currentTimeMillis;
@@ -63,7 +64,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException {
-        Claims claims = Jwts.claims();
+        Claims claims = claims();
         claims.put("username", ((User) authResult.getPrincipal()).getUsername());
 
         String token = builder()
