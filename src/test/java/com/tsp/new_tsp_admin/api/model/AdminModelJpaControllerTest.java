@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.CareerJson;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.common.StringUtil;
@@ -99,6 +100,9 @@ class AdminModelJpaControllerTest {
 
         em.persist(adminUserEntity);
 
+        ArrayList<CareerJson> careerList = new ArrayList<>();
+        careerList.add(new CareerJson("title","txt"));
+
         adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
@@ -114,6 +118,7 @@ class AdminModelJpaControllerTest {
                 .size3("34-24-34")
                 .shoes("270")
                 .status("draft")
+                .careerList(careerList)
                 .visible("Y")
                 .build();
     }
@@ -229,9 +234,9 @@ class AdminModelJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
-                .andDo(document("model/post",					// (1)
-                        preprocessRequest(prettyPrint()),   // (2)
-                        preprocessResponse(prettyPrint()),  // (3)
+                .andDo(document("model/post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         relaxedRequestFields(
                                 fieldWithPath("categoryCd").type(JsonFieldType.NUMBER).description("모델 카테고리"),
                                 fieldWithPath("categoryAge").type(JsonFieldType.STRING).description("모델 연령대"),
@@ -245,9 +250,7 @@ class AdminModelJpaControllerTest {
                                 fieldWithPath("size3").type(JsonFieldType.STRING).description("모델 사이즈"),
                                 fieldWithPath("shoes").type(JsonFieldType.STRING).description("모델 발 사이즈")
                         ),
-                        relaxedResponseFields(						// (5)
-//                                fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
-//                                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        relaxedResponseFields(
                                 fieldWithPath("categoryCd").type(JsonFieldType.NUMBER).description("모델 카테고리"),
                                 fieldWithPath("categoryAge").type(JsonFieldType.STRING).description("모델 연령대"),
                                 fieldWithPath("modelKorFirstName").type(JsonFieldType.STRING).description("모델 국문 성"),
@@ -388,6 +391,35 @@ class AdminModelJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
+                .andDo(document("model/put",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        relaxedRequestFields(
+                                fieldWithPath("categoryCd").type(JsonFieldType.NUMBER).description("모델 카테고리"),
+                                fieldWithPath("categoryAge").type(JsonFieldType.STRING).description("모델 연령대"),
+                                fieldWithPath("modelKorFirstName").type(JsonFieldType.STRING).description("모델 국문 성"),
+                                fieldWithPath("modelKorSecondName").type(JsonFieldType.STRING).description("모델 국문 이름"),
+                                fieldWithPath("modelKorName").type(JsonFieldType.STRING).description("모델 국문 이름"),
+                                fieldWithPath("modelFirstName").type(JsonFieldType.STRING).description("모델 영문 성"),
+                                fieldWithPath("modelSecondName").type(JsonFieldType.STRING).description("모델 영문 이름"),
+                                fieldWithPath("modelDescription").type(JsonFieldType.STRING).description("모델 상세"),
+                                fieldWithPath("height").type(JsonFieldType.STRING).description("모델 키"),
+                                fieldWithPath("size3").type(JsonFieldType.STRING).description("모델 사이즈"),
+                                fieldWithPath("shoes").type(JsonFieldType.STRING).description("모델 발 사이즈")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("categoryCd").type(JsonFieldType.NUMBER).description("모델 카테고리"),
+                                fieldWithPath("categoryAge").type(JsonFieldType.STRING).description("모델 연령대"),
+                                fieldWithPath("modelKorFirstName").type(JsonFieldType.STRING).description("모델 국문 성"),
+                                fieldWithPath("modelKorSecondName").type(JsonFieldType.STRING).description("모델 국문 이름"),
+                                fieldWithPath("modelKorName").type(JsonFieldType.STRING).description("모델 국문 이름"),
+                                fieldWithPath("modelFirstName").type(JsonFieldType.STRING).description("모델 영문 성"),
+                                fieldWithPath("modelSecondName").type(JsonFieldType.STRING).description("모델 영문 이름"),
+                                fieldWithPath("modelDescription").type(JsonFieldType.STRING).description("모델 상세"),
+                                fieldWithPath("height").type(JsonFieldType.STRING).description("모델 키"),
+                                fieldWithPath("size3").type(JsonFieldType.STRING).description("모델 사이즈"),
+                                fieldWithPath("shoes").type(JsonFieldType.STRING).description("모델 발 사이즈")
+                        )))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.modelKorFirstName").value("test"))
                 .andExpect(jsonPath("$.modelKorSecondName").value("test"))

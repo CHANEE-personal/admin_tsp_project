@@ -158,18 +158,16 @@ class AdminUserJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(newAdminUserEntity)))
                 .andDo(print())
-                .andDo(document("user/post",					// (1)
-                        preprocessRequest(prettyPrint()),   // (2)
-                        preprocessResponse(prettyPrint()),  // (3)
+                .andDo(document("user/post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         relaxedRequestFields(
                                 fieldWithPath("userId").type(JsonFieldType.STRING).description("아이디"),
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
                         ),
-                        relaxedResponseFields(						// (5)
-//                                fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
-//                                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        relaxedResponseFields(
                                 fieldWithPath("userId").type(JsonFieldType.STRING).description("아이디"),
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드")
                         )))
@@ -219,18 +217,16 @@ class AdminUserJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(updateAdminUserEntity)))
                 .andDo(print())
-                .andDo(document("user/put",					// (1)
-                        preprocessRequest(prettyPrint()),   // (2)
-                        preprocessResponse(prettyPrint()),  // (3)
+                .andDo(document("user/put",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         relaxedRequestFields(
                                 fieldWithPath("userId").type(JsonFieldType.STRING).description("아이디"),
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
                         ),
-                        relaxedResponseFields(						// (5)
-//                                fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
-//                                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        relaxedResponseFields(
                                 fieldWithPath("userId").type(JsonFieldType.STRING).description("아이디"),
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("패스워드")
                         )))
@@ -267,17 +263,6 @@ class AdminUserJpaControllerTest {
         mockMvc.perform(delete("/api/jpa-user/{idx}", adminUserEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andDo(document("user/delete",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        relaxedRequestFields(
-                                fieldWithPath("idx").type(JsonFieldType.STRING).description("유저 idx")
-                        ),
-                        relaxedResponseFields(
-//                                fieldWithPath("result").type(JsonFieldType.STRING).description("결과"),
-//                                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                                fieldWithPath("idx").type(JsonFieldType.STRING).description("유저 idx")
-                        )))
                 .andExpect(status().isOk())
                 .andExpect(content().string(StringUtil.getString(adminUserEntity.getIdx())));
     }
