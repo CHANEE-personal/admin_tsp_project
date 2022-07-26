@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,9 +40,14 @@ import java.util.List;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -92,6 +98,7 @@ class AdminSupportJpaControllerTest {
 				.supportPhone("010-9466-2702")
 				.supportSize3("31-24-31")
 				.supportInstagram("https://instagram.com")
+				.visible("Y")
 				.build();
 	}
 
@@ -158,6 +165,7 @@ class AdminSupportJpaControllerTest {
 				.supportPhone("010-9466-2702")
 				.supportSize3("31-24-31")
 				.supportInstagram("https://instagram.com")
+				.visible("Y")
 				.build();
 
 		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
@@ -165,6 +173,27 @@ class AdminSupportJpaControllerTest {
 				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
 				.andDo(print())
+				.andDo(document("support/put",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						relaxedRequestFields(
+								fieldWithPath("supportName").type(JsonFieldType.STRING).description("지원자 이름"),
+								fieldWithPath("supportMessage").type(JsonFieldType.STRING).description("지원자 상세"),
+								fieldWithPath("supportHeight").type(JsonFieldType.NUMBER).description("지원자 키"),
+								fieldWithPath("supportPhone").type(JsonFieldType.STRING).description("지원자 휴대폰 번호"),
+								fieldWithPath("supportSize3").type(JsonFieldType.STRING).description("지원자 사이즈"),
+								fieldWithPath("supportInstagram").type(JsonFieldType.STRING).description("지원자 인스타그램"),
+								fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부")
+						),
+						relaxedResponseFields(
+								fieldWithPath("supportName").type(JsonFieldType.STRING).description("지원자 이름"),
+								fieldWithPath("supportMessage").type(JsonFieldType.STRING).description("지원자 상세"),
+								fieldWithPath("supportHeight").type(JsonFieldType.NUMBER).description("지원자 키"),
+								fieldWithPath("supportPhone").type(JsonFieldType.STRING).description("지원자 휴대폰 번호"),
+								fieldWithPath("supportSize3").type(JsonFieldType.STRING).description("지원자 사이즈"),
+								fieldWithPath("supportInstagram").type(JsonFieldType.STRING).description("지원자 인스타그램"),
+								fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부")
+						)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.supportName").value("테스트"))
 				.andExpect(jsonPath("$.supportMessage").value("테스트"));
