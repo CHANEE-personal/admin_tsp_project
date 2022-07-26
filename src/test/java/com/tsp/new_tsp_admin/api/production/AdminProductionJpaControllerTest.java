@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,8 +41,13 @@ import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -175,6 +181,19 @@ class AdminProductionJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
+                .andDo(document("production/post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        relaxedRequestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("상세"),
+                                fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("상세"),
+                                fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부")
+                        )))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("프로덕션 테스트"))
                 .andExpect(jsonPath("$.description").value("프로덕션 테스트"));
@@ -198,13 +217,26 @@ class AdminProductionJpaControllerTest {
     void 프로덕션수정Api테스트() throws Exception {
         em.persist(adminProductionEntity);
 
-        adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
+        adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").visible("Y").build();
 
         mockMvc.perform(put("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminProductionEntity)))
                 .andDo(print())
+                .andDo(document("production/put",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        relaxedRequestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("상세"),
+                                fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("상세"),
+                                fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부")
+                        )))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("테스트1"))
                 .andExpect(jsonPath("$.description").value("테스트1"));
