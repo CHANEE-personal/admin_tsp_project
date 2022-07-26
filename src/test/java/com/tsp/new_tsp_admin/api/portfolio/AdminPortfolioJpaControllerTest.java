@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,6 +37,7 @@ import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
+import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -47,6 +46,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -192,18 +192,18 @@ class AdminPortfolioJpaControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         relaxedRequestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).description("상세"),
-                                fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부"),
-                                fieldWithPath("hashTag").type(JsonFieldType.STRING).description("hashTag"),
-                                fieldWithPath("videoUrl").type(JsonFieldType.STRING).description("videoUrl")
+                                fieldWithPath("title").type(STRING).description("제목"),
+                                fieldWithPath("description").type(STRING).description("상세"),
+                                fieldWithPath("visible").type(STRING).description("노출 여부"),
+                                fieldWithPath("hashTag").type(STRING).description("hashTag"),
+                                fieldWithPath("videoUrl").type(STRING).description("videoUrl")
                         ),
                         relaxedResponseFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).description("상세"),
-                                fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부"),
-                                fieldWithPath("hashTag").type(JsonFieldType.STRING).description("hashTag"),
-                                fieldWithPath("videoUrl").type(JsonFieldType.STRING).description("videoUrl")
+                                fieldWithPath("title").type(STRING).description("제목"),
+                                fieldWithPath("description").type(STRING).description("상세"),
+                                fieldWithPath("visible").type(STRING).description("노출 여부"),
+                                fieldWithPath("hashTag").type(STRING).description("hashTag"),
+                                fieldWithPath("videoUrl").type(STRING).description("videoUrl")
                         )))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categoryCd").value(1))
@@ -250,18 +250,18 @@ class AdminPortfolioJpaControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         relaxedRequestFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).description("상세"),
-                                fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부"),
-                                fieldWithPath("hashTag").type(JsonFieldType.STRING).description("hashTag"),
-                                fieldWithPath("videoUrl").type(JsonFieldType.STRING).description("videoUrl")
+                                fieldWithPath("title").type(STRING).description("제목"),
+                                fieldWithPath("description").type(STRING).description("상세"),
+                                fieldWithPath("visible").type(STRING).description("노출 여부"),
+                                fieldWithPath("hashTag").type(STRING).description("hashTag"),
+                                fieldWithPath("videoUrl").type(STRING).description("videoUrl")
                         ),
                         relaxedResponseFields(
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).description("상세"),
-                                fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부"),
-                                fieldWithPath("hashTag").type(JsonFieldType.STRING).description("hashTag"),
-                                fieldWithPath("videoUrl").type(JsonFieldType.STRING).description("videoUrl")
+                                fieldWithPath("title").type(STRING).description("제목"),
+                                fieldWithPath("description").type(STRING).description("상세"),
+                                fieldWithPath("visible").type(STRING).description("노출 여부"),
+                                fieldWithPath("hashTag").type(STRING).description("hashTag"),
+                                fieldWithPath("videoUrl").type(STRING).description("videoUrl")
                         )))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categoryCd").value(1))
@@ -305,7 +305,7 @@ class AdminPortfolioJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(StringUtil.getString(adminPortFolioEntity.getIdx())));
+                .andExpect(content().string(getString(adminPortFolioEntity.getIdx())));
     }
 
     @Test

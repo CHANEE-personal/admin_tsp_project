@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,6 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
+import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -46,6 +45,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -177,22 +178,22 @@ class AdminSupportJpaControllerTest {
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
 						relaxedRequestFields(
-								fieldWithPath("supportName").type(JsonFieldType.STRING).description("지원자 이름"),
-								fieldWithPath("supportMessage").type(JsonFieldType.STRING).description("지원자 상세"),
-								fieldWithPath("supportHeight").type(JsonFieldType.NUMBER).description("지원자 키"),
-								fieldWithPath("supportPhone").type(JsonFieldType.STRING).description("지원자 휴대폰 번호"),
-								fieldWithPath("supportSize3").type(JsonFieldType.STRING).description("지원자 사이즈"),
-								fieldWithPath("supportInstagram").type(JsonFieldType.STRING).description("지원자 인스타그램"),
-								fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부")
+								fieldWithPath("supportName").type(STRING).description("지원자 이름"),
+								fieldWithPath("supportMessage").type(STRING).description("지원자 상세"),
+								fieldWithPath("supportHeight").type(NUMBER).description("지원자 키"),
+								fieldWithPath("supportPhone").type(STRING).description("지원자 휴대폰 번호"),
+								fieldWithPath("supportSize3").type(STRING).description("지원자 사이즈"),
+								fieldWithPath("supportInstagram").type(STRING).description("지원자 인스타그램"),
+								fieldWithPath("visible").type(STRING).description("노출 여부")
 						),
 						relaxedResponseFields(
-								fieldWithPath("supportName").type(JsonFieldType.STRING).description("지원자 이름"),
-								fieldWithPath("supportMessage").type(JsonFieldType.STRING).description("지원자 상세"),
-								fieldWithPath("supportHeight").type(JsonFieldType.NUMBER).description("지원자 키"),
-								fieldWithPath("supportPhone").type(JsonFieldType.STRING).description("지원자 휴대폰 번호"),
-								fieldWithPath("supportSize3").type(JsonFieldType.STRING).description("지원자 사이즈"),
-								fieldWithPath("supportInstagram").type(JsonFieldType.STRING).description("지원자 인스타그램"),
-								fieldWithPath("visible").type(JsonFieldType.STRING).description("노출 여부")
+								fieldWithPath("supportName").type(STRING).description("지원자 이름"),
+								fieldWithPath("supportMessage").type(STRING).description("지원자 상세"),
+								fieldWithPath("supportHeight").type(NUMBER).description("지원자 키"),
+								fieldWithPath("supportPhone").type(STRING).description("지원자 휴대폰 번호"),
+								fieldWithPath("supportSize3").type(STRING).description("지원자 사이즈"),
+								fieldWithPath("supportInstagram").type(STRING).description("지원자 인스타그램"),
+								fieldWithPath("visible").type(STRING).description("노출 여부")
 						)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.supportName").value("테스트"))
@@ -233,7 +234,7 @@ class AdminSupportJpaControllerTest {
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string(StringUtil.getString(adminSupportEntity.getIdx())));;
+				.andExpect(content().string(getString(adminSupportEntity.getIdx())));;
 	}
 
 	@Test
