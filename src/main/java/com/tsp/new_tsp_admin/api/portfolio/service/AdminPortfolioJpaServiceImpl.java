@@ -31,7 +31,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("portfolio")
     @Transactional(readOnly = true)
     public Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException {
         try {

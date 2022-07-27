@@ -2,17 +2,18 @@ package com.tsp.new_tsp_admin.api.support.service;
 
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
@@ -25,18 +26,22 @@ import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 @DisplayName("지원모델 Service Test")
 class AdminSupportJpaServiceTest {
-    AdminSupportEntity adminSupportEntity;
-    AdminSupportDTO adminSupportDTO;
-    @Autowired private AdminSupportJpaService adminSupportJpaService;
     @Mock private AdminSupportJpaService mockAdminSupportJpaService;
+    private final AdminSupportJpaService adminSupportJpaService;
+
+    private AdminSupportEntity adminSupportEntity;
+    private AdminSupportDTO adminSupportDTO;
 
     void createSupport() {
         adminSupportEntity = builder()

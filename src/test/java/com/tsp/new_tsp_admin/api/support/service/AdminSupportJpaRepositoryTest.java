@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.support.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -10,11 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -31,19 +32,22 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @DataJpaTest
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("지원모델 Repository Test")
 class AdminSupportJpaRepositoryTest {
-    @Autowired private AdminSupportJpaRepository adminSupportJpaRepository;
     @Mock AdminSupportJpaRepository mockAdminSupportJpaRepository;
-    @Autowired private EntityManager em;
-    JPAQueryFactory queryFactory;
+    private final AdminSupportJpaRepository adminSupportJpaRepository;
+    private final EntityManager em;
 
+    protected JPAQueryFactory queryFactory;
     private AdminSupportEntity adminSupportEntity;
     private AdminSupportDTO adminSupportDTO;
 

@@ -6,17 +6,18 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.portfolio.mapper.PortfolioImageMapper;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -34,18 +35,22 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @DataJpaTest
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("포트폴리오 Repository Test")
 class AdminPortfolioJpaRepositoryTest {
-    @Autowired private AdminPortfolioJpaRepository adminPortfolioJpaRepository;
     @Mock private AdminPortfolioJpaRepository mockAdminPortfolioJpaRepository;
-    @Autowired private EntityManager em;
-    JPAQueryFactory queryFactory;
+    private final AdminPortfolioJpaRepository adminPortfolioJpaRepository;
+    private final EntityManager em;
+
+    protected JPAQueryFactory queryFactory;
     private AdminPortFolioEntity adminPortFolioEntity;
     private AdminPortFolioDTO adminPortFolioDTO;
     private CommonImageEntity commonImageEntity;

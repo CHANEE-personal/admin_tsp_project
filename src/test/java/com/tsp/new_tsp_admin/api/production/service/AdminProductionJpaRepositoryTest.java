@@ -7,6 +7,7 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapper;
 import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapperImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,11 +15,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -36,19 +37,23 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @Slf4j
 @DataJpaTest
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("프로덕션 Repository Test")
 class AdminProductionJpaRepositoryTest {
-    @Autowired private AdminProductionJpaRepository adminProductionJpaRepository;
     @Mock private AdminProductionJpaRepository mockAdminProductionJpaRepository;
-    @Autowired private EntityManager em;
-    JPAQueryFactory queryFactory;
+    private final AdminProductionJpaRepository adminProductionJpaRepository;
+    private final EntityManager em;
+
+    protected JPAQueryFactory queryFactory;
     private AdminProductionEntity adminProductionEntity;
     private AdminProductionDTO adminProductionDTO;
     private CommonImageEntity commonImageEntity;

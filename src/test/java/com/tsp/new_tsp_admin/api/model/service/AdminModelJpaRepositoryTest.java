@@ -6,21 +6,23 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.CareerJson;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -36,19 +38,23 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @DataJpaTest
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("모델 Repository Test")
 class AdminModelJpaRepositoryTest {
-    @Autowired private AdminModelJpaRepository adminModelJpaRepository;
-    @Autowired private AdminUserJpaRepository adminUserJpaRepository;
     @Mock private AdminModelJpaRepository mockAdminModelJpaRepository;
-    @Autowired private EntityManager em;
-    JPAQueryFactory queryFactory;
+    private final AdminModelJpaRepository adminModelJpaRepository;
+    private final AdminUserJpaRepository adminUserJpaRepository;
+    private final EntityManager em;
+
+    protected JPAQueryFactory queryFactory;
     private AdminModelEntity adminModelEntity;
     private AdminModelDTO adminModelDTO;
     private CommonImageEntity commonImageEntity;
@@ -64,6 +70,9 @@ class AdminModelJpaRepositoryTest {
 
         adminUserJpaRepository.adminLogin(adminUserEntity);
 
+        ArrayList<CareerJson> careerList = new ArrayList<>();
+        careerList.add(new CareerJson("title","txt"));
+
         adminModelEntity = builder()
                 .categoryCd(1)
                 .categoryAge("2")
@@ -76,6 +85,7 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("draft")
+                .careerList(careerList)
                 .height("170")
                 .size3("34-24-34")
                 .shoes("270")

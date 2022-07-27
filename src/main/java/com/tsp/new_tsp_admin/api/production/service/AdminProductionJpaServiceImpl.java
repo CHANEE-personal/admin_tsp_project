@@ -31,7 +31,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable("production")
     @Transactional(readOnly = true)
     public Integer findProductionsCount(Map<String, Object> productionMap) throws TspException {
         try {
