@@ -242,7 +242,7 @@ class AdminSupportJpaControllerTest {
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=utf-8"))
-				.andExpect(content().string(getString(adminSupportEntity.getIdx())));;
+				.andExpect(content().string(getString(adminSupportEntity.getIdx())));
 	}
 
 	@Test

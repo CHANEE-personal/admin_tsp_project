@@ -166,7 +166,7 @@ class AdminProductionJpaControllerTest {
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.idx").value("1"))
                 .andExpect(jsonPath("$.title").value("테스트1"))
-                .andExpect(jsonPath("$.description").value("테스트1"));;
+                .andExpect(jsonPath("$.description").value("테스트1"));
     }
 
     @Test
