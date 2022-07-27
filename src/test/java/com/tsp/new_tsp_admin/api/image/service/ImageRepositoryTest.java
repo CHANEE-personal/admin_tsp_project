@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.image.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
@@ -22,18 +24,21 @@ import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @DataJpaTest
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("이미지 Repository Test")
 class ImageRepositoryTest {
-    @Autowired private ImageRepository imageRepository;
     @Mock private ImageRepository mockImageRepository;
-    @Autowired private EntityManager em;
-    JPAQueryFactory queryFactory;
+    private final ImageRepository imageRepository;
+    private final EntityManager em;
+    protected JPAQueryFactory queryFactory;
 
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)

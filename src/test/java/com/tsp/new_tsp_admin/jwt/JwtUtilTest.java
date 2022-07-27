@@ -1,12 +1,10 @@
 package com.tsp.new_tsp_admin.jwt;
 
 import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
-import com.tsp.new_tsp_admin.jwt.JwtUtil;
-import com.tsp.new_tsp_admin.jwt.MyUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
@@ -21,17 +20,19 @@ import javax.transaction.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 class JwtUtilTest {
     private final MockHttpServletResponse response = new MockHttpServletResponse();
-    @Autowired private MyUserDetailsService userDetailsService;
-    @Autowired private JwtUtil jwtUtil;
-
+    private final MyUserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
     private final AuthenticationRequest authenticationRequest = new AuthenticationRequest();
     private UserDetails userDetails;
 
