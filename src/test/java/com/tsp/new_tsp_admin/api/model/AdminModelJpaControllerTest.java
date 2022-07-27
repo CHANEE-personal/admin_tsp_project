@@ -151,7 +151,8 @@ class AdminModelJpaControllerTest {
         mockMvc.perform(get("/api/jpa-model/lists/1").queryParams(modelMap)
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -168,7 +169,8 @@ class AdminModelJpaControllerTest {
         mockMvc.perform(get("/api/jpa-model/lists/2").queryParams(paramMap)
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -200,6 +202,7 @@ class AdminModelJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.idx").value("143"))
                 .andExpect(jsonPath("$.categoryCd").value("2"))
                 .andExpect(jsonPath("$.modelFirstName").value("kim"))
@@ -269,6 +272,7 @@ class AdminModelJpaControllerTest {
                                 fieldWithPath("shoes").type(STRING).description("모델 발 사이즈")
                         )))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.categoryAge").value("2"))
                 .andExpect(jsonPath("$.modelKorFirstName").value("조"))
@@ -298,6 +302,7 @@ class AdminModelJpaControllerTest {
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.loginYn").value("Y"))
                 .andExpect(jsonPath("$.token").isNotEmpty());
 
@@ -307,6 +312,7 @@ class AdminModelJpaControllerTest {
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.categoryAge").value("2"))
                 .andExpect(jsonPath("$.modelKorFirstName").value("조"))
@@ -426,6 +432,7 @@ class AdminModelJpaControllerTest {
                                 fieldWithPath("shoes").type(STRING).description("모델 발 사이즈")
                         )))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.modelKorFirstName").value("test"))
                 .andExpect(jsonPath("$.modelKorSecondName").value("test"))
                 .andExpect(jsonPath("$.modelKorName").value("test"));
@@ -449,6 +456,7 @@ class AdminModelJpaControllerTest {
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.loginYn").value("Y"))
                 .andExpect(jsonPath("$.token").isNotEmpty());
 
@@ -477,6 +485,7 @@ class AdminModelJpaControllerTest {
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.modelKorFirstName").value("test"))
                 .andExpect(jsonPath("$.modelKorSecondName").value("test"))
                 .andExpect(jsonPath("$.modelKorName").value("test"));
@@ -560,6 +569,7 @@ class AdminModelJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminModelEntity.getIdx())));
     }
 
@@ -629,6 +639,7 @@ class AdminModelJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(commonCodeEntity)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 }

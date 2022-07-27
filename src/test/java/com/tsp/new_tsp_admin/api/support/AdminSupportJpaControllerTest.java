@@ -130,7 +130,8 @@ class AdminSupportJpaControllerTest {
 		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"));
 	}
 
 	@Test
@@ -153,7 +154,8 @@ class AdminSupportJpaControllerTest {
 		mockMvc.perform(get("/api/jpa-support/1")
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"));
 	}
 
 	@Test
@@ -200,6 +202,7 @@ class AdminSupportJpaControllerTest {
 								fieldWithPath("visible").type(STRING).description("노출 여부")
 						)))
 				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(jsonPath("$.supportName").value("테스트"))
 				.andExpect(jsonPath("$.supportMessage").value("테스트"));
 	}
@@ -238,6 +241,7 @@ class AdminSupportJpaControllerTest {
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(content().string(getString(adminSupportEntity.getIdx())));;
 	}
 

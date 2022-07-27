@@ -56,20 +56,21 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs // -> apply(documentationConfiguration(restDocumentation))
-@ExtendWith({RestDocumentationExtension.class})
+@ExtendWith(RestDocumentationExtension.class)
 @Transactional
 @TestPropertySource(locations = "classpath:application.properties")
 @TestConstructor(autowireMode = ALL)
 @RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminUserJpaControllerTest {
-    private AdminUserEntity adminUserEntity;
-    private MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final WebApplicationContext wac;
     private final EntityManager em;
     private final JwtUtil jwtUtil;
-    PasswordEncoder passwordEncoder;
+
+    private AdminUserEntity adminUserEntity;
+    private MockMvc mockMvc;
+    protected PasswordEncoder passwordEncoder;
 
     Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -116,7 +117,8 @@ class AdminUserJpaControllerTest {
         mockMvc.perform(get("/api/jpa-user").param("page", "1").param("size", "100")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -139,6 +141,7 @@ class AdminUserJpaControllerTest {
                 .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(header().string("loginYn", "Y"))
                 .andExpect(header().string("username", "test"))
                 .andExpect(header().exists("authorization"));
@@ -176,6 +179,7 @@ class AdminUserJpaControllerTest {
                                 fieldWithPath("password").type(STRING).description("패스워드")
                         )))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.userId").value("test"))
                 .andExpect(jsonPath("$.password").value("test"))
                 .andExpect(jsonPath("$.name").value("test"))
@@ -235,6 +239,7 @@ class AdminUserJpaControllerTest {
                                 fieldWithPath("password").type(STRING).description("패스워드")
                         )))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.userId").value("admin03"))
                 .andExpect(jsonPath("$.name").value("admin03"));
     }
@@ -268,6 +273,7 @@ class AdminUserJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminUserEntity.getIdx())));
     }
 
@@ -290,6 +296,7 @@ class AdminUserJpaControllerTest {
                 .content(objectMapper.writeValueAsString(AuthenticationRequest.builder().userId("admin01").password("pass1234").build())))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.jwt").isNotEmpty())
                 .andExpect(jsonPath("$.token").isNotEmpty());
     }

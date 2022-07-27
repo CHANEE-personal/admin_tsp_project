@@ -130,6 +130,7 @@ class AdminPortfolioJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.portfolioList.length()", greaterThan(0)));
     }
 
@@ -146,6 +147,7 @@ class AdminPortfolioJpaControllerTest {
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.portfolioList.length()", greaterThan(0)));
     }
 
@@ -170,6 +172,7 @@ class AdminPortfolioJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.idx").value("1"));
     }
 
@@ -210,6 +213,7 @@ class AdminPortfolioJpaControllerTest {
                                 fieldWithPath("videoUrl").type(STRING).description("videoUrl")
                         )))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.title").value("포트폴리오 테스트"))
                 .andExpect(jsonPath("$.description").value("포트폴리오 테스트"))
@@ -268,6 +272,7 @@ class AdminPortfolioJpaControllerTest {
                                 fieldWithPath("videoUrl").type(STRING).description("videoUrl")
                         )))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.title").value("포트폴리오 테스트1111"))
                 .andExpect(jsonPath("$.description").value("포트폴리오 테스트1111"))
@@ -309,6 +314,7 @@ class AdminPortfolioJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminPortFolioEntity.getIdx())));
     }
 

@@ -123,6 +123,7 @@ class AdminProductionJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.productionList.length()", greaterThan(0)));
     }
 
@@ -140,7 +141,8 @@ class AdminProductionJpaControllerTest {
         mockMvc.perform(get("/api/jpa-production/lists").queryParams(paramMap)
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -161,6 +163,7 @@ class AdminProductionJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.idx").value("1"))
                 .andExpect(jsonPath("$.title").value("테스트1"))
                 .andExpect(jsonPath("$.description").value("테스트1"));;
@@ -199,6 +202,7 @@ class AdminProductionJpaControllerTest {
                                 fieldWithPath("visible").type(STRING).description("노출 여부")
                         )))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.title").value("프로덕션 테스트"))
                 .andExpect(jsonPath("$.description").value("프로덕션 테스트"));
     }
@@ -242,6 +246,7 @@ class AdminProductionJpaControllerTest {
                                 fieldWithPath("visible").type(STRING).description("노출 여부")
                         )))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.title").value("테스트1"))
                 .andExpect(jsonPath("$.description").value("테스트1"));
     }
@@ -272,6 +277,7 @@ class AdminProductionJpaControllerTest {
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminProductionEntity.getIdx())));
     }
 
