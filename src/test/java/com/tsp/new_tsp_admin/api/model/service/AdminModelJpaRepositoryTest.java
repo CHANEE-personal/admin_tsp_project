@@ -149,7 +149,9 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
 
         // then
-        assertAll(() -> assertThat(adminModelDTO.getIdx()).isEqualTo(143),
+        assertAll(() -> {
+                    assertThat(adminModelDTO.getIdx()).isEqualTo(143);
+                },
                 () -> {
                     assertThat(adminModelDTO.getCategoryCd()).isEqualTo(2);
                     assertNotNull(adminModelDTO.getCategoryCd());

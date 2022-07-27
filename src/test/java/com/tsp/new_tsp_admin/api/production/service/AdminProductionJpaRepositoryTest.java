@@ -109,7 +109,9 @@ class AdminProductionJpaRepositoryTest {
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
 
-        assertAll(() -> assertThat(adminProductionDTO.getIdx()).isEqualTo(1),
+        assertAll(() -> {
+                    assertThat(adminProductionDTO.getIdx()).isEqualTo(1);
+                },
                 () -> {
                     assertThat(adminProductionDTO.getTitle()).isEqualTo("테스트1");
                     assertNotNull(adminProductionDTO.getTitle());

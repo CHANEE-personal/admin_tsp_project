@@ -109,7 +109,9 @@ class AdminPortfolioJpaRepositoryTest {
         // when
         adminPortFolioDTO = adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
 
-        assertAll(() -> assertThat(adminPortFolioDTO.getIdx()).isEqualTo(1),
+        assertAll(() -> {
+                    assertThat(adminPortFolioDTO.getIdx()).isEqualTo(1);
+                },
                 () -> {
                     assertThat(adminPortFolioDTO.getTitle()).isEqualTo("포트폴리오 테스트");
                 },

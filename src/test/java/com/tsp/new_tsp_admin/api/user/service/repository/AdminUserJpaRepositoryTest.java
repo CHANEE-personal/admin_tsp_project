@@ -115,7 +115,9 @@ class AdminUserJpaRepositoryTest {
         AdminUserEntity adminUser = adminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
         // then
-        assertAll(() -> assertThat(adminUser.getIdx()).isEqualTo(2),
+        assertAll(() -> {
+                    assertThat(adminUser.getIdx()).isEqualTo(2);
+                },
                 () -> {
                     assertThat(adminUser.getUserId()).isEqualTo("admin01");
                     assertNotNull(adminUser.getUserId());
