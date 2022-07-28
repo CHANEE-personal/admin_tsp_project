@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
@@ -67,7 +66,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
-@AutoConfigureRestDocs // -> apply(documentationConfiguration(restDocumentation))
 @ExtendWith({RestDocumentationExtension.class})
 @TestPropertySource(locations = "classpath:application.properties")
 @TestConstructor(autowireMode = ALL)
