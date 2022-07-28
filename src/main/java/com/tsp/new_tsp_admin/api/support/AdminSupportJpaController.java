@@ -54,18 +54,19 @@ public class AdminSupportJpaController {
         // 페이징 및 검색
         Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
 
+        Integer supportListCount = this.adminSupportJpaService.findSupportsCount(supportMap);
         List<AdminSupportDTO> supportList = new ArrayList<>();
 
-        if (this.adminSupportJpaService.findSupportsCount(supportMap) > 0) {
+        if (supportListCount > 0) {
             supportList = this.adminSupportJpaService.findSupportsList(supportMap);
         }
 
         // 리스트 수
         supportMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        supportMap.put("perPageListCnt", ceil((this.adminSupportJpaService.findSupportsCount(supportMap) - 1) / page.getSize() + 1));
+        supportMap.put("perPageListCnt", ceil((supportListCount - 1) / page.getSize() + 1));
         // 전체 아이템 수
-        supportMap.put("modelListTotalCnt", this.adminSupportJpaService.findSupportsCount(supportMap));
+        supportMap.put("modelListTotalCnt", supportListCount);
 
         supportMap.put("supportList", supportList);
 

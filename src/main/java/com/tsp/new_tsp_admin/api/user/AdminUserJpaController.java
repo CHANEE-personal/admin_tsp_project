@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
+import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
 @RestController
@@ -127,7 +128,7 @@ public class AdminUserJpaController {
         // 사용자 정보 조회 후 token 생성
         String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(authenticationRequest.getUserId()));
 
-        return ResponseEntity.ok(new AuthenticationResponse(token));
+        return ok(new AuthenticationResponse(token));
     }
 
     @ApiOperation(value = "JWT 토큰 재발급", notes = "JWT 토큰을 재발급")
@@ -143,7 +144,7 @@ public class AdminUserJpaController {
         // 사용자 정보 조회 후 token 생성
         String refreshToken = jwtTokenUtil.generateRefreshToken(userDetailsService.loadUserByUsername(authenticationRequest.getUserId()));
 
-        return ResponseEntity.ok(new AuthenticationResponse(refreshToken));
+        return ok(new AuthenticationResponse(refreshToken));
     }
 
     /**

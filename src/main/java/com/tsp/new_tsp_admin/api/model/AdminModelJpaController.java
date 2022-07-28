@@ -63,18 +63,19 @@ public class AdminModelJpaController {
         Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
         modelMap.put("categoryCd", categoryCd);
 
+        Integer modelListCount = this.adminModelJpaService.findModelsCount(modelMap);
         List<AdminModelDTO> modelList = new ArrayList<>();
 
-        if (this.adminModelJpaService.findModelsCount(modelMap) > 0) {
+        if (modelListCount > 0) {
             modelList = this.adminModelJpaService.findModelsList(modelMap);
         }
 
         // 리스트 수
         modelMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        modelMap.put("perPageListCnt", ceil((this.adminModelJpaService.findModelsCount(modelMap) - 1) / page.getSize() + 1));
+        modelMap.put("perPageListCnt", ceil((modelListCount - 1) / page.getSize() + 1));
         // 전체 아이템 수
-        modelMap.put("modelListTotalCnt", this.adminModelJpaService.findModelsCount(modelMap));
+        modelMap.put("modelListTotalCnt", modelListCount);
 
         modelMap.put("modelList", modelList);
 

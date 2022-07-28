@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
@@ -54,7 +55,6 @@ public class AdminProductionJpaController {
         Map<String, Object> productionMap = new HashMap<>();
 
         Integer productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
-
         List<AdminProductionDTO> productionList = new ArrayList<>();
 
         if (productionCnt > 0) {
@@ -92,7 +92,7 @@ public class AdminProductionJpaController {
     })
     @GetMapping("/{idx}")
     public AdminProductionDTO getProductionEdit(@PathVariable Integer idx) throws Exception {
-        return adminProductionJpaService.findOneProduction(AdminProductionEntity.builder().idx(idx).build());
+        return adminProductionJpaService.findOneProduction(builder().idx(idx).build());
     }
 
     /**
