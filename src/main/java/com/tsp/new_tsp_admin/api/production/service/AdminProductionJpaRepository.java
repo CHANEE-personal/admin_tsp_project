@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -151,7 +150,6 @@ public class AdminProductionJpaRepository {
         em.merge(existAdminProductionEntity);
         em.flush();
         em.clear();
-
         return INSTANCE.toDto(existAdminProductionEntity);
     }
 
@@ -168,7 +166,6 @@ public class AdminProductionJpaRepository {
         em.remove(em.find(AdminProductionEntity.class, idx));
         em.flush();
         em.clear();
-
         return idx;
     }
 }

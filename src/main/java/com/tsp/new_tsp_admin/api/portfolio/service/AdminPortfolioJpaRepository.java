@@ -9,7 +9,6 @@ import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -149,7 +148,6 @@ public class AdminPortfolioJpaRepository {
         em.merge(existAdminPortfolioEntity);
         em.flush();
         em.clear();
-
         return INSTANCE.toDto(existAdminPortfolioEntity);
     }
 
@@ -166,7 +164,6 @@ public class AdminPortfolioJpaRepository {
         em.remove(em.find(AdminPortFolioEntity.class, idx));
         em.flush();
         em.clear();
-
         return idx;
     }
 }

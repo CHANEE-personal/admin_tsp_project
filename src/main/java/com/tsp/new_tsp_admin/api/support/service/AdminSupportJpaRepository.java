@@ -119,7 +119,6 @@ public class AdminSupportJpaRepository {
         em.merge(existAdminSupportEntity);
         em.flush();
         em.clear();
-
         return INSTANCE.toDto(existAdminSupportEntity);
     }
 
@@ -136,7 +135,6 @@ public class AdminSupportJpaRepository {
         em.remove(em.find(AdminSupportEntity.class, idx));
         em.flush();
         em.clear();
-
         return idx;
     }
 }

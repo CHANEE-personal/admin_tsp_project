@@ -17,12 +17,12 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.api.domain.user.QAdminUserEntity.adminUserEntity;
 import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtils.nullStrToStr;
+import static java.util.Objects.requireNonNull;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Slf4j
@@ -67,9 +67,7 @@ public class AdminUserJpaRepository {
      * </pre>
      */
     public AdminUserEntity findOneUser(String id) {
-        return queryFactory.selectFrom(adminUserEntity)
-                .where(adminUserEntity.userId.eq(id))
-                .fetchOne();
+        return queryFactory.selectFrom(adminUserEntity).where(adminUserEntity.userId.eq(id)).fetchOne();
     }
 
     /**
@@ -82,7 +80,7 @@ public class AdminUserJpaRepository {
      * </pre>
      */
     public String findOneUserByToken(String token) {
-        return Objects.requireNonNull(queryFactory.selectFrom(adminUserEntity)
+        return requireNonNull(queryFactory.selectFrom(adminUserEntity)
                 .where(adminUserEntity.userToken.eq(token))
                 .fetchOne()).getUserId();
     }
@@ -161,7 +159,6 @@ public class AdminUserJpaRepository {
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
         //회원 등록
         em.persist(adminUserEntity);
-
         return INSTANCE.toDto(adminUserEntity);
     }
 
@@ -178,7 +175,6 @@ public class AdminUserJpaRepository {
         em.merge(adminUserEntity);
         em.flush();
         em.clear();
-
         return INSTANCE.toDto(adminUserEntity);
     }
 
@@ -195,7 +191,6 @@ public class AdminUserJpaRepository {
         em.remove(em.find(AdminUserEntity.class, idx));
         em.flush();
         em.clear();
-
         return idx;
     }
 }

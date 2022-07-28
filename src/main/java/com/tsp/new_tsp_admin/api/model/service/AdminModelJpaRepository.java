@@ -190,7 +190,6 @@ public class AdminModelJpaRepository {
         em.merge(existAdminModelEntity);
         em.flush();
         em.clear();
-
         return INSTANCE.toDto(existAdminModelEntity);
     }
 
@@ -244,7 +243,6 @@ public class AdminModelJpaRepository {
         em.remove(em.find(AdminModelEntity.class, idx));
         em.flush();
         em.clear();
-
         return idx;
     }
 }
