@@ -24,7 +24,8 @@ import java.util.Map;
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
@@ -111,6 +112,11 @@ class AdminSupportJpaServiceTest {
         // then
         assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
         assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportPhone()).isEqualTo("010-9466-2702");
+
+        // verify
+        verify(mockAdminSupportJpaService, times(2)).findOneSupportModel(adminSupportEntity);
+        verify(mockAdminSupportJpaService, atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaService);
     }
 
     @Test

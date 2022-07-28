@@ -24,7 +24,8 @@ import java.util.Map;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
 import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
@@ -97,6 +98,11 @@ class AdminPortfolioJpaServiceTest {
         assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getDescription()).isEqualTo("포트폴리오 테스트");
         assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getHashTag()).isEqualTo("#test");
         assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getVideoUrl()).isEqualTo("https://youtube.com");
+
+        // verify
+        verify(mockAdminPortfolioJpaService, times(4)).findOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaService);
     }
 
     @Test
@@ -124,6 +130,11 @@ class AdminPortfolioJpaServiceTest {
 
         // then
         assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트1");
+
+        // verify
+        verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaService);
     }
 
     @Test

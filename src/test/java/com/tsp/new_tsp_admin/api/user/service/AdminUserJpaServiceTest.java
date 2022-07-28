@@ -20,7 +20,8 @@ import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
@@ -86,6 +87,8 @@ class AdminUserJpaServiceTest {
                 .build();
 
         adminUserJpaService.insertToken(adminUserEntity);
+
+        assertThat(adminUserEntity.getUserToken()).isNotEmpty();
     }
 
     @Test
@@ -106,6 +109,11 @@ class AdminUserJpaServiceTest {
         assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo("test");
         assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo("test");
         assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo("test@test.com");
+
+        // verify
+        verify(mockAdminUserJpaService, times(3)).findOneUser(adminUserEntity.getUserId());
+        verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        verifyNoMoreInteractions(mockAdminUserJpaService);
     }
 
     @Test
@@ -140,6 +148,11 @@ class AdminUserJpaServiceTest {
         assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getUserId()).isEqualTo("test1");
         assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getName()).isEqualTo("test1");
         assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getEmail()).isEqualTo("test1@test.com");
+
+        // verify
+        verify(mockAdminUserJpaService, times(3)).findOneUser(newAdminUserEntity.getUserId());
+        verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(newAdminUserEntity.getUserId());
+        verifyNoMoreInteractions(mockAdminUserJpaService);
     }
 
     @Test

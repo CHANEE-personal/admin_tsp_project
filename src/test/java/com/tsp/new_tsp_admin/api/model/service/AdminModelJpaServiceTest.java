@@ -25,7 +25,8 @@ import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
@@ -99,8 +100,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() throws Exception {
         // given
-        adminModelEntity = builder().idx(143).categoryCd(2).build();
-        adminModelJpaService.findOneModel(adminModelEntity);
+        adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build());
     }
 
     @Test
@@ -127,6 +127,11 @@ class AdminModelJpaServiceTest {
         assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
         assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorFirstName()).isEqualTo(adminModelDTO.getModelKorFirstName());
         assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorSecondName()).isEqualTo(adminModelDTO.getModelKorSecondName());
+
+        // verify
+        verify(mockAdminModelJpaService, times(3)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaService);
     }
 
     @Test
@@ -188,6 +193,11 @@ class AdminModelJpaServiceTest {
         // then
         assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorFirstName()).isEqualTo("조");
         assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorSecondName()).isEqualTo("찬희");
+
+        // verify
+        verify(mockAdminModelJpaService, times(2)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaService);
     }
 
     @Test
