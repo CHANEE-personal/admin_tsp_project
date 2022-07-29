@@ -33,15 +33,12 @@ class JwtUtilTest {
     private final MockHttpServletResponse response = new MockHttpServletResponse();
     private final MyUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
-    private final AuthenticationRequest authenticationRequest = new AuthenticationRequest();
     private UserDetails userDetails;
 
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void setUp() {
-        authenticationRequest.setUserId("admin02");
-        authenticationRequest.setPassword("pass1234");
-        userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
+        userDetails = userDetailsService.loadUserByUsername(AuthenticationRequest.builder().userId("admin02").password("pass1234").build().getUserId());
     }
 
     @Test

@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.support.service;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,6 @@ class AdminSupportJpaRepositoryTest {
     private final AdminSupportJpaRepository adminSupportJpaRepository;
     private final EntityManager em;
 
-    protected JPAQueryFactory queryFactory;
     private AdminSupportEntity adminSupportEntity;
     private AdminSupportDTO adminSupportDTO;
 
@@ -66,7 +64,6 @@ class AdminSupportJpaRepositoryTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        queryFactory = new JPAQueryFactory(em);
         createSupport();
     }
 

@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.user.service.repository;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,6 @@ class AdminUserJpaRepositoryTest {
     private final AdminUserJpaRepository adminUserJpaRepository;
     private final EntityManager em;
 
-    protected JPAQueryFactory queryFactory;
     private AdminUserEntity adminUserEntity;
     private AdminUserDTO adminUserDTO;
 
@@ -59,7 +57,6 @@ class AdminUserJpaRepositoryTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        queryFactory = new JPAQueryFactory(em);
         createUser();
     }
 

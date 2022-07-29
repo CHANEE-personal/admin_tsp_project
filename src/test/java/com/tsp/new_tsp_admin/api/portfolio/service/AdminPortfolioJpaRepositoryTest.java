@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
@@ -50,7 +49,6 @@ class AdminPortfolioJpaRepositoryTest {
     private final AdminPortfolioJpaRepository adminPortfolioJpaRepository;
     private final EntityManager em;
 
-    protected JPAQueryFactory queryFactory;
     private AdminPortFolioEntity adminPortFolioEntity;
     private AdminPortFolioDTO adminPortFolioDTO;
     private CommonImageEntity commonImageEntity;
@@ -84,7 +82,6 @@ class AdminPortfolioJpaRepositoryTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        queryFactory = new JPAQueryFactory(em);
         createPortfolioAndImage();
     }
 

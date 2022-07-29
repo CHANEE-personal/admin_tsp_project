@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
@@ -53,7 +52,6 @@ class AdminProductionJpaRepositoryTest {
     private final AdminProductionJpaRepository adminProductionJpaRepository;
     private final EntityManager em;
 
-    protected JPAQueryFactory queryFactory;
     private AdminProductionEntity adminProductionEntity;
     private AdminProductionDTO adminProductionDTO;
     private CommonImageEntity commonImageEntity;
@@ -84,7 +82,6 @@ class AdminProductionJpaRepositoryTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        queryFactory = new JPAQueryFactory(em);
         createProductionAndImage();
     }
 
