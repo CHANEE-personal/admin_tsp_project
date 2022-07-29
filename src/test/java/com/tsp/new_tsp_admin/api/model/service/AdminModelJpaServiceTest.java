@@ -100,7 +100,11 @@ class AdminModelJpaServiceTest {
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() throws Exception {
         // given
-        adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build());
+        assertThat(adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build())).isNotNull();
+        assertThat(adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build()).getIdx()).isEqualTo(143);
+        assertThat(adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build()).getCategoryCd()).isEqualTo(2);
+        assertThat(adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build()).getModelKorFirstName()).isEqualTo("김");
+        assertThat(adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build()).getModelKorSecondName()).isEqualTo("예영");
     }
 
     @Test
