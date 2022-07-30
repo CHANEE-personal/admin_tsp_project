@@ -81,6 +81,7 @@ class AdminModelJpaServiceTest {
         modelMap.put("jpaStartPage", 0);
         modelMap.put("size", 100);
 
+        // then
         assertThat(adminModelJpaService.findModelsList(modelMap)).isNotEmpty();
     }
 
@@ -99,7 +100,7 @@ class AdminModelJpaServiceTest {
     @Test
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() throws Exception {
-        // given
+        // then
         assertThat(adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build())).isNotNull();
         assertThat(adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build()).getIdx()).isEqualTo(143);
         assertThat(adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build()).getCategoryCd()).isEqualTo(2);
@@ -141,6 +142,7 @@ class AdminModelJpaServiceTest {
     @Test
     @DisplayName("모델 등록 예외 테스트")
     void 모델등록예외테스트() {
+        // given
         adminModelEntity = builder()
                 .categoryCd(-1)
                 .categoryAge("2")
@@ -166,6 +168,7 @@ class AdminModelJpaServiceTest {
     @Test
     @DisplayName("모델 수정 테스트")
     void 모델수정테스트() throws Exception {
+        // given
         Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = builder()
@@ -207,8 +210,10 @@ class AdminModelJpaServiceTest {
     @Test
     @DisplayName("모델 삭제 테스트")
     void 모델삭제테스트() throws Exception {
+        // given
         Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
+        // then
         assertThat(adminModelJpaService.deleteModel(idx)).isNotNull();
     }
 }

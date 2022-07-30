@@ -71,6 +71,7 @@ class AdminPortfolioJpaServiceTest {
         portfolioMap.put("jpaStartPage", 1);
         portfolioMap.put("size", 3);
 
+        // then
         assertThat(adminPortfolioJpaService.findPortfoliosList(portfolioMap)).isNotEmpty();
     }
 
@@ -81,6 +82,7 @@ class AdminPortfolioJpaServiceTest {
         // given
         adminPortFolioEntity = builder().idx(1).build();
 
+        // then
         assertThat(adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isNotEmpty();
     }
 
@@ -140,8 +142,10 @@ class AdminPortfolioJpaServiceTest {
     @Test
     @DisplayName("포트폴리오 삭제 테스트")
     void 포트폴리오삭제테스트() throws Exception {
+        // given
         Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
+        // then
         assertThat(adminPortfolioJpaService.deletePortfolio(idx)).isNotNull();
     }
 }

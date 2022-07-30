@@ -32,6 +32,7 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 @TestConstructor(autowireMode = ALL)
 @RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
+@DisplayName("유저 Service Test")
 class AdminUserJpaServiceTest {
     @Mock private AdminUserJpaService mockAdminUserJpaService;
     private final AdminUserJpaService adminUserJpaService;
@@ -94,6 +95,7 @@ class AdminUserJpaServiceTest {
     @Test
     @DisplayName("관리자 회원가입 테스트")
     void 관리자회원가입테스트() throws Exception {
+        // given
         AdminUserEntity adminUserEntity = builder()
                 .userId("test")
                 .password("test")
@@ -104,8 +106,10 @@ class AdminUserJpaServiceTest {
 
         adminUserJpaService.insertAdminUser(adminUserEntity);
 
+        // when
         when(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
 
+        // then
         assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo("test");
         assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo("test");
         assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo("test@test.com");
@@ -158,6 +162,7 @@ class AdminUserJpaServiceTest {
     @Test
     @DisplayName("관리자 탈퇴 테스트")
     void 관리자탈퇴테스트() throws Exception {
+        // given
         AdminUserEntity adminUserEntity = builder()
                 .userId("test")
                 .password("test")
@@ -168,6 +173,7 @@ class AdminUserJpaServiceTest {
 
         Integer idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
 
+        // then
         assertThat(adminUserJpaService.deleteAdminUser(idx)).isNotNull();
     }
 }

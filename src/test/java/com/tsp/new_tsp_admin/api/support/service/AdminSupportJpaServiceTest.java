@@ -91,6 +91,7 @@ class AdminSupportJpaServiceTest {
     @Test
     @DisplayName("지원모델 수정 테스트")
     void 지원모델수정테스트() throws Exception {
+        // given
         Integer idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         adminSupportEntity = builder()
@@ -125,6 +126,7 @@ class AdminSupportJpaServiceTest {
         // given
         Integer idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
+        // then
         assertThat(adminSupportJpaService.deleteSupportModel(idx)).isNotNull();
     }
 }

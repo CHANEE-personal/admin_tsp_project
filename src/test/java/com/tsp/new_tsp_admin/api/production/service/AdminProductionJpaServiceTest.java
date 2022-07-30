@@ -67,6 +67,7 @@ class AdminProductionJpaServiceTest {
         productionMap.put("jpaStartPage", 1);
         productionMap.put("size", 3);
 
+        // then
         assertThat(adminProductionJpaService.findProductionsList(productionMap)).isNotEmpty();
     }
 
@@ -131,8 +132,10 @@ class AdminProductionJpaServiceTest {
     @Test
     @DisplayName("프로덕션 삭제 테스트")
     void 프로덕션삭제테스트() throws Exception {
+        // given
         Integer idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
+        // then
         assertThat(adminProductionJpaService.deleteProduction(idx)).isNotNull();
     }
 }
