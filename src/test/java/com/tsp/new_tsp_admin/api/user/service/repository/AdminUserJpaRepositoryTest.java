@@ -44,7 +44,6 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 class AdminUserJpaRepositoryTest {
     @Mock private AdminUserJpaRepository mockAdminUserJpaRepository;
     private final AdminUserJpaRepository adminUserJpaRepository;
-    private final EntityManager em;
 
     private AdminUserEntity adminUserEntity;
     private AdminUserDTO adminUserDTO;
@@ -68,6 +67,7 @@ class AdminUserJpaRepositoryTest {
         userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
 
+        // then
         assertThat(adminUserJpaRepository.findUsersList(userMap)).isNotEmpty();
     }
 

@@ -54,6 +54,8 @@ class AdminSupportJpaServiceTest {
                 .supportMessage("조찬희")
                 .supportPhone("010-9466-2702")
                 .supportSize3("31-24-31")
+                .supportInstagram("https://instagram.com")
+                .visible("Y")
                 .build();
 
         adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
@@ -149,10 +151,8 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원모델 수정 테스트")
     void 지원모델수정테스트() throws Exception {
         // given
-        Integer idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
-
         adminSupportEntity = builder()
-                .idx(idx)
+                .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
                 .supportName("test")
                 .supportPhone("010-9466-2702")
                 .supportHeight(170)

@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.user.service;
 
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.user.mapper.UserMapperImpl;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,10 +43,12 @@ class AdminUserJpaServiceTest {
     @Test
     @DisplayName("관리자 회원 리스트 조회 테스트")
     void 관리자회원리스트조회테스트() throws Exception {
+        // given
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("startPage", 1);
+        userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
         List<AdminUserDTO> adminUserList = adminUserJpaService.findUsersList(userMap);
+        // then
         assertThat(adminUserList).isNotEmpty();
     }
 
