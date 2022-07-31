@@ -114,6 +114,7 @@ class AdminProductionJpaServiceTest {
         // given
         adminProductionEntity = builder().idx(119).build();
 
+        // then
         assertThat(adminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("하하");
     }
 

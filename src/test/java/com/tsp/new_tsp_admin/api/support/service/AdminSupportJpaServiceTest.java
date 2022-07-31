@@ -94,12 +94,12 @@ class AdminSupportJpaServiceTest {
         when(mockAdminSupportJpaService.findSupportsList(supportMap)).thenReturn(returnSupportList);
         List<AdminSupportDTO> supportsList = mockAdminSupportJpaService.findSupportsList(supportMap);
 
+        // then
         assertAll(
                 () -> assertThat(supportsList).isNotEmpty(),
                 () -> assertThat(supportsList).hasSize(1)
         );
 
-        // then
         assertThat(supportsList.get(0).getIdx()).isEqualTo(returnSupportList.get(0).getIdx());
         assertThat(supportsList.get(0).getSupportName()).isEqualTo(returnSupportList.get(0).getSupportName());
         assertThat(supportsList.get(0).getSupportHeight()).isEqualTo(returnSupportList.get(0).getSupportHeight());

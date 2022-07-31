@@ -94,6 +94,7 @@ class AdminPortfolioJpaServiceTest {
         when(mockAdminPortfolioJpaService.findPortfoliosList(portfolioMap)).thenReturn(returnPortfolioList);
         List<AdminPortFolioDTO> portfolioList = mockAdminPortfolioJpaService.findPortfoliosList(portfolioMap);
 
+        // then
         assertAll(
                 () -> assertThat(portfolioList).isNotEmpty(),
                 () -> assertThat(portfolioList).hasSize(1)

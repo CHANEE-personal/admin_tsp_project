@@ -109,6 +109,7 @@ class AdminModelJpaServiceTest {
         when(mockAdminModelJpaService.findModelsList(modelMap)).thenReturn(returnModelList);
         List<AdminModelDTO> modelList = mockAdminModelJpaService.findModelsList(modelMap);
 
+        // then
         assertAll(
                 () -> assertThat(modelList).isNotEmpty(),
                 () -> assertThat(modelList).hasSize(3)

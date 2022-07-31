@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
+import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.*;
@@ -66,6 +67,7 @@ class AdminUserJpaServiceTest {
         when(mockAdminUserJpaService.findUsersList(userMap)).thenReturn(returnUserList);
         List<AdminUserDTO> userList = mockAdminUserJpaService.findUsersList(userMap);
 
+        // then
         assertAll(
                 () -> assertThat(userList).isNotEmpty(),
                 () -> assertThat(userList).hasSize(1)
@@ -86,13 +88,16 @@ class AdminUserJpaServiceTest {
     @Test
     @DisplayName("관리자 회원 상세 조회 테스트")
     void 관리자회원상세조회테스트() throws Exception {
+        // given
         AdminUserEntity adminUserEntity = adminUserJpaService.findOneUser("admin01");
+        // then
         assertThat(adminUserEntity).isNotNull();
     }
 
     @Test
     @DisplayName("관리자 회원 상세 조회 BDD 테스트")
     void 관리자회원상세조회BDD테스트() throws Exception {
+        // given
         AdminUserEntity adminUserEntity = builder()
                 .userId("admin03")
                 .password("pass1234")
@@ -100,7 +105,7 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminUserDTO adminUserDTO = UserMapperImpl.INSTANCE.toDto(adminUserEntity);
+        AdminUserDTO adminUserDTO = INSTANCE.toDto(adminUserEntity);
         // when
         when(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
         AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());
@@ -128,23 +133,28 @@ class AdminUserJpaServiceTest {
                 .build();
 
         adminUserJpaService.insertToken(adminUserEntity);
+
+        // then
         assertThat(adminUserJpaService.findOneUserByToken(adminUserEntity.getUserToken())).isEqualTo(adminUserEntity.getUserId());
     }
 
     @Test
     @DisplayName("관리자 로그인 처리 테스트")
     void 관리자로그인처리테스트() throws Exception {
+        // given
         AdminUserEntity adminUserEntity = builder()
                 .userId("admin03")
                 .password("pass1234")
                 .build();
 
+        // then
         assertThat(adminUserJpaService.adminLogin(adminUserEntity)).isEqualTo("Y");
     }
 
     @Test
     @DisplayName("관리자 토큰 저장 테스트")
     void 관리자토큰저장테스트() throws Exception {
+        // given
         AdminUserEntity adminUserEntity = builder()
                 .userId("admin03")
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
@@ -152,6 +162,7 @@ class AdminUserJpaServiceTest {
 
         adminUserJpaService.insertToken(adminUserEntity);
 
+        // then
         assertThat(adminUserEntity.getUserToken()).isNotEmpty();
     }
 
