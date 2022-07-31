@@ -106,6 +106,7 @@ class AdminProductionJpaRepositoryTest {
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
 
+        // then
         assertAll(() -> assertThat(adminProductionDTO.getIdx()).isEqualTo(1),
                 () -> {
                     assertThat(adminProductionDTO.getTitle()).isEqualTo("테스트1");
@@ -145,6 +146,7 @@ class AdminProductionJpaRepositoryTest {
 //        given(mockAdminProductionJpaRepository.findProductionsList(productionMap)).willReturn(productionList);
         when(mockAdminProductionJpaRepository.findProductionsList(productionMap)).thenReturn(productionList);
 
+        // then
         assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getIdx()).isEqualTo(productionList.get(0).getIdx());
         assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getTitle()).isEqualTo(productionList.get(0).getTitle());
         assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getDescription()).isEqualTo(productionList.get(0).getDescription());
@@ -177,6 +179,7 @@ class AdminProductionJpaRepositoryTest {
 //        given(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
         when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
 
+        // then
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx()).isEqualTo(1);
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트");
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트");

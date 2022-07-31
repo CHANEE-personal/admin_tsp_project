@@ -106,6 +106,7 @@ class AdminPortfolioJpaRepositoryTest {
         // when
         adminPortFolioDTO = adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
 
+        // then
         assertAll(() -> {
                     assertThat(adminPortFolioDTO.getIdx()).isEqualTo(1);
                 },
@@ -139,6 +140,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .title("포트폴리오 테스트").description("포트폴리오 테스트")
                 .portfolioImage(commonImageDtoList).build());
 
+        // when
 //        given(mockAdminPortfolioJpaRepository.findPortfoliosList(portfolioMap)).willReturn(portfolioList);
         when(mockAdminPortfolioJpaRepository.findPortfoliosList(portfolioMap)).thenReturn(portfolioList);
 
@@ -173,9 +175,11 @@ class AdminPortfolioJpaRepositoryTest {
                 .portfolioImage(PortfolioImageMapper.INSTANCE.toDtoList(commonImageEntityList))
                 .build();
 
+        // when
 //        given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
 
+        // then
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getIdx()).isEqualTo(1);
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트");
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getDescription()).isEqualTo("포트폴리오 테스트");
@@ -252,6 +256,7 @@ class AdminPortfolioJpaRepositoryTest {
         // when
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
 
+        // then
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트1");
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getDescription()).isEqualTo("포트폴리오 테스트1");
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getHashTag()).isEqualTo("#test1");

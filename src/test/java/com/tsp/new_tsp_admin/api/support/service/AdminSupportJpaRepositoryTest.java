@@ -110,6 +110,11 @@ class AdminSupportJpaRepositoryTest {
         // then
         assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getIdx()).isEqualTo(supportList.get(0).getIdx());
         assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(2)).findSupportsList(supportMap);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findSupportsList(supportMap);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
     }
 
     @Test
