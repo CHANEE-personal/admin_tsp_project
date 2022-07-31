@@ -17,12 +17,15 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
@@ -72,12 +75,65 @@ class AdminProductionJpaServiceTest {
     }
 
     @Test
+    @DisplayName("프로덕션 리스트 조회 BDD 테스트")
+    void 프로덕션리스트조회BDD테스트() throws Exception {
+        // given
+        Map<String, Object> productionMap = new HashMap<>();
+        productionMap.put("jpaStartPage", 1);
+        productionMap.put("size", 3);
+
+        List<AdminProductionDTO> returnProductionList = new ArrayList<>();
+
+        returnProductionList.add(AdminProductionDTO.builder().idx(1).title("프로덕션테스트").description("프로덕션테스트").visible("Y").build());
+        returnProductionList.add(AdminProductionDTO.builder().idx(2).title("productionTest").description("productionTest").visible("Y").build());
+
+        // when
+        when(mockAdminProductionJpaService.findProductionsList(productionMap)).thenReturn(returnProductionList);
+        List<AdminProductionDTO> productionList = mockAdminProductionJpaService.findProductionsList(productionMap);
+
+        // then
+        assertAll(
+                () -> assertThat(productionList).isNotEmpty(),
+                () -> assertThat(productionList).hasSize(2)
+        );
+
+        assertThat(productionList.get(0).getIdx()).isEqualTo(returnProductionList.get(0).getIdx());
+        assertThat(productionList.get(0).getTitle()).isEqualTo(returnProductionList.get(0).getTitle());
+        assertThat(productionList.get(0).getDescription()).isEqualTo(returnProductionList.get(0).getDescription());
+        assertThat(productionList.get(0).getVisible()).isEqualTo(returnProductionList.get(0).getVisible());
+
+        // verify
+        verify(mockAdminProductionJpaService, times(1)).findProductionsList(productionMap);
+        verify(mockAdminProductionJpaService, atLeastOnce()).findProductionsList(productionMap);
+        verifyNoMoreInteractions(mockAdminProductionJpaService);
+    }
+
+    @Test
     @DisplayName("프로덕션 상세 조회 테스트")
     void 프로덕션상세조회테스트() throws Exception {
         // given
         adminProductionEntity = builder().idx(119).build();
 
         assertThat(adminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("하하");
+    }
+
+    @Test
+    @DisplayName("프로덕션상세조회BDD테스트")
+    void 프로덕션상세조회BDD테스트() throws Exception {
+        // when
+        when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
+
+        // then
+        assertThat(productionInfo.getIdx()).isEqualTo(adminProductionDTO.getIdx());
+        assertThat(productionInfo.getTitle()).isEqualTo(adminProductionDTO.getTitle());
+        assertThat(productionInfo.getDescription()).isEqualTo(adminProductionDTO.getDescription());
+        assertThat(productionInfo.getVisible()).isEqualTo(adminProductionDTO.getVisible());
+
+        // verify
+        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaService);
     }
 
     @Test

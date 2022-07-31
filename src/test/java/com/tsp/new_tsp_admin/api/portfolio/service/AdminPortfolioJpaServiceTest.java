@@ -18,12 +18,15 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
 import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
@@ -76,6 +79,40 @@ class AdminPortfolioJpaServiceTest {
     }
 
     @Test
+    @DisplayName("포트폴리오 리스트 조회 BDD 테스트")
+    void 포트폴리오리스트조회BDD테스트() throws Exception {
+        // given
+        Map<String, Object> portfolioMap = new HashMap<>();
+        portfolioMap.put("jpaStartPage", 1);
+        portfolioMap.put("size", 3);
+
+        List<AdminPortFolioDTO> returnPortfolioList = new ArrayList<>();
+        returnPortfolioList.add(AdminPortFolioDTO.builder()
+                .idx(1).title("portfolioTest").description("portfolioTest").hashTag("portfolio").videoUrl("test").visible("Y").build());
+
+        // when
+        when(mockAdminPortfolioJpaService.findPortfoliosList(portfolioMap)).thenReturn(returnPortfolioList);
+        List<AdminPortFolioDTO> portfolioList = mockAdminPortfolioJpaService.findPortfoliosList(portfolioMap);
+
+        assertAll(
+                () -> assertThat(portfolioList).isNotEmpty(),
+                () -> assertThat(portfolioList).hasSize(1)
+        );
+
+        assertThat(portfolioList.get(0).getIdx()).isEqualTo(returnPortfolioList.get(0).getIdx());
+        assertThat(portfolioList.get(0).getTitle()).isEqualTo(returnPortfolioList.get(0).getTitle());
+        assertThat(portfolioList.get(0).getDescription()).isEqualTo(returnPortfolioList.get(0).getDescription());
+        assertThat(portfolioList.get(0).getHashTag()).isEqualTo(returnPortfolioList.get(0).getHashTag());
+        assertThat(portfolioList.get(0).getVideoUrl()).isEqualTo(returnPortfolioList.get(0).getVideoUrl());
+        assertThat(portfolioList.get(0).getVisible()).isEqualTo(returnPortfolioList.get(0).getVisible());
+
+        // verify
+        verify(mockAdminPortfolioJpaService, times(1)).findPortfoliosList(portfolioMap);
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findPortfoliosList(portfolioMap);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaService);
+    }
+
+    @Test
     @Disabled
     @DisplayName("포트폴리오 상세 조회 테스트")
     void 포트폴리오상세조회테스트() throws Exception {
@@ -84,6 +121,27 @@ class AdminPortfolioJpaServiceTest {
 
         // then
         assertThat(adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("포트폴리오 상세 조회 BDD 테스트")
+    void 포트폴리오상세조회BDD테스트() throws Exception {
+        // when
+        when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+
+        // then
+        assertThat(portfolioInfo.getIdx()).isEqualTo(adminPortFolioDTO.getIdx());
+        assertThat(portfolioInfo.getTitle()).isEqualTo(adminPortFolioDTO.getTitle());
+        assertThat(portfolioInfo.getDescription()).isEqualTo(adminPortFolioDTO.getDescription());
+        assertThat(portfolioInfo.getHashTag()).isEqualTo(adminPortFolioDTO.getHashTag());
+        assertThat(portfolioInfo.getVideoUrl()).isEqualTo(adminPortFolioDTO.getVideoUrl());
+        assertThat(portfolioInfo.getVisible()).isEqualTo(adminPortFolioDTO.getVisible());
+
+        // verify
+        verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaService);
     }
 
     @Test

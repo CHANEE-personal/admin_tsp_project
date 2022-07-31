@@ -18,12 +18,15 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
@@ -75,6 +78,41 @@ class AdminSupportJpaServiceTest {
     }
 
     @Test
+    @DisplayName("지원모델 리스트 조회 BDD 테스트")
+    void 지원모델리스트조회BDD테스트() throws Exception {
+        // given
+        Map<String, Object> supportMap = new HashMap<>();
+        supportMap.put("jpaStartPage", 1);
+        supportMap.put("size", 3);
+
+        List<AdminSupportDTO> returnSupportList = new ArrayList<>();
+        returnSupportList.add(AdminSupportDTO.builder()
+                .idx(1).supportName("조찬희").supportHeight(170).supportMessage("조찬희")
+                .supportPhone("010-1234-5678").supportSize3("31-24-31").supportInstagram("https://instagram.com").visible("Y").build());
+
+        // when
+        when(mockAdminSupportJpaService.findSupportsList(supportMap)).thenReturn(returnSupportList);
+        List<AdminSupportDTO> supportsList = mockAdminSupportJpaService.findSupportsList(supportMap);
+
+        assertAll(
+                () -> assertThat(supportsList).isNotEmpty(),
+                () -> assertThat(supportsList).hasSize(1)
+        );
+
+        // then
+        assertThat(supportsList.get(0).getIdx()).isEqualTo(returnSupportList.get(0).getIdx());
+        assertThat(supportsList.get(0).getSupportName()).isEqualTo(returnSupportList.get(0).getSupportName());
+        assertThat(supportsList.get(0).getSupportHeight()).isEqualTo(returnSupportList.get(0).getSupportHeight());
+        assertThat(supportsList.get(0).getSupportMessage()).isEqualTo(returnSupportList.get(0).getSupportMessage());
+        assertThat(supportsList.get(0).getVisible()).isEqualTo(returnSupportList.get(0).getVisible());
+
+        // verify
+        verify(mockAdminSupportJpaService, times(1)).findSupportsList(supportMap);
+        verify(mockAdminSupportJpaService, atLeastOnce()).findSupportsList(supportMap);
+        verifyNoMoreInteractions(mockAdminSupportJpaService);
+    }
+
+    @Test
     @Disabled
     @DisplayName("지원모델 상세 조회 테스트")
     void 지원모델상세조회테스트() throws Exception {
@@ -86,6 +124,25 @@ class AdminSupportJpaServiceTest {
 
         // then
         assertThat(adminSupportDTO.getIdx()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("지원모델 상세 조회 BDD 테스트")
+    void 관리자회원상세조회BDD테스트() throws Exception {
+        // when
+        when(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        AdminSupportDTO supportInfo = mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity);
+
+        // then
+        assertThat(supportInfo.getIdx()).isEqualTo(adminSupportDTO.getIdx());
+        assertThat(supportInfo.getSupportName()).isEqualTo(adminSupportDTO.getSupportName());
+        assertThat(supportInfo.getSupportMessage()).isEqualTo(adminSupportDTO.getSupportMessage());
+        assertThat(supportInfo.getVisible()).isEqualTo(adminSupportDTO.getVisible());
+
+        // verify
+        verify(mockAdminSupportJpaService, times(1)).findOneSupportModel(adminSupportEntity);
+        verify(mockAdminSupportJpaService, atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaService);
     }
 
     @Test
