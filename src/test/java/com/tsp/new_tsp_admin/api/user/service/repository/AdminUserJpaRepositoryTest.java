@@ -39,7 +39,7 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 @RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 @ExtendWith(MockitoExtension.class)
-@DisplayName("회원 Repository Test")
+@DisplayName("유저 Repository Test")
 class AdminUserJpaRepositoryTest {
     @Mock private AdminUserJpaRepository mockAdminUserJpaRepository;
     private final AdminUserJpaRepository adminUserJpaRepository;
