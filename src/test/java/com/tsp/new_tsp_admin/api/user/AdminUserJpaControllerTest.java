@@ -77,6 +77,7 @@ class AdminUserJpaControllerTest {
         return authorities;
     }
 
+    @DisplayName("테스트 유저 생성")
     void createUser() {
         passwordEncoder = createDelegatingPasswordEncoder();
 

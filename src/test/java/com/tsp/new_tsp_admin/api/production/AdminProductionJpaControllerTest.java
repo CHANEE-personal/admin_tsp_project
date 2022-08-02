@@ -79,7 +79,8 @@ class AdminProductionJpaControllerTest {
         return authorities;
     }
 
-    void createAdminProduction() {
+    @DisplayName("테스트 유저 생성")
+    void createUser() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
 
         adminUserEntity = AdminUserEntity.builder()
@@ -93,7 +94,14 @@ class AdminProductionJpaControllerTest {
                 .build();
 
         em.persist(adminUserEntity);
+    }
 
+    @DisplayName("테스트 프로덕션 생성")
+    void createProduction() {
+        // user 생성
+        createUser();
+
+        // production 생성
         adminProductionEntity = builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
@@ -111,7 +119,7 @@ class AdminProductionJpaControllerTest {
                 .alwaysDo(print())
                 .build();
 
-        createAdminProduction();
+        createProduction();
     }
 
     @Test

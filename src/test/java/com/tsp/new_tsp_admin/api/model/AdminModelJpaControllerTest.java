@@ -28,7 +28,6 @@ import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.MultipartFile;
@@ -88,7 +87,8 @@ class AdminModelJpaControllerTest {
         return authorities;
     }
 
-    void createAdminModel() {
+    @DisplayName("테스트 유저 생성")
+    void createUser() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
@@ -103,7 +103,14 @@ class AdminModelJpaControllerTest {
                 .build();
 
         em.persist(adminUserEntity);
+    }
 
+    @DisplayName("테스트 모델 생성")
+    void createModel() {
+        // user 생성
+        createUser();
+
+        // model 생성
         ArrayList<CareerJson> careerList = new ArrayList<>();
         careerList.add(new CareerJson("title","txt"));
 
@@ -137,14 +144,14 @@ class AdminModelJpaControllerTest {
                 .alwaysDo(print())
                 .build();
 
-        createAdminModel();
+        createModel();
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 조회 테스트")
     void 모델조회Api테스트() throws Exception {
-        MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
+        LinkedMultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
         modelMap.add("jpaStartPage", "1");
         modelMap.add("size", "3");
         mockMvc.perform(get("/api/jpa-model/lists/1").queryParams(modelMap)

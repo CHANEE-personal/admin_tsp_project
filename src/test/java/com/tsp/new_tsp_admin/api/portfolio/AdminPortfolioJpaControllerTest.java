@@ -80,7 +80,8 @@ class AdminPortfolioJpaControllerTest {
         return authorities;
     }
 
-    void createAdminPortfolio() {
+    @DisplayName("테스트 유저 생성")
+    void createUser() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
 
         adminUserEntity = builder()
@@ -94,7 +95,14 @@ class AdminPortfolioJpaControllerTest {
                 .build();
 
         em.persist(adminUserEntity);
+    }
 
+    @DisplayName("테스트 포트폴리오 생성")
+    void createPortfolio() {
+        // user 생성
+        createUser();
+
+        // portfolio 생성
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
@@ -115,7 +123,7 @@ class AdminPortfolioJpaControllerTest {
                 .alwaysDo(print())
                 .build();
 
-        createAdminPortfolio();
+        createPortfolio();
     }
 
     @Test

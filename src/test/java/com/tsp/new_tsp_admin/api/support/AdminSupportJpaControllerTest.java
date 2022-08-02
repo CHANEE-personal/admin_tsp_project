@@ -80,7 +80,8 @@ class AdminSupportJpaControllerTest {
 		return authorities;
 	}
 
-	void createAdminSupport() {
+	@DisplayName("테스트 유저 생성")
+	void createUser() {
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
 
 		adminUserEntity = AdminUserEntity.builder()
@@ -94,7 +95,14 @@ class AdminSupportJpaControllerTest {
 				.build();
 
 		em.persist(adminUserEntity);
+	}
 
+	@DisplayName("테스트 지원모델 생성")
+	void createSupport() {
+		// user 생성
+		createUser();
+
+		// support 생성
 		adminSupportEntity = builder()
 				.supportName("조찬희")
 				.supportMessage("조찬희 지원")
@@ -116,7 +124,7 @@ class AdminSupportJpaControllerTest {
 				.alwaysDo(print())
 				.build();
 
-		createAdminSupport();
+		createSupport();
 	}
 
 	@Test

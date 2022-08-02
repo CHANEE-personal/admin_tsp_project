@@ -91,6 +91,7 @@ class AdminModelJpaServiceTest {
     @Test
     @DisplayName("모델 리스트 조회 BDD 테스트")
     void 모델리스트조회BDD테스트() throws Exception {
+        // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", "1");
         modelMap.put("jpaStartPage", 1);
