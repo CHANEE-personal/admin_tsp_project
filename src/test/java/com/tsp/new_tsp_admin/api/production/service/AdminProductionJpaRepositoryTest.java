@@ -34,6 +34,8 @@ import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTA
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
@@ -128,6 +130,36 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("프로덕션Mockito조회테스트")
+    void 프로덕션Mockito조회테스트() {
+        // given
+        Map<String, Object> productionMap = new HashMap<>();
+        productionMap.put("jpaStartPage", 1);
+        productionMap.put("size", 3);
+
+        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
+        commonImageDtoList.add(commonImageDTO);
+
+        List<AdminProductionDTO> productionList = new ArrayList<>();
+        productionList.add(AdminProductionDTO.builder().idx(1).title("프로덕션 테스트")
+                .description("프로덕션 테스트").productionImage(commonImageDtoList).build());
+
+        // when
+        when(mockAdminProductionJpaRepository.findProductionsList(productionMap)).thenReturn(productionList);
+
+        // then
+        assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getIdx()).isEqualTo(productionList.get(0).getIdx());
+        assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getTitle()).isEqualTo(productionList.get(0).getTitle());
+        assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getDescription()).isEqualTo(productionList.get(0).getDescription());
+        assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getVisible()).isEqualTo(productionList.get(0).getVisible());
+
+        // verify
+        verify(mockAdminProductionJpaRepository, times(4)).findProductionsList(productionMap);
+        verify(mockAdminProductionJpaRepository, atLeastOnce()).findProductionsList(productionMap);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
+    }
+
+    @Test
     @DisplayName("프로덕션BDD조회테스트")
     void 프로덕션BDD조회테스트() {
         // given
@@ -143,8 +175,7 @@ class AdminProductionJpaRepositoryTest {
                 .description("프로덕션 테스트").productionImage(commonImageDtoList).build());
 
         // when
-//        given(mockAdminProductionJpaRepository.findProductionsList(productionMap)).willReturn(productionList);
-        when(mockAdminProductionJpaRepository.findProductionsList(productionMap)).thenReturn(productionList);
+        given(mockAdminProductionJpaRepository.findProductionsList(productionMap)).willReturn(productionList);
 
         // then
         assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getIdx()).isEqualTo(productionList.get(0).getIdx());
@@ -153,8 +184,45 @@ class AdminProductionJpaRepositoryTest {
         assertThat(mockAdminProductionJpaRepository.findProductionsList(productionMap).get(0).getVisible()).isEqualTo(productionList.get(0).getVisible());
 
         // verify
-        verify(mockAdminProductionJpaRepository, times(4)).findProductionsList(productionMap);
-        verify(mockAdminProductionJpaRepository, atLeastOnce()).findProductionsList(productionMap);
+        then(mockAdminProductionJpaRepository).should(times(4)).findProductionsList(productionMap);
+        then(mockAdminProductionJpaRepository).should(atLeastOnce()).findProductionsList(productionMap);
+        then(mockAdminProductionJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("프로덕션상세Mockito조회테스트")
+    void 프로덕션상세Mockito조회테스트() {
+        // given
+        List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
+        commonImageEntityList.add(commonImageEntity);
+
+        AdminProductionEntity adminProductionEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+
+        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
+                .idx(1)
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .productionImage(ProductionImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .build();
+
+        // when
+        when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+
+        // then
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx()).isEqualTo(1);
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getVisible()).isEqualTo("Y");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFileName()).isEqualTo("test.jpg");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFileMask()).isEqualTo("test.jpg");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getImageType()).isEqualTo("main");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getTypeName()).isEqualTo("production");
+
+        // verify
+        verify(mockAdminProductionJpaRepository, times(9)).findOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
         verifyNoMoreInteractions(mockAdminProductionJpaRepository);
     }
 
@@ -176,8 +244,7 @@ class AdminProductionJpaRepositoryTest {
                 .build();
 
         // when
-//        given(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
-        when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        given(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
 
         // then
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx()).isEqualTo(1);
@@ -191,9 +258,9 @@ class AdminProductionJpaRepositoryTest {
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getProductionImage().get(0).getTypeName()).isEqualTo("production");
 
         // verify
-        verify(mockAdminProductionJpaRepository, times(9)).findOneProduction(adminProductionEntity);
-        verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
-        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
+        then(mockAdminProductionJpaRepository).should(times(9)).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).should(atLeastOnce()).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
