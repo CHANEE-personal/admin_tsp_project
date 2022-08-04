@@ -29,6 +29,7 @@ import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.*;
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
@@ -94,6 +95,30 @@ class AdminSupportJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("지원모델 Mockito 조회 테스트")
+    void 지원모델Mockito조회테스트() {
+        // given
+        Map<String, Object> supportMap = new HashMap<>();
+        supportMap.put("jpaStartPage", 1);
+        supportMap.put("size", 3);
+
+        List<AdminSupportDTO> supportList = new ArrayList<>();
+        supportList.add(AdminSupportDTO.builder().idx(1).supportName("조찬희").supportPhone("010-9466-2702").build());
+
+        // when
+        when(mockAdminSupportJpaRepository.findSupportsList(supportMap)).thenReturn(supportList);
+
+        // then
+        assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getIdx()).isEqualTo(supportList.get(0).getIdx());
+        assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(2)).findSupportsList(supportMap);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findSupportsList(supportMap);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+    }
+
+    @Test
     @DisplayName("지원모델 BDD 조회 테스트")
     void 지원모델BDD조회테스트() {
         // given
@@ -112,9 +137,9 @@ class AdminSupportJpaRepositoryTest {
         assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
 
         // verify
-        verify(mockAdminSupportJpaRepository, times(2)).findSupportsList(supportMap);
-        verify(mockAdminSupportJpaRepository, atLeastOnce()).findSupportsList(supportMap);
-        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+        then(mockAdminSupportJpaRepository).should(times(2)).findSupportsList(supportMap);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findSupportsList(supportMap);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
