@@ -28,6 +28,8 @@ import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
@@ -71,6 +73,39 @@ class AdminUserJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("유저 Mockito 조회 테스트")
+    void 유저Mockito조회테스트() {
+        // given
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("jpaStartPage", 1);
+        userMap.put("size", 3);
+
+        List<AdminUserDTO> userList = new ArrayList<>();
+        AdminUserDTO adminUserDTO = AdminUserDTO.builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+        userList.add(adminUserDTO);
+
+        // when
+        when(mockAdminUserJpaRepository.findUsersList(userMap)).thenReturn(userList);
+
+        // then
+        assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getUserId()).isEqualTo(userList.get(0).getUserId());
+        assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getPassword()).isEqualTo(userList.get(0).getPassword());
+        assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getName()).isEqualTo(userList.get(0).getName());
+        assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getEmail()).isEqualTo(userList.get(0).getEmail());
+
+        // verify
+        verify(mockAdminUserJpaRepository, times(4)).findUsersList(userMap);
+        verify(mockAdminUserJpaRepository, atLeastOnce()).findUsersList(userMap);
+        verifyNoMoreInteractions(mockAdminUserJpaRepository);
+    }
+
+    @Test
     @DisplayName("유저 BDD 조회 테스트")
     void 유저BDD조회테스트() {
         // given
@@ -89,8 +124,7 @@ class AdminUserJpaRepositoryTest {
         userList.add(adminUserDTO);
 
         // when
-//        given(mockAdminUserJpaRepository.findUsersList(userMap)).willReturn(userList);
-        when(mockAdminUserJpaRepository.findUsersList(userMap)).thenReturn(userList);
+        given(mockAdminUserJpaRepository.findUsersList(userMap)).willReturn(userList);
 
         // then
         assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getUserId()).isEqualTo(userList.get(0).getUserId());
@@ -99,9 +133,9 @@ class AdminUserJpaRepositoryTest {
         assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getEmail()).isEqualTo(userList.get(0).getEmail());
 
         // verify
-        verify(mockAdminUserJpaRepository, times(4)).findUsersList(userMap);
-        verify(mockAdminUserJpaRepository, atLeastOnce()).findUsersList(userMap);
-        verifyNoMoreInteractions(mockAdminUserJpaRepository);
+        then(mockAdminUserJpaRepository).should(times(4)).findUsersList(userMap);
+        then(mockAdminUserJpaRepository).should(atLeastOnce()).findUsersList(userMap);
+        then(mockAdminUserJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
@@ -122,6 +156,36 @@ class AdminUserJpaRepositoryTest {
                     assertNotNull(adminUser.getUserToken());
                 });
     }
+
+    @Test
+    @DisplayName("유저 Mockito 상세 조회 테스트")
+    void 유저Mockito상세조회테스트() {
+        // given
+        adminUserEntity = builder().idx(1).userId("test").build();
+
+        AdminUserEntity bddUserEntity = builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+
+        // when
+        when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(bddUserEntity);
+
+        // then
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo(bddUserEntity.getUserId());
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getPassword()).isEqualTo(bddUserEntity.getPassword());
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo(bddUserEntity.getName());
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo(bddUserEntity.getEmail());
+
+        // verify
+        verify(mockAdminUserJpaRepository, times(4)).findOneUser(bddUserEntity.getUserId());
+        verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(bddUserEntity.getUserId());
+        verifyNoMoreInteractions(mockAdminUserJpaRepository);
+    }
+
     @Test
     @DisplayName("유저 상세 BDD 조회 테스트")
     void 유저상세BDD조회테스트() {
@@ -137,8 +201,7 @@ class AdminUserJpaRepositoryTest {
                 .build();
 
         // when
-//        given(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).willReturn(bddUserEntity);
-        when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(bddUserEntity);
+        given(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).willReturn(bddUserEntity);
 
         // then
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo(bddUserEntity.getUserId());
@@ -147,9 +210,9 @@ class AdminUserJpaRepositoryTest {
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo(bddUserEntity.getEmail());
 
         // verify
-        verify(mockAdminUserJpaRepository, times(4)).findOneUser(bddUserEntity.getUserId());
-        verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(bddUserEntity.getUserId());
-        verifyNoMoreInteractions(mockAdminUserJpaRepository);
+        then(mockAdminUserJpaRepository).should(times(4)).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaRepository).should(atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test

@@ -104,6 +104,7 @@ class AdminUserJpaControllerTest {
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
+                .alwaysExpect(status().isOk())
                 .alwaysDo(print())
                 .build();
 
