@@ -78,6 +78,18 @@ class AdminModelJpaServiceTest {
     }
 
     @Test
+    @DisplayName("모델 리스트 조회 예외 테스트")
+    void 모델리스트조회예외테스트() {
+        // given
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("categoryCd", -1);
+
+        // then
+        assertThatThrownBy(() -> adminModelJpaService.findModelsList(modelMap))
+                .isInstanceOf(TspException.class);
+    }
+
+    @Test
     @DisplayName("모델 리스트 조회 테스트")
     void 모델리스트조회테스트() throws Exception {
         // given
@@ -189,14 +201,13 @@ class AdminModelJpaServiceTest {
     }
 
     @Test
-    @DisplayName("모델 리스트 조회 예외 테스트")
-    void 모델리스트조회예외테스트() {
+    @DisplayName("모델 상세 조회 예외 테스트")
+    void 모델상세조회예외테스트() {
         // given
-        Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("categoryCd", -1);
+        adminModelEntity = builder().categoryCd(-1).build();
 
         // then
-        assertThatThrownBy(() -> adminModelJpaService.findModelsList(modelMap))
+        assertThatThrownBy(() -> adminModelJpaService.findOneModel(adminModelEntity))
                 .isInstanceOf(TspException.class);
     }
 
@@ -247,17 +258,6 @@ class AdminModelJpaServiceTest {
         then(mockAdminModelJpaService).should(times(1)).findOneModel(adminModelEntity);
         then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(adminModelEntity);
         then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("모델 상세 조회 예외 테스트")
-    void 모델상세조회예외테스트() {
-        // given
-        adminModelEntity = builder().categoryCd(-1).build();
-
-        // then
-        assertThatThrownBy(() -> adminModelJpaService.findOneModel(adminModelEntity))
-                .isInstanceOf(TspException.class);
     }
 
     @Test

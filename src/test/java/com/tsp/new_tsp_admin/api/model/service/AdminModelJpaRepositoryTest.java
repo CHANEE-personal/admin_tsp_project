@@ -127,15 +127,61 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("모델 리스트 조회 예외 테스트")
-    void 모델리스트조회예외테스트() {
+    @DisplayName("모델 Mockito 조회 테스트")
+    void 모델Mockito조회테스트() {
         // given
         Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("categoryCd", -1);
+        modelMap.put("categoryCd", 1);
+        modelMap.put("jpaStartPage", 1);
+        modelMap.put("size", 3);
+
+        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
+        commonImageDtoList.add(commonImageDTO);
+
+        List<AdminModelDTO> modelList = new ArrayList<>();
+        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).build());
+
+        // when
+        when(mockAdminModelJpaRepository.findModelsList(modelMap)).thenReturn(modelList);
 
         // then
-        assertThatThrownBy(() -> adminModelJpaRepository.findModelsList(modelMap))
-                .isInstanceOf(TspException.class);
+        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
+        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
+        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(3)).findModelsList(modelMap);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findModelsList(modelMap);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
+    }
+
+    @Test
+    @DisplayName("모델 리스트 조회 BDD 테스트")
+    void 모델리스트조회BDD테스트() {
+        // given
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("categoryCd", 1);
+        modelMap.put("jpaStartPage", 1);
+        modelMap.put("size", 3);
+
+        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
+        commonImageDtoList.add(commonImageDTO);
+
+        List<AdminModelDTO> modelList = new ArrayList<>();
+        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).build());
+
+        // when
+        given(mockAdminModelJpaRepository.findModelsList(modelMap)).willReturn(modelList);
+
+        // then
+        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
+        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
+        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(3)).findModelsList(modelMap);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findModelsList(modelMap);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
@@ -192,77 +238,8 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("모델 상세 조회 예외 테스트")
-    void 모델상세조회예외테스트() {
-        // given
-        adminModelEntity = builder().categoryCd(-1).build();
-
-        // then
-        assertThatThrownBy(() -> adminModelJpaRepository.findOneModel(adminModelEntity))
-                .isInstanceOf(TspException.class);
-    }
-
-    @Test
-    @DisplayName("모델 Mockito 조회 테스트")
-    void 모델Mockito조회테스트() {
-        // given
-        Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("categoryCd", 1);
-        modelMap.put("jpaStartPage", 1);
-        modelMap.put("size", 3);
-
-        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
-        commonImageDtoList.add(commonImageDTO);
-
-        List<AdminModelDTO> modelList = new ArrayList<>();
-        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).build());
-
-        // when
-        when(mockAdminModelJpaRepository.findModelsList(modelMap)).thenReturn(modelList);
-
-        // then
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
-
-        // verify
-        verify(mockAdminModelJpaRepository, times(3)).findModelsList(modelMap);
-        verify(mockAdminModelJpaRepository, atLeastOnce()).findModelsList(modelMap);
-        verifyNoMoreInteractions(mockAdminModelJpaRepository);
-    }
-
-    @Test
-    @DisplayName("모델 BDD 조회 테스트")
-    void 모델BDD조회테스트() {
-        // given
-        Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("categoryCd", 1);
-        modelMap.put("jpaStartPage", 1);
-        modelMap.put("size", 3);
-
-        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
-        commonImageDtoList.add(commonImageDTO);
-
-        List<AdminModelDTO> modelList = new ArrayList<>();
-        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).build());
-
-        // when
-        given(mockAdminModelJpaRepository.findModelsList(modelMap)).willReturn(modelList);
-
-        // then
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
-
-        // verify
-        then(mockAdminModelJpaRepository).should(times(3)).findModelsList(modelMap);
-        then(mockAdminModelJpaRepository).should(atLeastOnce()).findModelsList(modelMap);
-        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("모델 상세 Mockito 조회 테스트")
-    void 모델상세Mockito조회테스트() {
+    @DisplayName("모델 상세 조회 Mockito 테스트")
+    void 모델상세조회Mockito테스트() {
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
@@ -310,8 +287,8 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("모델 상세 BDD 조회 테스트")
-    void 모델상세BDD조회테스트() {
+    @DisplayName("모델 상세 조회 BDD 테스트")
+    void 모델상세조회BDD테스트() {
         // given
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
@@ -359,8 +336,8 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("모델 등록 테스트")
-    void 모델등록테스트() {
+    @DisplayName("모델 등록 Mockito 테스트")
+    void 모델등록Mockito테스트() {
         // given
         adminModelJpaRepository.insertModel(adminModelEntity);
 
@@ -375,6 +352,25 @@ class AdminModelJpaRepositoryTest {
         verify(mockAdminModelJpaRepository, times(2)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
         verifyNoMoreInteractions(mockAdminModelJpaRepository);
+    }
+
+    @Test
+    @DisplayName("모델 등록 BDD 테스트")
+    void 모델등록BDD테스트() {
+        // given
+        adminModelJpaRepository.insertModel(adminModelEntity);
+
+        // when
+        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+
+        // then
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(1);
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("2");
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(2)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
@@ -417,8 +413,8 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("모델 수정 테스트")
-    void 모델수정테스트() {
+    @DisplayName("모델 수정 Mockito 테스트")
+    void 모델수정Mockito테스트() {
         Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = builder()
@@ -455,6 +451,47 @@ class AdminModelJpaRepositoryTest {
         verify(mockAdminModelJpaRepository, times(2)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
         verifyNoMoreInteractions(mockAdminModelJpaRepository);
+    }
+
+    @Test
+    @DisplayName("모델 수정 BDD 테스트")
+    void 모델수정BDD테스트() {
+        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+
+        adminModelEntity = builder()
+                .idx(idx)
+                .categoryCd(2)
+                .categoryAge("3")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        adminModelJpaRepository.updateModelByEm(adminModelEntity);
+
+        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+
+        // when
+        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+
+        // then
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(2);
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("3");
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(2)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
