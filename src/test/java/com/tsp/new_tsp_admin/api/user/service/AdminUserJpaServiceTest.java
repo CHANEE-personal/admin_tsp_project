@@ -232,8 +232,8 @@ class AdminUserJpaServiceTest {
     }
 
     @Test
-    @DisplayName("관리자 회원가입 테스트")
-    void 관리자회원가입테스트() throws Exception {
+    @DisplayName("관리자 회원가입 Mockito 테스트")
+    void 관리자회원가입Mockito테스트() throws Exception {
         // given
         AdminUserEntity adminUserEntity = builder()
                 .userId("test")
@@ -260,8 +260,36 @@ class AdminUserJpaServiceTest {
     }
 
     @Test
-    @DisplayName("관리자 수정 테스트")
-    void 관리자수정테스트() throws Exception {
+    @DisplayName("관리자 회원가입 BDD 테스트")
+    void 관리자회원가입BDD테스트() throws Exception {
+        // given
+        AdminUserEntity adminUserEntity = builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+
+        adminUserJpaService.insertAdminUser(adminUserEntity);
+
+        // when
+        given(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).willReturn(adminUserEntity);
+
+        // then
+        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo("test");
+        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo("test");
+        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo("test@test.com");
+
+        // verify
+        then(mockAdminUserJpaService).should(times(3)).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaService).should(atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("관리자 수정 Mockito 테스트")
+    void 관리자수정Mockito테스트() throws Exception {
         // given
         AdminUserEntity adminUserEntity = builder()
                 .userId("test")
@@ -296,6 +324,45 @@ class AdminUserJpaServiceTest {
         verify(mockAdminUserJpaService, times(3)).findOneUser(newAdminUserEntity.getUserId());
         verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(newAdminUserEntity.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaService);
+    }
+
+    @Test
+    @DisplayName("관리자 수정 BDD 테스트")
+    void 관리자수정BDD테스트() throws Exception {
+        // given
+        AdminUserEntity adminUserEntity = builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
+                .visible("Y")
+                .build();
+
+        Integer idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
+
+        AdminUserEntity newAdminUserEntity = builder()
+                .idx(idx)
+                .userId("test1")
+                .password("test1")
+                .name("test1")
+                .email("test1@test.com")
+                .visible("Y")
+                .build();
+
+        adminUserJpaService.updateAdminUser(newAdminUserEntity);
+
+        // when
+        given(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).willReturn(newAdminUserEntity);
+
+        // then
+        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getUserId()).isEqualTo("test1");
+        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getName()).isEqualTo("test1");
+        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getEmail()).isEqualTo("test1@test.com");
+
+        // verify
+        then(mockAdminUserJpaService).should(times(3)).findOneUser(newAdminUserEntity.getUserId());
+        then(mockAdminUserJpaService).should(atLeastOnce()).findOneUser(newAdminUserEntity.getUserId());
+        then(mockAdminUserJpaService).shouldHaveNoMoreInteractions();
     }
 
     @Test

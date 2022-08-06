@@ -261,8 +261,8 @@ class AdminModelJpaServiceTest {
     }
 
     @Test
-    @DisplayName("모델 등록 테스트")
-    void 모델등록테스트() throws Exception {
+    @DisplayName("모델 등록 Mockito 테스트")
+    void 모델등록Mockito테스트() throws Exception {
         // given
         adminModelJpaService.insertModel(adminModelEntity);
 
@@ -278,6 +278,26 @@ class AdminModelJpaServiceTest {
         verify(mockAdminModelJpaService, times(3)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
         verifyNoMoreInteractions(mockAdminModelJpaService);
+    }
+
+    @Test
+    @DisplayName("모델 등록 BDD 테스트")
+    void 모델등록BDD테스트() throws Exception {
+        // given
+        adminModelJpaService.insertModel(adminModelEntity);
+
+        // when
+        given(mockAdminModelJpaService.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+
+        // then
+        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
+        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorFirstName()).isEqualTo(adminModelDTO.getModelKorFirstName());
+        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorSecondName()).isEqualTo(adminModelDTO.getModelKorSecondName());
+
+        // verify
+        then(mockAdminModelJpaService).should(times(3)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }
 
     @Test
@@ -307,8 +327,8 @@ class AdminModelJpaServiceTest {
     }
 
     @Test
-    @DisplayName("모델 수정 테스트")
-    void 모델수정테스트() throws Exception {
+    @DisplayName("모델 수정 Mockito 테스트")
+    void 모델수정Mockito테스트() throws Exception {
         // given
         Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
@@ -346,6 +366,48 @@ class AdminModelJpaServiceTest {
         verify(mockAdminModelJpaService, times(2)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
         verifyNoMoreInteractions(mockAdminModelJpaService);
+    }
+
+    @Test
+    @DisplayName("모델 수정 BDD 테스트")
+    void 모델수정BDD테스트() throws Exception {
+        // given
+        Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+
+        adminModelEntity = builder()
+                .idx(idx)
+                .categoryCd(2)
+                .categoryAge("3")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        adminModelJpaService.updateModel(adminModelEntity);
+
+        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+
+        // when
+        given(mockAdminModelJpaService.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+
+        // then
+        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorFirstName()).isEqualTo("조");
+        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorSecondName()).isEqualTo("찬희");
+
+        // verify
+        then(mockAdminModelJpaService).should(times(2)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }
 
     @Test

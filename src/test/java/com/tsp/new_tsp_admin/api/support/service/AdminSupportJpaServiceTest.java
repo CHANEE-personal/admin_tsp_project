@@ -204,8 +204,8 @@ class AdminSupportJpaServiceTest {
     }
 
     @Test
-    @DisplayName("지원모델 수정 테스트")
-    void 지원모델수정테스트() throws Exception {
+    @DisplayName("지원모델 수정 Mockito 테스트")
+    void 지원모델수정Mockito테스트() throws Exception {
         // given
         adminSupportEntity = builder()
                 .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
@@ -231,6 +231,36 @@ class AdminSupportJpaServiceTest {
         verify(mockAdminSupportJpaService, times(2)).findOneSupportModel(adminSupportEntity);
         verify(mockAdminSupportJpaService, atLeastOnce()).findOneSupportModel(adminSupportEntity);
         verifyNoMoreInteractions(mockAdminSupportJpaService);
+    }
+
+    @Test
+    @DisplayName("지원모델 수정 BDD 테스트")
+    void 지원모델수정BDD테스트() throws Exception {
+        // given
+        adminSupportEntity = builder()
+                .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
+                .supportName("test")
+                .supportPhone("010-9466-2702")
+                .supportHeight(170)
+                .supportSize3("31-24-31")
+                .supportMessage("test")
+                .supportInstagram("https://instagram.com")
+                .build();
+
+        adminSupportJpaService.updateSupportModel(adminSupportEntity);
+        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+
+        // when
+        given(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity)).willReturn(adminSupportDTO);
+
+        // then
+        assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
+        assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportPhone()).isEqualTo("010-9466-2702");
+
+        // verify
+        then(mockAdminSupportJpaService).should(times(2)).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaService).should(atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaService).shouldHaveNoMoreInteractions();
     }
 
     @Test

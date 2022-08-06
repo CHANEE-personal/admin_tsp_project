@@ -204,8 +204,8 @@ class AdminPortfolioJpaServiceTest {
     }
 
     @Test
-    @DisplayName("포트폴리오 등록 테스트")
-    void 포트폴리오등록테스트() throws Exception {
+    @DisplayName("포트폴리오 등록 Mockito 테스트")
+    void 포트폴리오등록Mockito테스트() throws Exception {
         // given
         adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
 
@@ -225,8 +225,29 @@ class AdminPortfolioJpaServiceTest {
     }
 
     @Test
-    @DisplayName("포트폴리오 수정 테스트")
-    void 포트폴리오수정테스트() throws Exception {
+    @DisplayName("포트폴리오 등록 BDD 테스트")
+    void 포트폴리오등록BDD테스트() throws Exception {
+        // given
+        adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
+
+        // when
+        given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
+
+        // then
+        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트");
+        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getDescription()).isEqualTo("포트폴리오 테스트");
+        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getHashTag()).isEqualTo("#test");
+        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getVideoUrl()).isEqualTo("https://youtube.com");
+
+        // verify
+        then(mockAdminPortfolioJpaService).should(times(4)).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("포트폴리오 수정 Mockito 테스트")
+    void 포트폴리오수정Mockito테스트() throws Exception {
         // given
         Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
@@ -254,6 +275,38 @@ class AdminPortfolioJpaServiceTest {
         verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity);
         verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
         verifyNoMoreInteractions(mockAdminPortfolioJpaService);
+    }
+
+    @Test
+    @DisplayName("포트폴리오 수정 BDD 테스트")
+    void 포트폴리오수정BDD테스트() throws Exception {
+        // given
+        Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
+
+        adminPortFolioEntity = builder()
+                .idx(idx)
+                .categoryCd(1)
+                .title("포트폴리오 테스트1")
+                .description("포트폴리오 테스트1")
+                .hashTag("#test1")
+                .videoUrl("https://test.com")
+                .visible("Y")
+                .build();
+
+        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+
+        adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
+
+        // when
+        given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
+
+        // then
+        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트1");
+
+        // verify
+        then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
 
     @Test
