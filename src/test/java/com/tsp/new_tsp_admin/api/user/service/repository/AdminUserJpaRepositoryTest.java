@@ -283,6 +283,7 @@ class AdminUserJpaRepositoryTest {
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo("test@test.com");
 
         // verify
+        verify(mockAdminUserJpaRepository, times(4)).findOneUser(adminUserEntity.getUserId());
         verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(adminUserEntity.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaRepository);
     }
