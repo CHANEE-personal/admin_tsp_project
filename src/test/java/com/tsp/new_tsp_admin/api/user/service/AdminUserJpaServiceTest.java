@@ -170,7 +170,6 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminUserDTO adminUserDTO = INSTANCE.toDto(adminUserEntity);
         // when
         given(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).willReturn(adminUserEntity);
         AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());
