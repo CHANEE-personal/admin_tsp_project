@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -92,17 +93,21 @@ class AdminUserJpaRepositoryTest {
 
         // when
         when(mockAdminUserJpaRepository.findUsersList(userMap)).thenReturn(userList);
+        List<AdminUserDTO> newUserList = mockAdminUserJpaRepository.findUsersList(userMap);
 
         // then
-        assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getUserId()).isEqualTo(userList.get(0).getUserId());
-        assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getPassword()).isEqualTo(userList.get(0).getPassword());
-        assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getName()).isEqualTo(userList.get(0).getName());
-        assertThat(mockAdminUserJpaRepository.findUsersList(userMap).get(0).getEmail()).isEqualTo(userList.get(0).getEmail());
+        assertThat(newUserList.get(0).getUserId()).isEqualTo(userList.get(0).getUserId());
+        assertThat(newUserList.get(0).getPassword()).isEqualTo(userList.get(0).getPassword());
+        assertThat(newUserList.get(0).getName()).isEqualTo(userList.get(0).getName());
+        assertThat(newUserList.get(0).getEmail()).isEqualTo(userList.get(0).getEmail());
 
         // verify
-        verify(mockAdminUserJpaRepository, times(4)).findUsersList(userMap);
+        verify(mockAdminUserJpaRepository, times(1)).findUsersList(userMap);
         verify(mockAdminUserJpaRepository, atLeastOnce()).findUsersList(userMap);
         verifyNoMoreInteractions(mockAdminUserJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaRepository);
+        inOrder.verify(mockAdminUserJpaRepository).findUsersList(userMap);
     }
 
     @Test
@@ -173,17 +178,21 @@ class AdminUserJpaRepositoryTest {
 
         // when
         when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(bddUserEntity);
+        AdminUserEntity userInfo = mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
         // then
-        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo(bddUserEntity.getUserId());
-        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getPassword()).isEqualTo(bddUserEntity.getPassword());
-        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo(bddUserEntity.getName());
-        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo(bddUserEntity.getEmail());
+        assertThat(userInfo.getUserId()).isEqualTo(bddUserEntity.getUserId());
+        assertThat(userInfo.getPassword()).isEqualTo(bddUserEntity.getPassword());
+        assertThat(userInfo.getName()).isEqualTo(bddUserEntity.getName());
+        assertThat(userInfo.getEmail()).isEqualTo(bddUserEntity.getEmail());
 
         // verify
-        verify(mockAdminUserJpaRepository, times(4)).findOneUser(bddUserEntity.getUserId());
+        verify(mockAdminUserJpaRepository, times(1)).findOneUser(bddUserEntity.getUserId());
         verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(bddUserEntity.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaRepository);
+        inOrder.verify(mockAdminUserJpaRepository).findOneUser(bddUserEntity.getUserId());
     }
 
     @Test
@@ -275,17 +284,21 @@ class AdminUserJpaRepositoryTest {
 
         // when
         when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
+        AdminUserEntity userInfo = mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId());
 
         // then
-        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo("test");
-        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getPassword()).isEqualTo("test");
-        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo("test");
-        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo("test@test.com");
+        assertThat(userInfo.getUserId()).isEqualTo("test");
+        assertThat(userInfo.getPassword()).isEqualTo("test");
+        assertThat(userInfo.getName()).isEqualTo("test");
+        assertThat(userInfo.getEmail()).isEqualTo("test@test.com");
 
         // verify
-        verify(mockAdminUserJpaRepository, times(4)).findOneUser(adminUserEntity.getUserId());
+        verify(mockAdminUserJpaRepository, times(1)).findOneUser(adminUserEntity.getUserId());
         verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(adminUserEntity.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaRepository);
+        inOrder.verify(mockAdminUserJpaRepository).findOneUser(adminUserEntity.getUserId());
     }
 
     @Test
@@ -344,15 +357,19 @@ class AdminUserJpaRepositoryTest {
 
         // when
         when(mockAdminUserJpaRepository.findOneUser(newAdminUserEntity.getUserId())).thenReturn(newAdminUserEntity);
+        AdminUserEntity userInfo = mockAdminUserJpaRepository.findOneUser(newAdminUserEntity.getUserId());
 
         // then
-        assertThat(mockAdminUserJpaRepository.findOneUser(newAdminUserEntity.getUserId()).getUserId()).isEqualTo("test1");
-        assertThat(mockAdminUserJpaRepository.findOneUser(newAdminUserEntity.getUserId()).getName()).isEqualTo("test1");
+        assertThat(userInfo.getUserId()).isEqualTo("test1");
+        assertThat(userInfo.getName()).isEqualTo("test1");
 
         // verify
-        verify(mockAdminUserJpaRepository, times(2)).findOneUser(newAdminUserEntity.getUserId());
+        verify(mockAdminUserJpaRepository, times(1)).findOneUser(newAdminUserEntity.getUserId());
         verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(newAdminUserEntity.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaRepository);
+        inOrder.verify(mockAdminUserJpaRepository).findOneUser(newAdminUserEntity.getUserId());
     }
 
     @Test
