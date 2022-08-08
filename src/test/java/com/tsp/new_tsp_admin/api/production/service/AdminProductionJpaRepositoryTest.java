@@ -264,8 +264,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("프로덕션등록테스트")
-    void 프로덕션등록테스트() {
+    @DisplayName("프로덕션등록Mockito테스트")
+    void 프로덕션등록Mockito테스트() {
         // given
         adminProductionJpaRepository.insertProduction(adminProductionEntity);
 
@@ -281,6 +281,26 @@ class AdminProductionJpaRepositoryTest {
         verify(mockAdminProductionJpaRepository, times(3)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
         verifyNoMoreInteractions(mockAdminProductionJpaRepository);
+    }
+
+    @Test
+    @DisplayName("프로덕션등록BDD테스트")
+    void 프로덕션등록BDD테스트() {
+        // given
+        adminProductionJpaRepository.insertProduction(adminProductionEntity);
+
+        // when
+        given(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
+
+        // then
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getVisible()).isEqualTo("Y");
+
+        // verify
+        then(mockAdminProductionJpaRepository).should(times(3)).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).should(atLeastOnce()).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
@@ -302,8 +322,8 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("프로덕션수정테스트")
-    void 프로덕션수정테스트() {
+    @DisplayName("프로덕션수정Mockito테스트")
+    void 프로덕션수정Mockito테스트() {
         // given
         Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
@@ -329,6 +349,36 @@ class AdminProductionJpaRepositoryTest {
         verify(mockAdminProductionJpaRepository, times(2)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
         verifyNoMoreInteractions(mockAdminProductionJpaRepository);
+    }
+
+    @Test
+    @DisplayName("프로덕션수정BDD테스트")
+    void 프로덕션수정BDD테스트() {
+        // given
+        Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
+
+        adminProductionEntity = builder()
+                .idx(idx)
+                .title("프로덕션 테스트1")
+                .description("프로덕션 테스트1")
+                .visible("Y")
+                .build();
+
+        AdminProductionDTO adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+
+        adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
+
+        // when
+        given(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
+
+        // then
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트1");
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트1");
+
+        // verify
+        then(mockAdminProductionJpaRepository).should(times(2)).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).should(atLeastOnce()).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test

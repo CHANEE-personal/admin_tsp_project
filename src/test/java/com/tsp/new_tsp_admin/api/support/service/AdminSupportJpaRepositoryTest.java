@@ -143,8 +143,8 @@ class AdminSupportJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("지원모델 수정 테스트")
-    void 지원모델수정테스트() {
+    @DisplayName("지원모델 수정 Mockito 테스트")
+    void 지원모델수정Mockito테스트() {
         // given
         em.persist(adminSupportEntity);
         Integer idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
@@ -175,6 +175,41 @@ class AdminSupportJpaRepositoryTest {
         verify(mockAdminSupportJpaRepository, times(3)).findOneSupportModel(adminSupportEntity);
         verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
         verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+    }
+
+    @Test
+    @DisplayName("지원모델 수정 BDD 테스트")
+    void 지원모델수정BDD테스트() {
+        // given
+        em.persist(adminSupportEntity);
+        Integer idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
+
+        adminSupportEntity = builder()
+                .idx(idx)
+                .supportName("test")
+                .supportPhone("010-9466-2702")
+                .supportHeight(170)
+                .supportSize3("31-24-31")
+                .supportMessage("test")
+                .supportInstagram("https://instagram.com")
+                .build();
+
+        adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
+
+        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+
+        // when
+        given(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).willReturn(adminSupportDTO);
+
+        // then
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportMessage()).isEqualTo("test");
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportHeight()).isEqualTo(170);
+
+        // verify
+        then(mockAdminSupportJpaRepository).should(times(3)).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test

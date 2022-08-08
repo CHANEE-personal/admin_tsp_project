@@ -257,8 +257,8 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("포트폴리오등록테스트")
-    void 포트폴리오등록테스트() {
+    @DisplayName("포트폴리오등록Mockito테스트")
+    void 포트폴리오등록Mockito테스트() {
         // given
         adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
 
@@ -275,6 +275,27 @@ class AdminPortfolioJpaRepositoryTest {
         verify(mockAdminPortfolioJpaRepository, times(4)).findOnePortfolio(adminPortFolioEntity);
         verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
         verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
+    }
+
+    @Test
+    @DisplayName("포트폴리오등록BDD테스트")
+    void 포트폴리오등록BDD테스트() {
+        // given
+        adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
+
+        // when
+        given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
+
+        // then
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트");
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getDescription()).isEqualTo("포트폴리오 테스트");
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getHashTag()).isEqualTo("#test");
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getVideoUrl()).isEqualTo("https://youtube.com");
+
+        // verify
+        then(mockAdminPortfolioJpaRepository).should(times(4)).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaRepository).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
@@ -298,8 +319,8 @@ class AdminPortfolioJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("포트폴리오수정테스트")
-    void 포트폴리오수정테스트() {
+    @DisplayName("포트폴리오수정Mockito테스트")
+    void 포트폴리오수정Mockito테스트() {
         // given
         Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
@@ -330,6 +351,41 @@ class AdminPortfolioJpaRepositoryTest {
         verify(mockAdminPortfolioJpaRepository, times(4)).findOnePortfolio(adminPortFolioEntity);
         verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
         verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
+    }
+
+    @Test
+    @DisplayName("포트폴리오수정BDD테스트")
+    void 포트폴리오수정BDD테스트() {
+        // given
+        Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
+
+        adminPortFolioEntity = builder()
+                .idx(idx)
+                .categoryCd(1)
+                .title("포트폴리오 테스트1")
+                .description("포트폴리오 테스트1")
+                .hashTag("#test1")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        AdminPortFolioDTO adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+
+        adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
+
+        // when
+        given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
+
+        // then
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트1");
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getDescription()).isEqualTo("포트폴리오 테스트1");
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getHashTag()).isEqualTo("#test1");
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getVideoUrl()).isEqualTo("https://youtube.com");
+
+        // verify
+        then(mockAdminPortfolioJpaRepository).should(times(4)).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaRepository).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
