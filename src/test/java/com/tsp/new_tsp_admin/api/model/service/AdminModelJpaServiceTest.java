@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -149,6 +150,9 @@ class AdminModelJpaServiceTest {
         verify(mockAdminModelJpaService, times(1)).findModelsList(modelMap);
         verify(mockAdminModelJpaService, atLeastOnce()).findModelsList(modelMap);
         verifyNoMoreInteractions(mockAdminModelJpaService);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaService);
+        inOrder.verify(mockAdminModelJpaService).findModelsList(modelMap);
     }
 
     @Test
@@ -239,6 +243,9 @@ class AdminModelJpaServiceTest {
         verify(mockAdminModelJpaService, times(1)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
         verifyNoMoreInteractions(mockAdminModelJpaService);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaService);
+        inOrder.verify(mockAdminModelJpaService).findOneModel(adminModelEntity);
     }
 
     @Test
@@ -268,16 +275,20 @@ class AdminModelJpaServiceTest {
 
         // when
         when(mockAdminModelJpaService.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(adminModelEntity);
 
         // then
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorFirstName()).isEqualTo(adminModelDTO.getModelKorFirstName());
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorSecondName()).isEqualTo(adminModelDTO.getModelKorSecondName());
+        assertThat(modelInfo.getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
+        assertThat(modelInfo.getModelKorFirstName()).isEqualTo(adminModelDTO.getModelKorFirstName());
+        assertThat(modelInfo.getModelKorSecondName()).isEqualTo(adminModelDTO.getModelKorSecondName());
 
         // verify
-        verify(mockAdminModelJpaService, times(3)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaService, times(1)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
         verifyNoMoreInteractions(mockAdminModelJpaService);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaService);
+        inOrder.verify(mockAdminModelJpaService).findOneModel(adminModelEntity);
     }
 
     @Test
@@ -357,15 +368,19 @@ class AdminModelJpaServiceTest {
 
         // when
         when(mockAdminModelJpaService.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(adminModelEntity);
 
         // then
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorFirstName()).isEqualTo("조");
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorSecondName()).isEqualTo("찬희");
+        assertThat(modelInfo.getModelKorFirstName()).isEqualTo("조");
+        assertThat(modelInfo.getModelKorSecondName()).isEqualTo("찬희");
 
         // verify
-        verify(mockAdminModelJpaService, times(2)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaService, times(1)).findOneModel(adminModelEntity);
         verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
         verifyNoMoreInteractions(mockAdminModelJpaService);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaService);
+        inOrder.verify(mockAdminModelJpaService).findOneModel(adminModelEntity);
     }
 
     @Test

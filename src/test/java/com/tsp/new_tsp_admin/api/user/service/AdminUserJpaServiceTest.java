@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -86,6 +87,9 @@ class AdminUserJpaServiceTest {
         verify(mockAdminUserJpaService, times(1)).findUsersList(userMap);
         verify(mockAdminUserJpaService, atLeastOnce()).findUsersList(userMap);
         verifyNoMoreInteractions(mockAdminUserJpaService);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaService);
+        inOrder.verify(mockAdminUserJpaService).findUsersList(userMap);
     }
 
     @Test
@@ -157,6 +161,9 @@ class AdminUserJpaServiceTest {
         verify(mockAdminUserJpaService, times(1)).findOneUser(adminUserEntity.getUserId());
         verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(adminUserDTO.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaService);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaService);
+        inOrder.verify(mockAdminUserJpaService).findOneUser(adminUserDTO.getUserId());
     }
 
     @Test
@@ -246,16 +253,20 @@ class AdminUserJpaServiceTest {
 
         // when
         when(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
+        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());
 
         // then
-        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo("test");
-        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo("test");
-        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo("test@test.com");
+        assertThat(userInfo.getUserId()).isEqualTo("test");
+        assertThat(userInfo.getName()).isEqualTo("test");
+        assertThat(userInfo.getEmail()).isEqualTo("test@test.com");
 
         // verify
-        verify(mockAdminUserJpaService, times(3)).findOneUser(adminUserEntity.getUserId());
+        verify(mockAdminUserJpaService, times(1)).findOneUser(adminUserEntity.getUserId());
         verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(adminUserEntity.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaService);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaService);
+        inOrder.verify(mockAdminUserJpaService).findOneUser(adminUserEntity.getUserId());
     }
 
     @Test
@@ -313,16 +324,20 @@ class AdminUserJpaServiceTest {
 
         // when
         when(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).thenReturn(newAdminUserEntity);
+        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId());
 
         // then
-        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getUserId()).isEqualTo("test1");
-        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getName()).isEqualTo("test1");
-        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getEmail()).isEqualTo("test1@test.com");
+        assertThat(userInfo.getUserId()).isEqualTo("test1");
+        assertThat(userInfo.getName()).isEqualTo("test1");
+        assertThat(userInfo.getEmail()).isEqualTo("test1@test.com");
 
         // verify
-        verify(mockAdminUserJpaService, times(3)).findOneUser(newAdminUserEntity.getUserId());
+        verify(mockAdminUserJpaService, times(1)).findOneUser(newAdminUserEntity.getUserId());
         verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(newAdminUserEntity.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaService);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaService);
+        inOrder.verify(mockAdminUserJpaService).findOneUser(newAdminUserEntity.getUserId());
     }
 
     @Test

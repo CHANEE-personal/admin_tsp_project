@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -107,15 +108,19 @@ class AdminSupportJpaRepositoryTest {
 
         // when
         when(mockAdminSupportJpaRepository.findSupportsList(supportMap)).thenReturn(supportList);
+        List<AdminSupportDTO> supportInfo = mockAdminSupportJpaRepository.findSupportsList(supportMap);
 
         // then
-        assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getIdx()).isEqualTo(supportList.get(0).getIdx());
-        assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
+        assertThat(supportInfo.get(0).getIdx()).isEqualTo(supportList.get(0).getIdx());
+        assertThat(supportInfo.get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
 
         // verify
-        verify(mockAdminSupportJpaRepository, times(2)).findSupportsList(supportMap);
+        verify(mockAdminSupportJpaRepository, times(1)).findSupportsList(supportMap);
         verify(mockAdminSupportJpaRepository, atLeastOnce()).findSupportsList(supportMap);
         verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findSupportsList(supportMap);
     }
 
     @Test
@@ -165,16 +170,20 @@ class AdminSupportJpaRepositoryTest {
 
         // when
         when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        AdminSupportDTO supportInfo = mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity);
 
         // then
-        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
-        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportMessage()).isEqualTo("test");
-        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportHeight()).isEqualTo(170);
+        assertThat(supportInfo.getSupportName()).isEqualTo("test");
+        assertThat(supportInfo.getSupportMessage()).isEqualTo("test");
+        assertThat(supportInfo.getSupportHeight()).isEqualTo(170);
 
         // verify
-        verify(mockAdminSupportJpaRepository, times(3)).findOneSupportModel(adminSupportEntity);
+        verify(mockAdminSupportJpaRepository, times(1)).findOneSupportModel(adminSupportEntity);
         verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
         verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneSupportModel(adminSupportEntity);
     }
 
     @Test

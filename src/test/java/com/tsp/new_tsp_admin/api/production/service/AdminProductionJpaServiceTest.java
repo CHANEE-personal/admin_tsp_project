@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -108,6 +109,9 @@ class AdminProductionJpaServiceTest {
         verify(mockAdminProductionJpaService, times(1)).findProductionsList(productionMap);
         verify(mockAdminProductionJpaService, atLeastOnce()).findProductionsList(productionMap);
         verifyNoMoreInteractions(mockAdminProductionJpaService);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaService);
+        inOrder.verify(mockAdminProductionJpaService).findProductionsList(productionMap);
     }
 
     @Test
@@ -171,6 +175,9 @@ class AdminProductionJpaServiceTest {
         verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity);
         verifyNoMoreInteractions(mockAdminProductionJpaService);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaService);
+        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity);
     }
 
     @Test
@@ -200,15 +207,19 @@ class AdminProductionJpaServiceTest {
 
         // when
         when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
 
         // then
-        assertThat(mockAdminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트");
-        assertThat(mockAdminProductionJpaService.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트");
+        assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트");
+        assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트");
 
         // verify
-        verify(mockAdminProductionJpaService, times(2)).findOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity);
         verifyNoMoreInteractions(mockAdminProductionJpaService);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaService);
+        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity);
     }
 
     @Test
@@ -249,15 +260,19 @@ class AdminProductionJpaServiceTest {
 
         // when
         when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
 
         // then
-        assertThat(mockAdminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트1");
-        assertThat(mockAdminProductionJpaService.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트1");
+        assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트1");
+        assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트1");
 
         // verify
-        verify(mockAdminProductionJpaService, times(2)).findOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity);
         verifyNoMoreInteractions(mockAdminProductionJpaService);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaService);
+        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity);
     }
 
     @Test

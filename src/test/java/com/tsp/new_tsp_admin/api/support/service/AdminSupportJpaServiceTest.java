@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -114,6 +115,9 @@ class AdminSupportJpaServiceTest {
         verify(mockAdminSupportJpaService, times(1)).findSupportsList(supportMap);
         verify(mockAdminSupportJpaService, atLeastOnce()).findSupportsList(supportMap);
         verifyNoMoreInteractions(mockAdminSupportJpaService);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaService);
+        inOrder.verify(mockAdminSupportJpaService).findSupportsList(supportMap);
     }
 
     @Test
@@ -182,6 +186,9 @@ class AdminSupportJpaServiceTest {
         verify(mockAdminSupportJpaService, times(1)).findOneSupportModel(adminSupportEntity);
         verify(mockAdminSupportJpaService, atLeastOnce()).findOneSupportModel(adminSupportEntity);
         verifyNoMoreInteractions(mockAdminSupportJpaService);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaService);
+        inOrder.verify(mockAdminSupportJpaService).findOneSupportModel(adminSupportEntity);
     }
 
     @Test
@@ -222,15 +229,19 @@ class AdminSupportJpaServiceTest {
 
         // when
         when(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        AdminSupportDTO supportInfo = mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity);
 
         // then
-        assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
-        assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportPhone()).isEqualTo("010-9466-2702");
+        assertThat(supportInfo.getSupportName()).isEqualTo("test");
+        assertThat(supportInfo.getSupportPhone()).isEqualTo("010-9466-2702");
 
         // verify
-        verify(mockAdminSupportJpaService, times(2)).findOneSupportModel(adminSupportEntity);
+        verify(mockAdminSupportJpaService, times(1)).findOneSupportModel(adminSupportEntity);
         verify(mockAdminSupportJpaService, atLeastOnce()).findOneSupportModel(adminSupportEntity);
         verifyNoMoreInteractions(mockAdminSupportJpaService);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaService);
+        inOrder.verify(mockAdminSupportJpaService).findOneSupportModel(adminSupportEntity);
     }
 
     @Test
