@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.common.mapper.CommonCodeMapper.*;
+import static com.tsp.new_tsp_admin.api.common.mapper.CommonCodeMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -233,6 +233,73 @@ class AdminCommonJpaServiceTest {
         assertThat(commonInfo.getCategoryCd()).isEqualTo(commonCodeDTO.getCategoryCd());
         assertThat(commonInfo.getCategoryNm()).isEqualTo(commonCodeDTO.getCategoryNm());
         assertThat(commonInfo.getCmmType()).isEqualTo(commonCodeDTO.getCmmType());
+
+        // verify
+        then(mockAdminCommonJpaService).should(times(1)).findOneCommonCode(commonCodeEntity);
+        then(mockAdminCommonJpaService).should(atLeastOnce()).findOneCommonCode(commonCodeEntity);
+        then(mockAdminCommonJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("공통코드 수정 Mockito 테스트")
+    void 공통코드수정Mockito테스트() throws Exception {
+        // given
+        Integer idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
+
+        commonCodeEntity = CommonCodeEntity.builder()
+                .idx(idx)
+                .categoryCd(2)
+                .categoryNm("new men")
+                .cmmType("model")
+                .visible("Y")
+                .build();
+
+        adminCommonJpaService.updateCommonCode(commonCodeEntity);
+
+        commonCodeDTO = INSTANCE.toDto(commonCodeEntity);
+
+        // when
+        when(mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity)).thenReturn(commonCodeDTO);
+        CommonCodeDTO commonCodeInfo = mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity);
+
+        // then
+        assertThat(commonCodeInfo.getCategoryNm()).isEqualTo("new men");
+        assertThat(commonCodeInfo.getCmmType()).isEqualTo("model");
+
+        // verify
+        verify(mockAdminCommonJpaService, times(1)).findOneCommonCode(commonCodeEntity);
+        verify(mockAdminCommonJpaService, atLeastOnce()).findOneCommonCode(commonCodeEntity);
+        verifyNoMoreInteractions(mockAdminCommonJpaService);
+
+        InOrder inOrder = inOrder(mockAdminCommonJpaService);
+        inOrder.verify(mockAdminCommonJpaService).findOneCommonCode(commonCodeEntity);
+    }
+
+    @Test
+    @DisplayName("공통코드 수정 BDD 테스트")
+    void 공통코드수정BDD테스트() throws Exception {
+        // given
+        Integer idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
+
+        commonCodeEntity = CommonCodeEntity.builder()
+                .idx(idx)
+                .categoryCd(2)
+                .categoryNm("new men")
+                .cmmType("model")
+                .visible("Y")
+                .build();
+
+        adminCommonJpaService.updateCommonCode(commonCodeEntity);
+
+        commonCodeDTO = INSTANCE.toDto(commonCodeEntity);
+
+        // when
+        given(mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity)).willReturn(commonCodeDTO);
+        CommonCodeDTO commonCodeInfo = mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity);
+
+        // then
+        assertThat(commonCodeInfo.getCategoryNm()).isEqualTo("new men");
+        assertThat(commonCodeInfo.getCmmType()).isEqualTo("model");
 
         // verify
         then(mockAdminCommonJpaService).should(times(1)).findOneCommonCode(commonCodeEntity);

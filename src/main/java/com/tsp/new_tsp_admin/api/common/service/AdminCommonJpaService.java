@@ -51,4 +51,15 @@ public interface AdminCommonJpaService {
      * </pre>
      */
     CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : updateCommonCode
+     * 2. ClassName  : AdminCommonJpaService.java
+     * 3. Comment    : 관리자 공통 코드 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity) throws Exception;
 }

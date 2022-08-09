@@ -91,4 +91,20 @@ public class AdminCommonJpaRepository {
         em.persist(commonCodeEntity);
         return INSTANCE.toDto(commonCodeEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateCommonCode
+     * 2. ClassName  : AdminCommonJpaRepository.java
+     * 3. Comment    : 관리자 공통 코드 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public CommonCodeDTO updateCommonCode(CommonCodeEntity existCommonCodeEntity) {
+        em.merge(existCommonCodeEntity);
+        em.flush();
+        em.clear();
+        return INSTANCE.toDto(existCommonCodeEntity);
+    }
 }

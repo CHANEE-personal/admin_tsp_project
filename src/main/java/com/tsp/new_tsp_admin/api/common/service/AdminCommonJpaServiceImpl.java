@@ -96,4 +96,25 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
             throw new TspException(ERROR_COMMON, e);
         }
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateCommonCode
+     * 2. ClassName  : AdminCommonJpaServiceImpl.java
+     * 3. Comment    : 관리자 공통 코드 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @CachePut("common")
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity) throws TspException {
+        try {
+            return adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_UPDATE_COMMON, e);
+        }
+    }
 }

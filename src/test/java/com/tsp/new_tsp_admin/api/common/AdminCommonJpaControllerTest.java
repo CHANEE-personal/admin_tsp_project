@@ -39,8 +39,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
@@ -179,6 +178,45 @@ class AdminCommonJpaControllerTest {
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.categoryNm").value("men"))
+                .andExpect(jsonPath("$.cmmType").value("model"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 공통코드 수정 테스트")
+    void 공통코드수정Api테스트() throws Exception {
+        em.persist(commonCodeEntity);
+
+        commonCodeEntity = CommonCodeEntity.builder()
+                .idx(commonCodeEntity.getIdx())
+                .categoryCd(1)
+                .categoryNm("new men")
+                .cmmType("model")
+                .visible("Y")
+                .build();
+
+        mockMvc.perform(put("/api/jpa-common/{idx}", commonCodeEntity.getIdx())
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(commonCodeEntity)))
+                .andDo(print())
+                .andDo(document("common/put",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        relaxedRequestFields(
+                                fieldWithPath("categoryCd").type(NUMBER).description("공통코드 카테고리"),
+                                fieldWithPath("categoryNm").type(STRING).description("공통코드명"),
+                                fieldWithPath("cmmType").type(STRING).description("공통코드 타입")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("categoryCd").type(NUMBER).description("공통코드 카테고리"),
+                                fieldWithPath("categoryNm").type(STRING).description("공통코드명"),
+                                fieldWithPath("cmmType").type(STRING).description("공통코드 타입")
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.categoryCd").value(1))
+                .andExpect(jsonPath("$.categoryNm").value("new men"))
                 .andExpect(jsonPath("$.cmmType").value("model"));
     }
 }

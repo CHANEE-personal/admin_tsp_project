@@ -56,6 +56,8 @@ public enum ApiExceptionType implements BaseExceptionType {
 
     // 공통 코드 관련 TYPE
     ERROR_COMMON("ERROR_COMMON", 500, "공통 코드 등록 에러"),
+    ERROR_UPDATE_COMMON("ERROR_UPDATE_COMMON", 500, "공통 코드 수정 에러"),
+    ERROR_DELETE_COMMON("ERROR_DELETE_COMMON", 500, "공통 코드 삭제 에러"),
     NOT_FOUND_COMMON("NOT_FOUND_COMMON", 200, "해당 공통코드 없음"),
     NOT_FOUND_COMMON_LIST("NOT_FOUND_COMMON_LIST", 200, "공통 코드 리스트 없음");
 

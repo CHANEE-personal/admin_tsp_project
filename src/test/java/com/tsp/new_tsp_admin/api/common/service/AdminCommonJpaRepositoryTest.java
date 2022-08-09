@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.common.service;
 
+import com.tsp.new_tsp_admin.api.common.mapper.CommonCodeMapper;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
@@ -279,6 +280,71 @@ class AdminCommonJpaRepositoryTest {
         // verify
         then(mockAdminCommonJpaRepository).should(times(1)).insertCommonCode(commonCodeEntity);
         then(mockAdminCommonJpaRepository).should(atLeastOnce()).insertCommonCode(commonCodeEntity);
+        then(mockAdminCommonJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("공통코드 수정 Mockito 테스트")
+    void 공통코드수정Mockito테스트() {
+        Integer idx = adminCommonJpaRepository.insertCommonCode(commonCodeEntity).getIdx();
+
+        commonCodeEntity = CommonCodeEntity.builder()
+                .idx(idx)
+                .categoryCd(1)
+                .categoryNm("new men")
+                .cmmType("model")
+                .visible("Y").build();
+
+        adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
+
+        commonCodeDTO = CommonCodeMapper.INSTANCE.toDto(commonCodeEntity);
+
+        // when
+        when(mockAdminCommonJpaRepository.findOneCommonCode(commonCodeEntity)).thenReturn(commonCodeDTO);
+        CommonCodeDTO commonCodeInfo = mockAdminCommonJpaRepository.findOneCommonCode(commonCodeEntity);
+
+        // then
+        assertThat(commonCodeInfo.getCategoryCd()).isEqualTo(1);
+        assertThat(commonCodeInfo.getCategoryNm()).isEqualTo("new men");
+        assertThat(commonCodeInfo.getCmmType()).isEqualTo("model");
+
+        // verify
+        verify(mockAdminCommonJpaRepository, times(1)).findOneCommonCode(commonCodeEntity);
+        verify(mockAdminCommonJpaRepository, atLeastOnce()).findOneCommonCode(commonCodeEntity);
+        verifyNoMoreInteractions(mockAdminCommonJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminCommonJpaRepository);
+        inOrder.verify(mockAdminCommonJpaRepository).findOneCommonCode(commonCodeEntity);
+    }
+
+    @Test
+    @DisplayName("공통코드 수정 BDD 테스트")
+    void 공통코드수정BDD테스트() {
+        Integer idx = adminCommonJpaRepository.insertCommonCode(commonCodeEntity).getIdx();
+
+        commonCodeEntity = CommonCodeEntity.builder()
+                .idx(idx)
+                .categoryCd(1)
+                .categoryNm("new men")
+                .cmmType("model")
+                .visible("Y").build();
+
+        adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
+
+        commonCodeDTO = CommonCodeMapper.INSTANCE.toDto(commonCodeEntity);
+
+        // when
+        given(mockAdminCommonJpaRepository.findOneCommonCode(commonCodeEntity)).willReturn(commonCodeDTO);
+        CommonCodeDTO commonCodeInfo = mockAdminCommonJpaRepository.findOneCommonCode(commonCodeEntity);
+
+        // then
+        assertThat(commonCodeInfo.getCategoryCd()).isEqualTo(1);
+        assertThat(commonCodeInfo.getCategoryNm()).isEqualTo("new men");
+        assertThat(commonCodeInfo.getCmmType()).isEqualTo("model");
+
+        // verify
+        then(mockAdminCommonJpaRepository).should(times(1)).findOneCommonCode(commonCodeEntity);
+        then(mockAdminCommonJpaRepository).should(atLeastOnce()).findOneCommonCode(commonCodeEntity);
         then(mockAdminCommonJpaRepository).shouldHaveNoMoreInteractions();
     }
 }
