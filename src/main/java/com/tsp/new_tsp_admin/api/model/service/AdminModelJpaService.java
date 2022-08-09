@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
-import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -98,15 +97,4 @@ public interface AdminModelJpaService {
      * </pre>
      */
     Integer deleteModelImage(Integer idx) throws Exception;
-
-    /**
-     * <pre>
-     * 1. MethodName : modelCommonCode
-     * 2. ClassName  : AdminModelJpaService.java
-     * 3. Comment    : 관리자 모델 공통 코드 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
-     * </pre>
-     */
-    List<CommonCodeEntity> modelCommonCode(CommonCodeEntity commonCodeEntity) throws Exception;
 }

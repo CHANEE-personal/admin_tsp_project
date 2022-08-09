@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.common.QCommonCodeEntity.commonCodeEntity;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
@@ -191,22 +190,6 @@ public class AdminModelJpaRepository {
         em.flush();
         em.clear();
         return INSTANCE.toDto(existAdminModelEntity);
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : modelCommonCode
-     * 2. ClassName  : AdminModelJpaRepository.java
-     * 3. Comment    : 관리자 모델 공통 코드 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
-     * </pre>
-     */
-    public List<CommonCodeEntity> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
-        return queryFactory
-                .selectFrom(commonCodeEntity)
-                .where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
-                .fetch();
     }
 
     /**

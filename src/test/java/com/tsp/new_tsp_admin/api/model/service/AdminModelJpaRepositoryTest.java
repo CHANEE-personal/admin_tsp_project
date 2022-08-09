@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
-import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
@@ -578,15 +577,5 @@ class AdminModelJpaRepositoryTest {
         CommonImageDTO commonImageDTO1 = adminModelJpaRepository.insertModelImage(commonImageEntity);
 
         assertNotNull(commonImageDTO1);
-    }
-
-    @Test
-    @DisplayName("모델 공통 코드 조회 테스트")
-    void 모델공통코드조회테스트() {
-        CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
-                .categoryCd(1).visible("Y").cmmType("model").build();
-
-        // then
-        assertThat(adminModelJpaRepository.modelCommonCode(commonCodeEntity)).isNotEmpty();
     }
 }
