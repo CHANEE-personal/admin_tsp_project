@@ -7,9 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -22,7 +22,7 @@ import javax.transaction.Transactional;
 
 import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
@@ -64,9 +64,18 @@ class ImageRepositoryTest {
 
         // when
         when(mockImageRepository.maxSubCnt(commonImageEntity)+1).thenReturn(commonImageEntity.getFileNum()+1);
+        Integer maxSubCnt = mockImageRepository.maxSubCnt(commonImageEntity);
 
         // then
-        assertThat(mockImageRepository.maxSubCnt(commonImageEntity)).isEqualTo(commonImageEntity.getFileNum()+1);
+        assertThat(maxSubCnt).isEqualTo(commonImageEntity.getFileNum()+1);
+
+        // verify
+        verify(mockImageRepository, times(1)).maxSubCnt(commonImageEntity);
+        verify(mockImageRepository, atLeastOnce()).maxSubCnt(commonImageEntity);
+        verifyNoMoreInteractions(mockImageRepository);
+
+        InOrder inOrder = inOrder(mockImageRepository);
+        inOrder.verify(mockImageRepository).maxSubCnt(commonImageEntity);
     }
 
     @Test
@@ -87,11 +96,20 @@ class ImageRepositoryTest {
 
         // when
         when(mockImageRepository.findOneImage(commonImageEntity)).thenReturn(commonImageEntity);
+        CommonImageEntity imageEntity = mockImageRepository.findOneImage(commonImageEntity);
 
         // then
-        assertThat(mockImageRepository.findOneImage(commonImageEntity).getImageType()).isEqualTo("main");
-        assertThat(mockImageRepository.findOneImage(commonImageEntity).getFileName()).isEqualTo("test.jpg");
-        assertThat(mockImageRepository.findOneImage(commonImageEntity).getFileMask()).isEqualTo("test.jpg");
+        assertThat(imageEntity.getImageType()).isEqualTo("main");
+        assertThat(imageEntity.getFileName()).isEqualTo("test.jpg");
+        assertThat(imageEntity.getFileMask()).isEqualTo("test.jpg");
+
+        // verify
+        verify(mockImageRepository, times(1)).findOneImage(commonImageEntity);
+        verify(mockImageRepository, atLeastOnce()).findOneImage(commonImageEntity);
+        verifyNoMoreInteractions(mockImageRepository);
+
+        InOrder inOrder = inOrder(mockImageRepository);
+        inOrder.verify(mockImageRepository).findOneImage(commonImageEntity);
     }
 
     @Test
