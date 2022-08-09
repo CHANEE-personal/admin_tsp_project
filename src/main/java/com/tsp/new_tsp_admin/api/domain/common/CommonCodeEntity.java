@@ -18,6 +18,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Table(name = "tsp_cmm_code")
 public class CommonCodeEntity {
+    @Transient
+    private Integer rnum;
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")

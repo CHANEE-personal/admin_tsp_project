@@ -1,0 +1,132 @@
+package com.tsp.new_tsp_admin.api.common;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.model.CareerJson;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.jwt.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.event.EventListener;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestConstructor;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+@SpringBootTest
+@Transactional
+@AutoConfigureMockMvc
+@ExtendWith(RestDocumentationExtension.class)
+@TestPropertySource(locations = "classpath:application.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
+@AutoConfigureTestDatabase(replace = NONE)
+@DisplayName("공통코드 Api Test")
+class AdminCommonJpaControllerTest {
+    private MockMvc mockMvc;
+    private final ObjectMapper objectMapper;
+    private final WebApplicationContext wac;
+    private final EntityManager em;
+    private final JwtUtil jwtUtil;
+    private AdminUserEntity adminUserEntity;
+    private CommonCodeEntity commonCodeEntity;
+
+    Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return authorities;
+    }
+
+    @DisplayName("테스트 유저 생성")
+    void createUser() {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
+        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+
+        adminUserEntity = AdminUserEntity.builder()
+                .userId("admin04")
+                .password("pass1234")
+                .name("test")
+                .email("test@test.com")
+                .role(ROLE_ADMIN)
+                .userToken(token)
+                .visible("Y")
+                .build();
+
+        em.persist(adminUserEntity);
+    }
+
+    @DisplayName("테스트 공통코드 생성")
+    void createCommonCode() {
+        // user 생성
+        createUser();
+
+        // 공통코드 생성
+        commonCodeEntity = CommonCodeEntity.builder()
+                .categoryCd(1)
+                .categoryNm("남성")
+                .cmmType("model")
+                .visible("Y")
+                .build();
+    }
+
+    @BeforeEach
+    @EventListener(ApplicationReadyEvent.class)
+    public void setup(RestDocumentationContextProvider restDocumentationContextProvider) {
+        this.mockMvc = webAppContextSetup(wac)
+                .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .apply(springSecurity())
+                .apply(documentationConfiguration(restDocumentationContextProvider))
+                .alwaysExpect(status().isOk())
+                .alwaysDo(print())
+                .build();
+
+        createCommonCode();
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 공통코드 조회 테스트")
+    void 공통코드조회Api테스트() throws Exception {
+        LinkedMultiValueMap<String, String> commonMap = new LinkedMultiValueMap<>();
+        commonMap.add("jpaStartPage", "1");
+        commonMap.add("size", "3");
+        mockMvc.perform(get("/api/jpa-common/lists").queryParams(commonMap)
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
+    }
+}
