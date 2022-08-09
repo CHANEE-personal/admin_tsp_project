@@ -285,14 +285,15 @@ class AdminUserJpaServiceTest {
 
         // when
         given(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).willReturn(adminUserEntity);
+        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());
 
         // then
-        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getUserId()).isEqualTo("test");
-        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getName()).isEqualTo("test");
-        assertThat(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId()).getEmail()).isEqualTo("test@test.com");
+        assertThat(userInfo.getUserId()).isEqualTo("test");
+        assertThat(userInfo.getName()).isEqualTo("test");
+        assertThat(userInfo.getEmail()).isEqualTo("test@test.com");
 
         // verify
-        then(mockAdminUserJpaService).should(times(3)).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaService).should(times(1)).findOneUser(adminUserEntity.getUserId());
         then(mockAdminUserJpaService).should(atLeastOnce()).findOneUser(adminUserEntity.getUserId());
         then(mockAdminUserJpaService).shouldHaveNoMoreInteractions();
     }
@@ -367,14 +368,15 @@ class AdminUserJpaServiceTest {
 
         // when
         given(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).willReturn(newAdminUserEntity);
+        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId());
 
         // then
-        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getUserId()).isEqualTo("test1");
-        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getName()).isEqualTo("test1");
-        assertThat(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId()).getEmail()).isEqualTo("test1@test.com");
+        assertThat(userInfo.getUserId()).isEqualTo("test1");
+        assertThat(userInfo.getName()).isEqualTo("test1");
+        assertThat(userInfo.getEmail()).isEqualTo("test1@test.com");
 
         // verify
-        then(mockAdminUserJpaService).should(times(3)).findOneUser(newAdminUserEntity.getUserId());
+        then(mockAdminUserJpaService).should(times(1)).findOneUser(newAdminUserEntity.getUserId());
         then(mockAdminUserJpaService).should(atLeastOnce()).findOneUser(newAdminUserEntity.getUserId());
         then(mockAdminUserJpaService).shouldHaveNoMoreInteractions();
     }

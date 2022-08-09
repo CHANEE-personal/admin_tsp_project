@@ -263,13 +263,14 @@ class AdminSupportJpaServiceTest {
 
         // when
         given(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity)).willReturn(adminSupportDTO);
+        AdminSupportDTO supportInfo = mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity);
 
         // then
-        assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
-        assertThat(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity).getSupportPhone()).isEqualTo("010-9466-2702");
+        assertThat(supportInfo.getSupportName()).isEqualTo("test");
+        assertThat(supportInfo.getSupportPhone()).isEqualTo("010-9466-2702");
 
         // verify
-        then(mockAdminSupportJpaService).should(times(2)).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaService).should(times(1)).findOneSupportModel(adminSupportEntity);
         then(mockAdminSupportJpaService).should(atLeastOnce()).findOneSupportModel(adminSupportEntity);
         then(mockAdminSupportJpaService).shouldHaveNoMoreInteractions();
     }

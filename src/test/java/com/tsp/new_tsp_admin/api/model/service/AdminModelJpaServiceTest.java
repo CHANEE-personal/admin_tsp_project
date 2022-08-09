@@ -299,14 +299,15 @@ class AdminModelJpaServiceTest {
 
         // when
         given(mockAdminModelJpaService.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(adminModelEntity);
 
         // then
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorFirstName()).isEqualTo(adminModelDTO.getModelKorFirstName());
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorSecondName()).isEqualTo(adminModelDTO.getModelKorSecondName());
+        assertThat(modelInfo.getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
+        assertThat(modelInfo.getModelKorFirstName()).isEqualTo(adminModelDTO.getModelKorFirstName());
+        assertThat(modelInfo.getModelKorSecondName()).isEqualTo(adminModelDTO.getModelKorSecondName());
 
         // verify
-        then(mockAdminModelJpaService).should(times(3)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).should(times(1)).findOneModel(adminModelEntity);
         then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(adminModelEntity);
         then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }
@@ -414,13 +415,14 @@ class AdminModelJpaServiceTest {
 
         // when
         given(mockAdminModelJpaService.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(adminModelEntity);
 
         // then
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorFirstName()).isEqualTo("조");
-        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getModelKorSecondName()).isEqualTo("찬희");
+        assertThat(modelInfo.getModelKorFirstName()).isEqualTo("조");
+        assertThat(modelInfo.getModelKorSecondName()).isEqualTo("찬희");
 
         // verify
-        then(mockAdminModelJpaService).should(times(2)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).should(times(1)).findOneModel(adminModelEntity);
         then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(adminModelEntity);
         then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }

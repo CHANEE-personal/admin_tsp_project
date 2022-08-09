@@ -243,15 +243,16 @@ class AdminPortfolioJpaServiceTest {
 
         // when
         given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
 
         // then
-        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트");
-        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getDescription()).isEqualTo("포트폴리오 테스트");
-        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getHashTag()).isEqualTo("#test");
-        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getVideoUrl()).isEqualTo("https://youtube.com");
+        assertThat(portfolioInfo.getTitle()).isEqualTo("포트폴리오 테스트");
+        assertThat(portfolioInfo.getDescription()).isEqualTo("포트폴리오 테스트");
+        assertThat(portfolioInfo.getHashTag()).isEqualTo("#test");
+        assertThat(portfolioInfo.getVideoUrl()).isEqualTo("https://youtube.com");
 
         // verify
-        then(mockAdminPortfolioJpaService).should(times(4)).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity);
         then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
         then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
@@ -314,9 +315,10 @@ class AdminPortfolioJpaServiceTest {
 
         // when
         given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
 
         // then
-        assertThat(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isEqualTo("포트폴리오 테스트1");
+        assertThat(portfolioInfo.getTitle()).isEqualTo("포트폴리오 테스트1");
 
         // verify
         then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity);

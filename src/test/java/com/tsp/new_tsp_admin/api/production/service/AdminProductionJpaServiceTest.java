@@ -230,13 +230,14 @@ class AdminProductionJpaServiceTest {
 
         // when
         given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
 
         // then
-        assertThat(mockAdminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트");
-        assertThat(mockAdminProductionJpaService.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트");
+        assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트");
+        assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트");
 
         // verify
-        then(mockAdminProductionJpaService).should(times(2)).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(times(1)).findOneProduction(adminProductionEntity);
         then(mockAdminProductionJpaService).should(atLeastOnce()).findOneProduction(adminProductionEntity);
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
@@ -294,13 +295,14 @@ class AdminProductionJpaServiceTest {
 
         // when
         given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
 
         // then
-        assertThat(mockAdminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("프로덕션 테스트1");
-        assertThat(mockAdminProductionJpaService.findOneProduction(adminProductionEntity).getDescription()).isEqualTo("프로덕션 테스트1");
+        assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트1");
+        assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트1");
 
         // verify
-        then(mockAdminProductionJpaService).should(times(2)).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(times(1)).findOneProduction(adminProductionEntity);
         then(mockAdminProductionJpaService).should(atLeastOnce()).findOneProduction(adminProductionEntity);
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }

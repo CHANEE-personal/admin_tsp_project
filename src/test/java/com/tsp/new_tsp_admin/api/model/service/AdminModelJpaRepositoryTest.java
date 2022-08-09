@@ -177,14 +177,15 @@ class AdminModelJpaRepositoryTest {
 
         // when
         given(mockAdminModelJpaRepository.findModelsList(modelMap)).willReturn(modelList);
+        List<AdminModelDTO> newModelList = mockAdminModelJpaRepository.findModelsList(modelMap);
 
         // then
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
-        assertThat(mockAdminModelJpaRepository.findModelsList(modelMap).get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
+        assertThat(newModelList.get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
+        assertThat(newModelList.get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
+        assertThat(newModelList.get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(3)).findModelsList(modelMap);
+        then(mockAdminModelJpaRepository).should(times(1)).findModelsList(modelMap);
         then(mockAdminModelJpaRepository).should(atLeastOnce()).findModelsList(modelMap);
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
@@ -320,26 +321,27 @@ class AdminModelJpaRepositoryTest {
 
         // when
         given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
 
         // then
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(1);
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(1);
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("2");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelKorName()).isEqualTo("조찬희");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelEngName()).isEqualTo("CHOCHANHEE");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelDescription()).isEqualTo("chaneeCho");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getHeight()).isEqualTo("170");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getSize3()).isEqualTo("34-24-34");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getShoes()).isEqualTo("270");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getVisible()).isEqualTo("Y");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelImage().get(0).getFileName()).isEqualTo("test.jpg");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelImage().get(0).getFileMask()).isEqualTo("test.jpg");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getModelImage().get(0).getTypeName()).isEqualTo("model");
+        assertThat(modelInfo.getIdx()).isEqualTo(1);
+        assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
+        assertThat(modelInfo.getCategoryAge()).isEqualTo("2");
+        assertThat(modelInfo.getModelKorName()).isEqualTo("조찬희");
+        assertThat(modelInfo.getModelEngName()).isEqualTo("CHOCHANHEE");
+        assertThat(modelInfo.getModelDescription()).isEqualTo("chaneeCho");
+        assertThat(modelInfo.getHeight()).isEqualTo("170");
+        assertThat(modelInfo.getSize3()).isEqualTo("34-24-34");
+        assertThat(modelInfo.getShoes()).isEqualTo("270");
+        assertThat(modelInfo.getVisible()).isEqualTo("Y");
+        assertThat(modelInfo.getModelImage().get(0).getFileName()).isEqualTo("test.jpg");
+        assertThat(modelInfo.getModelImage().get(0).getFileMask()).isEqualTo("test.jpg");
+        assertThat(modelInfo.getModelImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
+        assertThat(modelInfo.getModelImage().get(0).getImageType()).isEqualTo("main");
+        assertThat(modelInfo.getModelImage().get(0).getTypeName()).isEqualTo("model");
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(15)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
         then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
@@ -375,13 +377,14 @@ class AdminModelJpaRepositoryTest {
 
         // when
         given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
 
         // then
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(1);
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("2");
+        assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
+        assertThat(modelInfo.getCategoryAge()).isEqualTo("2");
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(2)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
         then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
@@ -504,13 +507,14 @@ class AdminModelJpaRepositoryTest {
 
         // when
         given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
 
         // then
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryCd()).isEqualTo(2);
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getCategoryAge()).isEqualTo("3");
+        assertThat(modelInfo.getCategoryCd()).isEqualTo(2);
+        assertThat(modelInfo.getCategoryAge()).isEqualTo("3");
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(2)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
         then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }

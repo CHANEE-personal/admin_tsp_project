@@ -136,13 +136,14 @@ class AdminSupportJpaRepositoryTest {
 
         // when
         given(mockAdminSupportJpaRepository.findSupportsList(supportMap)).willReturn(supportList);
+        List<AdminSupportDTO> newSupportList = mockAdminSupportJpaRepository.findSupportsList(supportMap);
 
         // then
-        assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getIdx()).isEqualTo(supportList.get(0).getIdx());
-        assertThat(mockAdminSupportJpaRepository.findSupportsList(supportMap).get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
+        assertThat(newSupportList.get(0).getIdx()).isEqualTo(supportList.get(0).getIdx());
+        assertThat(newSupportList.get(0).getSupportName()).isEqualTo(supportList.get(0).getSupportName());
 
         // verify
-        then(mockAdminSupportJpaRepository).should(times(2)).findSupportsList(supportMap);
+        then(mockAdminSupportJpaRepository).should(times(1)).findSupportsList(supportMap);
         then(mockAdminSupportJpaRepository).should(atLeastOnce()).findSupportsList(supportMap);
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
@@ -209,14 +210,15 @@ class AdminSupportJpaRepositoryTest {
 
         // when
         given(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).willReturn(adminSupportDTO);
+        AdminSupportDTO supportInfo = mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity);
 
         // then
-        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportName()).isEqualTo("test");
-        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportMessage()).isEqualTo("test");
-        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getSupportHeight()).isEqualTo(170);
+        assertThat(supportInfo.getSupportName()).isEqualTo("test");
+        assertThat(supportInfo.getSupportMessage()).isEqualTo("test");
+        assertThat(supportInfo.getSupportHeight()).isEqualTo(170);
 
         // verify
-        then(mockAdminSupportJpaRepository).should(times(3)).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneSupportModel(adminSupportEntity);
         then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneSupportModel(adminSupportEntity);
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
