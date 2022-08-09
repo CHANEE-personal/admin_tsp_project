@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.rmi.ServerError;
@@ -22,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity.*;
 import static java.lang.Math.ceil;
 
 @Validated
@@ -56,11 +54,11 @@ public class AdminCommonJpaController {
         // 페이징 및 검색
         Map<String, Object> commonMap = searchCommon.searchCommon(page, paramMap);
 
-        Integer commonCodeListCount = this.adminCommonJpaService.commonCodeListCount(commonMap);
+        Integer commonCodeListCount = this.adminCommonJpaService.findCommonCodeListCount(commonMap);
         List<CommonCodeDTO> commonCodeList = new ArrayList<>();
 
         if (commonCodeListCount > 0) {
-            commonCodeList = this.adminCommonJpaService.commonCodeList(commonMap);
+            commonCodeList = this.adminCommonJpaService.findCommonCodeList(commonMap);
         }
 
         // 리스트 수
@@ -73,5 +71,27 @@ public class AdminCommonJpaController {
         commonMap.put("commonCodeList", commonCodeList);
 
         return commonMap;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : commonCodeInfo
+     * 2. ClassName  : AdminCommonJpaController.java
+     * 3. Comment    : 관리자 공통 코드 상세
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @ApiOperation(value = "공통코드 상세 조회", notes = "공통코드를 상세 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}")
+    public CommonCodeDTO commonCodeInfo(@PathVariable Integer idx) throws Exception {
+        return this.adminCommonJpaService.findOneCommonCode(builder().idx(idx).build());
     }
 }

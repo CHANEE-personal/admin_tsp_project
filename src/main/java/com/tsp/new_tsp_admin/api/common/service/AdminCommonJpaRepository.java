@@ -23,28 +23,28 @@ public class AdminCommonJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : commonCodeListCount
+     * 1. MethodName : findCommonCodeListCount
      * 2. ClassName  : AdminCommonJpaRepository.java
      * 3. Comment    : 관리자 공통 코드 리스트 갯수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer commonCodeListCount(Map<String, Object> commonMap) {
+    public Integer findCommonCodeListCount(Map<String, Object> commonMap) {
         return queryFactory.selectFrom(commonCodeEntity).fetch().size();
     }
 
 
     /**
      * <pre>
-     * 1. MethodName : commonCodeList
+     * 1. MethodName : findCommonCodeList
      * 2. ClassName  : AdminCommonJpaRepository.java
      * 3. Comment    : 관리자 공통 코드 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public List<CommonCodeDTO> commonCodeList(Map<String, Object> commonMap) {
+    public List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap) {
         List<CommonCodeEntity> commonCodeList = queryFactory
                 .selectFrom(commonCodeEntity)
                 .fetch();
@@ -53,5 +53,26 @@ public class AdminCommonJpaRepository {
                 .setRnum(getInt(commonMap.get("startPage"), 1) * (getInt(commonMap.get("size"), 1)) - (2 - commonCodeList.indexOf(list))));
 
         return INSTANCE.toDtoList(commonCodeList);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneCommonCode
+     * 2. ClassName  : AdminCommonJpaRepository.java
+     * 3. Comment    : 관리자 공통 코드 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public CommonCodeDTO findOneCommonCode(CommonCodeEntity existCommonCode) {
+        //모델 상세 조회
+        CommonCodeEntity findOneCommonCode = queryFactory
+                .selectFrom(commonCodeEntity)
+                .orderBy(commonCodeEntity.idx.desc())
+                .where(commonCodeEntity.idx.eq(existCommonCode.getIdx())
+                        .and(commonCodeEntity.visible.eq("Y")))
+                .fetchOne();
+
+        return INSTANCE.toDto(findOneCommonCode);
     }
 }
