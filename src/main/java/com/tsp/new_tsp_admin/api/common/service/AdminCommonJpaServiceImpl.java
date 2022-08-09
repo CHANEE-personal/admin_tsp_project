@@ -4,14 +4,15 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_COMMON;
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_COMMON_LIST;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -72,6 +73,27 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
             return adminCommonJpaRepository.findOneCommonCode(commonCodeEntity);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMON, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertCommonCode
+     * 2. ClassName  : AdminCommonJpaServiceImpl.java
+     * 3. Comment    : 관리자 공통 코드 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @CachePut("common")
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) throws TspException {
+        try {
+            return adminCommonJpaRepository.insertCommonCode(commonCodeEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_COMMON, e);
         }
     }
 }

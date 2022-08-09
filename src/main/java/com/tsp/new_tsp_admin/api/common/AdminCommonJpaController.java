@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,5 +94,19 @@ public class AdminCommonJpaController {
     @GetMapping("/{idx}")
     public CommonCodeDTO commonCodeInfo(@PathVariable Integer idx) throws Exception {
         return this.adminCommonJpaService.findOneCommonCode(builder().idx(idx).build());
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertCommonCode
+     * 2. ClassName  : AdminCommonJpaController.java
+     * 3. Comment    : 관리자 공통 코드 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @PostMapping
+    public CommonCodeDTO insertCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) throws Exception {
+        return this.adminCommonJpaService.insertCommonCode(commonCodeEntity);
     }
 }

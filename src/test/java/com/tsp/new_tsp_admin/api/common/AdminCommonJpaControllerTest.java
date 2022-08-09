@@ -36,8 +36,17 @@ import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -95,7 +104,7 @@ class AdminCommonJpaControllerTest {
         // 공통코드 생성
         commonCodeEntity = CommonCodeEntity.builder()
                 .categoryCd(1)
-                .categoryNm("남성")
+                .categoryNm("men")
                 .cmmType("model")
                 .visible("Y")
                 .build();
@@ -139,6 +148,35 @@ class AdminCommonJpaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.idx").value(1))
+                .andExpect(jsonPath("$.categoryCd").value(1))
+                .andExpect(jsonPath("$.categoryNm").value("men"))
+                .andExpect(jsonPath("$.cmmType").value("model"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 공통코드 등록 테스트")
+    void 공통코드등록Api테스트() throws Exception {
+        mockMvc.perform(post("/api/jpa-common")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(commonCodeEntity)))
+                .andDo(print())
+                .andDo(document("common/post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        relaxedRequestFields(
+                                fieldWithPath("categoryCd").type(NUMBER).description("공통코드 카테고리"),
+                                fieldWithPath("categoryNm").type(STRING).description("공통코드명"),
+                                fieldWithPath("cmmType").type(STRING).description("공통코드 타입")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("categoryCd").type(NUMBER).description("공통코드 카테고리"),
+                                fieldWithPath("categoryNm").type(STRING).description("공통코드명"),
+                                fieldWithPath("cmmType").type(STRING).description("공통코드 타입")
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.categoryNm").value("men"))
                 .andExpect(jsonPath("$.cmmType").value("model"));

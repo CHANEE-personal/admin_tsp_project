@@ -236,4 +236,49 @@ class AdminCommonJpaRepositoryTest {
         then(mockAdminCommonJpaRepository).should(atLeastOnce()).findOneCommonCode(commonCodeEntity);
         then(mockAdminCommonJpaRepository).shouldHaveNoMoreInteractions();
     }
+
+    @Test
+    @DisplayName("공통코드 등록 Mockito 테스트")
+    void 공통코드등록Mockito테스트() {
+        // given
+        adminCommonJpaRepository.insertCommonCode(commonCodeEntity);
+
+        // when
+        when(mockAdminCommonJpaRepository.insertCommonCode(commonCodeEntity)).thenReturn(commonCodeDTO);
+        CommonCodeDTO commonInfo = mockAdminCommonJpaRepository.insertCommonCode(commonCodeEntity);
+
+        // then
+        assertThat(commonInfo.getCategoryCd()).isEqualTo(1);
+        assertThat(commonInfo.getCategoryNm()).isEqualTo("공통코드");
+        assertThat(commonInfo.getCmmType()).isEqualTo("common");
+
+        // verify
+        verify(mockAdminCommonJpaRepository, times(1)).insertCommonCode(commonCodeEntity);
+        verify(mockAdminCommonJpaRepository, atLeastOnce()).insertCommonCode(commonCodeEntity);
+        verifyNoMoreInteractions(mockAdminCommonJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminCommonJpaRepository);
+        inOrder.verify(mockAdminCommonJpaRepository).insertCommonCode(commonCodeEntity);
+    }
+
+    @Test
+    @DisplayName("공통코드 등록 BDD 테스트")
+    void 공통코드등록BDD테스트() {
+        // given
+        adminCommonJpaRepository.insertCommonCode(commonCodeEntity);
+
+        // when
+        given(mockAdminCommonJpaRepository.insertCommonCode(commonCodeEntity)).willReturn(commonCodeDTO);
+        CommonCodeDTO commonInfo = mockAdminCommonJpaRepository.insertCommonCode(commonCodeEntity);
+
+        // then
+        assertThat(commonInfo.getCategoryCd()).isEqualTo(1);
+        assertThat(commonInfo.getCategoryNm()).isEqualTo("공통코드");
+        assertThat(commonInfo.getCmmType()).isEqualTo("common");
+
+        // verify
+        then(mockAdminCommonJpaRepository).should(times(1)).insertCommonCode(commonCodeEntity);
+        then(mockAdminCommonJpaRepository).should(atLeastOnce()).insertCommonCode(commonCodeEntity);
+        then(mockAdminCommonJpaRepository).shouldHaveNoMoreInteractions();
+    }
 }

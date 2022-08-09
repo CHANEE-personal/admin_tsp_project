@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 public class AdminCommonJpaRepository {
 
     private final JPAQueryFactory queryFactory;
+    private final EntityManager em;
 
     /**
      * <pre>
@@ -74,5 +76,19 @@ public class AdminCommonJpaRepository {
                 .fetchOne();
 
         return INSTANCE.toDto(findOneCommonCode);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertCommonCode
+     * 2. ClassName  : AdminCommonJpaRepository.java
+     * 3. Comment    : 관리자 공통 코드 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) {
+        em.persist(commonCodeEntity);
+        return INSTANCE.toDto(commonCodeEntity);
     }
 }

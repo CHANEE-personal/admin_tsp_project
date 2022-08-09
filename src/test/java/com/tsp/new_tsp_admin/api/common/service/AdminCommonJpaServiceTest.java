@@ -194,4 +194,49 @@ class AdminCommonJpaServiceTest {
         then(mockAdminCommonJpaService).should(atLeastOnce()).findOneCommonCode(commonCodeEntity);
         then(mockAdminCommonJpaService).shouldHaveNoMoreInteractions();
     }
+
+    @Test
+    @DisplayName("공통코드 등록 Mockito 테스트")
+    void 공통코드등록Mockito테스트() throws Exception {
+        // given
+        adminCommonJpaService.insertCommonCode(commonCodeEntity);
+
+        // when
+        when(mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity)).thenReturn(commonCodeDTO);
+        CommonCodeDTO commonInfo = mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity);
+
+        // then
+        assertThat(commonInfo.getCategoryCd()).isEqualTo(commonCodeDTO.getCategoryCd());
+        assertThat(commonInfo.getCategoryNm()).isEqualTo(commonCodeDTO.getCategoryNm());
+        assertThat(commonInfo.getCmmType()).isEqualTo(commonCodeDTO.getCmmType());
+
+        // verify
+        verify(mockAdminCommonJpaService, times(1)).findOneCommonCode(commonCodeEntity);
+        verify(mockAdminCommonJpaService, atLeastOnce()).findOneCommonCode(commonCodeEntity);
+        verifyNoMoreInteractions(mockAdminCommonJpaService);
+
+        InOrder inOrder = inOrder(mockAdminCommonJpaService);
+        inOrder.verify(mockAdminCommonJpaService).findOneCommonCode(commonCodeEntity);
+    }
+
+    @Test
+    @DisplayName("공통코드 등록 BDD 테스트")
+    void 공통코드등록BDD테스트() throws Exception {
+        // given
+        adminCommonJpaService.insertCommonCode(commonCodeEntity);
+
+        // when
+        given(mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity)).willReturn(commonCodeDTO);
+        CommonCodeDTO commonInfo = mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity);
+
+        // then
+        assertThat(commonInfo.getCategoryCd()).isEqualTo(commonCodeDTO.getCategoryCd());
+        assertThat(commonInfo.getCategoryNm()).isEqualTo(commonCodeDTO.getCategoryNm());
+        assertThat(commonInfo.getCmmType()).isEqualTo(commonCodeDTO.getCmmType());
+
+        // verify
+        then(mockAdminCommonJpaService).should(times(1)).findOneCommonCode(commonCodeEntity);
+        then(mockAdminCommonJpaService).should(atLeastOnce()).findOneCommonCode(commonCodeEntity);
+        then(mockAdminCommonJpaService).shouldHaveNoMoreInteractions();
+    }
 }
