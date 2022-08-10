@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
@@ -85,7 +84,7 @@ class AdminUserJpaControllerTest {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
-        adminUserEntity = builder()
+        adminUserEntity = AdminUserEntity.builder()
                 .userId("admin04")
                 .password("pass1234")
                 .name("test")
@@ -154,7 +153,7 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원가입 테스트")
     void 회원가입테스트() throws Exception {
-        AdminUserEntity newAdminUserEntity = builder()
+        AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -195,7 +194,7 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "USER")
     @DisplayName("관리자 회원가입 권한 예외 테스트")
     void 회원가입권한테스트() throws Exception {
-        adminUserEntity = builder()
+        adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -215,7 +214,7 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원수정 테스트")
     void 회원수정테스트() throws Exception {
-        AdminUserEntity updateAdminUserEntity = builder()
+        AdminUserEntity updateAdminUserEntity = AdminUserEntity.builder()
                 .idx(adminUserEntity.getIdx())
                 .userId("admin03")
                 .password("pass1234")
@@ -253,7 +252,7 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "USER")
     @DisplayName("관리자 회원수정 권한 예외 테스트")
     void 회원수정권한테스트() throws Exception {
-        AdminUserEntity updateAdminUserEntity = builder()
+        AdminUserEntity updateAdminUserEntity = AdminUserEntity.builder()
                 .idx(adminUserEntity.getIdx())
                 .userId("admin03")
                 .password("pass1234")

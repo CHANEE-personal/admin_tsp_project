@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.common.mapper.CommonCodeMapper.INSTANCE;
-import static com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -67,7 +66,7 @@ class AdminCommonJpaRepositoryTest {
 
         adminUserJpaRepository.adminLogin(adminUserEntity);
 
-        commonCodeEntity = builder()
+        commonCodeEntity = CommonCodeEntity.builder()
                 .categoryCd(1)
                 .categoryNm("공통코드")
                 .cmmType("common")
@@ -154,7 +153,7 @@ class AdminCommonJpaRepositoryTest {
     @DisplayName("공통코드 상세 조회 테스트")
     void 공통코드상세조회테스트() {
         // given
-        commonCodeEntity = builder().idx(1).categoryCd(1).build();
+        commonCodeEntity = CommonCodeEntity.builder().idx(1).categoryCd(1).build();
 
         commonCodeDTO = adminCommonJpaRepository.findOneCommonCode(commonCodeEntity);
 
@@ -179,7 +178,7 @@ class AdminCommonJpaRepositoryTest {
     @DisplayName("공통코드 상세 조회 Mockito 테스트")
     void 공통코드상세조회Mockito테스트() {
         // given
-        commonCodeEntity = builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
+        commonCodeEntity = CommonCodeEntity.builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
 
         commonCodeDTO = CommonCodeDTO.builder()
                 .idx(1)
@@ -212,7 +211,7 @@ class AdminCommonJpaRepositoryTest {
     @DisplayName("공통코드 상세 조회 BDD 테스트")
     void 공통코드상세조회BDD테스트() {
         // given
-        commonCodeEntity = builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
+        commonCodeEntity = CommonCodeEntity.builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
 
         commonCodeDTO = CommonCodeDTO.builder()
                 .idx(1)

@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -50,7 +49,7 @@ class AdminProductionJpaServiceTest {
     private AdminProductionDTO adminProductionDTO;
 
     void createProduction() {
-        adminProductionEntity = builder()
+        adminProductionEntity = AdminProductionEntity.builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
@@ -152,7 +151,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("프로덕션 상세 조회 테스트")
     void 프로덕션상세조회테스트() throws Exception {
         // given
-        adminProductionEntity = builder().idx(119).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(119).build();
 
         // then
         assertThat(adminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("하하");
@@ -248,7 +247,7 @@ class AdminProductionJpaServiceTest {
         // given
         Integer idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
-        adminProductionEntity = builder()
+        adminProductionEntity = AdminProductionEntity.builder()
                 .idx(idx)
                 .title("프로덕션 테스트1")
                 .description("프로덕션 테스트1")
@@ -282,7 +281,7 @@ class AdminProductionJpaServiceTest {
         // given
         Integer idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
-        adminProductionEntity = builder()
+        adminProductionEntity = AdminProductionEntity.builder()
                 .idx(idx)
                 .title("프로덕션 테스트1")
                 .description("프로덕션 테스트1")

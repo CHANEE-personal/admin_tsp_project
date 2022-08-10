@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -51,7 +50,7 @@ class AdminUserJpaRepositoryTest {
     private AdminUserDTO adminUserDTO;
 
     void createUser() {
-        adminUserEntity = builder().idx(2).userId("admin01").build();
+        adminUserEntity = AdminUserEntity.builder().idx(2).userId("admin01").build();
         adminUserDTO = INSTANCE.toDto(adminUserEntity);
     }
 
@@ -167,9 +166,9 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 Mockito 상세 조회 테스트")
     void 유저Mockito상세조회테스트() {
         // given
-        adminUserEntity = builder().idx(1).userId("test").build();
+        adminUserEntity = AdminUserEntity.builder().idx(1).userId("test").build();
 
-        AdminUserEntity bddUserEntity = builder()
+        AdminUserEntity bddUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -200,9 +199,9 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 상세 BDD 조회 테스트")
     void 유저상세BDD조회테스트() {
         // given
-        adminUserEntity = builder().idx(1).userId("test").build();
+        adminUserEntity = AdminUserEntity.builder().idx(1).userId("test").build();
 
-        AdminUserEntity bddUserEntity = builder()
+        AdminUserEntity bddUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -230,7 +229,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 로그인 테스트")
     void 유저로그인테스트() {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin02")
                 .password("pass1234")
                 .build();
@@ -243,7 +242,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 토큰을 이용한 회원 조회")
     void 유저토큰을이용한회원조회테스트() {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin01")
                 .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
@@ -259,7 +258,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 토큰 저장 테스트")
     void 유저토큰저장테스트() {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
                 .build();
@@ -274,7 +273,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 회원가입 Mockito 테스트")
     void 유저회원가입Mockito테스트() {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -307,7 +306,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 회원가입 BDD 테스트")
     void 유저회원가입BDD테스트() {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -337,7 +336,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 회원수정 Mockito 테스트")
     void 유저회원수정Mockito테스트() {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -347,7 +346,7 @@ class AdminUserJpaRepositoryTest {
 
         Integer idx = adminUserJpaRepository.insertAdminUser(adminUserEntity).getIdx();
 
-        AdminUserEntity newAdminUserEntity = builder()
+        AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
                 .userId("test1")
                 .password("test1")
@@ -379,7 +378,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 회원수정 BDD 테스트")
     void 유저회원수정BDD테스트() {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -389,7 +388,7 @@ class AdminUserJpaRepositoryTest {
 
         Integer idx = adminUserJpaRepository.insertAdminUser(adminUserEntity).getIdx();
 
-        AdminUserEntity newAdminUserEntity = builder()
+        AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
                 .userId("test1")
                 .password("test1")

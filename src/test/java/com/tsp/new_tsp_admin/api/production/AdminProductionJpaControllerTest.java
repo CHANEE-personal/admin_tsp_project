@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static org.hamcrest.Matchers.greaterThan;
@@ -103,7 +102,7 @@ class AdminProductionJpaControllerTest {
         createUser();
 
         // production 생성
-        adminProductionEntity = builder()
+        adminProductionEntity = AdminProductionEntity.builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
@@ -237,7 +236,7 @@ class AdminProductionJpaControllerTest {
     void 프로덕션수정Api테스트() throws Exception {
         em.persist(adminProductionEntity);
 
-        adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").visible("Y").build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").visible("Y").build();
 
         mockMvc.perform(put("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
@@ -270,7 +269,7 @@ class AdminProductionJpaControllerTest {
     void 프로덕션수정Api권한테스트() throws Exception {
         em.persist(adminProductionEntity);
 
-        adminProductionEntity = builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(adminProductionEntity.getIdx()).title("테스트1").description("테스트1").build();
 
         mockMvc.perform(put("/api/jpa-production/{idx}", adminProductionEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())

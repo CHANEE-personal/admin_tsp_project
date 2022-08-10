@@ -29,7 +29,6 @@ import javax.transaction.Transactional;
 
 import java.util.*;
 
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -73,7 +72,7 @@ class AdminModelJpaRepositoryTest {
         ArrayList<CareerJson> careerList = new ArrayList<>();
         careerList.add(new CareerJson("title","txt"));
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -193,7 +192,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() {
         // given
-        adminModelEntity = builder().idx(143).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(143).categoryCd(2).build();
 
         // when
         adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
@@ -249,7 +248,7 @@ class AdminModelJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        adminModelEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminModelEntity = AdminModelEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
 
         adminModelDTO = AdminModelDTO.builder()
                 .idx(1)
@@ -302,7 +301,7 @@ class AdminModelJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        adminModelEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminModelEntity = AdminModelEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
 
         adminModelDTO = AdminModelDTO.builder()
                 .idx(1)
@@ -409,7 +408,7 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 등록 예외 테스트")
     void 모델등록예외테스트() {
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(-1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -436,7 +435,7 @@ class AdminModelJpaRepositoryTest {
     void 모델수정Mockito테스트() {
         Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
                 .categoryCd(2)
                 .categoryAge("3")
@@ -481,7 +480,7 @@ class AdminModelJpaRepositoryTest {
     void 모델수정BDD테스트() {
         Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
                 .categoryCd(2)
                 .categoryAge("3")
@@ -521,7 +520,7 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 수정 예외 테스트")
     void 모델수정예외테스트() {
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(-1)
                 .categoryAge("2")
                 .modelKorFirstName("조")

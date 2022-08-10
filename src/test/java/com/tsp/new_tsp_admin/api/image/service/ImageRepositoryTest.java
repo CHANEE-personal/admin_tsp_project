@@ -20,7 +20,6 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -52,7 +51,7 @@ class ImageRepositoryTest {
     @DisplayName("파일넘버최대값조회")
     void 파일넘버최대값조회() {
         // given
-        CommonImageEntity commonImageEntity = builder()
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
@@ -85,7 +84,7 @@ class ImageRepositoryTest {
     @DisplayName("이미지등록Mockito테스트")
     void 이미지등록Mockito테스트() {
         // given
-        CommonImageEntity commonImageEntity = builder()
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
@@ -120,7 +119,7 @@ class ImageRepositoryTest {
     @DisplayName("이미지등록BDD테스트")
     void 이미지등록BDD테스트() {
         // given
-        CommonImageEntity commonImageEntity = builder()
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
@@ -152,7 +151,7 @@ class ImageRepositoryTest {
     @DisplayName("이미지삭제Mockito테스트")
     void 이미지삭제Mockito테스트() {
         // given
-        CommonImageEntity commonImageEntity = builder()
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
@@ -185,7 +184,7 @@ class ImageRepositoryTest {
     @DisplayName("이미지삭제BDD테스트")
     void 이미지삭제BDD테스트() {
         // given
-        CommonImageEntity commonImageEntity = builder()
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")

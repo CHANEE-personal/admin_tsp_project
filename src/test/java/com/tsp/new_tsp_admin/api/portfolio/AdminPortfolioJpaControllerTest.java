@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static org.hamcrest.Matchers.greaterThan;
@@ -85,7 +84,7 @@ class AdminPortfolioJpaControllerTest {
     void createUser() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
 
-        adminUserEntity = builder()
+        adminUserEntity = AdminUserEntity.builder()
                 .userId("admin04")
                 .password("pass1234")
                 .name("test")

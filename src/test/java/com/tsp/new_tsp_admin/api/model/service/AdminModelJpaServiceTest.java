@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -51,7 +50,7 @@ class AdminModelJpaServiceTest {
     private AdminModelDTO adminModelDTO;
 
     public void createModel() {
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -208,7 +207,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("모델 상세 조회 예외 테스트")
     void 모델상세조회예외테스트() {
         // given
-        adminModelEntity = builder().categoryCd(-1).build();
+        adminModelEntity = AdminModelEntity.builder().categoryCd(-1).build();
 
         // then
         assertThatThrownBy(() -> adminModelJpaService.findOneModel(adminModelEntity))
@@ -218,7 +217,7 @@ class AdminModelJpaServiceTest {
     @Test
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() throws Exception {
-        AdminModelDTO modelInfo = adminModelJpaService.findOneModel(builder().idx(143).categoryCd(2).build());
+        AdminModelDTO modelInfo = adminModelJpaService.findOneModel(AdminModelEntity.builder().idx(143).categoryCd(2).build());
         // then
         assertThat(modelInfo).isNotNull();
         assertThat(modelInfo.getIdx()).isEqualTo(143);
@@ -317,7 +316,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("모델 등록 예외 테스트")
     void 모델등록예외테스트() {
         // given
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(-1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -345,7 +344,7 @@ class AdminModelJpaServiceTest {
         // given
         Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
                 .categoryCd(2)
                 .categoryAge("3")
@@ -391,7 +390,7 @@ class AdminModelJpaServiceTest {
         // given
         Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
                 .categoryCd(2)
                 .categoryAge("3")

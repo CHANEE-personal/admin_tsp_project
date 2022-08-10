@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.*;
 import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
@@ -101,7 +100,7 @@ public class AdminModelJpaController {
     @GetMapping("/{categoryCd}/{idx}")
     public AdminModelDTO getModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                       @PathVariable Integer idx) throws Exception {
-        return this.adminModelJpaService.findOneModel(builder().idx(idx).categoryCd(categoryCd).build());
+        return this.adminModelJpaService.findOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
     }
 
     /**

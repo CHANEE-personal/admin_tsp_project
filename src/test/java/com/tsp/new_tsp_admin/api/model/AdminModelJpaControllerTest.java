@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.builder;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static java.util.List.of;
@@ -114,7 +113,7 @@ class AdminModelJpaControllerTest {
         ArrayList<CareerJson> careerList = new ArrayList<>();
         careerList.add(new CareerJson("title","txt"));
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -340,7 +339,7 @@ class AdminModelJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 등록 예외 테스트")
     void 모델등록Api예외테스트() throws Exception {
-        AdminModelEntity exAdminModelEntity = builder()
+        AdminModelEntity exAdminModelEntity = AdminModelEntity.builder()
                 .categoryCd(-1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -387,7 +386,7 @@ class AdminModelJpaControllerTest {
     void 모델수정Api테스트() throws Exception {
         em.persist(adminModelEntity);
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .idx(adminModelEntity.getIdx())
                 .categoryCd(1)
                 .categoryAge("2")
@@ -469,7 +468,7 @@ class AdminModelJpaControllerTest {
                 .andExpect(jsonPath("$.loginYn").value("Y"))
                 .andExpect(jsonPath("$.token").isNotEmpty());
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .idx(adminModelEntity.getIdx())
                 .categoryCd(1)
                 .categoryAge("2")
@@ -506,7 +505,7 @@ class AdminModelJpaControllerTest {
     void 모델수정Api예외테스트() throws Exception {
         em.persist(adminModelEntity);
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .idx(adminModelEntity.getIdx())
                 .categoryCd(-1)
                 .categoryAge("2")
@@ -542,7 +541,7 @@ class AdminModelJpaControllerTest {
     void 모델수정Api권한테스트() throws Exception {
         em.persist(adminModelEntity);
 
-        adminModelEntity = builder()
+        adminModelEntity = AdminModelEntity.builder()
                 .idx(adminModelEntity.getIdx())
                 .categoryCd(1)
                 .categoryAge("2")

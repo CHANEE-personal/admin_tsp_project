@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.*;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
@@ -86,7 +85,7 @@ public class AdminUserJpaController {
     public Map<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
         Map<String, Object> userMap = new HashMap<>();
 
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId(authenticationRequest.getUserId())
                 .password(authenticationRequest.getPassword())
                 .build();

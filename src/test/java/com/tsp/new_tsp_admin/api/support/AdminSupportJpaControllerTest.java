@@ -43,7 +43,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
@@ -104,7 +103,7 @@ class AdminSupportJpaControllerTest {
 		createUser();
 
 		// support 생성
-		adminSupportEntity = builder()
+		adminSupportEntity = AdminSupportEntity.builder()
 				.supportName("조찬희")
 				.supportMessage("조찬희 지원")
 				.supportHeight(170)
@@ -174,7 +173,7 @@ class AdminSupportJpaControllerTest {
 	void 지원모델수정Api테스트() throws Exception {
 		em.persist(adminSupportEntity);
 
-		adminSupportEntity = builder()
+		adminSupportEntity = AdminSupportEntity.builder()
 				.idx(adminSupportEntity.getIdx())
 				.supportName("테스트")
 				.supportMessage("테스트")
@@ -224,7 +223,7 @@ class AdminSupportJpaControllerTest {
 	void 지원모델수정Api권한테스트() throws Exception {
 		em.persist(adminSupportEntity);
 
-		adminSupportEntity = builder()
+		adminSupportEntity = AdminSupportEntity.builder()
 				.idx(adminSupportEntity.getIdx())
 				.supportName("테스트")
 				.supportMessage("테스트")

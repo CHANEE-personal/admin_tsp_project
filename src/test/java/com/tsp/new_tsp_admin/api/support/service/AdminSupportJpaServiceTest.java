@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.builder;
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -51,7 +50,7 @@ class AdminSupportJpaServiceTest {
     private AdminSupportDTO adminSupportDTO;
 
     void createSupport() {
-        adminSupportEntity = builder()
+        adminSupportEntity = AdminSupportEntity.builder()
                 .supportName("조찬희")
                 .supportHeight(170)
                 .supportMessage("조찬희")
@@ -160,7 +159,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원모델 상세 조회 테스트")
     void 지원모델상세조회테스트() throws Exception {
         // given
-        adminSupportEntity = builder().idx(1).build();
+        adminSupportEntity = AdminSupportEntity.builder().idx(1).build();
 
         // when
         adminSupportDTO = adminSupportJpaService.findOneSupportModel(adminSupportEntity);
@@ -214,7 +213,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원모델 수정 Mockito 테스트")
     void 지원모델수정Mockito테스트() throws Exception {
         // given
-        adminSupportEntity = builder()
+        adminSupportEntity = AdminSupportEntity.builder()
                 .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
                 .supportName("test")
                 .supportPhone("010-9466-2702")
@@ -248,7 +247,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원모델 수정 BDD 테스트")
     void 지원모델수정BDD테스트() throws Exception {
         // given
-        adminSupportEntity = builder()
+        adminSupportEntity = AdminSupportEntity.builder()
                 .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
                 .supportName("test")
                 .supportPhone("010-9466-2702")

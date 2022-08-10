@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.builder;
 import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -139,7 +138,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 회원 상세 조회 Mockito 테스트")
     void 관리자회원상세조회Mockito테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin03")
                 .password("pass1234")
                 .name("admin03")
@@ -170,7 +169,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 회원 상세 조회 BDD 테스트")
     void 관리자회원상세조회BDD테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin03")
                 .password("pass1234")
                 .name("admin03")
@@ -197,7 +196,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("Token을 이용한 관리자 조회 테스트")
     void 토큰을이용한관리자조회테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin01")
                 .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
@@ -213,7 +212,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 로그인 처리 테스트")
     void 관리자로그인처리테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin03")
                 .password("pass1234")
                 .build();
@@ -226,7 +225,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 토큰 저장 테스트")
     void 관리자토큰저장테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin03")
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
                 .build();
@@ -241,7 +240,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 회원가입 Mockito 테스트")
     void 관리자회원가입Mockito테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -273,7 +272,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 회원가입 BDD 테스트")
     void 관리자회원가입BDD테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -302,7 +301,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 수정 Mockito 테스트")
     void 관리자수정Mockito테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -312,7 +311,7 @@ class AdminUserJpaServiceTest {
 
         Integer idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
 
-        AdminUserEntity newAdminUserEntity = builder()
+        AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
                 .userId("test1")
                 .password("test1")
@@ -345,7 +344,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 수정 BDD 테스트")
     void 관리자수정BDD테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
@@ -355,7 +354,7 @@ class AdminUserJpaServiceTest {
 
         Integer idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
 
-        AdminUserEntity newAdminUserEntity = builder()
+        AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
                 .userId("test1")
                 .password("test1")
@@ -385,7 +384,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 탈퇴 테스트")
     void 관리자탈퇴테스트() throws Exception {
         // given
-        AdminUserEntity adminUserEntity = builder()
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
                 .password("test")
                 .name("test")

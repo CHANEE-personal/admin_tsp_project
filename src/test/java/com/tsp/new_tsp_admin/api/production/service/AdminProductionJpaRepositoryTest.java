@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.builder;
 import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -61,7 +60,7 @@ class AdminProductionJpaRepositoryTest {
     private CommonImageDTO commonImageDTO;
 
     void createProductionAndImage() {
-        adminProductionEntity = builder()
+        adminProductionEntity = AdminProductionEntity.builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
@@ -104,7 +103,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("프로덕션상세조회테스트")
     void 프로덕션상세조회테스트() {
         // given
-        adminProductionEntity = builder().idx(1).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(1).build();
 
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
@@ -202,7 +201,7 @@ class AdminProductionJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        AdminProductionEntity adminProductionEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        AdminProductionEntity adminProductionEntity = AdminProductionEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
 
         AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
                 .idx(1)
@@ -243,7 +242,7 @@ class AdminProductionJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        AdminProductionEntity adminProductionEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        AdminProductionEntity adminProductionEntity = AdminProductionEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
 
         AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
                 .idx(1)
@@ -343,7 +342,7 @@ class AdminProductionJpaRepositoryTest {
         // given
         Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
-        adminProductionEntity = builder()
+        adminProductionEntity = AdminProductionEntity.builder()
                 .idx(idx)
                 .title("프로덕션 테스트1")
                 .description("프로덕션 테스트1")
@@ -377,7 +376,7 @@ class AdminProductionJpaRepositoryTest {
         // given
         Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
-        adminProductionEntity = builder()
+        adminProductionEntity = AdminProductionEntity.builder()
                 .idx(idx)
                 .title("프로덕션 테스트1")
                 .description("프로덕션 테스트1")

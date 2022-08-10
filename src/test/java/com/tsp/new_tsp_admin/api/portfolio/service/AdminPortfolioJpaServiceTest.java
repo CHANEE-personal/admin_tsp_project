@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
 import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -51,7 +50,7 @@ class AdminPortfolioJpaServiceTest {
     private AdminPortFolioDTO adminPortFolioDTO;
 
     void createPortfolio() {
-        adminPortFolioEntity = builder()
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -159,7 +158,7 @@ class AdminPortfolioJpaServiceTest {
     @DisplayName("포트폴리오 상세 조회 테스트")
     void 포트폴리오상세조회테스트() throws Exception {
         // given
-        adminPortFolioEntity = builder().idx(1).build();
+        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1).build();
 
         // then
         assertThat(adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isNotEmpty();
@@ -263,7 +262,7 @@ class AdminPortfolioJpaServiceTest {
         // given
         Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
-        adminPortFolioEntity = builder()
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(idx)
                 .categoryCd(1)
                 .title("포트폴리오 테스트1")
@@ -299,7 +298,7 @@ class AdminPortfolioJpaServiceTest {
         // given
         Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
-        adminPortFolioEntity = builder()
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(idx)
                 .categoryCd(1)
                 .title("포트폴리오 테스트1")

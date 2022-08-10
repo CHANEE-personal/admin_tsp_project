@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
 import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -58,7 +57,7 @@ class AdminPortfolioJpaRepositoryTest {
     private CommonImageDTO commonImageDTO;
 
     void createPortfolioAndImage() {
-        adminPortFolioEntity = builder()
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -104,7 +103,7 @@ class AdminPortfolioJpaRepositoryTest {
     @DisplayName("포트폴리오상세조회테스트")
     void 포트폴리오상세조회테스트() {
         // given
-        adminPortFolioEntity = builder().idx(1).build();
+        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1).build();
 
         // when
         adminPortFolioDTO = adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
@@ -199,7 +198,7 @@ class AdminPortfolioJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        adminPortFolioEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
 
         adminPortFolioDTO = AdminPortFolioDTO.builder()
                 .idx(1)
@@ -238,7 +237,7 @@ class AdminPortfolioJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        adminPortFolioEntity = builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
 
         adminPortFolioDTO = AdminPortFolioDTO.builder()
                 .idx(1)
@@ -340,7 +339,7 @@ class AdminPortfolioJpaRepositoryTest {
         // given
         Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
-        adminPortFolioEntity = builder()
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(idx)
                 .categoryCd(1)
                 .title("포트폴리오 테스트1")
@@ -379,7 +378,7 @@ class AdminPortfolioJpaRepositoryTest {
         // given
         Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
-        adminPortFolioEntity = builder()
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(idx)
                 .categoryCd(1)
                 .title("포트폴리오 테스트1")
