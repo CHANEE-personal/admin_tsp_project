@@ -347,4 +347,17 @@ class AdminCommonJpaRepositoryTest {
         then(mockAdminCommonJpaRepository).should(atLeastOnce()).findOneCommonCode(commonCodeEntity);
         then(mockAdminCommonJpaRepository).shouldHaveNoMoreInteractions();
     }
+
+    @Test
+    @DisplayName("공통코드 삭제 테스트")
+    void 공통코드삭제테스트() {
+        // given
+        em.persist(commonCodeEntity);
+
+        Integer entityIdx = commonCodeEntity.getIdx();
+        Integer deleteIdx = adminCommonJpaRepository.deleteCommonCode(commonCodeEntity.getIdx());
+
+        // then
+        assertThat(deleteIdx).isEqualTo(entityIdx);
+    }
 }

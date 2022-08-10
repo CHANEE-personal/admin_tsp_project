@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
+import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -218,5 +219,19 @@ class AdminCommonJpaControllerTest {
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.categoryNm").value("new men"))
                 .andExpect(jsonPath("$.cmmType").value("model"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 공통코드 삭제 테스트")
+    void 공통코드삭제Api테스트() throws Exception {
+        em.persist(commonCodeEntity);
+
+        mockMvc.perform(delete("/api/jpa-common/{idx}", commonCodeEntity.getIdx())
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(content().string(getString(commonCodeEntity.getIdx())));
     }
 }

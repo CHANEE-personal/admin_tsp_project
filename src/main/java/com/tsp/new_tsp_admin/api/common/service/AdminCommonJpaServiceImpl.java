@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -115,6 +116,27 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
             return adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_COMMON, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteCommonCode
+     * 2. ClassName  : AdminCommonJpaServiceImpl.java
+     * 3. Comment    : 관리자 공통 코드 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @CacheEvict("common")
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public Integer deleteCommonCode(Integer idx) throws TspException {
+        try {
+            return adminCommonJpaRepository.deleteCommonCode(idx);
+        } catch (Exception e) {
+            throw new TspException(ERROR_DELETE_COMMON, e);
         }
     }
 }

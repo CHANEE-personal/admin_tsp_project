@@ -107,4 +107,20 @@ public class AdminCommonJpaRepository {
         em.clear();
         return INSTANCE.toDto(existCommonCodeEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteCommonCode
+     * 2. ClassName  : AdminCommonJpaRepository.java
+     * 3. Comment    : 관리자 공통 코드 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public Integer deleteCommonCode(Integer idx) {
+        em.remove(em.find(CommonCodeEntity.class, idx));
+        em.flush();
+        em.clear();
+        return idx;
+    }
 }

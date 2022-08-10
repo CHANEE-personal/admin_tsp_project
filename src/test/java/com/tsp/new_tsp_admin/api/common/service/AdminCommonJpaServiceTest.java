@@ -306,4 +306,14 @@ class AdminCommonJpaServiceTest {
         then(mockAdminCommonJpaService).should(atLeastOnce()).findOneCommonCode(commonCodeEntity);
         then(mockAdminCommonJpaService).shouldHaveNoMoreInteractions();
     }
+
+    @Test
+    @DisplayName("공통코드 삭제 테스트")
+    void 공통코드삭제테스트() throws Exception {
+        // given
+        Integer idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
+
+        // then
+        assertThat(adminCommonJpaService.deleteCommonCode(idx)).isNotNull();
+    }
 }

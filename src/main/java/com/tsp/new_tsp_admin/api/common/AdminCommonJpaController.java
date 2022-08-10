@@ -139,4 +139,26 @@ public class AdminCommonJpaController {
     public CommonCodeDTO updateCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) throws Exception {
         return adminCommonJpaService.updateCommonCode(commonCodeEntity);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteCommonCode
+     * 2. ClassName  : AdminCommonJpaController.java
+     * 3. Comment    : 관리자 공통코드 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @ApiOperation(value = "공통코드 삭제", notes = "공통코드를 삭제한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "공통코드 삭제성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @DeleteMapping("/{idx}")
+    public Integer deleteCommonCode(@PathVariable Integer idx) throws Exception {
+        return adminCommonJpaService.deleteCommonCode(idx);
+    }
 }

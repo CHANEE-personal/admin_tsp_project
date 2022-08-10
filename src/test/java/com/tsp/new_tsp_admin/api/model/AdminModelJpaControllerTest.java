@@ -634,19 +634,4 @@ class AdminModelJpaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(getString(commonImageEntity.getIdx(),"")));
     }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void 모델공통코드조회테스트() throws Exception {
-        CommonCodeEntity commonCodeEntity = CommonCodeEntity.builder()
-                .categoryCd(1).visible("Y").cmmType("model").build();
-
-        mockMvc.perform(get("/api/jpa-model/common")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(commonCodeEntity)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=utf-8"));
-    }
 }

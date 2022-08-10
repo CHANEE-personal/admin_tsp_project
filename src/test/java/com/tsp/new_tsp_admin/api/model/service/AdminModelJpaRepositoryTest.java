@@ -549,9 +549,6 @@ class AdminModelJpaRepositoryTest {
         // given
         em.persist(adminModelEntity);
 
-        // when
-        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
-
         Integer entityIdx = adminModelEntity.getIdx();
         Integer deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
 
