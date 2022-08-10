@@ -48,8 +48,8 @@ class ImageRepositoryTest {
     }
 
     @Test
-    @DisplayName("파일넘버최대값조회")
-    void 파일넘버최대값조회() {
+    @DisplayName("파일넘버최대값조회Mockito테스트")
+    void 파일넘버최대값조회Mockito테스트() {
         // given
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -78,6 +78,36 @@ class ImageRepositoryTest {
 
         InOrder inOrder = inOrder(mockImageRepository);
         inOrder.verify(mockImageRepository).maxSubCnt(commonImageEntity);
+    }
+
+    @Test
+    @DisplayName("파일넘버최대값조회BDD테스트")
+    void 파일넘버최대값조회BDD테스트() {
+        // given
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .fileNum(2)
+                .typeName("model")
+                .visible("Y")
+                .build();
+
+        imageRepository.insertImage(commonImageEntity);
+
+        // when
+        given(mockImageRepository.maxSubCnt(commonImageEntity)+1).willReturn(commonImageEntity.getFileNum()+1);
+        Integer maxSubCnt = mockImageRepository.maxSubCnt(commonImageEntity);
+
+        // then
+        assertThat(maxSubCnt).isEqualTo(commonImageEntity.getFileNum()+1);
+
+        // verify
+        then(mockImageRepository).should(times(1)).maxSubCnt(commonImageEntity);
+        then(mockImageRepository).should(atLeastOnce()).maxSubCnt(commonImageEntity);
+        then(mockImageRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
