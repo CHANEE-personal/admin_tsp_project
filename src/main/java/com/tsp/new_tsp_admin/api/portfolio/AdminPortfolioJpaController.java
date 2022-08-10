@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.builder;
 import static java.lang.Math.ceil;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
@@ -91,7 +90,7 @@ public class AdminPortfolioJpaController {
     })
     @GetMapping(value = "/{idx}")
     public AdminPortFolioDTO getPortfolioEdit(@PathVariable Integer idx) throws Exception {
-        return this.adminPortfolioJpaService.findOnePortfolio(builder().idx(idx).build());
+        return this.adminPortfolioJpaService.findOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
     /**

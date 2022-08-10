@@ -22,6 +22,8 @@ import javax.transaction.Transactional;
 
 import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
@@ -47,6 +49,7 @@ class ImageRepositoryTest {
     }
 
     @Test
+    @DisplayName("파일넘버최대값조회")
     void 파일넘버최대값조회() {
         // given
         CommonImageEntity commonImageEntity = builder()
@@ -79,7 +82,8 @@ class ImageRepositoryTest {
     }
 
     @Test
-    void 이미지등록테스트() {
+    @DisplayName("이미지등록Mockito테스트")
+    void 이미지등록Mockito테스트() {
         // given
         CommonImageEntity commonImageEntity = builder()
                 .imageType("main")
@@ -113,7 +117,40 @@ class ImageRepositoryTest {
     }
 
     @Test
-    void 이미지삭제테스트() {
+    @DisplayName("이미지등록BDD테스트")
+    void 이미지등록BDD테스트() {
+        // given
+        CommonImageEntity commonImageEntity = builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .fileNum(2)
+                .typeName("model")
+                .visible("Y")
+                .build();
+
+        imageRepository.insertImage(commonImageEntity);
+
+        // when
+        given(mockImageRepository.findOneImage(commonImageEntity)).willReturn(commonImageEntity);
+        CommonImageEntity imageEntity = mockImageRepository.findOneImage(commonImageEntity);
+
+        // then
+        assertThat(imageEntity.getImageType()).isEqualTo("main");
+        assertThat(imageEntity.getFileName()).isEqualTo("test.jpg");
+        assertThat(imageEntity.getFileMask()).isEqualTo("test.jpg");
+
+        // verify
+        then(mockImageRepository).should(times(1)).findOneImage(commonImageEntity);
+        then(mockImageRepository).should(atLeastOnce()).findOneImage(commonImageEntity);
+        then(mockImageRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("이미지삭제Mockito테스트")
+    void 이미지삭제Mockito테스트() {
         // given
         CommonImageEntity commonImageEntity = builder()
                 .imageType("main")
@@ -134,5 +171,42 @@ class ImageRepositoryTest {
 
         // then
         assertThat(mockImageRepository.findOneImage(commonImageEntity).getImageType()).isEqualTo(commonImageEntity1.getImageType());
+
+        // verify
+        verify(mockImageRepository, times(1)).findOneImage(commonImageEntity);
+        verify(mockImageRepository, atLeastOnce()).findOneImage(commonImageEntity);
+        verifyNoMoreInteractions(mockImageRepository);
+
+        InOrder inOrder = inOrder(mockImageRepository);
+        inOrder.verify(mockImageRepository).findOneImage(commonImageEntity);
+    }
+
+    @Test
+    @DisplayName("이미지삭제BDD테스트")
+    void 이미지삭제BDD테스트() {
+        // given
+        CommonImageEntity commonImageEntity = builder()
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .fileNum(2)
+                .typeName("model")
+                .visible("Y")
+                .build();
+
+        em.persist(commonImageEntity);
+        // when
+        given(mockImageRepository.findOneImage(commonImageEntity)).willReturn(commonImageEntity);
+        CommonImageEntity commonImageEntity1 = imageRepository.deleteImage(commonImageEntity);
+
+        // then
+        assertThat(mockImageRepository.findOneImage(commonImageEntity).getImageType()).isEqualTo(commonImageEntity1.getImageType());
+
+        // verify
+        then(mockImageRepository).should(times(1)).findOneImage(commonImageEntity);
+        then(mockImageRepository).should(atLeastOnce()).findOneImage(commonImageEntity);
+        then(mockImageRepository).shouldHaveNoMoreInteractions();
     }
 }
