@@ -139,6 +139,20 @@ class AdminCommonJpaControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
+    @DisplayName("Admin 공통코드 조회 권한 테스트")
+    void 공통코드조회Api권한테스트() throws Exception {
+        LinkedMultiValueMap<String, String> commonMap = new LinkedMultiValueMap<>();
+        commonMap.add("jpaStartPage", "1");
+        commonMap.add("size", "3");
+        mockMvc.perform(get("/api/jpa-common/lists").queryParams(commonMap)
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isForbidden())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
+    }
+
+    @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공통코드 상세 조회 테스트")
     void 모델상세조회Api테스트() throws Exception {
