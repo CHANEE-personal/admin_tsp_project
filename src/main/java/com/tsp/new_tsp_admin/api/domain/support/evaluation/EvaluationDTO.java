@@ -1,6 +1,8 @@
 package com.tsp.new_tsp_admin.api.domain.support.evaluation;
 
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
+import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,9 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,7 +30,7 @@ public class EvaluationDTO extends NewCommonDTO {
     private Integer idx;
 
     @ApiModelProperty(required = true, value = "support_idx")
-    @NotEmpty(message = "지원모델 idx 입력은 필수입니다.")
+    @NotNull(message = "지원모델 idx 입력은 필수입니다.")
     private Integer support_idx;
 
     @NotEmpty(message = "지원모델 평가 내용 입력은 필수입니다.")

@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.support;
 
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,11 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -60,4 +64,8 @@ public class AdminSupportEntity extends NewCommonMappedClass {
 
     @Column(name = "support_time")
     private Date supportTime;
+
+    @OneToMany(mappedBy = "adminSupportEntity")
+    private List<EvaluationEntity> evaluationEntityList = new ArrayList<>();
+
 }
