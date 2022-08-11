@@ -46,7 +46,6 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 class AdminUserJpaRepositoryTest {
     @Mock private AdminUserJpaRepository mockAdminUserJpaRepository;
     private final AdminUserJpaRepository adminUserJpaRepository;
-    private final EntityManager em;
 
     private AdminUserEntity adminUserEntity;
     private AdminUserDTO adminUserDTO;
