@@ -413,4 +413,47 @@ class AdminProductionJpaRepositoryTest {
         // then
         assertThat(entityIdx).isEqualTo(idx);
     }
+
+    @Test
+    @DisplayName("프로덕션삭제Mockito테스트")
+    void 프로덕션삭제Mockito테스트() {
+        // given
+        em.persist(adminProductionEntity);
+        adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+
+        // when
+        when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        Integer deleteIdx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
+
+        // then
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        verify(mockAdminProductionJpaRepository, times(1)).findOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaRepository, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaRepository);
+        inOrder.verify(mockAdminProductionJpaRepository).findOneProduction(adminProductionEntity);
+    }
+
+    @Test
+    @DisplayName("프로덕션삭제BDD테스트")
+    void 프로덕션삭제BDD테스트() {
+        // given
+        em.persist(adminProductionEntity);
+        adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+
+        // when
+        when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        Integer deleteIdx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
+
+        // then
+        assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        then(mockAdminProductionJpaRepository).should(times(1)).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).should(atLeastOnce()).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).shouldHaveNoMoreInteractions();
+    }
 }
