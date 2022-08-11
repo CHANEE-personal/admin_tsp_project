@@ -17,6 +17,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 class AdminUserJpaRepositoryTest {
     @Mock private AdminUserJpaRepository mockAdminUserJpaRepository;
     private final AdminUserJpaRepository adminUserJpaRepository;
+    private final EntityManager em;
 
     private AdminUserEntity adminUserEntity;
     private AdminUserDTO adminUserDTO;
@@ -417,5 +419,40 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 회원탈퇴 테스트")
     void 유저탈퇴테스트() {
         assertThat(adminUserJpaRepository.deleteAdminUser(adminUserEntity.getIdx())).isEqualTo(adminUserDTO.getIdx());
+    }
+
+    @Test
+    @DisplayName("유저 회원탈퇴 Mockito 테스트")
+    void 유저회원탈퇴Mockito테스트() {
+        // when
+        when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
+        Integer deleteIdx = adminUserJpaRepository.deleteAdminUser(adminUserEntity.getIdx());
+
+        // then
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserDTO.getUserId()).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        verify(mockAdminUserJpaRepository, times(1)).findOneUser(adminUserEntity.getUserId());
+        verify(mockAdminUserJpaRepository, atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        verifyNoMoreInteractions(mockAdminUserJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminUserJpaRepository);
+        inOrder.verify(mockAdminUserJpaRepository).findOneUser(adminUserEntity.getUserId());
+    }
+
+    @Test
+    @DisplayName("유저 회원탈퇴 BDD 테스트")
+    void 유저회원탈퇴BDD테스트() {
+        // when
+        given(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).willReturn(adminUserEntity);
+        Integer deleteIdx = adminUserJpaRepository.deleteAdminUser(adminUserEntity.getIdx());
+
+        // then
+        assertThat(mockAdminUserJpaRepository.findOneUser(adminUserDTO.getUserId()).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        then(mockAdminUserJpaRepository).should(times(1)).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaRepository).should(atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaRepository).shouldHaveNoMoreInteractions();
     }
 }
