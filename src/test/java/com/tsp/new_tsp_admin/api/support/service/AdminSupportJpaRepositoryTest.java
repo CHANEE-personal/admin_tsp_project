@@ -2,6 +2,9 @@ package com.tsp.new_tsp_admin.api.support.service;
 
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
+import com.tsp.new_tsp_admin.api.support.mapper.evaluate.EvaluateMapper;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -50,6 +53,9 @@ class AdminSupportJpaRepositoryTest {
     private AdminSupportEntity adminSupportEntity;
     private AdminSupportDTO adminSupportDTO;
 
+    private EvaluationEntity evaluationEntity;
+    private EvaluationDTO evaluationDTO;
+
     void createSupport() {
         adminSupportEntity = AdminSupportEntity.builder()
                 .supportName("조찬희")
@@ -57,6 +63,7 @@ class AdminSupportJpaRepositoryTest {
                 .supportMessage("조찬희")
                 .supportPhone("010-9466-2702")
                 .supportSize3("31-24-31")
+                .visible("Y")
                 .build();
 
         adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
@@ -276,5 +283,130 @@ class AdminSupportJpaRepositoryTest {
         then(mockAdminSupportJpaRepository).should(times(1)).findOneSupportModel(adminSupportEntity);
         then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneSupportModel(adminSupportEntity);
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 리스트 조회 Mockito 테스트")
+    void 지원모델평가리스트조회Mockito테스트() {
+        // given
+        Map<String, Object> evaluationMap = new HashMap<>();
+        evaluationMap.put("jpaStartPage", 1);
+        evaluationMap.put("size", 3);
+
+        List<EvaluationDTO> evaluationList = new ArrayList<>();
+        evaluationList.add(EvaluationDTO.builder().idx(1)
+                .support_idx(adminSupportEntity.getIdx()).evaluate_comment("합격").visible("Y").build());
+
+        // when
+        when(mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap)).thenReturn(evaluationList);
+        List<EvaluationDTO> evaluationInfo = mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap);
+
+        // then
+        assertThat(evaluationInfo.get(0).getIdx()).isEqualTo(evaluationInfo.get(0).getIdx());
+        assertThat(evaluationInfo.get(0).getSupport_idx()).isEqualTo(evaluationInfo.get(0).getSupport_idx());
+        assertThat(evaluationInfo.get(0).getEvaluate_comment()).isEqualTo(evaluationInfo.get(0).getEvaluate_comment());
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(1)).findEvaluationsList(evaluationMap);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findEvaluationsList(evaluationMap);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findEvaluationsList(evaluationMap);
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 리스트 조회 BDD 테스트")
+    void 지원모델평가리스트조회BDD테스트() {
+        // given
+        Map<String, Object> evaluationMap = new HashMap<>();
+        evaluationMap.put("jpaStartPage", 1);
+        evaluationMap.put("size", 3);
+
+        List<EvaluationDTO> evaluationList = new ArrayList<>();
+        evaluationList.add(EvaluationDTO.builder().idx(1)
+                .support_idx(adminSupportEntity.getIdx()).evaluate_comment("합격").visible("Y").build());
+
+        // when
+        given(mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap)).willReturn(evaluationList);
+        List<EvaluationDTO> evaluationInfo = mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap);
+
+        // then
+        assertThat(evaluationInfo.get(0).getIdx()).isEqualTo(evaluationInfo.get(0).getIdx());
+        assertThat(evaluationInfo.get(0).getSupport_idx()).isEqualTo(evaluationInfo.get(0).getSupport_idx());
+        assertThat(evaluationInfo.get(0).getEvaluate_comment()).isEqualTo(evaluationInfo.get(0).getEvaluate_comment());
+
+        // verify
+        then(mockAdminSupportJpaRepository).should(times(1)).findEvaluationsList(evaluationMap);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findEvaluationsList(evaluationMap);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 상세 조회 Mockito 테스트")
+    void 지원모델평가상세조회Mockito테스트() {
+        // given
+        evaluationEntity = EvaluationEntity.builder()
+                .idx(1).supportIdx(adminSupportEntity.getIdx())
+                .evaluateComment("합격").visible("Y").build();
+
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        // when
+        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+
+        // then
+        assertThat(evaluationInfo.getIdx()).isEqualTo(1);
+        assertThat(evaluationInfo.getSupport_idx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(evaluationInfo.getEvaluate_comment()).isEqualTo("합격");
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity);
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 상세 조회 BDD 테스트")
+    void 지원모델평가상세조회BDD테스트() {
+        // given
+        evaluationEntity = EvaluationEntity.builder()
+                .idx(1).supportIdx(adminSupportEntity.getIdx())
+                .evaluateComment("합격").visible("Y").build();
+
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        // when
+        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+
+        // then
+        assertThat(evaluationInfo.getIdx()).isEqualTo(1);
+        assertThat(evaluationInfo.getSupport_idx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(evaluationInfo.getEvaluate_comment()).isEqualTo("합격");
+
+        // verify
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 Mockito 테스트")
+    void 지원모델평가Mockito테스트() {
+        // given
+        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .supportIdx(supportIdx)
+                .evaluateComment("합격")
+                .visible("Y")
+                .build();
+
+        adminSupportJpaRepository.evaluationSupportModel(evaluationEntity);
     }
 }
