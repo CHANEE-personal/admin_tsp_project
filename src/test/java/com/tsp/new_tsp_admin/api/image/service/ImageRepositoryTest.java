@@ -36,7 +36,8 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("이미지 Repository Test")
 class ImageRepositoryTest {
-    @Mock private ImageRepository mockImageRepository;
+    @Mock
+    private ImageRepository mockImageRepository;
     private final ImageRepository imageRepository;
     private final EntityManager em;
     protected JPAQueryFactory queryFactory;
@@ -65,11 +66,11 @@ class ImageRepositoryTest {
         imageRepository.insertImage(commonImageEntity);
 
         // when
-        when(mockImageRepository.maxSubCnt(commonImageEntity)+1).thenReturn(commonImageEntity.getFileNum()+1);
+        when(mockImageRepository.maxSubCnt(commonImageEntity) + 1).thenReturn(commonImageEntity.getFileNum() + 1);
         Integer maxSubCnt = mockImageRepository.maxSubCnt(commonImageEntity);
 
         // then
-        assertThat(maxSubCnt).isEqualTo(commonImageEntity.getFileNum()+1);
+        assertThat(maxSubCnt).isEqualTo(commonImageEntity.getFileNum() + 1);
 
         // verify
         verify(mockImageRepository, times(1)).maxSubCnt(commonImageEntity);
@@ -98,11 +99,11 @@ class ImageRepositoryTest {
         imageRepository.insertImage(commonImageEntity);
 
         // when
-        given(mockImageRepository.maxSubCnt(commonImageEntity)+1).willReturn(commonImageEntity.getFileNum()+1);
+        given(mockImageRepository.maxSubCnt(commonImageEntity) + 1).willReturn(commonImageEntity.getFileNum() + 1);
         Integer maxSubCnt = mockImageRepository.maxSubCnt(commonImageEntity);
 
         // then
-        assertThat(maxSubCnt).isEqualTo(commonImageEntity.getFileNum()+1);
+        assertThat(maxSubCnt).isEqualTo(commonImageEntity.getFileNum() + 1);
 
         // verify
         then(mockImageRepository).should(times(1)).maxSubCnt(commonImageEntity);
@@ -193,9 +194,9 @@ class ImageRepositoryTest {
                 .build();
 
         em.persist(commonImageEntity);
+
         // when
         when(mockImageRepository.findOneImage(commonImageEntity)).thenReturn(commonImageEntity);
-
         CommonImageEntity commonImageEntity1 = imageRepository.deleteImage(commonImageEntity);
 
         // then
@@ -226,6 +227,7 @@ class ImageRepositoryTest {
                 .build();
 
         em.persist(commonImageEntity);
+
         // when
         given(mockImageRepository.findOneImage(commonImageEntity)).willReturn(commonImageEntity);
         CommonImageEntity commonImageEntity1 = imageRepository.deleteImage(commonImageEntity);
