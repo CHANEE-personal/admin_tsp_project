@@ -556,6 +556,49 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("모델 삭제 Mockito 테스트")
+    void 모델삭제Mockito테스트() {
+        // given
+        em.persist(adminModelEntity);
+        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+
+        // when
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        Integer deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
+
+        // then
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaRepository);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity);
+    }
+
+    @Test
+    @DisplayName("모델 삭제 BDD 테스트")
+    void 모델삭제BDD테스트() {
+        // given
+        em.persist(adminModelEntity);
+        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+
+        // when
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        Integer deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
+
+        // then
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("모델 이미지 등록 테스트")
     void 모델이미지등록테스트() {
         Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
