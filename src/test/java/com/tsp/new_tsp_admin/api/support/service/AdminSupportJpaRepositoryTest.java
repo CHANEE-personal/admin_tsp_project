@@ -234,4 +234,47 @@ class AdminSupportJpaRepositoryTest {
         // then
         assertThat(deleteIdx).isEqualTo(entityIdx);
     }
+
+    @Test
+    @DisplayName("지원 모델 삭제 Mockito 테스트")
+    void 지원모델삭제Mockito테스트() {
+        // given
+        em.persist(adminSupportEntity);
+        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+
+        // when
+        when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        Integer deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
+
+        // then
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(1)).findOneSupportModel(adminSupportEntity);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneSupportModel(adminSupportEntity);
+    }
+
+    @Test
+    @DisplayName("지원 모델 삭제 BDD 테스트")
+    void 지원모델삭제BDD테스트() {
+        // given
+        em.persist(adminSupportEntity);
+        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+
+        // when
+        given(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).willReturn(adminSupportDTO);
+        Integer deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
+
+        // then
+        assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
+    }
 }
