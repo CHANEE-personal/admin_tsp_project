@@ -420,4 +420,47 @@ class AdminPortfolioJpaRepositoryTest {
         // then
         assertThat(deleteIdx).isEqualTo(entityIdx);
     }
+
+    @Test
+    @DisplayName("포트폴리오삭제Mockito테스트")
+    void 포트폴리오삭제Mockito테스트() {
+        // given
+        em.persist(adminPortFolioEntity);
+        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+
+        // when
+        when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
+        Integer deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
+
+        // then
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        verify(mockAdminPortfolioJpaRepository, times(1)).findOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaRepository, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminPortfolioJpaRepository);
+        inOrder.verify(mockAdminPortfolioJpaRepository).findOnePortfolio(adminPortFolioEntity);
+    }
+
+    @Test
+    @DisplayName("포트폴리오삭제BDD테스트")
+    void 포트폴리오삭제BDD테스트() {
+        // given
+        em.persist(adminPortFolioEntity);
+        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+
+        // when
+        given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
+        Integer deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
+
+        // then
+        assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        then(mockAdminPortfolioJpaRepository).should(times(1)).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaRepository).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaRepository).shouldHaveNoMoreInteractions();
+    }
 }
