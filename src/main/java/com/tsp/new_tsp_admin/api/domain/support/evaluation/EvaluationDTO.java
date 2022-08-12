@@ -1,8 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.support.evaluation;
 
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
-import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -13,8 +11,6 @@ import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
