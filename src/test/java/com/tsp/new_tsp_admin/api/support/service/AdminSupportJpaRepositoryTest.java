@@ -409,4 +409,144 @@ class AdminSupportJpaRepositoryTest {
 
         adminSupportJpaRepository.evaluationSupportModel(evaluationEntity);
     }
+
+    @Test
+    @DisplayName("지원 모델 평가 수정 Mockito 테스트")
+    void 지원모델평가수정Mockito테스트() {
+        // given
+        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .supportIdx(supportIdx)
+                .evaluateComment("합격").visible("Y").build();
+
+        // 지원모델 평가 저장
+        em.persist(evaluationEntity);
+
+        Integer idx = em.find(EvaluationEntity.class, this.evaluationEntity.getIdx()).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .idx(idx)
+                .supportIdx(adminSupportEntity.getIdx())
+                .evaluateComment("합격")
+                .visible("Y")
+                .build();
+
+        // 지원모델 평가 수정
+        adminSupportJpaRepository.updateEvaluation(evaluationEntity);
+
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        // when
+        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+
+        // then
+        assertThat(evaluationInfo.getSupport_idx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(evaluationInfo.getEvaluate_comment()).isEqualTo("합격");
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity);
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 수정 BDD 테스트")
+    void 지원모델평가수정BDD테스트() {
+        // given
+        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .supportIdx(supportIdx)
+                .evaluateComment("합격").visible("Y").build();
+
+        // 지원모델 평가 저장
+        em.persist(evaluationEntity);
+
+        Integer idx = em.find(EvaluationEntity.class, this.evaluationEntity.getIdx()).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .idx(idx)
+                .supportIdx(adminSupportEntity.getIdx())
+                .evaluateComment("합격")
+                .visible("Y")
+                .build();
+
+        // 지원모델 평가 수정
+        adminSupportJpaRepository.updateEvaluation(evaluationEntity);
+
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        // when
+        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+
+        // then
+        assertThat(evaluationInfo.getSupport_idx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(evaluationInfo.getEvaluate_comment()).isEqualTo("합격");
+
+        // verify
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 삭제 Mockito 테스트")
+    void 지원모델평가삭제Mockito테스트() {
+        // given
+        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .supportIdx(supportIdx)
+                .evaluateComment("합격").visible("Y").build();
+
+        // 지원모델 평가 저장
+        em.persist(evaluationEntity);
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
+        Integer deleteIdx = adminSupportJpaRepository.deleteEvaluation(evaluationEntity.getIdx());
+
+        // then
+        assertThat(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity);
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 삭제 BDD 테스트")
+    void 지원모델평가삭제BDD테스트() {
+        // given
+        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .supportIdx(supportIdx)
+                .evaluateComment("합격").visible("Y").build();
+
+        // 지원모델 평가 저장
+        em.persist(evaluationEntity);
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
+        Integer deleteIdx = adminSupportJpaRepository.deleteEvaluation(evaluationEntity.getIdx());
+
+        // then
+        assertThat(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
+    }
 }

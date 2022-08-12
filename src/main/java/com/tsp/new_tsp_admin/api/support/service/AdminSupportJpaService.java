@@ -78,6 +78,17 @@ public interface AdminSupportJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findEvaluationsCount
+     * 2. ClassName  : AdminSupportJpaService.java
+     * 3. Comment    : 관리자 지원모델 평가 리스트 수 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    Integer findEvaluationsCount(Map<String, Object> evaluationMap) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : findEvaluationsList
      * 2. ClassName  : AdminSupportJpaService.java
      * 3. Comment    : 관리자 지원모델 평가 리스트 조회
@@ -108,4 +119,26 @@ public interface AdminSupportJpaService {
      * </pre>
      */
     EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : updateEvaluation
+     * 2. ClassName  : AdminSupportJpaService.java
+     * 3. Comment    : 관리자 지원모델 평가 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteEvaluation
+     * 2. ClassName  : AdminSupportJpaService.java
+     * 3. Comment    : 관리자 지원모델 평가 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    Integer deleteEvaluation(Integer idx) throws Exception;
 }

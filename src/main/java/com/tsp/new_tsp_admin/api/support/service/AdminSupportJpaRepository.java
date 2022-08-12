@@ -144,6 +144,19 @@ public class AdminSupportJpaRepository {
 
     /**
      * <pre>
+     * 1. MethodName : findEvaluationsCount
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가 리스트 갯수 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public Integer findEvaluationsCount(Map<String, Object> evaluationMap) {
+        return queryFactory.selectFrom(evaluationEntity).fetch().size();
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : findEvaluationsList
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 평가내용 리스트 조회
@@ -195,5 +208,37 @@ public class AdminSupportJpaRepository {
     public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) {
         em.persist(evaluationEntity);
         return EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateEvaluation
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가내용 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public EvaluationDTO updateEvaluation(EvaluationEntity existEvaluationEntity) {
+        em.merge(existEvaluationEntity);
+        em.flush();
+        em.clear();
+        return EvaluateMapper.INSTANCE.toDto(existEvaluationEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteEvaluation
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가내용 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public Integer deleteEvaluation(Integer idx) {
+        em.remove(em.find(EvaluationEntity.class, idx));
+        em.flush();
+        em.clear();
+        return idx;
     }
 }

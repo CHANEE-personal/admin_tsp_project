@@ -414,4 +414,59 @@ class AdminSupportJpaServiceTest {
 
         adminSupportJpaService.evaluationSupportModel(evaluationEntity);
     }
+
+    @Test
+    @DisplayName("지원 모델 평가 삭제 Mockito 테스트")
+    void 지원모델평가삭제Mockito테스트() throws Exception {
+        // given
+        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .supportIdx(supportIdx)
+                .evaluateComment("합격").visible("Y").build();
+
+        // 지원모델 평가 저장
+        adminSupportJpaService.evaluationSupportModel(evaluationEntity);
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
+        Integer deleteIdx = adminSupportJpaService.deleteEvaluation(evaluationEntity.getIdx());
+
+        // then
+        assertThat(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        verify(mockAdminSupportJpaService, times(1)).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaService, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaService);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaService);
+        inOrder.verify(mockAdminSupportJpaService).findOneEvaluation(evaluationEntity);
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 삭제 BDD 테스트")
+    void 지원모델평가삭제BDD테스트() throws Exception {
+        // given
+        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .supportIdx(supportIdx)
+                .evaluateComment("합격").visible("Y").build();
+
+        // 지원모델 평가 저장
+        adminSupportJpaService.evaluationSupportModel(evaluationEntity);
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
+        Integer deleteIdx = adminSupportJpaService.deleteEvaluation(evaluationEntity.getIdx());
+
+        // then
+        assertThat(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        then(mockAdminSupportJpaService).should(times(1)).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaService).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaService).shouldHaveNoMoreInteractions();
+    }
 }
