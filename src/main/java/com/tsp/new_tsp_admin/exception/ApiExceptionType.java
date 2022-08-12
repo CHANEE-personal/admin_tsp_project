@@ -59,7 +59,14 @@ public enum ApiExceptionType implements BaseExceptionType {
     ERROR_UPDATE_COMMON("ERROR_UPDATE_COMMON", 500, "공통 코드 수정 에러"),
     ERROR_DELETE_COMMON("ERROR_DELETE_COMMON", 500, "공통 코드 삭제 에러"),
     NOT_FOUND_COMMON("NOT_FOUND_COMMON", 200, "해당 공통코드 없음"),
-    NOT_FOUND_COMMON_LIST("NOT_FOUND_COMMON_LIST", 200, "공통 코드 리스트 없음");
+    NOT_FOUND_COMMON_LIST("NOT_FOUND_COMMON_LIST", 200, "공통 코드 리스트 없음"),
+
+    // 지원모델 평가 관련 TYPE
+    NOT_FOUND_EVALUATION_LIST("NOT_FOUND_EVALUATION_LIST", 200, "지원모델 평가 리스트 없음"),
+    NOT_FOUND_EVALUATION("NOT_FOUND_EVALUATION", 200, "지원모델 평가 없음"),
+    ERROR_EVALUATION("ERROR_EVALUATION", 500, "지원모델 평가 작성 에러"),
+    ERROR_UPDATE_EVALUATION("ERROR_UPDATE_EVALUATION", 500, "지원모델 평가 수정 에러"),
+    ERROR_DELETE_EVALUATION("ERROR_DELETE_EVALUATION", 500, "지원모델 삭제 에러");
 
     private final String errorCode;
     private final int httpStatus;

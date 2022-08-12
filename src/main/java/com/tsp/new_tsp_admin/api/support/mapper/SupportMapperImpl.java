@@ -2,11 +2,10 @@ package com.tsp.new_tsp_admin.api.support.mapper;
 
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
+import com.tsp.new_tsp_admin.api.support.mapper.evaluate.EvaluateMapper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.*;
 
 public class SupportMapperImpl implements SupportMapper {
     @Override
@@ -22,8 +21,9 @@ public class SupportMapperImpl implements SupportMapper {
                 .supportInstagram(entity.getSupportInstagram())
                 .supportPhone(entity.getSupportPhone())
                 .supportMessage(entity.getSupportMessage())
-                .visible(entity.getVisible())
                 .supportTime(entity.getSupportTime())
+                .evaluationList(EvaluateMapper.INSTANCE.toDtoList(entity.getEvaluationEntityList()))
+                .visible(entity.getVisible())
                 .build();
     }
 
@@ -31,7 +31,7 @@ public class SupportMapperImpl implements SupportMapper {
     public AdminSupportEntity toEntity(AdminSupportDTO dto) {
         if (dto == null) return null;
 
-        return builder()
+        return AdminSupportEntity.builder()
                 .rnum(dto.getRnum())
                 .idx(dto.getIdx())
                 .supportName(dto.getSupportName())
@@ -41,6 +41,7 @@ public class SupportMapperImpl implements SupportMapper {
                 .supportPhone(dto.getSupportPhone())
                 .supportMessage(dto.getSupportMessage())
                 .supportTime(dto.getSupportTime())
+                .evaluationEntityList(EvaluateMapper.INSTANCE.toEntityList(dto.getEvaluationList()))
                 .visible(dto.getVisible())
                 .build();
     }

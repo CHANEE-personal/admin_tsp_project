@@ -2,6 +2,8 @@ package com.tsp.new_tsp_admin.api.support.service;
 
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -95,7 +97,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     /**
      * <pre>
      * 1. MethodName : updateSupportModel
-     * 2. ClassName  : AdminSupportJpaService.java
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 수정
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -116,7 +118,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     /**
      * <pre>
      * 1. MethodName : deleteSupportModel
-     * 2. ClassName  : AdminSupportJpaService.java
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 삭제
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -131,6 +133,121 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
             return adminSupportJpaRepository.deleteSupportModel(idx);
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_SUPPORT, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findEvaluationsCount
+     * 2. ClassName  : AdminSupportJpaService.java
+     * 3. Comment    : 관리자 지원모델 평가 리스트 수 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Integer findEvaluationsCount(Map<String, Object> evaluationMap) throws TspException {
+        try {
+            return adminSupportJpaRepository.findEvaluationsCount(evaluationMap);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_EVALUATION_LIST, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findEvaluationsList
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
+     * 3. Comment    : 관리자 지원모델 평가 리스트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap) throws TspException {
+        try {
+            return adminSupportJpaRepository.findEvaluationsList(evaluationMap);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_EVALUATION_LIST, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneEvaluation
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
+     * 3. Comment    : 관리자 지원모델 평가 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public EvaluationDTO findOneEvaluation(EvaluationEntity evaluationEntity) throws TspException {
+        try {
+            return adminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_EVALUATION, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : evaluationSupportModel
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
+     * 3. Comment    : 관리자 지원모델 평가 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @Transactional
+    public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) throws TspException {
+        try {
+            return adminSupportJpaRepository.evaluationSupportModel(evaluationEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_EVALUATION, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateEvaluation
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
+     * 3. Comment    : 관리자 지원모델 평가 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity) throws TspException {
+        try {
+            return adminSupportJpaRepository.updateEvaluation(evaluationEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_UPDATE_EVALUATION, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteEvaluation
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
+     * 3. Comment    : 관리자 지원모델 평가 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public Integer deleteEvaluation(Integer idx) throws TspException {
+        try {
+            return adminSupportJpaRepository.deleteEvaluation(idx);
+        } catch (Exception e) {
+            throw new TspException(ERROR_DELETE_EVALUATION, e);
         }
     }
 }

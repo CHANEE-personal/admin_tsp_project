@@ -4,6 +4,10 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
+import com.tsp.new_tsp_admin.api.support.mapper.SupportMapper;
+import com.tsp.new_tsp_admin.api.support.mapper.evaluate.EvaluateMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -13,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.adminSupportEntity;
-import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
+import static com.tsp.new_tsp_admin.api.domain.support.evaluation.QEvaluationEntity.evaluationEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 
@@ -71,7 +75,7 @@ public class AdminSupportJpaRepository {
         supportList.forEach(list -> supportList.get(supportList.indexOf(list))
                 .setRnum(getInt(supportMap.get("startPage"), 1) * (getInt(supportMap.get("size"), 1)) - (2 - supportList.indexOf(list))));
 
-        return INSTANCE.toDtoList(supportList);
+        return SupportMapper.INSTANCE.toDtoList(supportList);
     }
 
     /**
@@ -89,7 +93,7 @@ public class AdminSupportJpaRepository {
                 .where(adminSupportEntity.idx.eq(existAdminSupportEntity.getIdx()))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneSupportModel);
+        return SupportMapper.INSTANCE.toDto(findOneSupportModel);
     }
 
     /**
@@ -103,7 +107,7 @@ public class AdminSupportJpaRepository {
      */
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         em.persist(adminSupportEntity);
-        return INSTANCE.toDto(adminSupportEntity);
+        return SupportMapper.INSTANCE.toDto(adminSupportEntity);
     }
 
     /**
@@ -119,7 +123,7 @@ public class AdminSupportJpaRepository {
         em.merge(existAdminSupportEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminSupportEntity);
+        return SupportMapper.INSTANCE.toDto(existAdminSupportEntity);
     }
 
     /**
@@ -133,6 +137,106 @@ public class AdminSupportJpaRepository {
      */
     public Integer deleteSupportModel(Integer idx) {
         em.remove(em.find(AdminSupportEntity.class, idx));
+        em.flush();
+        em.clear();
+        return idx;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findEvaluationsCount
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가 리스트 갯수 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public Integer findEvaluationsCount(Map<String, Object> evaluationMap) {
+        return queryFactory.selectFrom(evaluationEntity).fetch().size();
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findEvaluationsList
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가내용 리스트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap) {
+        List<EvaluationEntity> evaluationList = queryFactory.selectFrom(evaluationEntity)
+                .where(evaluationEntity.visible.eq("Y"))
+                .orderBy(adminSupportEntity.idx.desc())
+                .offset(getInt(evaluationMap.get("jpaStartPage"), 0))
+                .limit(getInt(evaluationMap.get("size"), 0))
+                .fetch();
+
+        evaluationList.forEach(list -> evaluationList.get(evaluationList.indexOf(list))
+                .setRnum(getInt(evaluationMap.get("startPage"), 1) * (getInt(evaluationMap.get("size"), 1)) - (2 - evaluationList.indexOf(list))));
+
+        return EvaluateMapper.INSTANCE.toDtoList(evaluationList);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneEvaluation
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가내용 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public EvaluationDTO findOneEvaluation(EvaluationEntity existEvaluationEntity) {
+        //모델 상세 조회
+        EvaluationEntity findOneEvaluation = queryFactory.selectFrom(evaluationEntity)
+                .where(evaluationEntity.idx.eq(existEvaluationEntity.getIdx()))
+                .fetchOne();
+
+        return EvaluateMapper.INSTANCE.toDto(findOneEvaluation);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : evaluationSupportModel
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가내용 작성
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) {
+        em.persist(evaluationEntity);
+        return EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateEvaluation
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가내용 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public EvaluationDTO updateEvaluation(EvaluationEntity existEvaluationEntity) {
+        em.merge(existEvaluationEntity);
+        em.flush();
+        em.clear();
+        return EvaluateMapper.INSTANCE.toDto(existEvaluationEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteEvaluation
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 평가내용 삭제
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public Integer deleteEvaluation(Integer idx) {
+        em.remove(em.find(EvaluationEntity.class, idx));
         em.flush();
         em.clear();
         return idx;

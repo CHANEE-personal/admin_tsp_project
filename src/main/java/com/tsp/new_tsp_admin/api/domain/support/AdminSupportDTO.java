@@ -1,7 +1,9 @@
 package com.tsp.new_tsp_admin.api.domain.support;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -12,7 +14,9 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
@@ -61,4 +65,6 @@ public class AdminSupportDTO extends NewCommonDTO {
     @ApiModelProperty(value = "지원 시각", required = true)
     private Date supportTime;
 
+    @ApiModelProperty(required = true, value = "evaluationList", hidden = true)
+    private List<EvaluationDTO> evaluationList = new ArrayList<>();
 }
