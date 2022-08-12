@@ -200,8 +200,11 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/{idx}/evaluation")
-    public EvaluationDTO evaluationSupportModel(@Valid @RequestBody EvaluationEntity evaluationEntity) throws Exception {
-        return adminSupportJpaService.evaluationSupportModel(evaluationEntity);
+    public EvaluationDTO evaluationSupportModel(@Valid @RequestBody EvaluationEntity evaluationEntity,
+                                                @PathVariable("idx") Integer idx) throws Exception {
+        return adminSupportJpaService.evaluationSupportModel(EvaluationEntity.builder().supportIdx(idx)
+                .evaluateComment(evaluationEntity.getEvaluateComment())
+                .visible("Y").build());
     }
 
     /**

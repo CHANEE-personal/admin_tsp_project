@@ -15,8 +15,8 @@ public class EvaluateMapperImpl implements EvaluateMapper {
         return EvaluationDTO.builder()
                 .rnum(entity.getRnum())
                 .idx(entity.getIdx())
-                .support_idx(entity.getSupportIdx())
-                .evaluate_comment(entity.getEvaluateComment())
+                .supportIdx(entity.getSupportIdx())
+                .evaluateComment(entity.getEvaluateComment())
                 .visible(entity.getVisible())
                 .build();
     }
@@ -28,8 +28,8 @@ public class EvaluateMapperImpl implements EvaluateMapper {
         return EvaluationEntity.builder()
                 .rnum(dto.getRnum())
                 .idx(dto.getIdx())
-                .supportIdx(dto.getSupport_idx())
-                .evaluateComment(dto.getEvaluate_comment())
+                .supportIdx(dto.getSupportIdx())
+                .evaluateComment(dto.getEvaluateComment())
                 .visible(dto.getVisible())
                 .build();
     }

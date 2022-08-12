@@ -2,6 +2,8 @@ package com.tsp.new_tsp_admin.api.support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
+import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +75,9 @@ class AdminSupportJpaControllerTest {
 
 	private AdminSupportEntity adminSupportEntity;
 	private AdminUserEntity adminUserEntity;
+
+	private EvaluationEntity evaluationEntity;
+	private EvaluationDTO evaluationDTO;
 
 	Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -266,5 +271,130 @@ class AdminSupportJpaControllerTest {
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	@DisplayName("Admin 지원 모델 평가 조회 테스트")
+	void 지원모델평가조회Api테스트() throws Exception {
+		MultiValueMap<String, String> evaluationMap = new LinkedMultiValueMap<>();
+		evaluationMap.add("jpaStartPage", "1");
+		evaluationMap.add("size", "3");
+		mockMvc.perform(get("/api/jpa-support/evaluation/lists").params(evaluationMap)
+						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"));
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	@DisplayName("Admin 지원 모델 평가 상세 조회 테스트")
+	void 지원모델평가상세조회Api테스트() throws Exception {
+		mockMvc.perform(get("/api/jpa-support/evaluation/1")
+						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"));
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	@DisplayName("Admin 지원 모델 평가 등록 테스트")
+	void 지원모델평가등록Api테스트() throws Exception {
+		em.persist(adminSupportEntity);
+
+		evaluationEntity = EvaluationEntity.builder()
+						.supportIdx(adminSupportEntity.getIdx())
+						.evaluateComment("합격")
+						.visible("Y").build();
+
+		mockMvc.perform(post("/api/jpa-support/1/evaluation")
+						.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+						.contentType(APPLICATION_JSON_VALUE)
+						.content(objectMapper.writeValueAsString(evaluationEntity)))
+				.andDo(print())
+				.andDo(document("evaluation/post",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						relaxedRequestFields(
+							fieldWithPath("supportIdx").type(NUMBER).description("평가 모델 IDX"),
+							fieldWithPath("evaluateComment").type(STRING).description("평가 내용")
+						),
+						relaxedResponseFields(
+							fieldWithPath("supportIdx").type(NUMBER).description("평가 모델 IDX"),
+							fieldWithPath("evaluateComment").type(STRING).description("평가 내용")
+						)))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
+				.andExpect(jsonPath("$.supportIdx").value(1))
+				.andExpect(jsonPath("$.evaluateComment").value("합격"));
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	@DisplayName("Admin 지원 모델 평가 수정 테스트")
+	void 지원모델평가수정Api테스트() throws Exception {
+		// 지원모델 등록
+		em.persist(adminSupportEntity);
+
+		// 지원모델 평가 등록
+		evaluationEntity = EvaluationEntity.builder()
+				.supportIdx(adminSupportEntity.getIdx())
+				.evaluateComment("합격")
+				.visible("Y").build();
+
+		em.persist(evaluationEntity);
+
+		evaluationEntity = EvaluationEntity.builder()
+						.idx(evaluationEntity.getIdx())
+						.supportIdx(adminSupportEntity.getIdx())
+						.evaluateComment("불합격")
+						.visible("Y")
+						.build();
+
+		mockMvc.perform(put("/api/jpa-support/{idx}/evaluation", evaluationEntity.getIdx())
+						.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+						.contentType(APPLICATION_JSON_VALUE)
+						.content(objectMapper.writeValueAsString(evaluationEntity)))
+				.andDo(print())
+				.andDo(document("support/put",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						relaxedRequestFields(
+								fieldWithPath("supportIdx").type(NUMBER).description("평가 모델 IDX"),
+								fieldWithPath("evaluateComment").type(STRING).description("평가 내용")
+						),
+						relaxedResponseFields(
+								fieldWithPath("supportIdx").type(NUMBER).description("평가 모델 IDX"),
+								fieldWithPath("evaluateComment").type(STRING).description("평가 내용")
+						)))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
+				.andExpect(jsonPath("$.supportIdx").value(adminSupportEntity.getIdx()))
+				.andExpect(jsonPath("$.evaluateComment").value("불합격"));
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	@DisplayName("Admin 지원 모델 평가 삭제 테스트")
+	void 지원모델평가삭제Api테스트() throws Exception {
+		// 지원모델 등록
+		em.persist(adminSupportEntity);
+
+		// 지원모델 평가 등록
+		evaluationEntity = EvaluationEntity.builder()
+				.supportIdx(adminSupportEntity.getIdx())
+				.evaluateComment("합격")
+				.visible("Y").build();
+
+		em.persist(evaluationEntity);
+
+		mockMvc.perform(delete("/api/jpa-support/{idx}/evaluation", evaluationEntity.getIdx())
+						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
+				.andExpect(content().string(getString(evaluationEntity.getIdx())));
 	}
 }
