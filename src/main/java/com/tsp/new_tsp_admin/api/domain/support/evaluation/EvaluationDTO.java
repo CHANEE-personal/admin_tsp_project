@@ -31,11 +31,11 @@ public class EvaluationDTO extends NewCommonDTO {
 
     @ApiModelProperty(required = true, value = "support_idx")
     @NotNull(message = "지원모델 idx 입력은 필수입니다.")
-    private Integer support_idx;
+    private Integer supportIdx;
 
     @NotEmpty(message = "지원모델 평가 내용 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "지원모델 평가내용")
-    private String evaluate_comment;
+    private String evaluateComment;
 
     @ApiModelProperty(required = true, value = "삭제 여부((ex)Y,N")
     @NotEmpty(message = "지원모델 평가 삭제 선택은 필수입니다.")

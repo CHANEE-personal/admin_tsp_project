@@ -295,7 +295,7 @@ class AdminSupportJpaRepositoryTest {
 
         List<EvaluationDTO> evaluationList = new ArrayList<>();
         evaluationList.add(EvaluationDTO.builder().idx(1)
-                .support_idx(adminSupportEntity.getIdx()).evaluate_comment("합격").visible("Y").build());
+                .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
 
         // when
         when(mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap)).thenReturn(evaluationList);
@@ -303,8 +303,8 @@ class AdminSupportJpaRepositoryTest {
 
         // then
         assertThat(evaluationInfo.get(0).getIdx()).isEqualTo(evaluationInfo.get(0).getIdx());
-        assertThat(evaluationInfo.get(0).getSupport_idx()).isEqualTo(evaluationInfo.get(0).getSupport_idx());
-        assertThat(evaluationInfo.get(0).getEvaluate_comment()).isEqualTo(evaluationInfo.get(0).getEvaluate_comment());
+        assertThat(evaluationInfo.get(0).getSupportIdx()).isEqualTo(evaluationInfo.get(0).getSupportIdx());
+        assertThat(evaluationInfo.get(0).getEvaluateComment()).isEqualTo(evaluationInfo.get(0).getEvaluateComment());
 
         // verify
         verify(mockAdminSupportJpaRepository, times(1)).findEvaluationsList(evaluationMap);
@@ -325,7 +325,7 @@ class AdminSupportJpaRepositoryTest {
 
         List<EvaluationDTO> evaluationList = new ArrayList<>();
         evaluationList.add(EvaluationDTO.builder().idx(1)
-                .support_idx(adminSupportEntity.getIdx()).evaluate_comment("합격").visible("Y").build());
+                .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
 
         // when
         given(mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap)).willReturn(evaluationList);
@@ -333,8 +333,8 @@ class AdminSupportJpaRepositoryTest {
 
         // then
         assertThat(evaluationInfo.get(0).getIdx()).isEqualTo(evaluationInfo.get(0).getIdx());
-        assertThat(evaluationInfo.get(0).getSupport_idx()).isEqualTo(evaluationInfo.get(0).getSupport_idx());
-        assertThat(evaluationInfo.get(0).getEvaluate_comment()).isEqualTo(evaluationInfo.get(0).getEvaluate_comment());
+        assertThat(evaluationInfo.get(0).getSupportIdx()).isEqualTo(evaluationInfo.get(0).getSupportIdx());
+        assertThat(evaluationInfo.get(0).getEvaluateComment()).isEqualTo(evaluationInfo.get(0).getEvaluateComment());
 
         // verify
         then(mockAdminSupportJpaRepository).should(times(1)).findEvaluationsList(evaluationMap);
@@ -358,8 +358,8 @@ class AdminSupportJpaRepositoryTest {
 
         // then
         assertThat(evaluationInfo.getIdx()).isEqualTo(1);
-        assertThat(evaluationInfo.getSupport_idx()).isEqualTo(adminSupportEntity.getIdx());
-        assertThat(evaluationInfo.getEvaluate_comment()).isEqualTo("합격");
+        assertThat(evaluationInfo.getSupportIdx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
         verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
@@ -386,8 +386,8 @@ class AdminSupportJpaRepositoryTest {
 
         // then
         assertThat(evaluationInfo.getIdx()).isEqualTo(1);
-        assertThat(evaluationInfo.getSupport_idx()).isEqualTo(adminSupportEntity.getIdx());
-        assertThat(evaluationInfo.getEvaluate_comment()).isEqualTo("합격");
+        assertThat(evaluationInfo.getSupportIdx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
         then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
@@ -442,8 +442,8 @@ class AdminSupportJpaRepositoryTest {
         EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
 
         // then
-        assertThat(evaluationInfo.getSupport_idx()).isEqualTo(adminSupportEntity.getIdx());
-        assertThat(evaluationInfo.getEvaluate_comment()).isEqualTo("합격");
+        assertThat(evaluationInfo.getSupportIdx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
         verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
@@ -486,8 +486,8 @@ class AdminSupportJpaRepositoryTest {
         EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
 
         // then
-        assertThat(evaluationInfo.getSupport_idx()).isEqualTo(adminSupportEntity.getIdx());
-        assertThat(evaluationInfo.getEvaluate_comment()).isEqualTo("합격");
+        assertThat(evaluationInfo.getSupportIdx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
         then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
