@@ -32,7 +32,7 @@ public abstract class NewCommonMappedClass {
     private String creator;
 
     @LastModifiedBy
-    @Column(name = "updater", insertable = false)
+    @Column(name = "updater")
     @ApiModelProperty(required = true, value = "수정자")
     private String updater;
 
@@ -44,7 +44,7 @@ public abstract class NewCommonMappedClass {
     private Date createTime;
 
     @UpdateTimestamp
-    @Column(name = "update_time", insertable = false)
+    @Column(name = "update_time")
     @Temporal(TIMESTAMP)
     @ApiModelProperty(required = true, value = "수정 일자")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -43,8 +43,8 @@ public class AdminModelEntity extends NewCommonMappedClass {
 
     @Column(name = "category_age")
     @Range(min = 2, max = 6, message = "모델 연령대 값은 2~6 사이 값만 입력할 수 있습니다.")
-    @NotEmpty(message = "모델 연령대 선택은 필수입니다.")
-    private String categoryAge;
+    @NotNull(message = "모델 연령대 선택은 필수입니다.")
+    private Integer categoryAge;
 
     @Column(name = "model_kor_name")
     @NotEmpty(message = "모델 국문 이름 입력은 필수입니다.")
@@ -55,16 +55,16 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private String modelEngName;
 
     @Column(name = "height")
-    @NotEmpty(message = "모델 키 입력은 필수입니다.")
-    private String height;
+    @NotNull(message = "모델 키 입력은 필수입니다.")
+    private Integer height;
 
     @Column(name = "size3")
     @NotEmpty(message = "모델 사이즈 입력은 필수입니다.")
     private String size3;
 
     @Column(name = "shoes")
-    @NotEmpty(message = "모델 발 사이즈 입력은 필수입니다.")
-    private String shoes;
+    @NotNull(message = "모델 발 사이즈 입력은 필수입니다.")
+    private Integer shoes;
 
     @Column(name = "model_description")
     @Lob
@@ -94,6 +94,9 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @Column(name = "model_kor_second_name")
     @NotEmpty(message = "모델 국문 두번째 이름 입력은 필수입니다.")
     private String modelKorSecondName;
+
+    @Column(name = "favorite_count")
+    private Integer favoriteCount;
 
     @Column(name = "career_list")
     @Convert(converter = CustomConverter.class)

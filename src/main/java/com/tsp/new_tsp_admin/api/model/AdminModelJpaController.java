@@ -27,7 +27,6 @@ import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
-
 @Validated
 @RestController
 @Api(tags = "모델관련 API")

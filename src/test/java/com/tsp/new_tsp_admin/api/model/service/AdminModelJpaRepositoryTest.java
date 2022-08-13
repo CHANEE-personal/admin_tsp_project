@@ -74,7 +74,7 @@ class AdminModelJpaRepositoryTest {
 
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -83,11 +83,12 @@ class AdminModelJpaRepositoryTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
-                .status("draft")
+                .status("active")
+                .favoriteCount(1)
                 .careerList(careerList)
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .build();
 
@@ -206,7 +207,7 @@ class AdminModelJpaRepositoryTest {
                     assertNotNull(adminModelDTO.getCategoryCd());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getCategoryAge()).isEqualTo("2");
+                    assertThat(adminModelDTO.getCategoryAge()).isEqualTo(2);
                     assertNotNull(adminModelDTO.getCategoryAge());
                 },
                 () -> {
@@ -218,7 +219,7 @@ class AdminModelJpaRepositoryTest {
                     assertNotNull(adminModelDTO.getModelEngName());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getHeight()).isEqualTo("173");
+                    assertThat(adminModelDTO.getHeight()).isEqualTo(173);
                     assertNotNull(adminModelDTO.getHeight());
                 },
                 () -> {
@@ -226,7 +227,7 @@ class AdminModelJpaRepositoryTest {
                     assertNotNull(adminModelDTO.getSize3());
                 },
                 () -> {
-                    assertThat(adminModelDTO.getShoes()).isEqualTo("240");
+                    assertThat(adminModelDTO.getShoes()).isEqualTo(240);
                     assertNotNull(adminModelDTO.getShoes());
                 });
 
@@ -253,13 +254,13 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = AdminModelDTO.builder()
                 .idx(1)
                 .categoryCd(1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorName("조찬희")
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .modelImage(ModelImageMapper.INSTANCE.toDtoList(commonImageEntityList))
                 .build();
@@ -271,13 +272,13 @@ class AdminModelJpaRepositoryTest {
         // then
         assertThat(modelInfo.getIdx()).isEqualTo(1);
         assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(modelInfo.getCategoryAge()).isEqualTo("2");
+        assertThat(modelInfo.getCategoryAge()).isEqualTo(2);
         assertThat(modelInfo.getModelKorName()).isEqualTo("조찬희");
         assertThat(modelInfo.getModelEngName()).isEqualTo("CHOCHANHEE");
         assertThat(modelInfo.getModelDescription()).isEqualTo("chaneeCho");
-        assertThat(modelInfo.getHeight()).isEqualTo("170");
+        assertThat(modelInfo.getHeight()).isEqualTo(170);
         assertThat(modelInfo.getSize3()).isEqualTo("34-24-34");
-        assertThat(modelInfo.getShoes()).isEqualTo("270");
+        assertThat(modelInfo.getShoes()).isEqualTo(270);
         assertThat(modelInfo.getVisible()).isEqualTo("Y");
         assertThat(modelInfo.getModelImage().get(0).getFileName()).isEqualTo("test.jpg");
         assertThat(modelInfo.getModelImage().get(0).getFileMask()).isEqualTo("test.jpg");
@@ -306,13 +307,13 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = AdminModelDTO.builder()
                 .idx(1)
                 .categoryCd(1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorName("조찬희")
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .modelImage(ModelImageMapper.INSTANCE.toDtoList(commonImageEntityList))
                 .build();
@@ -324,13 +325,13 @@ class AdminModelJpaRepositoryTest {
         // then
         assertThat(modelInfo.getIdx()).isEqualTo(1);
         assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(modelInfo.getCategoryAge()).isEqualTo("2");
+        assertThat(modelInfo.getCategoryAge()).isEqualTo(2);
         assertThat(modelInfo.getModelKorName()).isEqualTo("조찬희");
         assertThat(modelInfo.getModelEngName()).isEqualTo("CHOCHANHEE");
         assertThat(modelInfo.getModelDescription()).isEqualTo("chaneeCho");
-        assertThat(modelInfo.getHeight()).isEqualTo("170");
+        assertThat(modelInfo.getHeight()).isEqualTo(170);
         assertThat(modelInfo.getSize3()).isEqualTo("34-24-34");
-        assertThat(modelInfo.getShoes()).isEqualTo("270");
+        assertThat(modelInfo.getShoes()).isEqualTo(270);
         assertThat(modelInfo.getVisible()).isEqualTo("Y");
         assertThat(modelInfo.getModelImage().get(0).getFileName()).isEqualTo("test.jpg");
         assertThat(modelInfo.getModelImage().get(0).getFileMask()).isEqualTo("test.jpg");
@@ -356,7 +357,7 @@ class AdminModelJpaRepositoryTest {
 
         // then
         assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(modelInfo.getCategoryAge()).isEqualTo("2");
+        assertThat(modelInfo.getCategoryAge()).isEqualTo(2);
 
         // verify
         verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
@@ -379,7 +380,7 @@ class AdminModelJpaRepositoryTest {
 
         // then
         assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(modelInfo.getCategoryAge()).isEqualTo("2");
+        assertThat(modelInfo.getCategoryAge()).isEqualTo(2);
 
         // verify
         then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
@@ -410,7 +411,7 @@ class AdminModelJpaRepositoryTest {
     void 모델등록예외테스트() {
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(-1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -419,9 +420,10 @@ class AdminModelJpaRepositoryTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .status("active")
+                .shoes(270)
                 .visible("Y")
                 .build();
 
@@ -438,7 +440,7 @@ class AdminModelJpaRepositoryTest {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
                 .categoryCd(2)
-                .categoryAge("3")
+                .categoryAge(3)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -448,9 +450,9 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .build();
 
@@ -464,7 +466,7 @@ class AdminModelJpaRepositoryTest {
 
         // then
         assertThat(modelInfo.getCategoryCd()).isEqualTo(2);
-        assertThat(modelInfo.getCategoryAge()).isEqualTo("3");
+        assertThat(modelInfo.getCategoryAge()).isEqualTo(3);
 
         // verify
         verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
@@ -483,7 +485,7 @@ class AdminModelJpaRepositoryTest {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
                 .categoryCd(2)
-                .categoryAge("3")
+                .categoryAge(3)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -493,9 +495,9 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .build();
 
@@ -509,7 +511,7 @@ class AdminModelJpaRepositoryTest {
 
         // then
         assertThat(modelInfo.getCategoryCd()).isEqualTo(2);
-        assertThat(modelInfo.getCategoryAge()).isEqualTo("3");
+        assertThat(modelInfo.getCategoryAge()).isEqualTo(3);
 
         // verify
         then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
@@ -522,7 +524,7 @@ class AdminModelJpaRepositoryTest {
     void 모델수정예외테스트() {
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(-1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -531,9 +533,10 @@ class AdminModelJpaRepositoryTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
-                .height("170")
+                .status("active")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .build();
 

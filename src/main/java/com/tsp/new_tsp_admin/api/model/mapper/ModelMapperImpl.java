@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Mapper
 public class ModelMapperImpl implements ModelMapper {
     @Override
@@ -28,6 +27,7 @@ public class ModelMapperImpl implements ModelMapper {
                 .modelSecondName(entity.getModelSecondName())
                 .modelKorFirstName(entity.getModelKorFirstName())
                 .modelKorSecondName(entity.getModelKorSecondName())
+                .favoriteCount(entity.getFavoriteCount())
                 .careerList(entity.getCareerList())
                 .status(entity.getStatus())
                 .creator(entity.getCreator())
@@ -59,6 +59,7 @@ public class ModelMapperImpl implements ModelMapper {
                 .shoes(dto.getShoes())
                 .size3(dto.getSize3())
                 .categoryAge(dto.getCategoryAge())
+                .favoriteCount(dto.getFavoriteCount())
                 .careerList(dto.getCareerList())
                 .status(dto.getStatus())
                 .creator(dto.getCreator())

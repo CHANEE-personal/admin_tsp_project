@@ -3,7 +3,6 @@ package com.tsp.new_tsp_admin.api.model.service;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
-import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
@@ -11,7 +10,6 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -154,27 +152,27 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    @Modifying(clearAutomatically = true)
-    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
-        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
-
-        existAdminModelEntity.setUpdater("1");
-        existAdminModelEntity.setUpdateTime(new Date());
-
-        update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
-                .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
-                .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
-                .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
-                .set(adminModelEntity.height, existAdminModelEntity.getHeight())
-                .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
-                .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
-                .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
-                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                .set(adminModelEntity.updater, "1")
-                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
-
-        return existAdminModelEntity;
-    }
+//    @Modifying(clearAutomatically = true)
+//    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
+//        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
+//
+//        existAdminModelEntity.setUpdater("1");
+//        existAdminModelEntity.setUpdateTime(new Date());
+//
+//        update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
+//                .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
+//                .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
+//                .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
+//                .set(adminModelEntity.height, existAdminModelEntity.getHeight())
+//                .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
+//                .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
+//                .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
+//                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
+//                .set(adminModelEntity.updater, "1")
+//                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
+//
+//        return existAdminModelEntity;
+//    }
 
     /**
      * <pre>
