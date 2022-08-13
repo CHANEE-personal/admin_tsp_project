@@ -60,6 +60,7 @@ class AdminModelJpaServiceTest {
                 .modelSecondName("CHANHEE")
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
+                .favoriteCount(1)
                 .modelMainYn("Y")
                 .status("draft")
                 .height(170)
