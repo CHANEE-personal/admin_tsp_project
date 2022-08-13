@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class PortFolioMapperImpl implements PortFolioMapper {
     @Override
     public AdminPortFolioDTO toDto(AdminPortFolioEntity entity) {
@@ -20,6 +19,7 @@ public class PortFolioMapperImpl implements PortFolioMapper {
                 .description(entity.getDescription())
                 .hashTag(entity.getHashTag())
                 .videoUrl(entity.getVideoUrl())
+                .viewCount(entity.getViewCount())
                 .visible(entity.getVisible())
                 .creator(entity.getCreator())
                 .createTime(entity.getCreateTime())
@@ -42,6 +42,7 @@ public class PortFolioMapperImpl implements PortFolioMapper {
                 .description(dto.getDescription())
                 .hashTag(dto.getHashTag())
                 .videoUrl(dto.getVideoUrl())
+                .viewCount(dto.getViewCount())
                 .visible(dto.getVisible())
                 .creator(dto.getCreator())
                 .createTime(dto.getCreateTime())

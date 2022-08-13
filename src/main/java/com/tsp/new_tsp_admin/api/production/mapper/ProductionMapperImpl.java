@@ -7,7 +7,6 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ProductionMapperImpl implements ProductionMapper {
     @Override
     public AdminProductionDTO toDto(AdminProductionEntity entity) {
@@ -18,6 +17,7 @@ public class ProductionMapperImpl implements ProductionMapper {
                 .idx(entity.getIdx())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
+                .viewCount(entity.getViewCount())
                 .visible(entity.getVisible())
                 .creator(entity.getCreator())
                 .createTime(entity.getCreateTime())
@@ -36,6 +36,7 @@ public class ProductionMapperImpl implements ProductionMapper {
                 .idx(dto.getIdx())
                 .title(dto.getTitle())
                 .description(dto.getDescription())
+                .viewCount(dto.getViewCount())
                 .visible(dto.getVisible())
                 .creator(dto.getCreator())
                 .createTime(dto.getCreateTime())
