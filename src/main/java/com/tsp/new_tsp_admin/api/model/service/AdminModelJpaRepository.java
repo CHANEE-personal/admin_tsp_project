@@ -154,27 +154,27 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    @Modifying(clearAutomatically = true)
-    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
-        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
-
-        existAdminModelEntity.setUpdater("1");
-        existAdminModelEntity.setUpdateTime(new Date());
-
-        update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
-                .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
-                .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
-                .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
-                .set(adminModelEntity.height, existAdminModelEntity.getHeight())
-                .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
-                .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
-                .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
-                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                .set(adminModelEntity.updater, "1")
-                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
-
-        return existAdminModelEntity;
-    }
+//    @Modifying(clearAutomatically = true)
+//    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
+//        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
+//
+//        existAdminModelEntity.setUpdater("1");
+//        existAdminModelEntity.setUpdateTime(new Date());
+//
+//        update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
+//                .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
+//                .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
+//                .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
+//                .set(adminModelEntity.height, existAdminModelEntity.getHeight())
+//                .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
+//                .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
+//                .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
+//                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
+//                .set(adminModelEntity.updater, "1")
+//                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
+//
+//        return existAdminModelEntity;
+//    }
 
     /**
      * <pre>

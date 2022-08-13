@@ -23,6 +23,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
@@ -37,6 +38,7 @@ import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
@@ -54,6 +56,7 @@ import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.TestConstructor.AutowireMode.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -88,12 +91,13 @@ class AdminModelJpaControllerTest {
 
     @DisplayName("테스트 유저 생성")
     void createUser() {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
+        PasswordEncoder passwordEncoder = createDelegatingPasswordEncoder();
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", passwordEncoder.encode("pass1234"), getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
         adminUserEntity = AdminUserEntity.builder()
                 .userId("admin04")
-                .password("pass1234")
+                .password(passwordEncoder.encode("pass1234"))
                 .name("test")
                 .email("test@test.com")
                 .role(ROLE_ADMIN)
@@ -115,7 +119,7 @@ class AdminModelJpaControllerTest {
 
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -124,9 +128,9 @@ class AdminModelJpaControllerTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .status("draft")
                 .careerList(careerList)
                 .visible("Y")
@@ -254,65 +258,49 @@ class AdminModelJpaControllerTest {
                         preprocessResponse(prettyPrint()),
                         relaxedRequestFields(
                                 fieldWithPath("categoryCd").type(NUMBER).description("모델 카테고리"),
-                                fieldWithPath("categoryAge").type(STRING).description("모델 연령대"),
+                                fieldWithPath("categoryAge").type(NUMBER).description("모델 연령대"),
                                 fieldWithPath("modelKorFirstName").type(STRING).description("모델 국문 성"),
                                 fieldWithPath("modelKorSecondName").type(STRING).description("모델 국문 이름"),
                                 fieldWithPath("modelKorName").type(STRING).description("모델 국문 이름"),
                                 fieldWithPath("modelFirstName").type(STRING).description("모델 영문 성"),
                                 fieldWithPath("modelSecondName").type(STRING).description("모델 영문 이름"),
                                 fieldWithPath("modelDescription").type(STRING).description("모델 상세"),
-                                fieldWithPath("height").type(STRING).description("모델 키"),
+                                fieldWithPath("height").type(NUMBER).description("모델 키"),
                                 fieldWithPath("size3").type(STRING).description("모델 사이즈"),
-                                fieldWithPath("shoes").type(STRING).description("모델 발 사이즈")
+                                fieldWithPath("shoes").type(NUMBER).description("모델 발 사이즈")
                         ),
                         relaxedResponseFields(
                                 fieldWithPath("categoryCd").type(NUMBER).description("모델 카테고리"),
-                                fieldWithPath("categoryAge").type(STRING).description("모델 연령대"),
+                                fieldWithPath("categoryAge").type(NUMBER).description("모델 연령대"),
                                 fieldWithPath("modelKorFirstName").type(STRING).description("모델 국문 성"),
                                 fieldWithPath("modelKorSecondName").type(STRING).description("모델 국문 이름"),
                                 fieldWithPath("modelKorName").type(STRING).description("모델 국문 이름"),
                                 fieldWithPath("modelFirstName").type(STRING).description("모델 영문 성"),
                                 fieldWithPath("modelSecondName").type(STRING).description("모델 영문 이름"),
                                 fieldWithPath("modelDescription").type(STRING).description("모델 상세"),
-                                fieldWithPath("height").type(STRING).description("모델 키"),
+                                fieldWithPath("height").type(NUMBER).description("모델 키"),
                                 fieldWithPath("size3").type(STRING).description("모델 사이즈"),
-                                fieldWithPath("shoes").type(STRING).description("모델 발 사이즈")
+                                fieldWithPath("shoes").type(NUMBER).description("모델 발 사이즈")
                         )))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
-                .andExpect(jsonPath("$.categoryAge").value("2"))
+                .andExpect(jsonPath("$.categoryAge").value(2))
                 .andExpect(jsonPath("$.modelKorFirstName").value("조"))
                 .andExpect(jsonPath("$.modelKorSecondName").value("찬희"))
                 .andExpect(jsonPath("$.modelKorName").value("조찬희"))
                 .andExpect(jsonPath("$.modelFirstName").value("CHO"))
                 .andExpect(jsonPath("$.modelSecondName").value("CHANHEE"))
                 .andExpect(jsonPath("$.modelDescription").value("chaneeCho"))
-                .andExpect(jsonPath("$.height").value("170"))
+                .andExpect(jsonPath("$.height").value(170))
                 .andExpect(jsonPath("$.size3").value("34-24-34"))
-                .andExpect(jsonPath("$.shoes").value("270"));
+                .andExpect(jsonPath("$.shoes").value(270));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("CreatedBy, CreationTimestamp 테스트")
     void CreatedByAndCreationTimestamp테스트() throws Exception {
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId("admin02")
-                .password("pass1234")
-                .visible("Y")
-                .build();
-
-        mockMvc.perform(post("/api/jpa-user/login")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminUserEntity)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(jsonPath("$.loginYn").value("Y"))
-                .andExpect(jsonPath("$.token").isNotEmpty());
-
         mockMvc.perform(post("/api/jpa-model")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
@@ -321,16 +309,16 @@ class AdminModelJpaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
-                .andExpect(jsonPath("$.categoryAge").value("2"))
+                .andExpect(jsonPath("$.categoryAge").value(2))
                 .andExpect(jsonPath("$.modelKorFirstName").value("조"))
                 .andExpect(jsonPath("$.modelKorSecondName").value("찬희"))
                 .andExpect(jsonPath("$.modelKorName").value("조찬희"))
                 .andExpect(jsonPath("$.modelFirstName").value("CHO"))
                 .andExpect(jsonPath("$.modelSecondName").value("CHANHEE"))
                 .andExpect(jsonPath("$.modelDescription").value("chaneeCho"))
-                .andExpect(jsonPath("$.height").value("170"))
+                .andExpect(jsonPath("$.height").value(170))
                 .andExpect(jsonPath("$.size3").value("34-24-34"))
-                .andExpect(jsonPath("$.shoes").value("270"))
+                .andExpect(jsonPath("$.shoes").value(270))
                 .andExpect(jsonPath("$.creator").isNotEmpty())
                 .andExpect(jsonPath("$.createTime").isNotEmpty());
     }
@@ -341,7 +329,7 @@ class AdminModelJpaControllerTest {
     void 모델등록Api예외테스트() throws Exception {
         AdminModelEntity exAdminModelEntity = AdminModelEntity.builder()
                 .categoryCd(-1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -350,9 +338,9 @@ class AdminModelJpaControllerTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .status("draft")
                 .visible("Y")
                 .build();
@@ -362,9 +350,10 @@ class AdminModelJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(exAdminModelEntity)))
                 .andDo(print())
-                .andExpect(jsonPath("$.code").value("ERROR_MODEL"))
-                .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.message").value("모델 등록 에러"));
+                .andExpect(status().isBadRequest());
+//                .andExpect(jsonPath("$.code").value("ERROR_MODEL"))
+//                .andExpect(jsonPath("$.status").value(500))
+//                .andExpect(jsonPath("$.message").value("모델 등록 에러"));
     }
 
     @Test
@@ -377,7 +366,7 @@ class AdminModelJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
-                .andExpect(status().isForbidden());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -389,7 +378,7 @@ class AdminModelJpaControllerTest {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(adminModelEntity.getIdx())
                 .categoryCd(1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("test")
                 .modelKorSecondName("test")
                 .modelKorName("test")
@@ -398,9 +387,9 @@ class AdminModelJpaControllerTest {
                 .modelEngName("test")
                 .modelDescription("test")
                 .modelMainYn("Y")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .status("active")
                 .build();
@@ -415,29 +404,29 @@ class AdminModelJpaControllerTest {
                         preprocessResponse(prettyPrint()),
                         relaxedRequestFields(
                                 fieldWithPath("categoryCd").type(NUMBER).description("모델 카테고리"),
-                                fieldWithPath("categoryAge").type(STRING).description("모델 연령대"),
+                                fieldWithPath("categoryAge").type(NUMBER).description("모델 연령대"),
                                 fieldWithPath("modelKorFirstName").type(STRING).description("모델 국문 성"),
                                 fieldWithPath("modelKorSecondName").type(STRING).description("모델 국문 이름"),
                                 fieldWithPath("modelKorName").type(STRING).description("모델 국문 이름"),
                                 fieldWithPath("modelFirstName").type(STRING).description("모델 영문 성"),
                                 fieldWithPath("modelSecondName").type(STRING).description("모델 영문 이름"),
                                 fieldWithPath("modelDescription").type(STRING).description("모델 상세"),
-                                fieldWithPath("height").type(STRING).description("모델 키"),
+                                fieldWithPath("height").type(NUMBER).description("모델 키"),
                                 fieldWithPath("size3").type(STRING).description("모델 사이즈"),
-                                fieldWithPath("shoes").type(STRING).description("모델 발 사이즈")
+                                fieldWithPath("shoes").type(NUMBER).description("모델 발 사이즈")
                         ),
                         relaxedResponseFields(
                                 fieldWithPath("categoryCd").type(NUMBER).description("모델 카테고리"),
-                                fieldWithPath("categoryAge").type(STRING).description("모델 연령대"),
+                                fieldWithPath("categoryAge").type(NUMBER).description("모델 연령대"),
                                 fieldWithPath("modelKorFirstName").type(STRING).description("모델 국문 성"),
                                 fieldWithPath("modelKorSecondName").type(STRING).description("모델 국문 이름"),
                                 fieldWithPath("modelKorName").type(STRING).description("모델 국문 이름"),
                                 fieldWithPath("modelFirstName").type(STRING).description("모델 영문 성"),
                                 fieldWithPath("modelSecondName").type(STRING).description("모델 영문 이름"),
                                 fieldWithPath("modelDescription").type(STRING).description("모델 상세"),
-                                fieldWithPath("height").type(STRING).description("모델 키"),
+                                fieldWithPath("height").type(NUMBER).description("모델 키"),
                                 fieldWithPath("size3").type(STRING).description("모델 사이즈"),
-                                fieldWithPath("shoes").type(STRING).description("모델 발 사이즈")
+                                fieldWithPath("shoes").type(NUMBER).description("모델 발 사이즈")
                         )))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
@@ -452,26 +441,10 @@ class AdminModelJpaControllerTest {
     void LastModifiedByAndUpdateTimestamp테스트() throws Exception {
         em.persist(adminModelEntity);
 
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId("admin02")
-                .password("pass1234")
-                .visible("Y")
-                .build();
-
-        mockMvc.perform(post("/api/jpa-user/login")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminUserEntity)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(jsonPath("$.loginYn").value("Y"))
-                .andExpect(jsonPath("$.token").isNotEmpty());
-
-        adminModelEntity = AdminModelEntity.builder()
+        AdminModelEntity newAdminModelEntity = AdminModelEntity.builder()
                 .idx(adminModelEntity.getIdx())
                 .categoryCd(1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("test")
                 .modelKorSecondName("test")
                 .modelKorName("test")
@@ -480,23 +453,27 @@ class AdminModelJpaControllerTest {
                 .modelEngName("test")
                 .modelDescription("test")
                 .modelMainYn("Y")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .status("active")
+                .updater(adminUserEntity.getUserId())
+                .updateTime(new Date())
                 .build();
 
-        mockMvc.perform(put("/api/jpa-model/1")
+        mockMvc.perform(put("/api/jpa-model/{idx}", newAdminModelEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminModelEntity)))
+                .content(objectMapper.writeValueAsString(newAdminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.modelKorFirstName").value("test"))
                 .andExpect(jsonPath("$.modelKorSecondName").value("test"))
-                .andExpect(jsonPath("$.modelKorName").value("test"));
+                .andExpect(jsonPath("$.modelKorName").value("test"))
+                .andExpect(jsonPath("$.updater").isNotEmpty())
+                .andExpect(jsonPath("$.updateTime").isNotEmpty());
     }
 
     @Test
@@ -508,7 +485,7 @@ class AdminModelJpaControllerTest {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(adminModelEntity.getIdx())
                 .categoryCd(-1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("test")
                 .modelKorSecondName("test")
                 .modelKorName("test")
@@ -517,9 +494,9 @@ class AdminModelJpaControllerTest {
                 .modelEngName("test")
                 .modelDescription("test")
                 .modelMainYn("Y")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .status("active")
                 .build();
@@ -529,9 +506,10 @@ class AdminModelJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
-                .andExpect(jsonPath("$.code").value("ERROR_UPDATE_MODEL"))
-                .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.message").value("모델 수정 에러"));
+                .andExpect(status().isBadRequest());
+//                .andExpect(jsonPath("$.code").value("ERROR_UPDATE_MODEL"))
+//                .andExpect(jsonPath("$.status").value(500))
+//                .andExpect(jsonPath("$.message").value("모델 수정 에러"));
     }
 
     @Test
@@ -544,7 +522,7 @@ class AdminModelJpaControllerTest {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(adminModelEntity.getIdx())
                 .categoryCd(1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("test")
                 .modelKorSecondName("test")
                 .modelKorName("test")
@@ -553,9 +531,9 @@ class AdminModelJpaControllerTest {
                 .modelEngName("test")
                 .modelDescription("test")
                 .modelMainYn("Y")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .status("active")
                 .build();

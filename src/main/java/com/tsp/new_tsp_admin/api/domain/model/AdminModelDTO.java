@@ -15,6 +15,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.Convert;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class AdminModelDTO extends NewCommonDTO {
 
     @Range(min = 2, max = 6, message = "모델 연령대 값은 2~6 사이 값만 입력할 수 있습니다.")
     @ApiModelProperty(position = 2, required = true, value = "모델 연령대((ex)2:20,3:30***)")
-    private String categoryAge;
+    private Integer categoryAge;
 
     @NotEmpty(message = "모델 국문 이름 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "men Kor Name", hidden = true)
@@ -53,10 +54,10 @@ public class AdminModelDTO extends NewCommonDTO {
     private String modelDescription;
 
     @ApiModelProperty(position = 8, required = true, value = "모델 키((ex)180)")
-    @NotEmpty(message = "모델 키 입력은 필수입니다.")
+    @NotNull(message = "모델 키 입력은 필수입니다.")
 	@Pattern(regexp="\\\\d{1,3}", message = "숫자만 입력 가능합니다.")
 	@Length(min=1, max=4, message = "1자 이상 4자미만으로 작성해야 합니다.")
-    private String height;
+    private Integer height;
 
     @NotEmpty(message = "모델 사이즈 입력은 필수입니다.")
 	@Pattern(regexp="/^(\\d{2})$/-?(\\d{2})$/-?(\\d{2})$/", message = "**-**-** 형식으로 입력바랍니다.")
@@ -64,10 +65,10 @@ public class AdminModelDTO extends NewCommonDTO {
     private String size3;
 
     @ApiModelProperty(position = 10, required = true, value = "모델 신발 사이즈((ex)270")
-    @NotEmpty(message = "모델 신발 사이즈 입력은 필수입니다.")
+    @NotNull(message = "모델 신발 사이즈 입력은 필수입니다.")
 	@Pattern(regexp="\\d{3}", message = "숫자만 입력 가능합니다.")
 	@Length(min=1, max=4, message = "1자 이상 4자미만으로 작성해야 합니다.")
-    private String shoes;
+    private Integer shoes;
 
     @ApiModelProperty(position = 12, required = true, value = "모델 노출 여부((ex)Y,N")
     @NotEmpty(message = "모델 노출 여부 선택은 필수입니다.")
@@ -92,6 +93,9 @@ public class AdminModelDTO extends NewCommonDTO {
     @ApiModelProperty(position = 6, required = true, value = "모델 국문 이름((ex)찬희")
     @NotEmpty(message = "모델 국문 이름 입력은 필수입니다.")
     private String modelKorSecondName;
+
+    @ApiModelProperty(position = 7, required = true, value = "모델 좋아요 수((ex)0")
+    private Integer favoriteCount;
 
     @Convert(converter = CustomConverter.class)
     @ApiModelProperty(value = "model career")

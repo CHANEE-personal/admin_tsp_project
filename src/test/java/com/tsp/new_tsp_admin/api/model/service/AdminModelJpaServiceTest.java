@@ -52,7 +52,7 @@ class AdminModelJpaServiceTest {
     public void createModel() {
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -62,9 +62,9 @@ class AdminModelJpaServiceTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("draft")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .build();
 
@@ -318,7 +318,7 @@ class AdminModelJpaServiceTest {
         // given
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(-1)
-                .categoryAge("2")
+                .categoryAge(2)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -327,9 +327,9 @@ class AdminModelJpaServiceTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .build();
 
@@ -347,7 +347,7 @@ class AdminModelJpaServiceTest {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
                 .categoryCd(2)
-                .categoryAge("3")
+                .categoryAge(3)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -357,9 +357,9 @@ class AdminModelJpaServiceTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .build();
 
@@ -393,7 +393,7 @@ class AdminModelJpaServiceTest {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
                 .categoryCd(2)
-                .categoryAge("3")
+                .categoryAge(3)
                 .modelKorFirstName("조")
                 .modelKorSecondName("찬희")
                 .modelKorName("조찬희")
@@ -403,9 +403,9 @@ class AdminModelJpaServiceTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
-                .height("170")
+                .height(170)
                 .size3("34-24-34")
-                .shoes("270")
+                .shoes(270)
                 .visible("Y")
                 .build();
 
@@ -435,5 +435,48 @@ class AdminModelJpaServiceTest {
 
         // then
         assertThat(adminModelJpaService.deleteModel(idx)).isNotNull();
+    }
+
+    @Test
+    @DisplayName("모델 삭제 Mockito 테스트")
+    void 모델삭제Mockito테스트() throws Exception {
+        // given
+        adminModelJpaService.insertModel(adminModelEntity);
+        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+
+        // when
+        when(mockAdminModelJpaService.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        Integer deleteIdx = adminModelJpaService.deleteModel(adminModelEntity.getIdx());
+
+        // then
+        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        verify(mockAdminModelJpaService, times(1)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaService);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaService);
+        inOrder.verify(mockAdminModelJpaService).findOneModel(adminModelEntity);
+    }
+
+    @Test
+    @DisplayName("모델 삭제 BDD 테스트")
+    void 모델삭제BDD테스트() throws Exception {
+        // given
+        adminModelJpaService.insertModel(adminModelEntity);
+        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+
+        // when
+        given(mockAdminModelJpaService.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        Integer deleteIdx = adminModelJpaService.deleteModel(adminModelEntity.getIdx());
+
+        // then
+        assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
+
+        // verify
+        then(mockAdminModelJpaService).should(times(1)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }
 }
