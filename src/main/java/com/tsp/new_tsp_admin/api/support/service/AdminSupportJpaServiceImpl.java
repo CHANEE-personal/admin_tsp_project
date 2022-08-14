@@ -165,6 +165,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @Cacheable("evaluation")
     @Transactional(readOnly = true)
     public List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap) throws TspException {
         try {
@@ -184,6 +185,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @Cacheable("evaluation")
     @Transactional(readOnly = true)
     public EvaluationDTO findOneEvaluation(EvaluationEntity evaluationEntity) throws TspException {
         try {
@@ -203,6 +205,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @CachePut("evaluation")
     @Transactional
     public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) throws TspException {
         try {
@@ -222,6 +225,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @CachePut("evaluation")
     @Transactional(readOnly = true)
     public EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity) throws TspException {
         try {
@@ -241,6 +245,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
+    @CacheEvict("evaluation")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Integer deleteEvaluation(Integer idx) throws TspException {

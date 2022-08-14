@@ -10,7 +10,8 @@ public class AgencyMapperImpl implements AgencyMapper {
 
     @Override
     public AdminAgencyDTO toDto(AdminAgencyEntity entity) {
-        return AdminAgencyDTO.builder().idx(entity.getIdx())
+        return AdminAgencyDTO.builder()
+                .idx(entity.getIdx())
                 .rnum(entity.getRnum())
                 .agencyName(entity.getAgencyName())
                 .agencyDescription(entity.getAgencyDescription())
