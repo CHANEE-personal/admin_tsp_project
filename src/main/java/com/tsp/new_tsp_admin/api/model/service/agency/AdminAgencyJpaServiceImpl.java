@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.model.service.agency;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,6 +23,7 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 @RequiredArgsConstructor
 public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     private final AdminAgencyJpaRepository adminAgencyJpaRepository;
+    private final ImageRepository imageRepository;
 
     /**
      * <pre>
@@ -34,7 +36,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findAgencyCount(Map<String, Object> agencyMap) throws Exception {
+    public Integer findAgencyCount(Map<String, Object> agencyMap) throws TspException {
         try {
             return adminAgencyJpaRepository.findAgencyCount(agencyMap);
         } catch (Exception e) {
@@ -54,10 +56,11 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @Override
     @Cacheable("agency")
     @Transactional(readOnly = true)
-    public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) throws Exception {
+    public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) throws TspException {
         try {
             return adminAgencyJpaRepository.findAgencyList(agencyMap);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new TspException(NOT_FOUND_AGENCY_LIST, e);
         }
     }
@@ -74,7 +77,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @Override
     @Cacheable("agency")
     @Transactional(readOnly = true)
-    public AdminAgencyDTO findOneAgency(AdminAgencyEntity adminAgencyEntity) throws Exception {
+    public AdminAgencyDTO findOneAgency(AdminAgencyEntity adminAgencyEntity) throws TspException {
         try {
             return adminAgencyJpaRepository.findOneAgency(adminAgencyEntity);
         } catch (Exception e) {
@@ -95,7 +98,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @CachePut("agency")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) throws Exception {
+    public AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) throws TspException {
         try {
             return adminAgencyJpaRepository.insertAgency(adminAgencyEntity);
         } catch (Exception e) {
@@ -116,7 +119,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @CachePut("agency")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) throws Exception {
+    public AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) throws TspException {
         try {
             return adminAgencyJpaRepository.updateAgency(adminAgencyEntity);
         } catch (Exception e) {
@@ -137,7 +140,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @CacheEvict("agency")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteAgency(Integer idx) throws Exception {
+    public Integer deleteAgency(Integer idx) throws TspException {
         try {
             return adminAgencyJpaRepository.deleteAgency(idx);
         } catch (Exception e) {
@@ -155,8 +158,12 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    public String insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception {
-        return null;
+    public String insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws TspException {
+        try {
+            return imageRepository.uploadImageFile(commonImageEntity, fileName, "insert");
+        } catch (Exception e) {
+            throw new TspException(ERROR_AGENCY, e);
+        }
     }
 
     /**
@@ -169,7 +176,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    public Integer deleteAgencyImage(Integer idx) throws Exception {
-        return null;
+    public Integer deleteAgencyImage(Integer idx) throws TspException {
+        return imageRepository.deleteModelImage(idx);
     }
 }

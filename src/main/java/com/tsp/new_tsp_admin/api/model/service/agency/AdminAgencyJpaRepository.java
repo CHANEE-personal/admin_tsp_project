@@ -64,9 +64,7 @@ public class AdminAgencyJpaRepository {
         List<AdminAgencyEntity> agencyList = queryFactory
                 .selectFrom(adminAgencyEntity)
                 .orderBy(adminAgencyEntity.idx.desc())
-//                .leftJoin(adminAgencyEntity.commonImageEntityList, commonImageEntity)
-//                .fetchJoin()
-                .where(searchAgency(agencyMap))
+                .where(searchAgency(agencyMap).and(adminAgencyEntity.visible.eq("Y")))
                 .offset(getInt(agencyMap.get("jpaStartPage"), 0))
                 .limit(getInt(agencyMap.get("size"), 0))
                 .fetch();
@@ -90,7 +88,8 @@ public class AdminAgencyJpaRepository {
         AdminAgencyEntity findOneAgency = queryFactory
                 .selectFrom(adminAgencyEntity)
                 .orderBy(adminAgencyEntity.idx.desc())
-                .where(adminAgencyEntity.visible.eq("Y"))
+                .where(adminAgencyEntity.visible.eq("Y")
+                        .and(adminAgencyEntity.idx.eq(existAdminAgencyEntity.getIdx())))
                 .fetchOne();
 
         return INSTANCE.toDto(findOneAgency);
