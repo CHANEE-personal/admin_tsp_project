@@ -19,7 +19,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel
+@ApiModel(value = "프로덕션 관련 변수")
 public class AdminProductionDTO extends NewCommonDTO {
     @ApiModelProperty(required = true, value = "rnum", hidden = true)
     Integer rnum;
