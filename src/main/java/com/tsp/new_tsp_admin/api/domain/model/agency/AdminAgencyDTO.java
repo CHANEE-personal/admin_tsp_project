@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.model.agency;
 
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,6 +11,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,4 +38,7 @@ public class AdminAgencyDTO extends NewCommonDTO {
     @NotEmpty(message = "소속사 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "visible")
     String visible;
+
+    @ApiModelProperty(required = true, value = "agencyImageList", hidden = true)
+    private List<CommonImageDTO> agencyImage = new ArrayList<>();
 }

@@ -46,5 +46,4 @@ public class AdminProductionEntity extends NewCommonMappedClass {
 
     @OneToMany(mappedBy = "adminProductionEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
-
 }
