@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_admin.api.domain.agency;
+package com.tsp.new_tsp_admin.api.domain.model.agency;
 
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
 import io.swagger.annotations.ApiModel;
