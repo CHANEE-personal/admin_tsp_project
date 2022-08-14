@@ -61,41 +61,44 @@ public class AdminModelDTO extends NewCommonDTO {
 
     @NotEmpty(message = "모델 사이즈 입력은 필수입니다.")
 	@Pattern(regexp="/^(\\d{2})$/-?(\\d{2})$/-?(\\d{2})$/", message = "**-**-** 형식으로 입력바랍니다.")
-    @ApiModelProperty(position = 9, required = true, value = "모델 사이즈((ex)31-24-31")
+    @ApiModelProperty(position = 9, required = true, value = "모델 사이즈((ex)31-24-31)")
     private String size3;
 
-    @ApiModelProperty(position = 10, required = true, value = "모델 신발 사이즈((ex)270")
+    @ApiModelProperty(position = 10, required = true, value = "모델 신발 사이즈((ex)270)")
     @NotNull(message = "모델 신발 사이즈 입력은 필수입니다.")
 	@Pattern(regexp="\\d{3}", message = "숫자만 입력 가능합니다.")
 	@Length(min=1, max=4, message = "1자 이상 4자미만으로 작성해야 합니다.")
     private Integer shoes;
 
-    @ApiModelProperty(position = 12, required = true, value = "모델 노출 여부((ex)Y,N")
+    @ApiModelProperty(position = 12, required = true, value = "모델 노출 여부((ex)Y,N)")
     @NotEmpty(message = "모델 노출 여부 선택은 필수입니다.")
     private String visible;
 
-    @ApiModelProperty(position = 11, required = true, value = "모델 메인 전시 여부((ex)Y,N")
+    @ApiModelProperty(position = 11, required = true, value = "모델 메인 전시 여부((ex)Y,N)")
     @NotEmpty(message = "모델 메인 노출 여부 선택은 필수입니다.")
     private String modelMainYn;
 
-    @ApiModelProperty(position = 3, required = true, value = "모델 영문 성((ex)CHO")
+    @ApiModelProperty(position = 3, required = true, value = "모델 영문 성((ex)CHO)")
     @NotEmpty(message = "모델 영문 성 입력은 필수입니다.")
     private String modelFirstName;
 
-    @ApiModelProperty(position = 4, required = true, value = "모델 영문 이름((ex)CHAN HEE")
+    @ApiModelProperty(position = 4, required = true, value = "모델 영문 이름((ex)CHAN HEE)")
     @NotEmpty(message = "모델 영문 이름 입력은 필수입니다.")
     private String modelSecondName;
 
-    @ApiModelProperty(position = 5, required = true, value = "모델 국문 성((ex)조")
+    @ApiModelProperty(position = 5, required = true, value = "모델 국문 성((ex)조)")
     @NotEmpty(message = "모델 국문 성 입력은 필수입니다.")
     private String modelKorFirstName;
 
-    @ApiModelProperty(position = 6, required = true, value = "모델 국문 이름((ex)찬희")
+    @ApiModelProperty(position = 6, required = true, value = "모델 국문 이름((ex)찬희)")
     @NotEmpty(message = "모델 국문 이름 입력은 필수입니다.")
     private String modelKorSecondName;
 
-    @ApiModelProperty(position = 7, required = true, value = "모델 좋아요 수((ex)0")
+    @ApiModelProperty(position = 7, required = true, value = "모델 좋아요 수((ex)0)")
     private Integer favoriteCount;
+
+    @ApiModelProperty(position = 8, value = "모델 조회 수((ex)0")
+    private Integer viewCount;
 
     @Convert(converter = CustomConverter.class)
     @ApiModelProperty(value = "model career")

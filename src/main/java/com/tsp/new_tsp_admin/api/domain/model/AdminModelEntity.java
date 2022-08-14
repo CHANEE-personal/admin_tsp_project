@@ -98,6 +98,9 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @Column(name = "favorite_count")
     private Integer favoriteCount;
 
+    @Column(name = "view_count")
+    private Integer viewCount;
+
     @Column(name = "career_list")
     @Convert(converter = CustomConverter.class)
     private ArrayList<CareerJson> careerList;
