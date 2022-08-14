@@ -205,7 +205,7 @@ public class ImageRepository {
                     CommonImageEntity newCommonImageEntity = CommonImageEntity.builder()
                             .imageType(commonImageEntity.getImageType())
                             .typeIdx(commonImageEntity.getTypeIdx())
-                            .typeName("model")
+                            .typeName(commonImageEntity.getTypeName())
                             .fileNum(commonImageEntity.getFileNum())
                             .fileName(commonImageEntity.getFileName())
                             .fileSize(commonImageEntity.getFileSize())
