@@ -14,6 +14,12 @@ public enum ApiExceptionType implements BaseExceptionType {
     ERROR_DELETE_USER("ERROR_DELETE_USER", 500, "유저 삭제 에러"),
     NOT_FOUND_USER("NOT_FOUND_USER", 200, "해당 유저 없음"),
     NOT_FOUND_USER_LIST("NOT_FOUND_USER_LIST", 200, "유저 리스트 없음"),
+    // Model 소속사 관련 Type
+    ERROR_AGENCY("ERROR_AGENCY", 500, "소속사 등록 에러"),
+    ERROR_UPDATE_AGENCY("ERROR_UPDATE_AGENCY", 500, "소속사 수정 에러"),
+    ERROR_DELETE_AGENCY("ERROR_DELETE_AGENCY", 500, "소속사 삭제 에러"),
+    NOT_FOUND_AGENCY("NOT_FOUND_AGENCY", 200, "해당 소속사 없음"),
+    NOT_FOUND_AGENCY_LIST("NOT_FOUND_AGENCY_LIST", 200, "소속사 리스트 없음"),
 
     // Model 관련 Type
     ERROR_MODEL("ERROR_MODEL", 500, "모델 등록 에러"),

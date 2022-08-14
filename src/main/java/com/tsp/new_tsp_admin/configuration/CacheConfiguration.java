@@ -28,6 +28,8 @@ public class CacheConfiguration {
         cacheManager.setCaches(of(
                 new ConcurrentMapCache("user"),
                 new ConcurrentMapCache("model"),
+                new ConcurrentMapCache("agency"),
+                new ConcurrentMapCache("evaluation"),
                 new ConcurrentMapCache("production"),
                 new ConcurrentMapCache("portfolio"),
                 new ConcurrentMapCache("support"),
