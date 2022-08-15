@@ -659,6 +659,15 @@ class AdminModelJpaControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminModelEntity)))
                     .andDo(print())
+                .andDo(document("model/put/agency",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        relaxedRequestFields(
+                                fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
+                        )))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.agencyIdx").value(adminAgencyEntity.getIdx()));
     }
