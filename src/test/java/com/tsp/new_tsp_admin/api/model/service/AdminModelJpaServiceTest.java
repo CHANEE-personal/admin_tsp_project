@@ -1,7 +1,13 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
+import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapperImpl;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,8 +54,30 @@ class AdminModelJpaServiceTest {
     private final AdminModelJpaService adminModelJpaService;
     private AdminModelEntity adminModelEntity;
     private AdminModelDTO adminModelDTO;
+    private CommonImageEntity commonImageEntity;
+    private CommonImageDTO commonImageDTO;
+    private AdminAgencyEntity adminAgencyEntity;
+    private AdminAgencyDTO adminAgencyDTO;
 
     public void createModel() {
+        adminAgencyEntity = AdminAgencyEntity.builder()
+                .agencyName("agency")
+                .agencyDescription("agency")
+                .visible("Y")
+                .build();
+        adminAgencyDTO = AgencyMapperImpl.INSTANCE.toDto(adminAgencyEntity);
+
+        commonImageEntity = CommonImageEntity.builder()
+                .idx(1)
+                .imageType("main")
+                .fileName("test.jpg")
+                .fileMask("test.jpg")
+                .filePath("/test/test.jpg")
+                .typeIdx(1)
+                .typeName("model")
+                .build();
+        commonImageDTO = ModelImageMapper.INSTANCE.toDto(commonImageEntity);
+
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
                 .categoryAge(2)
@@ -61,6 +89,8 @@ class AdminModelJpaServiceTest {
                 .modelEngName("CHOCHANHEE")
                 .modelDescription("chaneeCho")
                 .favoriteCount(1)
+                .viewCount(1)
+                .adminAgencyEntity(adminAgencyEntity)
                 .modelMainYn("Y")
                 .status("draft")
                 .height(170)
@@ -68,7 +98,6 @@ class AdminModelJpaServiceTest {
                 .shoes(270)
                 .visible("Y")
                 .build();
-
         adminModelDTO = INSTANCE.toDto(adminModelEntity);
     }
 
@@ -112,14 +141,19 @@ class AdminModelJpaServiceTest {
         modelMap.put("jpaStartPage", 1);
         modelMap.put("size", 3);
 
-        List<AdminModelDTO> returnModelList = new ArrayList<>();
+        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
+        commonImageDtoList.add(commonImageDTO);
 
+        List<AdminModelDTO> returnModelList = new ArrayList<>();
         // 남성
-        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel").build());
+        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel")
+                .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 여성
-        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel").build());
+        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel")
+                .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 시니어
-        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel").build());
+        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel")
+                .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
         when(mockAdminModelJpaService.findModelsList(modelMap)).thenReturn(returnModelList);
@@ -135,16 +169,22 @@ class AdminModelJpaServiceTest {
         assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getIdx());
         assertThat(modelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
         assertThat(modelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
+        assertThat(modelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
+        assertThat(modelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
 
         assertThat(modelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
         assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getIdx());
         assertThat(modelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
         assertThat(modelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
+        assertThat(modelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
+        assertThat(modelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
 
         assertThat(modelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
         assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getIdx());
         assertThat(modelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
         assertThat(modelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
+        assertThat(modelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
+        assertThat(modelList.get(2).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyDescription());
 
         // verify
         verify(mockAdminModelJpaService, times(1)).findModelsList(modelMap);
@@ -164,14 +204,20 @@ class AdminModelJpaServiceTest {
         modelMap.put("jpaStartPage", 1);
         modelMap.put("size", 3);
 
+        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
+        commonImageDtoList.add(commonImageDTO);
+
         List<AdminModelDTO> returnModelList = new ArrayList<>();
 
         // 남성
-        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel").build());
+        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel")
+                .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 여성
-        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel").build());
+        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel")
+                .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 시니어
-        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel").build());
+        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel")
+                .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
         given(mockAdminModelJpaService.findModelsList(modelMap)).willReturn(returnModelList);
@@ -187,16 +233,22 @@ class AdminModelJpaServiceTest {
         assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getIdx());
         assertThat(modelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
         assertThat(modelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
+        assertThat(modelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
+        assertThat(modelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
 
         assertThat(modelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
         assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getIdx());
         assertThat(modelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
         assertThat(modelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
+        assertThat(modelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
+        assertThat(modelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
 
         assertThat(modelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
         assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getIdx());
         assertThat(modelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
         assertThat(modelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
+        assertThat(modelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
+        assertThat(modelList.get(2).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyDescription());
 
         // verify
         then(mockAdminModelJpaService).should(times(1)).findModelsList(modelMap);
@@ -239,6 +291,8 @@ class AdminModelJpaServiceTest {
         assertThat(modelInfo.getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
         assertThat(modelInfo.getModelKorName()).isEqualTo(adminModelDTO.getModelKorName());
         assertThat(modelInfo.getModelEngName()).isEqualTo(adminModelDTO.getModelEngName());
+        assertThat(modelInfo.getModelAgency().getAgencyName()).isEqualTo(adminModelDTO.getModelAgency().getAgencyName());
+        assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelDTO.getModelAgency().getAgencyDescription());
 
         // verify
         verify(mockAdminModelJpaService, times(1)).findOneModel(adminModelEntity);
@@ -261,6 +315,8 @@ class AdminModelJpaServiceTest {
         assertThat(modelInfo.getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
         assertThat(modelInfo.getModelKorName()).isEqualTo(adminModelDTO.getModelKorName());
         assertThat(modelInfo.getModelEngName()).isEqualTo(adminModelDTO.getModelEngName());
+        assertThat(modelInfo.getModelAgency().getAgencyName()).isEqualTo(adminModelDTO.getModelAgency().getAgencyName());
+        assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelDTO.getModelAgency().getAgencyDescription());
 
         // verify
         then(mockAdminModelJpaService).should(times(1)).findOneModel(adminModelEntity);
@@ -282,6 +338,8 @@ class AdminModelJpaServiceTest {
         assertThat(modelInfo.getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
         assertThat(modelInfo.getModelKorFirstName()).isEqualTo(adminModelDTO.getModelKorFirstName());
         assertThat(modelInfo.getModelKorSecondName()).isEqualTo(adminModelDTO.getModelKorSecondName());
+        assertThat(modelInfo.getModelAgency().getAgencyName()).isEqualTo(adminModelDTO.getModelAgency().getAgencyName());
+        assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelDTO.getModelAgency().getAgencyDescription());
 
         // verify
         verify(mockAdminModelJpaService, times(1)).findOneModel(adminModelEntity);
@@ -306,6 +364,8 @@ class AdminModelJpaServiceTest {
         assertThat(modelInfo.getCategoryCd()).isEqualTo(adminModelDTO.getCategoryCd());
         assertThat(modelInfo.getModelKorFirstName()).isEqualTo(adminModelDTO.getModelKorFirstName());
         assertThat(modelInfo.getModelKorSecondName()).isEqualTo(adminModelDTO.getModelKorSecondName());
+        assertThat(modelInfo.getModelAgency().getAgencyName()).isEqualTo(adminModelDTO.getModelAgency().getAgencyName());
+        assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelDTO.getModelAgency().getAgencyDescription());
 
         // verify
         then(mockAdminModelJpaService).should(times(1)).findOneModel(adminModelEntity);

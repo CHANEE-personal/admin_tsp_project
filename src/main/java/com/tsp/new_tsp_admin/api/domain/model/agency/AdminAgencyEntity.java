@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.domain.model.agency;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,9 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -47,4 +51,7 @@ public class AdminAgencyEntity extends NewCommonMappedClass {
 
     @OneToMany(mappedBy = "adminAgencyEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "adminAgencyEntity", cascade = ALL, fetch = LAZY)
+    private AdminModelEntity adminModelEntity;
 }

@@ -7,7 +7,11 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -16,12 +20,16 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
+import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.*;
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_AGENCY;
+import static java.util.Objects.requireNonNull;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -80,6 +88,8 @@ public class AdminModelJpaRepository {
         List<AdminModelEntity> modelList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
+                .leftJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
+                .fetchJoin()
                 .where(searchModel(modelMap).and(adminModelEntity.visible.eq("Y")))
                 .offset(getInt(modelMap.get("jpaStartPage"), 0))
                 .limit(getInt(modelMap.get("size"), 0))
@@ -106,6 +116,7 @@ public class AdminModelJpaRepository {
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
+                .leftJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
                 .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())
                         .and(adminModelEntity.visible.eq("Y"))
@@ -225,5 +236,36 @@ public class AdminModelJpaRepository {
         em.flush();
         em.clear();
         return idx;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateModelAgency
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 모델 소속사 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 14.
+     * </pre>
+     */
+    public AdminModelDTO updateModelAgency(AdminModelEntity existAdminModelEntity) {
+        // 소속사 존재 여부 체크
+        Integer agencyIdx = requireNonNull(queryFactory
+                .selectFrom(adminAgencyEntity)
+                .where(adminAgencyEntity.idx.eq(existAdminModelEntity.getAgencyIdx())).fetchOne()).getIdx();
+
+        if (agencyIdx != null) {
+            queryFactory
+                    .update(adminModelEntity)
+                    .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx()))
+                    .set(adminModelEntity.adminAgencyEntity.idx, agencyIdx)
+                    .execute();
+
+            em.flush();
+            em.clear();
+
+            return INSTANCE.toDto(existAdminModelEntity);
+        } else {
+            throw new TspException(NOT_FOUND_AGENCY, new Throwable("NOT_FOUND_AGENCY"));
+        }
     }
 }
