@@ -8,6 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
 import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapperImpl;
+import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaService;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,7 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 class AdminModelJpaServiceTest {
     @Mock private AdminModelJpaService mockAdminModelJpaService;
     private final AdminModelJpaService adminModelJpaService;
+    private final AdminAgencyJpaService adminAgencyJpaService;
     private AdminModelEntity adminModelEntity;
     private AdminModelDTO adminModelDTO;
     private CommonImageEntity commonImageEntity;
@@ -538,6 +540,151 @@ class AdminModelJpaServiceTest {
         // verify
         then(mockAdminModelJpaService).should(times(1)).findOneModel(adminModelEntity);
         then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("모델 소속사 수정 Mockito 테스트")
+    void 모델소속사수정Mockito테스트() throws Exception {
+        // 소속사 등록
+        AdminAgencyDTO newAgencyDTO = adminAgencyJpaService.insertAgency(adminAgencyEntity);
+        Integer agencyIdx = newAgencyDTO.getIdx();
+
+        adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .favoriteCount(1)
+                .viewCount(1)
+                .agencyIdx(adminAgencyEntity.getIdx())
+                .adminAgencyEntity(adminAgencyEntity)
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        // 모델 소속사 수정
+        Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+
+        AdminModelEntity newAdminModelEntity = AdminModelEntity.builder()
+                .idx(idx)
+                .categoryCd(2)
+                .categoryAge(3)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .agencyIdx(agencyIdx)
+                .adminAgencyEntity(adminAgencyEntity)
+                .status("active")
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        adminModelJpaService.updateModelAgency(newAdminModelEntity);
+        adminModelDTO = INSTANCE.toDto(newAdminModelEntity);
+
+        // when
+        when(mockAdminModelJpaService.findOneModel(newAdminModelEntity)).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(newAdminModelEntity);
+
+        // then
+        assertThat(modelInfo.getAgencyIdx()).isEqualTo(adminModelEntity.getAgencyIdx());
+        assertThat(modelInfo.getModelAgency().getAgencyName()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyName());
+        assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyDescription());
+
+        // verify
+        verify(mockAdminModelJpaService, times(1)).findOneModel(newAdminModelEntity);
+        verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(newAdminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaService);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaService);
+        inOrder.verify(mockAdminModelJpaService).findOneModel(newAdminModelEntity);
+    }
+
+    @Test
+    @DisplayName("모델 소속사 수정 BDD 테스트")
+    void 모델소속사수정BDD테스트() throws Exception {
+        // 소속사 등록
+        AdminAgencyDTO newAgencyDTO = adminAgencyJpaService.insertAgency(adminAgencyEntity);
+        Integer agencyIdx = newAgencyDTO.getIdx();
+
+        adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .favoriteCount(1)
+                .viewCount(1)
+                .agencyIdx(adminAgencyEntity.getIdx())
+                .adminAgencyEntity(adminAgencyEntity)
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        // 모델 소속사 수정
+        Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+
+        AdminModelEntity newAdminModelEntity = AdminModelEntity.builder()
+                .idx(idx)
+                .categoryCd(2)
+                .categoryAge(3)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .agencyIdx(agencyIdx)
+                .adminAgencyEntity(adminAgencyEntity)
+                .status("active")
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        adminModelJpaService.updateModelAgency(newAdminModelEntity);
+        adminModelDTO = INSTANCE.toDto(newAdminModelEntity);
+
+        // when
+        given(mockAdminModelJpaService.findOneModel(newAdminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(newAdminModelEntity);
+
+        // then
+        assertThat(modelInfo.getAgencyIdx()).isEqualTo(adminModelEntity.getAgencyIdx());
+        assertThat(modelInfo.getModelAgency().getAgencyName()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyName());
+        assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyDescription());
+
+        // verify
+        then(mockAdminModelJpaService).should(times(1)).findOneModel(newAdminModelEntity);
+        then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(newAdminModelEntity);
         then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }
 }

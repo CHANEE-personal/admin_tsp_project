@@ -180,4 +180,25 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     public Integer deleteModelImage(Integer idx) {
         return imageRepository.deleteModelImage(idx);
     }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateModelAgency
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 소속사 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 14.
+     * </pre>
+     */
+    @Override
+    @CachePut("model")
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity) {
+        try {
+            return adminModelJpaRepository.updateModelAgency(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_UPDATE_MODEL, e);
+        }
+    }
 }
