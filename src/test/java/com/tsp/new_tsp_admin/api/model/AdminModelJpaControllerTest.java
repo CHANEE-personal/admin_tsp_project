@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.CareerJson;
+import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -614,5 +615,51 @@ class AdminModelJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(getString(commonImageEntity.getIdx(),"")));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 모델 소속사 수정 테스트")
+    void 모델소속사수정Api테스트() throws Exception {
+        // 소속사 등록
+        AdminAgencyEntity adminAgencyEntity = AdminAgencyEntity.builder()
+                        .agencyName("agency")
+                        .agencyDescription("agency")
+                        .visible("Y")
+                        .build();
+
+        em.persist(adminAgencyEntity);
+
+        // 모델 등록
+        em.persist(adminModelEntity);
+
+        // 모델 소속사 수정
+        adminModelEntity = AdminModelEntity.builder()
+                .idx(adminModelEntity.getIdx())
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("test")
+                .modelKorSecondName("test")
+                .modelKorName("test")
+                .modelFirstName("test")
+                .modelSecondName("test")
+                .modelEngName("test")
+                .modelDescription("test")
+                .modelMainYn("Y")
+                .agencyIdx(adminAgencyEntity.getIdx())
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .status("active")
+                .build();
+
+        mockMvc.perform(put("/api/jpa-model/{idx}/agency", adminModelEntity.getIdx())
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.agencyIdx").value(adminAgencyEntity.getIdx()));
     }
 }
