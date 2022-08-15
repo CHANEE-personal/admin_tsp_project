@@ -7,9 +7,6 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity;
-import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
-import com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +17,6 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
@@ -46,7 +42,7 @@ public class AdminModelJpaRepository {
         if ("0".equals(searchType)) {
             return adminModelEntity.modelKorName.contains(searchKeyword)
                     .or(adminModelEntity.modelEngName.contains(searchKeyword)
-                            .or(adminModelEntity.modelDescription.contains(searchKeyword)))
+                    .or(adminModelEntity.modelDescription.contains(searchKeyword)))
                     .and(adminModelEntity.categoryCd.eq(categoryCd));
         } else if ("1".equals(searchType)) {
             return adminModelEntity.modelKorName.contains(searchKeyword)
