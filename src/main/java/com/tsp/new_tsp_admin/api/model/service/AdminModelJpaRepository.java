@@ -111,8 +111,8 @@ public class AdminModelJpaRepository {
         AdminModelEntity findOneModel = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
+                .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
-                .leftJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
                 .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())
                         .and(adminModelEntity.visible.eq("Y"))

@@ -9,8 +9,8 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapperImpl;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,6 @@ import javax.transaction.Transactional;
 
 import java.util.*;
 
-import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -80,7 +79,7 @@ class AdminModelJpaRepositoryTest {
                 .agencyDescription("agency")
                 .visible("Y")
                 .build();
-        adminAgencyDTO = AgencyMapperImpl.INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AgencyMapper.INSTANCE.toDto(adminAgencyEntity);
 
         ArrayList<CareerJson> careerList = new ArrayList<>();
         careerList.add(new CareerJson("title","txt"));
@@ -108,7 +107,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .idx(1)
@@ -494,7 +493,7 @@ class AdminModelJpaRepositoryTest {
 
         adminModelJpaRepository.updateModelByEm(adminModelEntity);
 
-        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
@@ -539,7 +538,7 @@ class AdminModelJpaRepositoryTest {
 
         adminModelJpaRepository.updateModelByEm(adminModelEntity);
 
-        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
         given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
@@ -599,7 +598,7 @@ class AdminModelJpaRepositoryTest {
     void 모델삭제Mockito테스트() {
         // given
         em.persist(adminModelEntity);
-        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
@@ -622,7 +621,7 @@ class AdminModelJpaRepositoryTest {
     void 모델삭제BDD테스트() {
         // given
         em.persist(adminModelEntity);
-        adminModelDTO = INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
         given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
@@ -711,7 +710,7 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         adminModelJpaRepository.updateModelAgency(newAdminModelEntity);
-        adminModelDTO = INSTANCE.toDto(newAdminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(newAdminModelEntity);
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(newAdminModelEntity)).thenReturn(adminModelDTO);
@@ -785,7 +784,7 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         adminModelJpaRepository.updateModelAgency(newAdminModelEntity);
-        adminModelDTO = INSTANCE.toDto(newAdminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(newAdminModelEntity);
 
         // when
         given(mockAdminModelJpaRepository.findOneModel(newAdminModelEntity)).willReturn(adminModelDTO);

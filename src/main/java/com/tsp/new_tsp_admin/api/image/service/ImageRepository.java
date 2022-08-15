@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.image.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
+import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.ERROR_DELETE_IMAGE;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.ERROR_IMAGE;
 import static java.lang.Runtime.getRuntime;
@@ -51,7 +51,7 @@ public class ImageRepository {
 
     /**
      * <pre>
-     * 1. MethodName : maxSubEntity
+     * 1. MethodName : findOneImage
      * 2. ClassName  : ImageRepository.java
      * 3. Comment    : 이미지 파일 상세 조회
      * 4. 작성자       : CHO
@@ -98,7 +98,6 @@ public class ImageRepository {
     public Integer insertImage(CommonImageEntity commonImageEntity) {
         try {
             em.persist(commonImageEntity);
-
             return commonImageEntity.getIdx();
         } catch (Exception e) {
             throw new TspException(ERROR_IMAGE, e);
@@ -178,7 +177,7 @@ public class ImageRepository {
                             commonImageEntity.setImageType("sub" + mainCnt);
                         }
                     } else {
-                        int cnt = StringUtil.getInt(maxSubCnt(commonImageEntity), 0);
+                        int cnt = getInt(maxSubCnt(commonImageEntity), 0);
                         if ("production".equals(commonImageEntity.getTypeName())) {
                             commonImageEntity.setImageType("main");
                         } else {

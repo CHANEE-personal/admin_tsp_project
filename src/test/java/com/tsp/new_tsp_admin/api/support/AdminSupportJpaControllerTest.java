@@ -109,10 +109,10 @@ class AdminSupportJpaControllerTest {
 
 		// support 생성
 		adminSupportEntity = AdminSupportEntity.builder()
-				.supportName("조찬희")
-				.supportMessage("조찬희 지원")
+				.supportName("지원자")
+				.supportMessage("지원자")
 				.supportHeight(170)
-				.supportPhone("010-9466-2702")
+				.supportPhone("010-1234-4567")
 				.supportSize3("31-24-31")
 				.supportInstagram("https://instagram.com")
 				.visible("Y")

@@ -7,7 +7,7 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapperImpl;
+import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaService;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +67,7 @@ class AdminModelJpaServiceTest {
                 .agencyDescription("agency")
                 .visible("Y")
                 .build();
-        adminAgencyDTO = AgencyMapperImpl.INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AgencyMapper.INSTANCE.toDto(adminAgencyEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .idx(1)
