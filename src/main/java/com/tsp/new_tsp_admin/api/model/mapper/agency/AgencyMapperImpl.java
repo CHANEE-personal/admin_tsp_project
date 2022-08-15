@@ -10,6 +10,8 @@ public class AgencyMapperImpl implements AgencyMapper {
 
     @Override
     public AdminAgencyDTO toDto(AdminAgencyEntity entity) {
+        if (entity == null) return null;
+
         return AdminAgencyDTO.builder()
                 .idx(entity.getIdx())
                 .rnum(entity.getRnum())
@@ -25,6 +27,8 @@ public class AgencyMapperImpl implements AgencyMapper {
 
     @Override
     public AdminAgencyEntity toEntity(AdminAgencyDTO dto) {
+        if (dto == null) return null;
+
         return AdminAgencyEntity.builder()
                 .idx(dto.getIdx())
                 .rnum(dto.getRnum())

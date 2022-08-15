@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.model.mapper;
 
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
 import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
@@ -29,12 +30,14 @@ public class ModelMapperImpl implements ModelMapper {
                 .modelKorSecondName(entity.getModelKorSecondName())
                 .favoriteCount(entity.getFavoriteCount())
                 .viewCount(entity.getViewCount())
+                .agencyIdx(entity.getAgencyIdx())
                 .careerList(entity.getCareerList())
                 .status(entity.getStatus())
                 .creator(entity.getCreator())
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
                 .updateTime(entity.getUpdateTime())
+                .modelAgency(AgencyMapper.INSTANCE.toDto(entity.getAdminAgencyEntity()))
                 .modelImage(ModelImageMapper.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
                 .build();
     }
@@ -62,6 +65,7 @@ public class ModelMapperImpl implements ModelMapper {
                 .categoryAge(dto.getCategoryAge())
                 .favoriteCount(dto.getFavoriteCount())
                 .viewCount(dto.getViewCount())
+                .agencyIdx(dto.getAgencyIdx())
                 .careerList(dto.getCareerList())
                 .status(dto.getStatus())
                 .creator(dto.getCreator())

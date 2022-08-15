@@ -97,4 +97,15 @@ public interface AdminModelJpaService {
      * </pre>
      */
     Integer deleteModelImage(Integer idx) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : updateModelAgency
+     * 2. ClassName  : AdminModelJpaService.java
+     * 3. Comment    : 관리자 모델 소속사 수정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 14.
+     * </pre>
+     */
+    AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity) throws Exception;
 }

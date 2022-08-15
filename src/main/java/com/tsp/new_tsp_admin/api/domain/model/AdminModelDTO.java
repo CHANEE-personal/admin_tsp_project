@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.domain.model;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
+import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.common.CustomConverter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -100,6 +102,9 @@ public class AdminModelDTO extends NewCommonDTO {
     @ApiModelProperty(position = 8, value = "모델 조회 수((ex)0")
     private Integer viewCount;
 
+    @ApiModelProperty(position = 9, value = "소속사 idx((ex)1")
+    private Integer agencyIdx;
+
     @Convert(converter = CustomConverter.class)
     @ApiModelProperty(value = "model career")
     private ArrayList<CareerJson> careerList;
@@ -108,6 +113,9 @@ public class AdminModelDTO extends NewCommonDTO {
     @ApiModelProperty(required = true, value = "model status")
     private String status;
 
-    @ApiModelProperty(required = true, value = "modelImageList", hidden = true)
+    @ApiModelProperty(value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();
+
+    @ApiModelProperty(value = "modelAgency", hidden = true)
+    private AdminAgencyDTO modelAgency;
 }
