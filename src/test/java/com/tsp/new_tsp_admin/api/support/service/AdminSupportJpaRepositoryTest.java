@@ -24,10 +24,7 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.*;
@@ -168,6 +165,7 @@ class AdminSupportJpaRepositoryTest {
                 .supportHeight(170)
                 .supportSize3("31-24-31")
                 .supportMessage("test")
+                .visible("Y")
                 .supportInstagram("https://instagram.com")
                 .build();
 
@@ -208,6 +206,7 @@ class AdminSupportJpaRepositoryTest {
                 .supportSize3("31-24-31")
                 .supportMessage("test")
                 .supportInstagram("https://instagram.com")
+                .visible("Y")
                 .build();
 
         adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
@@ -547,6 +546,77 @@ class AdminSupportJpaRepositoryTest {
         // verify
         then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
         then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("지원 모델 합격 Mockito 테스트")
+    void 지원모델합격Mockito테스트() {
+        // given
+        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        adminSupportEntity = AdminSupportEntity.builder()
+                .idx(supportIdx)
+                .supportName("조찬희")
+                .supportHeight(170)
+                .supportMessage("조찬희")
+                .supportPhone("010-9466-2702")
+                .supportSize3("31-24-31")
+                .passYn("Y")
+                .passTime(new Date())
+                .visible("Y")
+                .build();
+
+        adminSupportJpaRepository.updatePass(adminSupportEntity);
+        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+
+        // when
+        when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        AdminSupportDTO supportInfo = mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity);
+
+        // then
+        assertThat(supportInfo.getIdx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(supportInfo.getPassYn()).isEqualTo("Y");
+        assertThat(supportInfo.getPassTime()).isNotNull();
+
+        verify(mockAdminSupportJpaRepository, times(1)).findOneSupportModel(adminSupportEntity);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneSupportModel(adminSupportEntity);
+    }
+
+    @Test
+    @DisplayName("지원 모델 합격 BDD 테스트")
+    void 지원모델합격BDD테스트() {
+        // given
+        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        adminSupportEntity = AdminSupportEntity.builder()
+                .idx(supportIdx)
+                .supportName("조찬희")
+                .supportHeight(170)
+                .supportMessage("조찬희")
+                .supportPhone("010-9466-2702")
+                .supportSize3("31-24-31")
+                .passYn("Y")
+                .passTime(new Date())
+                .visible("Y")
+                .build();
+
+        adminSupportJpaRepository.updatePass(adminSupportEntity);
+        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+
+        // when
+        when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        AdminSupportDTO supportInfo = mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity);
+
+        // then
+        assertThat(supportInfo.getIdx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(supportInfo.getPassYn()).isEqualTo("Y");
+        assertThat(supportInfo.getPassTime()).isNotNull();
+
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneSupportModel(adminSupportEntity);
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 }

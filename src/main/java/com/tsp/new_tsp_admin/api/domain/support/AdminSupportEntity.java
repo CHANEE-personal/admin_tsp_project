@@ -64,6 +64,12 @@ public class AdminSupportEntity extends NewCommonMappedClass {
     @Column(name = "support_time")
     private Date supportTime;
 
+    @Column(name = "pass_yn")
+    private String passYn;
+
+    @Column(name = "pass_time")
+    private Date passTime;
+
     @OneToMany(mappedBy = "adminSupportEntity")
     private List<EvaluationEntity> evaluationEntityList = new ArrayList<>();
 
