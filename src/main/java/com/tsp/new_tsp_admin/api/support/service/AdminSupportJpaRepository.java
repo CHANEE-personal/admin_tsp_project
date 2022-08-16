@@ -255,10 +255,13 @@ public class AdminSupportJpaRepository {
      */
     public AdminSupportDTO updatePass(AdminSupportEntity existSupportEntity) {
         queryFactory.update(adminSupportEntity)
-                .set(adminSupportEntity.passYn, "Y")
-                .set(adminSupportEntity.passTime, new Date())
+                .set(adminSupportEntity.passYn, existSupportEntity.getPassYn())
+                .set(adminSupportEntity.passTime, existSupportEntity.getPassTime())
                 .where(adminSupportEntity.idx.eq(existSupportEntity.getIdx()))
                 .execute();
+
+        em.flush();
+        em.clear();
 
         return INSTANCE.toDto(existSupportEntity);
     }

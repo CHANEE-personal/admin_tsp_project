@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -249,5 +250,27 @@ public class AdminSupportJpaController {
     @DeleteMapping("/{idx}/evaluation")
     public Integer deleteEvaluation(@PathVariable Integer idx) throws Exception {
         return adminSupportJpaService.deleteEvaluation(idx);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updatePass
+     * 2. ClassName  : AdminSupportJpaController.java
+     * 3. Comment    : 관리자 지원 모델 합격 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @ApiOperation(value = "지원모델 합격 처리", notes = "지원모델을 합격 처리한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "지원모델 합격 처리성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PutMapping("/{idx}/pass")
+    public AdminSupportDTO updatePass(@PathVariable Integer idx) throws Exception {
+        return adminSupportJpaService.updatePass(AdminSupportEntity.builder().idx(idx).passYn("Y").passTime(new Date()).build());
     }
 }

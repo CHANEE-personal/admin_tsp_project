@@ -397,4 +397,20 @@ class AdminSupportJpaControllerTest {
 				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(content().string(getString(evaluationEntity.getIdx())));
 	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	@DisplayName("Admin 지원 모델 합격 처리 테스트")
+	void 지원모델합격처리Api테스트() throws Exception {
+		// 지원모델 등록
+		em.persist(adminSupportEntity);
+
+		mockMvc.perform(put("/api/jpa-support/{idx}/pass", adminSupportEntity.getIdx())
+						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
+				.andExpect(jsonPath("$.passYn").value("Y"))
+				.andExpect(jsonPath("$.passTime").isNotEmpty());
+	}
 }
