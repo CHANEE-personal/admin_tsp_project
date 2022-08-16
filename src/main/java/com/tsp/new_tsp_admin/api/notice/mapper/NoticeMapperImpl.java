@@ -1,19 +1,19 @@
-package com.tsp.new_tsp_admin.api.production.mapper;
+package com.tsp.new_tsp_admin.api.notice.mapper;
 
-import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
-import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
+import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeDTO;
+import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductionMapperImpl implements ProductionMapper {
+public class NoticeMapperImpl implements NoticeMapper {
+
     @Override
-    public AdminProductionDTO toDto(AdminProductionEntity entity) {
+    public AdminNoticeDTO toDto(AdminNoticeEntity entity) {
         if (entity == null) return null;
 
-        return AdminProductionDTO.builder()
+        return AdminNoticeDTO.builder().idx(entity.getIdx())
                 .rnum(entity.getRnum())
-                .idx(entity.getIdx())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .viewCount(entity.getViewCount())
@@ -22,15 +22,14 @@ public class ProductionMapperImpl implements ProductionMapper {
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
                 .updateTime(entity.getUpdateTime())
-                .productionImage(ProductionImageMapper.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
                 .build();
     }
 
     @Override
-    public AdminProductionEntity toEntity(AdminProductionDTO dto) {
+    public AdminNoticeEntity toEntity(AdminNoticeDTO dto) {
         if (dto == null) return null;
 
-        return AdminProductionEntity.builder()
+        return AdminNoticeEntity.builder()
                 .rnum(dto.getRnum())
                 .idx(dto.getIdx())
                 .title(dto.getTitle())
@@ -45,24 +44,24 @@ public class ProductionMapperImpl implements ProductionMapper {
     }
 
     @Override
-    public List<AdminProductionDTO> toDtoList(List<AdminProductionEntity> entityList) {
+    public List<AdminNoticeDTO> toDtoList(List<AdminNoticeEntity> entityList) {
         if (entityList == null) return null;
 
-        List<AdminProductionDTO> list = new ArrayList<>(entityList.size());
-        for (AdminProductionEntity adminProductionEntity : entityList) {
-            list.add(toDto(adminProductionEntity));
+        List<AdminNoticeDTO> list = new ArrayList<>(entityList.size());
+        for (AdminNoticeEntity adminNoticeEntity : entityList) {
+            list.add(toDto(adminNoticeEntity));
         }
 
         return list;
     }
 
     @Override
-    public List<AdminProductionEntity> toEntityList(List<AdminProductionDTO> dtoList) {
+    public List<AdminNoticeEntity> toEntityList(List<AdminNoticeDTO> dtoList) {
         if (dtoList == null) return null;
 
-        List<AdminProductionEntity> list = new ArrayList<>(dtoList.size());
-        for (AdminProductionDTO adminProductionDTO : dtoList) {
-            list.add(toEntity(adminProductionDTO));
+        List<AdminNoticeEntity> list = new ArrayList<>(dtoList.size());
+        for (AdminNoticeDTO adminNoticeDTO : dtoList) {
+            list.add(toEntity(adminNoticeDTO));
         }
 
         return list;
