@@ -12,6 +12,8 @@ import java.util.List;
 public class ModelMapperImpl implements ModelMapper {
     @Override
     public AdminModelDTO toDto(AdminModelEntity entity) {
+        if (entity == null) return null;
+
         return AdminModelDTO.builder().idx(entity.getIdx())
                 .rnum(entity.getRnum())
                 .categoryCd(entity.getCategoryCd())

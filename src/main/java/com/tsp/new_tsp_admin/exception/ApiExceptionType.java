@@ -72,7 +72,14 @@ public enum ApiExceptionType implements BaseExceptionType {
     NOT_FOUND_EVALUATION("NOT_FOUND_EVALUATION", 200, "지원모델 평가 없음"),
     ERROR_EVALUATION("ERROR_EVALUATION", 500, "지원모델 평가 작성 에러"),
     ERROR_UPDATE_EVALUATION("ERROR_UPDATE_EVALUATION", 500, "지원모델 평가 수정 에러"),
-    ERROR_DELETE_EVALUATION("ERROR_DELETE_EVALUATION", 500, "지원모델 삭제 에러");
+    ERROR_DELETE_EVALUATION("ERROR_DELETE_EVALUATION", 500, "지원모델 삭제 에러"),
+
+    // 공지사항 관련 TYPE
+    NOT_FOUND_NOTICE_LIST("NOT_FOUND_NOTICE_LIST", 200, "공지사항 리스트 없음"),
+    NOT_FOUND_NOTICE("NOT_FOUND_NOTICE", 200, "공지사항 없음"),
+    ERROR_NOTICE("ERROR_NOTICE", 500, "공지사항 등록 에러"),
+    ERROR_UPDATE_NOTICE("ERROR_UPDATE_NOTICE",500, "공지사항 수정 에러"),
+    ERROR_DELETE_NOTICE("ERROR_DELETE_NOTICE", 500, "공지사항 삭제 에러");
 
     private final String errorCode;
     private final int httpStatus;

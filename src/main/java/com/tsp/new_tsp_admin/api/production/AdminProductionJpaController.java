@@ -98,7 +98,7 @@ public class AdminProductionJpaController {
      * <pre>
      * 1. MethodName : insertProduction
      * 2. ClassName  : AdminProductionJpaController.java
-     * 3. Comment    : 관리자 프로덕션 상태로 저장
+     * 3. Comment    : 관리자 프로덕션 저장
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
