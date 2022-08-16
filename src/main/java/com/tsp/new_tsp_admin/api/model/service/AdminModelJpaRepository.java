@@ -84,7 +84,7 @@ public class AdminModelJpaRepository {
         List<AdminModelEntity> modelList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
-                .leftJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
+                .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
                 .where(searchModel(modelMap).and(adminModelEntity.visible.eq("Y")))
                 .offset(getInt(modelMap.get("jpaStartPage"), 0))

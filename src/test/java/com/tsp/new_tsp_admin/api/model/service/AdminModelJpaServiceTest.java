@@ -67,6 +67,7 @@ class AdminModelJpaServiceTest {
                 .agencyDescription("agency")
                 .visible("Y")
                 .build();
+
         adminAgencyDTO = AgencyMapper.INSTANCE.toDto(adminAgencyEntity);
 
         commonImageEntity = CommonImageEntity.builder()
@@ -78,6 +79,7 @@ class AdminModelJpaServiceTest {
                 .typeIdx(1)
                 .typeName("model")
                 .build();
+
         commonImageDTO = ModelImageMapper.INSTANCE.toDto(commonImageEntity);
 
         adminModelEntity = AdminModelEntity.builder()
@@ -100,6 +102,7 @@ class AdminModelJpaServiceTest {
                 .shoes(270)
                 .visible("Y")
                 .build();
+
         adminModelDTO = INSTANCE.toDto(adminModelEntity);
     }
 

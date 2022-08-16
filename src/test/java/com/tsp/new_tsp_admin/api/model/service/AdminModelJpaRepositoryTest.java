@@ -79,6 +79,7 @@ class AdminModelJpaRepositoryTest {
                 .agencyDescription("agency")
                 .visible("Y")
                 .build();
+
         adminAgencyDTO = AgencyMapper.INSTANCE.toDto(adminAgencyEntity);
 
         ArrayList<CareerJson> careerList = new ArrayList<>();
