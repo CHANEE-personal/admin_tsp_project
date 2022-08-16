@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.support;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import io.swagger.annotations.ApiModel;
@@ -64,6 +63,15 @@ public class AdminSupportDTO extends NewCommonDTO {
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @ApiModelProperty(value = "지원 시각", required = true)
     private Date supportTime;
+
+//    @NotEmpty(message = "지원모델 노출 여부 선택은 필수입니다.")
+    @ApiModelProperty(value = "합격여부", required = true)
+    private String passYn;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @ApiModelProperty(value = "합격 시각", required = true)
+    private Date passTime;
 
     @ApiModelProperty(required = true, value = "evaluationList", hidden = true)
     private List<EvaluationDTO> evaluationList = new ArrayList<>();

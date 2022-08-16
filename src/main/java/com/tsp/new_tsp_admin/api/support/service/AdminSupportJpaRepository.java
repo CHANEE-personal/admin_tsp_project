@@ -13,11 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.adminSupportEntity;
 import static com.tsp.new_tsp_admin.api.domain.support.evaluation.QEvaluationEntity.evaluationEntity;
+import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 
@@ -75,7 +77,7 @@ public class AdminSupportJpaRepository {
         supportList.forEach(list -> supportList.get(supportList.indexOf(list))
                 .setRnum(getInt(supportMap.get("startPage"), 1) * (getInt(supportMap.get("size"), 1)) - (2 - supportList.indexOf(list))));
 
-        return SupportMapper.INSTANCE.toDtoList(supportList);
+        return INSTANCE.toDtoList(supportList);
     }
 
     /**
@@ -93,7 +95,7 @@ public class AdminSupportJpaRepository {
                 .where(adminSupportEntity.idx.eq(existAdminSupportEntity.getIdx()))
                 .fetchOne();
 
-        return SupportMapper.INSTANCE.toDto(findOneSupportModel);
+        return INSTANCE.toDto(findOneSupportModel);
     }
 
     /**
@@ -107,7 +109,7 @@ public class AdminSupportJpaRepository {
      */
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         em.persist(adminSupportEntity);
-        return SupportMapper.INSTANCE.toDto(adminSupportEntity);
+        return INSTANCE.toDto(adminSupportEntity);
     }
 
     /**
@@ -123,7 +125,7 @@ public class AdminSupportJpaRepository {
         em.merge(existAdminSupportEntity);
         em.flush();
         em.clear();
-        return SupportMapper.INSTANCE.toDto(existAdminSupportEntity);
+        return INSTANCE.toDto(existAdminSupportEntity);
     }
 
     /**
@@ -240,5 +242,24 @@ public class AdminSupportJpaRepository {
         em.flush();
         em.clear();
         return idx;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updatePass
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 합격 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    public AdminSupportDTO updatePass(AdminSupportEntity existSupportEntity) {
+        queryFactory.update(adminSupportEntity)
+                .set(adminSupportEntity.passYn, "Y")
+                .set(adminSupportEntity.passTime, new Date())
+                .where(adminSupportEntity.idx.eq(existSupportEntity.getIdx()))
+                .execute();
+
+        return INSTANCE.toDto(existSupportEntity);
     }
 }

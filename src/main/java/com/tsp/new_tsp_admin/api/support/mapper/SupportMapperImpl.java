@@ -22,6 +22,8 @@ public class SupportMapperImpl implements SupportMapper {
                 .supportPhone(entity.getSupportPhone())
                 .supportMessage(entity.getSupportMessage())
                 .supportTime(entity.getSupportTime())
+                .passYn(entity.getPassYn())
+                .passTime(entity.getPassTime())
                 .evaluationList(EvaluateMapper.INSTANCE.toDtoList(entity.getEvaluationEntityList()))
                 .visible(entity.getVisible())
                 .build();
@@ -41,6 +43,8 @@ public class SupportMapperImpl implements SupportMapper {
                 .supportPhone(dto.getSupportPhone())
                 .supportMessage(dto.getSupportMessage())
                 .supportTime(dto.getSupportTime())
+                .passYn(dto.getPassYn())
+                .passTime(dto.getPassTime())
                 .evaluationEntityList(EvaluateMapper.INSTANCE.toEntityList(dto.getEvaluationList()))
                 .visible(dto.getVisible())
                 .build();
