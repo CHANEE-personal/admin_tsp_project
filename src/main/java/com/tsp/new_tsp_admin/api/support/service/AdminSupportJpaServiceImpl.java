@@ -226,7 +226,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      */
     @Override
     @CachePut("evaluation")
-    @Transactional(readOnly = true)
+    @Transactional
     public EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity) throws TspException {
         try {
             return adminSupportJpaRepository.updateEvaluation(evaluationEntity);
@@ -253,6 +253,26 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
             return adminSupportJpaRepository.deleteEvaluation(idx);
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_EVALUATION, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updatePass
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
+     * 3. Comment    : 관리자 지원모델 합격 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @CachePut("support")
+    @Transactional
+    public AdminSupportDTO updatePass(AdminSupportEntity adminSupportEntity) throws TspException {
+        try {
+            return adminSupportJpaRepository.updatePass(adminSupportEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_UPDATE_SUPPORT, e);
         }
     }
 }

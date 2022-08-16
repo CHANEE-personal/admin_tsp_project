@@ -141,4 +141,15 @@ public interface AdminSupportJpaService {
      * </pre>
      */
     Integer deleteEvaluation(Integer idx) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : updatePass
+     * 2. ClassName  : AdminSupportJpaService.java
+     * 3. Comment    : 관리자 지원모델 합격 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    AdminSupportDTO updatePass(AdminSupportEntity adminSupportEntity) throws Exception;
 }
