@@ -331,8 +331,8 @@ class AdminNoticeJpaServiceTest {
     }
 
     @Test
-    @DisplayName("프로덕션삭제Mockito테스트")
-    void 프로덕션삭제Mockito테스트() throws Exception {
+    @DisplayName("공지사항삭제Mockito테스트")
+    void 공지사항삭제Mockito테스트() throws Exception {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
         adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
@@ -354,8 +354,8 @@ class AdminNoticeJpaServiceTest {
     }
 
     @Test
-    @DisplayName("프로덕션삭제BDD테스트")
-    void 프로덕션삭제BDD테스트() throws Exception {
+    @DisplayName("공지사항삭제BDD테스트")
+    void 공지사항삭제BDD테스트() throws Exception {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
         adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
