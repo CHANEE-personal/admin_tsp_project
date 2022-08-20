@@ -84,7 +84,7 @@ public class AdminProductionJpaRepository {
      * <pre>
      * 1. MethodName : findOneProduction
      * 2. ClassName  : AdminProductionJpaRepository.java
-     * 3. Comment    : 관리자 프로덕션 리스트 조회
+     * 3. Comment    : 관리자 프로덕션 상세 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
