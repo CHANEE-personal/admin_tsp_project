@@ -53,7 +53,7 @@ public class AdminFaqJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findfaqsList
+     * 1. MethodName : findFaqsList
      * 2. ClassName  : AdminFaqJpaRepository.java
      * 3. Comment    : 관리자 FAQ 리스트 조회
      * 4. 작성자       : CHO

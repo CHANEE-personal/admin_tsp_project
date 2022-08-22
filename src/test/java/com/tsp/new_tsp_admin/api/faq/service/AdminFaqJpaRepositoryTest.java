@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.faq.service;
 
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqDTO;
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
-import com.tsp.new_tsp_admin.api.faq.mapper.FaqMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
