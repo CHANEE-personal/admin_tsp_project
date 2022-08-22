@@ -102,7 +102,7 @@ class AdminFaqJpaControllerTest {
         // user 생성
         createUser();
 
-        // notice 생성
+        // faq 생성
         adminFaqEntity = AdminFaqEntity.builder()
                 .title("FAQ 테스트")
                 .description("FAQ 테스트")
@@ -198,8 +198,8 @@ class AdminFaqJpaControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    @DisplayName("Admin 공지사항 수정 테스트")
-    void 공지사항수정Api테스트() throws Exception {
+    @DisplayName("Admin FAQ 수정 테스트")
+    void FAQ수정Api테스트() throws Exception {
         em.persist(adminFaqEntity);
 
         adminFaqEntity = AdminFaqEntity.builder().idx(adminFaqEntity.getIdx()).title("테스트1").description("테스트1").visible("Y").build();

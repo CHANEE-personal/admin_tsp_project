@@ -87,8 +87,8 @@ class AdminFaqJpaRepositoryTest {
 
     @Test
     @Disabled
-    @DisplayName("공지사항상세조회테스트")
-    void 공지사항상세조회테스트() {
+    @DisplayName("FAQ상세조회테스트")
+    void FAQ상세조회테스트() {
         // given
         adminFaqEntity = AdminFaqEntity.builder().idx(1).build();
 
@@ -203,8 +203,8 @@ class AdminFaqJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("공지사항상세BDD조회테스트")
-    void 공지사항상세BDD조회테스트() {
+    @DisplayName("FAQ상세BDD조회테스트")
+    void FAQ상세BDD조회테스트() {
         // given
         AdminFaqEntity adminFaqEntity = AdminFaqEntity.builder()
                 .idx(1)
