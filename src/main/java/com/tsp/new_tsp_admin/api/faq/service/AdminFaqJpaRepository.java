@@ -60,7 +60,7 @@ public class AdminFaqJpaRepository {
      * 5. 작성일       : 2022. 08. 18.
      * </pre>
      */
-    public List<AdminFaqDTO> findfaqsList(Map<String, Object> faqMap) {
+    public List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap) {
         List<AdminFaqEntity> faqList = queryFactory
                 .selectFrom(adminFaqEntity)
                 .orderBy(adminFaqEntity.idx.desc())

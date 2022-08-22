@@ -82,7 +82,7 @@ class AdminFaqJpaRepositoryTest {
         faqMap.put("size", 3);
 
         // then
-        assertThat(adminFaqJpaRepository.findfaqsList(faqMap)).isNotEmpty();
+        assertThat(adminFaqJpaRepository.findFaqsList(faqMap)).isNotEmpty();
     }
 
     @Test
@@ -124,8 +124,8 @@ class AdminFaqJpaRepositoryTest {
                 .description("FAQ 테스트").build());
 
         // when
-        when(mockAdminFaqJpaRepository.findfaqsList(faqMap)).thenReturn(faqList);
-        List<AdminFaqDTO> newFaqList = mockAdminFaqJpaRepository.findfaqsList(faqMap);
+        when(mockAdminFaqJpaRepository.findFaqsList(faqMap)).thenReturn(faqList);
+        List<AdminFaqDTO> newFaqList = mockAdminFaqJpaRepository.findFaqsList(faqMap);
 
         // then
         assertThat(newFaqList.get(0).getIdx()).isEqualTo(faqList.get(0).getIdx());
@@ -134,12 +134,12 @@ class AdminFaqJpaRepositoryTest {
         assertThat(newFaqList.get(0).getVisible()).isEqualTo(faqList.get(0).getVisible());
 
         // verify
-        verify(mockAdminFaqJpaRepository, times(1)).findfaqsList(faqMap);
-        verify(mockAdminFaqJpaRepository, atLeastOnce()).findfaqsList(faqMap);
+        verify(mockAdminFaqJpaRepository, times(1)).findFaqsList(faqMap);
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findFaqsList(faqMap);
         verifyNoMoreInteractions(mockAdminFaqJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
-        inOrder.verify(mockAdminFaqJpaRepository).findfaqsList(faqMap);
+        inOrder.verify(mockAdminFaqJpaRepository).findFaqsList(faqMap);
     }
 
     @Test
@@ -155,8 +155,8 @@ class AdminFaqJpaRepositoryTest {
                 .description("FAQ 테스트").build());
 
         // when
-        given(mockAdminFaqJpaRepository.findfaqsList(faqMap)).willReturn(faqList);
-        List<AdminFaqDTO> newNoticeList = mockAdminFaqJpaRepository.findfaqsList(faqMap);
+        given(mockAdminFaqJpaRepository.findFaqsList(faqMap)).willReturn(faqList);
+        List<AdminFaqDTO> newNoticeList = mockAdminFaqJpaRepository.findFaqsList(faqMap);
 
         // then
         assertThat(newNoticeList.get(0).getIdx()).isEqualTo(faqList.get(0).getIdx());
@@ -165,8 +165,8 @@ class AdminFaqJpaRepositoryTest {
         assertThat(newNoticeList.get(0).getVisible()).isEqualTo(faqList.get(0).getVisible());
 
         // verify
-        then(mockAdminFaqJpaRepository).should(times(1)).findfaqsList(faqMap);
-        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findfaqsList(faqMap);
+        then(mockAdminFaqJpaRepository).should(times(1)).findFaqsList(faqMap);
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findFaqsList(faqMap);
         then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
     }
 

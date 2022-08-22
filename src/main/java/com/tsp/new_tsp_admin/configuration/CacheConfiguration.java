@@ -34,7 +34,8 @@ public class CacheConfiguration {
                 new ConcurrentMapCache("portfolio"),
                 new ConcurrentMapCache("support"),
                 new ConcurrentMapCache("common"),
-                new ConcurrentMapCache("notice")));
+                new ConcurrentMapCache("notice"),
+                new ConcurrentMapCache("faq")));
         return cacheManager;
     }
 }
