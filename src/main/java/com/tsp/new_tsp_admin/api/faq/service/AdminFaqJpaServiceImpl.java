@@ -32,7 +32,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findFaqCount(Map<String, Object> faqMap) throws Exception {
+    public Integer findFaqCount(Map<String, Object> faqMap) throws TspException {
         try {
             return adminFaqJpaRepository.findFaqCount(faqMap);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @Override
     @Cacheable("faq")
     @Transactional(readOnly = true)
-    public List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap) throws Exception {
+    public List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap) throws TspException {
         try {
             return adminFaqJpaRepository.findFaqsList(faqMap);
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @Override
     @Cacheable("faq")
     @Transactional(readOnly = true)
-    public AdminFaqDTO findOneFaq(AdminFaqEntity adminFaqEntity) throws Exception {
+    public AdminFaqDTO findOneFaq(AdminFaqEntity adminFaqEntity) throws TspException {
         try {
             return adminFaqJpaRepository.findOneFaq(adminFaqEntity);
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @CachePut("faq")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminFaqDTO insertFaq(AdminFaqEntity adminFaqEntity) throws Exception {
+    public AdminFaqDTO insertFaq(AdminFaqEntity adminFaqEntity) throws TspException {
         try {
             return adminFaqJpaRepository.insertFaq(adminFaqEntity);
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @CachePut("faq")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity) throws Exception {
+    public AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity) throws TspException {
         try {
             return adminFaqJpaRepository.updateFaq(adminFaqEntity);
         } catch (Exception e) {
@@ -135,7 +135,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @CacheEvict("faq")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteFaq(Integer idx) throws Exception {
+    public Integer deleteFaq(Integer idx) throws TspException {
         try {
             return adminFaqJpaRepository.deleteFaq(idx);
         } catch (Exception e) {
