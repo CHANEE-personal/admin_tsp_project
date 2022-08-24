@@ -25,7 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/jpa-faq")
-@Api(tags = "FAQ관련 API")
+@Api(tags = "FAQ 관련 API")
 @RequiredArgsConstructor
 public class AdminFaqJpaController {
     private final AdminFaqJpaService adminFaqJpaService;

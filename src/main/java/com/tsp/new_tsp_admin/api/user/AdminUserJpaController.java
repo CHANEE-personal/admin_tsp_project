@@ -33,6 +33,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
 @RestController
+@Api(tags = "관리자 회원 관련 API")
 @RequestMapping("/api/jpa-user")
 @RequiredArgsConstructor
 public class AdminUserJpaController {

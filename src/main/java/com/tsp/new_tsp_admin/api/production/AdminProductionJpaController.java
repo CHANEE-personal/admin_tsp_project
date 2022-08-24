@@ -26,7 +26,7 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 
 @RestController
 @RequestMapping("/api/jpa-production")
-@Api(tags = "프로덕션관련 API")
+@Api(tags = "프로덕션 관련 API")
 @RequiredArgsConstructor
 public class AdminProductionJpaController {
     private final AdminProductionJpaService adminProductionJpaService;
