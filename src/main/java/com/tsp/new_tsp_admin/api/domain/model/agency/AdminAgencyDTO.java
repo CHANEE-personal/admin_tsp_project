@@ -35,6 +35,9 @@ public class AdminAgencyDTO extends NewCommonDTO {
     @ApiModelProperty(required = true, value = "agencyDescription")
     String agencyDescription;
 
+    @ApiModelProperty(value = "소속사 좋아요 수((ex)0)")
+    private Integer favoriteCount;
+
     @NotEmpty(message = "소속사 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "visible")
     String visible;
