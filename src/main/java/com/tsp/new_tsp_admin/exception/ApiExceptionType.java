@@ -86,7 +86,14 @@ public enum ApiExceptionType implements BaseExceptionType {
     NOT_FOUND_FAQ("NOT_FOUND_FAQ", 200, "FAQ 없음"),
     ERROR_FAQ("ERROR_FAQ", 500, "FAQ 등록 에러"),
     ERROR_UPDATE_FAQ("ERROR_UPDATE_FAQ",500, "FAQ 수정 에러"),
-    ERROR_DELETE_FAQ("ERROR_DELETE_FAQ", 500, "FAQ 삭제 에러");
+    ERROR_DELETE_FAQ("ERROR_DELETE_FAQ", 500, "FAQ 삭제 에러"),
+
+    // 코멘트 관련 TYPE
+    NOT_FOUND_COMMENT_LIST("NOT_FOUND_COMMENT_LIST", 200, "코멘트 리스트 없음"),
+    NOT_FOUND_COMMENT("NOT_FOUND_COMMENT", 200, "코멘트 없음"),
+    ERROR_COMMENT("ERROR_COMMENT", 500, "코멘트 등록 에러"),
+    ERROR_UPDATE_COMMENT("ERROR_UPDATE_COMMENT", 500, "코멘트 수정 에러"),
+    ERROR_DELETE_COMMENT("ERROR_DELETE_COMMENT", 500, "코멘트 삭제 에러");
 
     private final String errorCode;
     private final int httpStatus;
