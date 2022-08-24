@@ -25,7 +25,7 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 
 @RestController
 @RequestMapping("/api/jpa-portfolio")
-@Api(tags = "포트폴리오관련 API")
+@Api(tags = "포트폴리오 관련 API")
 @RequiredArgsConstructor
 public class AdminPortfolioJpaController {
     private final AdminPortfolioJpaService adminPortfolioJpaService;

@@ -25,7 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/jpa-notice")
-@Api(tags = "공지사항관련 API")
+@Api(tags = "공지사항 관련 API")
 @RequiredArgsConstructor
 public class AdminNoticeJpaController {
     private final AdminNoticeJpaService adminNoticeJpaService;

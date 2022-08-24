@@ -25,7 +25,7 @@ import static java.lang.Math.ceil;
 
 @Validated
 @RestController
-@Api(tags = "공통코드관련 API")
+@Api(tags = "공통코드 관련 API")
 @RequestMapping("/api/jpa-common")
 @RequiredArgsConstructor
 public class AdminCommonJpaController {

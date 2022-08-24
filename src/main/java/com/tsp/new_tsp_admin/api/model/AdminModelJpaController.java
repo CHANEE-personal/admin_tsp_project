@@ -29,7 +29,7 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 
 @Validated
 @RestController
-@Api(tags = "모델관련 API")
+@Api(tags = "모델 관련 API")
 @RequestMapping("/api/jpa-model")
 @RequiredArgsConstructor
 public class AdminModelJpaController {
