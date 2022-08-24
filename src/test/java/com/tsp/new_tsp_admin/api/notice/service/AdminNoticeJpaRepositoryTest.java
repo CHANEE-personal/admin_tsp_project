@@ -384,7 +384,7 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
 
         // when
-        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
+        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
         Integer deleteIdx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
 
         // then
