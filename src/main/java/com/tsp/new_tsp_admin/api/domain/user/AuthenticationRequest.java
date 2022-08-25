@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -19,15 +20,17 @@ import java.util.List;
 @Getter
 @Setter
 public class AuthenticationRequest implements UserDetails {
+    @JsonIgnore
     private AdminUserEntity adminUserEntity;
-
     private static final long serialVersionUID = 5926468583005150707L;
+
     @JsonProperty("userId")
     private String userId;
     @JsonProperty("password")
     private String password;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -35,26 +38,31 @@ public class AuthenticationRequest implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return adminUserEntity.getName();
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return false;
     }
