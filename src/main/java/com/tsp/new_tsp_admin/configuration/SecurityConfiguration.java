@@ -103,16 +103,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // JWT 토큰 유효성 관련
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 그 외
-        http.authorizeRequests()
-                .antMatchers("/api/jpa-common").hasRole("ADMIN")
-                .antMatchers("/api/jpa-model").hasRole("ADMIN")
-                .antMatchers("/api/jpa-production").hasRole("ADMIN")
-                .antMatchers("/api/jpa-portfolio").hasRole("ADMIN")
-                .antMatchers("/api/jpa-support").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        http.csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and().headers().frameOptions().sameOrigin()
                 .and().sessionManagement().sessionCreationPolicy(STATELESS)
-                .and().formLogin().disable().headers().frameOptions().disable().and().csrf().disable();
+                .and().authorizeRequests().antMatchers("/api/jpa-user/**").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Bean
