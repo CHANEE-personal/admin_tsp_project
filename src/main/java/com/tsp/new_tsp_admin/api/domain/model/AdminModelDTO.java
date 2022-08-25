@@ -29,18 +29,18 @@ import java.util.List;
 @AllArgsConstructor
 @ApiModel(value = "모델 관련 변수")
 public class AdminModelDTO extends NewCommonDTO {
-    @ApiModelProperty(required = true, value = "rnum", hidden = true)
+    @ApiModelProperty(required = true, value = "rnum", hidden = true, example = "1")
     private Integer rnum;
 
-    @ApiModelProperty(required = true, value = "idx", hidden = true)
+    @ApiModelProperty(required = true, value = "idx", hidden = true, example = "1")
     private Integer idx;
 
     @Range(min = 1, max = 3, message = "모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.")
-    @ApiModelProperty(position = 1, required = true, value = "남자,여자,시니어 모델 구분((ex)1,2,3)")
+    @ApiModelProperty(position = 1, required = true, value = "남자,여자,시니어 모델 구분((ex)1,2,3)", example = "1")
     private Integer categoryCd;
 
     @Range(min = 2, max = 6, message = "모델 연령대 값은 2~6 사이 값만 입력할 수 있습니다.")
-    @ApiModelProperty(position = 2, required = true, value = "모델 연령대((ex)2:20,3:30***)")
+    @ApiModelProperty(position = 2, required = true, value = "모델 연령대((ex)2:20,3:30***)", example = "1")
     private Integer categoryAge;
 
     @NotEmpty(message = "모델 국문 이름 입력은 필수입니다.")
@@ -55,7 +55,7 @@ public class AdminModelDTO extends NewCommonDTO {
     @ApiModelProperty(position = 7, required = true, value = "모델 상세 설명")
     private String modelDescription;
 
-    @ApiModelProperty(position = 8, required = true, value = "모델 키((ex)180)")
+    @ApiModelProperty(position = 8, required = true, value = "모델 키((ex)180)", example = "180")
     @NotNull(message = "모델 키 입력은 필수입니다.")
 	@Pattern(regexp="\\\\d{1,3}", message = "숫자만 입력 가능합니다.")
 	@Length(min=1, max=4, message = "1자 이상 4자미만으로 작성해야 합니다.")
@@ -66,7 +66,7 @@ public class AdminModelDTO extends NewCommonDTO {
     @ApiModelProperty(position = 9, required = true, value = "모델 사이즈((ex)31-24-31)")
     private String size3;
 
-    @ApiModelProperty(position = 10, required = true, value = "모델 신발 사이즈((ex)270)")
+    @ApiModelProperty(position = 10, required = true, value = "모델 신발 사이즈((ex)270)", example = "270")
     @NotNull(message = "모델 신발 사이즈 입력은 필수입니다.")
 	@Pattern(regexp="\\d{3}", message = "숫자만 입력 가능합니다.")
 	@Length(min=1, max=4, message = "1자 이상 4자미만으로 작성해야 합니다.")
@@ -99,10 +99,10 @@ public class AdminModelDTO extends NewCommonDTO {
     @ApiModelProperty(position = 7, required = true, value = "모델 좋아요 수((ex)0)")
     private Integer favoriteCount;
 
-    @ApiModelProperty(position = 8, value = "모델 조회 수((ex)0")
+    @ApiModelProperty(position = 8, value = "모델 조회 수((ex)0", example = "1")
     private Integer viewCount;
 
-    @ApiModelProperty(position = 9, value = "소속사 idx((ex)1")
+    @ApiModelProperty(position = 9, value = "소속사 idx((ex)1", example = "1")
     private Integer agencyIdx;
 
     @Convert(converter = CustomConverter.class)

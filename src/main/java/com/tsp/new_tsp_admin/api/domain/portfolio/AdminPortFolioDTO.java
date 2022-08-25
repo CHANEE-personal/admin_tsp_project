@@ -21,10 +21,10 @@ import java.util.List;
 @NoArgsConstructor
 @ApiModel
 public class AdminPortFolioDTO extends NewCommonDTO {
-    @ApiModelProperty(required = true, value = "rnum", hidden = true)
+    @ApiModelProperty(required = true, value = "rnum", hidden = true, example = "1")
     private Integer rnum;
 
-    @ApiModelProperty(required = true, value = "idx", hidden = true)
+    @ApiModelProperty(required = true, value = "idx", hidden = true, example = "1")
     private Integer idx;
 
     @NotEmpty(message = "제목은 필수입니다.")
@@ -35,7 +35,7 @@ public class AdminPortFolioDTO extends NewCommonDTO {
     private String hashTag;
 
     @NotEmpty(message = "카테고리 선택은 필수입니다.")
-    @ApiModelProperty(required = true, value = "categoryCd")
+    @ApiModelProperty(required = true, value = "categoryCd", example = "1")
     private Integer categoryCd;
 
     @ApiModelProperty(required = true, value = "videoUrl")
@@ -45,7 +45,7 @@ public class AdminPortFolioDTO extends NewCommonDTO {
     @ApiModelProperty(required = true, value = "description")
     private String description;
 
-    @ApiModelProperty(value = "viewCount")
+    @ApiModelProperty(value = "viewCount", example = "1")
     private Integer viewCount;
 
     @NotEmpty(message = "포트폴리오 노출 여부 선택은 필수입니다.")

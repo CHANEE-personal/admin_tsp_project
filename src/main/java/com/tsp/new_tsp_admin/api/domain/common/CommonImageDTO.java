@@ -15,16 +15,16 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @ApiModel
 public class CommonImageDTO {
-    @ApiModelProperty(value = "파일 IDX", required = true, hidden = true)
+    @ApiModelProperty(value = "파일 IDX", required = true, hidden = true, example = "1")
     private Integer idx;
 
-    @ApiModelProperty(value = "분야 IDX", required = true, hidden = true)
+    @ApiModelProperty(value = "분야 IDX", required = true, hidden = true, example = "1")
     private Integer typeIdx;
 
     @ApiModelProperty(value = "분야명", required = true, hidden = true)
     private String typeName;
 
-    @ApiModelProperty(value = "파일 Number", required = true, hidden = true)
+    @ApiModelProperty(value = "파일 Number", required = true, hidden = true, example = "1")
     private Integer fileNum;
 
     @ApiModelProperty(required = true, value = "파일명", hidden = true)

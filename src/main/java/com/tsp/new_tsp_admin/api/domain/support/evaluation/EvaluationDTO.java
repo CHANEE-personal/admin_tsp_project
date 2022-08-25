@@ -19,13 +19,13 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @ApiModel(value = "지원모델 평가 관련 변수")
 public class EvaluationDTO extends NewCommonDTO {
-    @ApiModelProperty(required = true, value = "rnum", hidden = true)
+    @ApiModelProperty(required = true, value = "rnum", hidden = true, example = "1")
     private Integer rnum;
 
-    @ApiModelProperty(required = true, value = "idx", hidden = true)
+    @ApiModelProperty(required = true, value = "idx", hidden = true, example = "1")
     private Integer idx;
 
-    @ApiModelProperty(required = true, value = "support_idx")
+    @ApiModelProperty(required = true, value = "support_idx", example = "1")
     @NotNull(message = "지원모델 idx 입력은 필수입니다.")
     private Integer supportIdx;
 

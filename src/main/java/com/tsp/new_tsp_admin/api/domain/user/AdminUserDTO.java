@@ -20,10 +20,10 @@ import javax.validation.constraints.NotEmpty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel
 public class AdminUserDTO extends NewCommonDTO {
-    @ApiModelProperty(required = true, value = "rnum", hidden = true)
+    @ApiModelProperty(required = true, value = "rnum", hidden = true, example = "1")
     Integer rnum;
 
-    @ApiModelProperty(required = true, value = "user Seq", hidden = true)
+    @ApiModelProperty(required = true, value = "user Seq", hidden = true, example = "1")
     Integer idx;
 
     @NotEmpty(message = "유저 아이디 입력은 필수입니다.")

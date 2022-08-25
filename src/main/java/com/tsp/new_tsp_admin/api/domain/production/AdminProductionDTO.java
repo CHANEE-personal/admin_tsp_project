@@ -21,10 +21,10 @@ import java.util.List;
 @AllArgsConstructor
 @ApiModel(value = "프로덕션 관련 변수")
 public class AdminProductionDTO extends NewCommonDTO {
-    @ApiModelProperty(required = true, value = "rnum", hidden = true)
+    @ApiModelProperty(required = true, value = "rnum", hidden = true, example = "1")
     private Integer rnum;
 
-    @ApiModelProperty(required = true, value = "idx", hidden = true)
+    @ApiModelProperty(required = true, value = "idx", hidden = true, example = "1")
     private Integer idx;
 
     @NotEmpty(message = "제목 입력은 필수입니다.")
@@ -35,7 +35,7 @@ public class AdminProductionDTO extends NewCommonDTO {
     @ApiModelProperty(required = true, value = "description")
     private String description;
 
-    @ApiModelProperty(required = true, value = "viewCount")
+    @ApiModelProperty(required = true, value = "viewCount", example = "1")
     private Integer viewCount;
 
     @NotEmpty(message = "프로덕션 노출 여부 선택은 필수입니다.")

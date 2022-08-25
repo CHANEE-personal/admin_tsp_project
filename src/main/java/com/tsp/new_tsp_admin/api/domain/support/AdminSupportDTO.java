@@ -26,10 +26,10 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 @AllArgsConstructor
 @ApiModel
 public class AdminSupportDTO extends NewCommonDTO {
-    @ApiModelProperty(required = true, value = "rnum", hidden = true)
+    @ApiModelProperty(required = true, value = "rnum", hidden = true, example = "1")
     Integer rnum;
 
-    @ApiModelProperty(value = "지원모델 IDX", required = true, hidden = true)
+    @ApiModelProperty(value = "지원모델 IDX", required = true, hidden = true, example = "1")
     private Integer idx;
 
     @NotEmpty(message = "지원모델 이름 입력은 필수입니다.")
@@ -37,7 +37,7 @@ public class AdminSupportDTO extends NewCommonDTO {
     private String supportName;
 
     @NotEmpty(message = "지원모델 키 입력은 필수입니다.")
-    @ApiModelProperty(value = "지원모델 Height", required = true)
+    @ApiModelProperty(value = "지원모델 Height", required = true, example = "180")
     private Integer supportHeight;
 
     @NotEmpty(message = "지원모델 사이즈 입력은 필수입니다.")
