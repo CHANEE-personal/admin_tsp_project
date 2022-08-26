@@ -214,7 +214,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findModelAdminComment(AdminModelEntity adminModelEntity) {
+    public List<AdminCommentDTO> findModelAdminComment(AdminModelEntity adminModelEntity) throws TspException {
         try {
             return adminModelJpaRepository.findModelAdminComment(adminModelEntity);
         } catch (Exception e) {

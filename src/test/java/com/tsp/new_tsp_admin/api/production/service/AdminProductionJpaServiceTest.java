@@ -1,5 +1,7 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,8 @@ class AdminProductionJpaServiceTest {
 
     private AdminProductionEntity adminProductionEntity;
     private AdminProductionDTO adminProductionDTO;
+    private AdminCommentEntity adminCommentEntity;
+    private AdminCommentDTO adminCommentDTO;
 
     void createProduction() {
         adminProductionEntity = AdminProductionEntity.builder()
@@ -314,5 +318,84 @@ class AdminProductionJpaServiceTest {
 
         // then
         assertThat(adminProductionJpaService.deleteProduction(idx)).isNotNull();
+    }
+
+    @Test
+    @DisplayName("프로덕션 어드민 코멘트 조회 Mockito 테스트")
+    void 프로덕션어드민코멘트조회Mockito테스트() throws Exception {
+        adminProductionEntity = AdminProductionEntity.builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        Integer productionIdx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
+
+        adminCommentEntity = AdminCommentEntity.builder()
+                .comment("코멘트 테스트")
+                .commentType("production")
+                .commentTypeIdx(productionIdx)
+                .visible("Y")
+                .build();
+
+        List<AdminCommentDTO> adminCommentList = new ArrayList<>();
+        adminCommentList.add(AdminCommentDTO.builder()
+                .comment("코멘트 테스트")
+                .commentType("production")
+                .commentTypeIdx(productionIdx)
+                .visible("Y")
+                .build());
+
+        when(mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity)).thenReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity);
+
+        assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("production");
+        assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminProductionEntity.getIdx());
+
+        // verify
+        verify(mockAdminProductionJpaService, times(1)).findProductionAdminComment(adminProductionEntity);
+        verify(mockAdminProductionJpaService, atLeastOnce()).findProductionAdminComment(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaService);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaService);
+        inOrder.verify(mockAdminProductionJpaService).findProductionAdminComment(adminProductionEntity);
+    }
+
+    @Test
+    @DisplayName("프로덕션 어드민 코멘트 조회 BDD 테스트")
+    void 프로덕션어드민코멘트조회BDD테스트() throws Exception {
+        adminProductionEntity = AdminProductionEntity.builder()
+                .title("프로덕션 테스트")
+                .description("프로덕션 테스트")
+                .visible("Y")
+                .build();
+
+        Integer productionIdx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
+
+        adminCommentEntity = AdminCommentEntity.builder()
+                .comment("코멘트 테스트")
+                .commentType("production")
+                .commentTypeIdx(productionIdx)
+                .visible("Y")
+                .build();
+
+        List<AdminCommentDTO> adminCommentList = new ArrayList<>();
+        adminCommentList.add(AdminCommentDTO.builder()
+                .comment("코멘트 테스트")
+                .commentType("production")
+                .commentTypeIdx(productionIdx)
+                .visible("Y")
+                .build());
+
+        given(mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity)).willReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity);
+
+        assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("production");
+        assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminProductionEntity.getIdx());
+
+        // verify
+        then(mockAdminProductionJpaService).should(times(1)).findProductionAdminComment(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findProductionAdminComment(adminProductionEntity);
+        then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
 }

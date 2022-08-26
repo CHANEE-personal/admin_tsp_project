@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 
@@ -73,4 +74,15 @@ public interface AdminProductionJpaService {
      * </pre>
      */
     Integer deleteProduction(Integer idx) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findProductionAdminComment
+     * 2. ClassName  : AdminProductionJpaService.java
+     * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    List<AdminCommentDTO> findProductionAdminComment(AdminProductionEntity adminProductionEntity) throws Exception;
 }

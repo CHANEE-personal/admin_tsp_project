@@ -254,8 +254,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")
-    public List<AdminCommentDTO> findModelAdminComment(@Valid @RequestBody AdminModelEntity adminModelEntity,
-                                                 @PathVariable Integer idx) throws Exception {
-        return adminModelJpaService.findModelAdminComment(AdminModelEntity.builder().idx(idx).agencyIdx(adminModelEntity.getAgencyIdx()).build());
+    public List<AdminCommentDTO> findModelAdminComment(@PathVariable Integer idx) throws Exception {
+        return adminModelJpaService.findModelAdminComment(AdminModelEntity.builder().idx(idx).build());
     }
 }
