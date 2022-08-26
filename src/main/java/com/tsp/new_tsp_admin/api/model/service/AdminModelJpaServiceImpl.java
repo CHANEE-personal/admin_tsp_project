@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -199,6 +200,25 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
             return adminModelJpaRepository.updateModelAgency(adminModelEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_MODEL, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findModelAdminComment
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<AdminCommentDTO> findModelAdminComment(AdminModelEntity adminModelEntity) {
+        try {
+            return adminModelJpaRepository.findModelAdminComment(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
         }
     }
 }

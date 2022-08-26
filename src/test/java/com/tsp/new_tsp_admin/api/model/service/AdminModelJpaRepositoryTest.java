@@ -1,5 +1,7 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
@@ -63,6 +65,8 @@ class AdminModelJpaRepositoryTest {
     private CommonImageDTO commonImageDTO;
     private AdminAgencyEntity adminAgencyEntity;
     private AdminAgencyDTO adminAgencyDTO;
+    private AdminCommentEntity adminCommentEntity;
+    private AdminCommentDTO adminCommentDTO;
 
     public void createModelAndImage() {
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
@@ -799,6 +803,113 @@ class AdminModelJpaRepositoryTest {
         // verify
         then(mockAdminModelJpaRepository).should(times(1)).findOneModel(newAdminModelEntity);
         then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(newAdminModelEntity);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("모델 어드민 코멘트 조회 Mockito 테스트")
+    void 모델어드민코멘트조회Mockito테스트() {
+        adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .favoriteCount(1)
+                .viewCount(1)
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+
+        adminCommentEntity = AdminCommentEntity.builder()
+                .comment("코멘트 테스트")
+                .commentType("model")
+                .commentTypeIdx(modelIdx)
+                .visible("Y")
+                .build();
+
+        List<AdminCommentDTO> adminCommentList = new ArrayList<>();
+        adminCommentList.add(AdminCommentDTO.builder()
+                .comment("코멘트 테스트")
+                .commentType("model")
+                .commentTypeIdx(modelIdx)
+                .visible("Y")
+                .build());
+
+        when(mockAdminModelJpaRepository.findModelAdminComment(adminModelEntity)).thenReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminModelJpaRepository.findModelAdminComment(adminModelEntity);
+
+        assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("model");
+        assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(1)).findModelAdminComment(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findModelAdminComment(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaRepository);
+        inOrder.verify(mockAdminModelJpaRepository).findModelAdminComment(adminModelEntity);
+    }
+
+    @Test
+    @DisplayName("모델 어드민 코멘트 조회 BDD 테스트")
+    void 모델어드민코멘트조회BDD테스트() {
+        adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .favoriteCount(1)
+                .viewCount(1)
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+
+        adminCommentEntity = AdminCommentEntity.builder()
+                .comment("코멘트 테스트")
+                .commentType("model")
+                .commentTypeIdx(modelIdx)
+                .visible("Y")
+                .build();
+
+        List<AdminCommentDTO> adminCommentList = new ArrayList<>();
+        adminCommentList.add(AdminCommentDTO.builder()
+                .comment("코멘트 테스트")
+                .commentType("model")
+                .commentTypeIdx(modelIdx)
+                .visible("Y")
+                .build());
+
+        given(mockAdminModelJpaRepository.findModelAdminComment(adminModelEntity)).willReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminModelJpaRepository.findModelAdminComment(adminModelEntity);
+
+        assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("model");
+        assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(1)).findModelAdminComment(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findModelAdminComment(adminModelEntity);
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 }

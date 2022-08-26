@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -108,4 +109,15 @@ public interface AdminModelJpaService {
      * </pre>
      */
     AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findModelAdminComment
+     * 2. ClassName  : AdminModelJpaService.java
+     * 3. Comment    : 관리자 모델 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    List<AdminCommentDTO> findModelAdminComment(AdminModelEntity adminModelEntity) throws Exception;
 }
