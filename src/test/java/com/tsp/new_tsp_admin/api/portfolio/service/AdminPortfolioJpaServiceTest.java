@@ -1,5 +1,7 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,8 @@ class AdminPortfolioJpaServiceTest {
 
     private AdminPortFolioEntity adminPortFolioEntity;
     private AdminPortFolioDTO adminPortFolioDTO;
+    private AdminCommentEntity adminCommentEntity;
+    private AdminCommentDTO adminCommentDTO;
 
     void createPortfolio() {
         adminPortFolioEntity = AdminPortFolioEntity.builder()
@@ -333,5 +337,88 @@ class AdminPortfolioJpaServiceTest {
 
         // then
         assertThat(adminPortfolioJpaService.deletePortfolio(idx)).isNotNull();
+    }
+
+    @Test
+    @DisplayName("포트폴리오 어드민 코멘트 조회 Mockito 테스트")
+    void 포트폴리오어드민코멘트조회Mockito테스트() throws Exception {
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        Integer portfolioIdx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
+
+        adminCommentEntity = AdminCommentEntity.builder()
+                .comment("코멘트 테스트")
+                .commentType("portfolio")
+                .commentTypeIdx(portfolioIdx)
+                .visible("Y")
+                .build();
+
+        List<AdminCommentDTO> adminCommentList = new ArrayList<>();
+        adminCommentList.add(AdminCommentDTO.builder()
+                .comment("코멘트 테스트")
+                .commentType("portfolio")
+                .commentTypeIdx(portfolioIdx)
+                .visible("Y")
+                .build());
+
+        when(mockAdminPortfolioJpaService.findPortfolioAdminComment(adminPortFolioEntity)).thenReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminPortfolioJpaService.findPortfolioAdminComment(adminPortFolioEntity);
+
+        assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("portfolio");
+        assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminPortFolioEntity.getIdx());
+
+        // verify
+        verify(mockAdminPortfolioJpaService, times(1)).findPortfolioAdminComment(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findPortfolioAdminComment(adminPortFolioEntity);
+        verifyNoMoreInteractions(mockAdminPortfolioJpaService);
+
+        InOrder inOrder = inOrder(mockAdminPortfolioJpaService);
+        inOrder.verify(mockAdminPortfolioJpaService).findPortfolioAdminComment(adminPortFolioEntity);
+    }
+
+    @Test
+    @DisplayName("포트폴리오 어드민 코멘트 조회 BDD 테스트")
+    void 포트폴리오어드민코멘트조회BDD테스트() throws Exception {
+        adminPortFolioEntity = AdminPortFolioEntity.builder()
+                .title("포트폴리오 테스트")
+                .description("포트폴리오 테스트")
+                .hashTag("#test")
+                .videoUrl("https://youtube.com")
+                .visible("Y")
+                .build();
+
+        Integer portfolioIdx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
+
+        adminCommentEntity = AdminCommentEntity.builder()
+                .comment("코멘트 테스트")
+                .commentType("portfolio")
+                .commentTypeIdx(portfolioIdx)
+                .visible("Y")
+                .build();
+
+        List<AdminCommentDTO> adminCommentList = new ArrayList<>();
+        adminCommentList.add(AdminCommentDTO.builder()
+                .comment("코멘트 테스트")
+                .commentType("portfolio")
+                .commentTypeIdx(portfolioIdx)
+                .visible("Y")
+                .build());
+
+        given(mockAdminPortfolioJpaService.findPortfolioAdminComment(adminPortFolioEntity)).willReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminPortfolioJpaService.findPortfolioAdminComment(adminPortFolioEntity);
+
+        assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("portfolio");
+        assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminPortFolioEntity.getIdx());
+
+        // verify
+        then(mockAdminPortfolioJpaService).should(times(1)).findPortfolioAdminComment(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findPortfolioAdminComment(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
 }

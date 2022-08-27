@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 
@@ -73,4 +74,15 @@ public interface AdminPortfolioJpaService {
      * </pre>
      */
     Integer deletePortfolio(Integer idx) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findPortfolioAdminComment
+     * 2. ClassName  : AdminPortfolioJpaService.java
+     * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    List<AdminCommentDTO> findPortfolioAdminComment(AdminPortFolioEntity adminPortfolioEntity) throws Exception;
 }
