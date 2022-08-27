@@ -71,7 +71,7 @@ public class AdminModelJpaController {
         // 리스트 수
         modelMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        modelMap.put("perPageListCnt", ceil((modelListCount - 1) / page.getSize() + 1));
+        modelMap.put("perPageListCnt", ceil((double) modelListCount / page.getSize()));
         // 전체 아이템 수
         modelMap.put("modelListTotalCnt", modelListCount);
 

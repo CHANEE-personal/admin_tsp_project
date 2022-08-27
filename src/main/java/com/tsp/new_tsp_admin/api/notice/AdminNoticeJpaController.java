@@ -62,7 +62,7 @@ public class AdminNoticeJpaController {
         // 리스트 수
         noticeMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        noticeMap.put("perPageListCnt", ceil((noticeCount - 1) / page.getSize() + 1));
+        noticeMap.put("perPageListCnt", ceil((double) noticeCount / page.getSize()));
         // 전체 아이템 수
         noticeMap.put("noticeListCnt", noticeCount);
 

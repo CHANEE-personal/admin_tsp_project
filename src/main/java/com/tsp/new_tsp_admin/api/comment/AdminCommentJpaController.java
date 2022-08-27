@@ -62,7 +62,7 @@ public class AdminCommentJpaController {
         // 리스트 수
         commentMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        commentMap.put("perPageListCnt", ceil((commentCount - 1) / page.getSize() + 1));
+        commentMap.put("perPageListCnt", ceil((double) commentCount / page.getSize()));
         // 전체 아이템 수
         commentMap.put("commentListCnt", commentCount);
 

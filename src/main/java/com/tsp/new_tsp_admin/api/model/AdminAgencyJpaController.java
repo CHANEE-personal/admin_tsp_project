@@ -66,7 +66,7 @@ public class AdminAgencyJpaController {
         // 리스트 수
         agencyMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        agencyMap.put("perPageListCnt", ceil((agencyListCount - 1) / page.getSize() + 1));
+        agencyMap.put("perPageListCnt", ceil((double) agencyListCount / page.getSize()));
         // 전체 아이템 수
         agencyMap.put("agencyListTotalCnt", agencyListCount);
 

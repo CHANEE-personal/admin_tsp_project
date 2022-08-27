@@ -65,7 +65,7 @@ public class AdminCommonJpaController {
         // 리스트 수
         commonMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        commonMap.put("perPageListCnt", ceil((commonCodeListCount - 1) / page.getSize() + 1));
+        commonMap.put("perPageListCnt", ceil((double) commonCodeListCount / page.getSize()));
         // 전체 아이템 수
         commonMap.put("commonCodeListTotalCnt", commonCodeListCount);
 

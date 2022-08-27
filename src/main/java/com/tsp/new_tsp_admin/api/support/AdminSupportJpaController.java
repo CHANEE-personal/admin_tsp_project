@@ -69,7 +69,7 @@ public class AdminSupportJpaController {
         // 리스트 수
         supportMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        supportMap.put("perPageListCnt", ceil((supportListCount - 1) / page.getSize() + 1));
+        supportMap.put("perPageListCnt", ceil((double) supportListCount / page.getSize()));
         // 전체 아이템 수
         supportMap.put("modelListTotalCnt", supportListCount);
 

@@ -65,7 +65,7 @@ public class AdminProductionJpaController {
         // 리스트 수
         productionMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        productionMap.put("perPageListCnt", ceil((productionCnt - 1) / page.getSize() + 1));
+        productionMap.put("perPageListCnt", ceil((double) productionCnt / page.getSize()));
         // 전체 아이템 수
         productionMap.put("productionListCnt", productionCnt);
 

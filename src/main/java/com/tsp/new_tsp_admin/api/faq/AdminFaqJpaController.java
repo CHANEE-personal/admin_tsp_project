@@ -62,7 +62,7 @@ public class AdminFaqJpaController {
         // 리스트 수
         faqMap.put("pageSize", page.getSize());
         // 전체 페이지 수
-        faqMap.put("perPageListCnt", ceil((faqCount - 1) / page.getSize() + 1));
+        faqMap.put("perPageListCnt", ceil((double) faqCount / page.getSize()));
         // 전체 아이템 수
         faqMap.put("faqListCnt", faqCount);
 
