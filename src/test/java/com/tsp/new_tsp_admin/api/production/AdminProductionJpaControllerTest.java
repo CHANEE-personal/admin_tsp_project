@@ -309,7 +309,7 @@ class AdminProductionJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 어드민 코멘트 조회 테스트")
-    void 모델어드민코멘트조회Api테스트() throws Exception {
+    void 프로덕션어드민코멘트조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-production/1/admin-comment")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
