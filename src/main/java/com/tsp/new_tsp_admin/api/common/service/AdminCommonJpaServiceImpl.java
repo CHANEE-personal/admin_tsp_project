@@ -31,9 +31,9 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      * </pre>
      */
     @Override
-    public Integer findCommonCodeListCount(Map<String, Object> commonMap) throws TspException {
+    public Integer findCommonCodeListCount() throws TspException {
         try {
-            return adminCommonJpaRepository.findCommonCodeListCount(commonMap);
+            return adminCommonJpaRepository.findCommonCodeListCount();
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMON_LIST, e);
         }

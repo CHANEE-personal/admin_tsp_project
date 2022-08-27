@@ -17,7 +17,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findCommonCodeListCount(Map<String, Object> commonMap) throws Exception;
+    Integer findCommonCodeListCount() throws Exception;
 
     /**
      * <pre>

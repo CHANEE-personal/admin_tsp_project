@@ -32,7 +32,7 @@ public class AdminCommonJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer findCommonCodeListCount(Map<String, Object> commonMap) {
+    public Integer findCommonCodeListCount() {
         return queryFactory.selectFrom(commonCodeEntity).fetch().size();
     }
 
