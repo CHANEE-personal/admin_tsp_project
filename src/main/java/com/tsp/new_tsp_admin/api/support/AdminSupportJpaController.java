@@ -1,5 +1,7 @@
 package com.tsp.new_tsp_admin.api.support;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
@@ -272,5 +274,27 @@ public class AdminSupportJpaController {
     @PutMapping("/{idx}/pass")
     public AdminSupportDTO updatePass(@PathVariable Integer idx) throws Exception {
         return adminSupportJpaService.updatePass(AdminSupportEntity.builder().idx(idx).passYn("Y").passTime(new Date()).build());
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findSupportAdminComment
+     * 2. ClassName  : AdminSupportJpaController.java
+     * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    @ApiOperation(value = "지원모델 어드민 코멘트 조회", notes = "지원모델 어드민 코멘트를 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "지원모델 어드민 코멘트 조회성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}/admin-comment")
+    public List<AdminCommentDTO> findSupportAdminComment(@PathVariable Integer idx) throws Exception {
+        return adminSupportJpaService.findSupportAdminComment(AdminSupportEntity.builder().idx(idx).build());
     }
 }

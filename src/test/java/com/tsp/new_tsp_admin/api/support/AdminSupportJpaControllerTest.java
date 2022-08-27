@@ -1,6 +1,8 @@
 package com.tsp.new_tsp_admin.api.support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
@@ -78,6 +80,8 @@ class AdminSupportJpaControllerTest {
 
 	private EvaluationEntity evaluationEntity;
 	private EvaluationDTO evaluationDTO;
+	private AdminCommentEntity adminCommentEntity;
+	private AdminCommentDTO adminCommentDTO;
 
 	Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -412,5 +416,18 @@ class AdminSupportJpaControllerTest {
 				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(jsonPath("$.passYn").value("Y"))
 				.andExpect(jsonPath("$.passTime").isNotEmpty());
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	@DisplayName("Admin 지원모델 어드민 코멘트 조회 테스트")
+	void 지원모델어드민코멘트조회Api테스트() throws Exception {
+		mockMvc.perform(get("/api/jpa-support/1/admin-comment")
+						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
+				.andExpect(jsonPath("$.commentType").value("support"))
+				.andExpect(jsonPath("$.commentTypeIdx").value(1));
 	}
 }
