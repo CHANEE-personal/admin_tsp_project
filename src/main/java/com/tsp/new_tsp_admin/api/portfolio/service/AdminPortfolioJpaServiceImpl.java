@@ -1,7 +1,9 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
+import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -140,6 +142,25 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
             return adminPortfolioJpaRepository.deletePortfolio(idx);
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_PORTFOLIO, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPortfolioAdminComment
+     * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
+     * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<AdminCommentDTO> findPortfolioAdminComment(AdminPortFolioEntity adminPortfolioEntity) throws TspException{
+        try {
+            return adminPortfolioJpaRepository.findPortfolioAdminComment(adminPortfolioEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
         }
     }
 }

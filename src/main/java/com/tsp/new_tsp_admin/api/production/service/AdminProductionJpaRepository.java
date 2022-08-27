@@ -2,6 +2,10 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
+import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
@@ -167,5 +171,25 @@ public class AdminProductionJpaRepository {
         em.flush();
         em.clear();
         return idx;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findProductionAdminComment
+     * 2. ClassName  : AdminProductionJpaRepository.java
+     * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    public List<AdminCommentDTO> findProductionAdminComment(AdminProductionEntity existAdminProductionEntity) {
+        List<AdminCommentEntity> adminCommentEntity = queryFactory
+                .selectFrom(QAdminCommentEntity.adminCommentEntity)
+                .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("production")
+                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(existAdminProductionEntity.getIdx()))
+                        .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
+                .fetch();
+
+        return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
     }
 }

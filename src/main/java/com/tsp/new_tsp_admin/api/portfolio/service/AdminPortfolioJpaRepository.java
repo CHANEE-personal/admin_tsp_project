@@ -2,9 +2,14 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
+import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
+import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -165,5 +170,25 @@ public class AdminPortfolioJpaRepository {
         em.flush();
         em.clear();
         return idx;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPortfolioAdminComment
+     * 2. ClassName  : AdminPortfolioJpaRepository.java
+     * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    public List<AdminCommentDTO> findPortfolioAdminComment(AdminPortFolioEntity existAdminPortfolioEntity) {
+        List<AdminCommentEntity> adminCommentEntity = queryFactory
+                .selectFrom(QAdminCommentEntity.adminCommentEntity)
+                .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("portfolio")
+                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(existAdminPortfolioEntity.getIdx()))
+                        .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
+                .fetch();
+
+        return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
     }
 }

@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.portfolio;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.portfolio.service.AdminPortfolioJpaService;
@@ -157,5 +158,27 @@ public class AdminPortfolioJpaController {
     @DeleteMapping("/{idx}")
     public Integer deletePortfolio(@PathVariable Integer idx) throws Exception {
         return adminPortfolioJpaService.deletePortfolio(idx);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPortfolioAdminComment
+     * 2. ClassName  : AdminProductionJpaController.java
+     * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    @ApiOperation(value = "포트폴리오 어드민 코멘트 조회", notes = "포트폴리오 어드민 코멘트를 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "포트폴리오 어드민 코멘트 조회성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}/admin-comment")
+    public List<AdminCommentDTO> findPortfolioAdminComment(@PathVariable Integer idx) throws Exception {
+        return adminPortfolioJpaService.findPortfolioAdminComment(AdminPortFolioEntity.builder().idx(idx).build());
     }
 }

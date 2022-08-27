@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -140,6 +141,25 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
             return adminProductionJpaRepository.deleteProductionByEm(idx);
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_PRODUCTION, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findProductionAdminComment
+     * 2. ClassName  : AdminProductionJpaServiceImpl.java
+     * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<AdminCommentDTO> findProductionAdminComment(AdminProductionEntity adminProductionEntity) throws TspException{
+        try {
+            return adminProductionJpaRepository.findProductionAdminComment(adminProductionEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
         }
     }
 }

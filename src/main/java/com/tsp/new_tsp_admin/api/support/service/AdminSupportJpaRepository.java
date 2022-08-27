@@ -2,18 +2,20 @@ package com.tsp.new_tsp_admin.api.support.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
+import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
-import com.tsp.new_tsp_admin.api.support.mapper.SupportMapper;
 import com.tsp.new_tsp_admin.api.support.mapper.evaluate.EvaluateMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -264,5 +266,25 @@ public class AdminSupportJpaRepository {
         em.clear();
 
         return INSTANCE.toDto(existSupportEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findSupportAdminComment
+     * 2. ClassName  : AdminSupportJpaRepository.java
+     * 3. Comment    : 관리자 지원모델 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    public List<AdminCommentDTO> findSupportAdminComment(AdminSupportEntity existAdminSupportEntity) {
+        List<AdminCommentEntity> adminCommentEntity = queryFactory
+                .selectFrom(QAdminCommentEntity.adminCommentEntity)
+                .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("support")
+                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(existAdminSupportEntity.getIdx()))
+                        .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
+                .fetch();
+
+        return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
     }
 }

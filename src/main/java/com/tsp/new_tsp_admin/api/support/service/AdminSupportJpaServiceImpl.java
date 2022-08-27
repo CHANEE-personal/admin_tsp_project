@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.support.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
@@ -273,6 +274,24 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
             return adminSupportJpaRepository.updatePass(adminSupportEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_SUPPORT, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findSupportAdminComment
+     * 2. ClassName  : AdminSupportJpaServiceImpl.java
+     * 3. Comment    : 관리자 지원모델 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    @Override
+    public List<AdminCommentDTO> findSupportAdminComment(AdminSupportEntity adminSupportEntity) throws TspException {
+        try {
+            return adminSupportJpaRepository.findSupportAdminComment(adminSupportEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
         }
     }
 }

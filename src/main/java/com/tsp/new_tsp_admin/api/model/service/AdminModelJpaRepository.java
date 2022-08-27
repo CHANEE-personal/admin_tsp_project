@@ -3,6 +3,10 @@ package com.tsp.new_tsp_admin.api.model.service;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
+import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
+import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
@@ -263,5 +267,25 @@ public class AdminModelJpaRepository {
         } else {
             throw new TspException(NOT_FOUND_AGENCY, new Throwable("NOT_FOUND_AGENCY"));
         }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findModelAdminComment
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 모델 어드민 코멘트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 26.
+     * </pre>
+     */
+    public List<AdminCommentDTO> findModelAdminComment(AdminModelEntity existAdminModelEntity) {
+        List<AdminCommentEntity> adminCommentEntity = queryFactory
+                .selectFrom(QAdminCommentEntity.adminCommentEntity)
+                .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("model")
+                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(existAdminModelEntity.getIdx()))
+                        .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
+                .fetch();
+
+        return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
     }
 }

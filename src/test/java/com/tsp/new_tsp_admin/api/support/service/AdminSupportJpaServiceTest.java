@@ -1,5 +1,7 @@
 package com.tsp.new_tsp_admin.api.support.service;
 
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
@@ -51,6 +53,8 @@ class AdminSupportJpaServiceTest {
 
     private EvaluationEntity evaluationEntity;
     private EvaluationDTO evaluationDTO;
+    private AdminCommentEntity adminCommentEntity;
+    private AdminCommentDTO adminCommentDTO;
 
     void createSupport() {
         adminSupportEntity = AdminSupportEntity.builder()
@@ -537,6 +541,94 @@ class AdminSupportJpaServiceTest {
 
         then(mockAdminSupportJpaService).should(times(1)).findOneSupportModel(adminSupportEntity);
         then(mockAdminSupportJpaService).should(atLeastOnce()).findOneSupportModel(adminSupportEntity);
+        then(mockAdminSupportJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("지원모델 어드민 코멘트 조회 Mockito 테스트")
+    void 지원모델어드민코멘트조회Mockito테스트() throws Exception {
+        adminSupportEntity = AdminSupportEntity.builder()
+                .supportName("조찬희")
+                .supportHeight(170)
+                .supportMessage("조찬희")
+                .supportPhone("010-9466-2702")
+                .supportSize3("31-24-31")
+                .passYn("Y")
+                .passTime(new Date())
+                .visible("Y")
+                .build();
+
+        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+
+        adminCommentEntity = AdminCommentEntity.builder()
+                .comment("코멘트 테스트")
+                .commentType("support")
+                .commentTypeIdx(supportIdx)
+                .visible("Y")
+                .build();
+
+        List<AdminCommentDTO> adminCommentList = new ArrayList<>();
+        adminCommentList.add(AdminCommentDTO.builder()
+                .comment("코멘트 테스트")
+                .commentType("support")
+                .commentTypeIdx(supportIdx)
+                .visible("Y")
+                .build());
+
+        when(mockAdminSupportJpaService.findSupportAdminComment(adminSupportEntity)).thenReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminSupportJpaService.findSupportAdminComment(adminSupportEntity);
+
+        assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("support");
+        assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminSupportEntity.getIdx());
+
+        verify(mockAdminSupportJpaService, times(1)).findSupportAdminComment(adminSupportEntity);
+        verify(mockAdminSupportJpaService, atLeastOnce()).findSupportAdminComment(adminSupportEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaService);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaService);
+        inOrder.verify(mockAdminSupportJpaService).findSupportAdminComment(adminSupportEntity);
+    }
+
+    @Test
+    @DisplayName("지원모델 어드민 코멘트 조회 BDD 테스트")
+    void 지원모델어드민코멘트조회BDD테스트() throws Exception {
+        adminSupportEntity = AdminSupportEntity.builder()
+                .supportName("조찬희")
+                .supportHeight(170)
+                .supportMessage("조찬희")
+                .supportPhone("010-9466-2702")
+                .supportSize3("31-24-31")
+                .passYn("Y")
+                .passTime(new Date())
+                .visible("Y")
+                .build();
+
+        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+
+        adminCommentEntity = AdminCommentEntity.builder()
+                .comment("코멘트 테스트")
+                .commentType("support")
+                .commentTypeIdx(supportIdx)
+                .visible("Y")
+                .build();
+
+        List<AdminCommentDTO> adminCommentList = new ArrayList<>();
+        adminCommentList.add(AdminCommentDTO.builder()
+                .comment("코멘트 테스트")
+                .commentType("support")
+                .commentTypeIdx(supportIdx)
+                .visible("Y")
+                .build());
+
+        given(mockAdminSupportJpaService.findSupportAdminComment(adminSupportEntity)).willReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminSupportJpaService.findSupportAdminComment(adminSupportEntity);
+
+        assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("support");
+        assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminSupportEntity.getIdx());
+
+        // verify
+        then(mockAdminSupportJpaService).should(times(1)).findSupportAdminComment(adminSupportEntity);
+        then(mockAdminSupportJpaService).should(atLeastOnce()).findSupportAdminComment(adminSupportEntity);
         then(mockAdminSupportJpaService).shouldHaveNoMoreInteractions();
     }
 }
