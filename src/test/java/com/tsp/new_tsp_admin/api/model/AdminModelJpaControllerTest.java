@@ -676,12 +676,12 @@ class AdminModelJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 어드민 코멘트 조회 테스트")
     void 모델어드민코멘트조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-model/2/143/admin-comment")
+        mockMvc.perform(get("/api/jpa-model/{categoryCd}/{idx}/admin-comment", adminModelEntity.getCategoryCd(), adminModelEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.commentType").value("model"))
-                .andExpect(jsonPath("$.commentTypeIdx").value(143));
+                .andExpect(jsonPath("$.commentTypeIdx").value(adminModelEntity.getIdx()));
     }
 }

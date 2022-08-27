@@ -347,12 +347,12 @@ class AdminPortfolioJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 어드민 코멘트 조회 테스트")
     void 포트폴리오어드민코멘트조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-portfolio/1/admin-comment")
+        mockMvc.perform(get("/api/jpa-portfolio/{idx}/admin-comment", adminPortFolioEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.commentType").value("portfolio"))
-                .andExpect(jsonPath("$.commentTypeIdx").value(1));
+                .andExpect(jsonPath("$.commentTypeIdx").value(adminPortFolioEntity.getIdx()));
     }
 }
