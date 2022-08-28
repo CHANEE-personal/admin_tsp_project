@@ -163,8 +163,8 @@ public class AdminPortfolioJpaController {
     /**
      * <pre>
      * 1. MethodName : findPortfolioAdminComment
-     * 2. ClassName  : AdminProductionJpaController.java
-     * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
+     * 2. ClassName  : AdminPortfolioJpaController.java
+     * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
