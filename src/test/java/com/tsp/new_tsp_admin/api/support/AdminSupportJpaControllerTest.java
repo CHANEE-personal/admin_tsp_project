@@ -313,7 +313,7 @@ class AdminSupportJpaControllerTest {
 						.evaluateComment("합격")
 						.visible("Y").build();
 
-		mockMvc.perform(post("/api/jpa-support/1/evaluation")
+		mockMvc.perform(post("/api/jpa-support/{idx}/evaluation", adminSupportEntity.getIdx())
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
 						.contentType(APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(evaluationEntity)))

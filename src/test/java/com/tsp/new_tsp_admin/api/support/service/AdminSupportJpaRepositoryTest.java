@@ -411,6 +411,54 @@ class AdminSupportJpaRepositoryTest {
                 .build();
 
         adminSupportJpaRepository.evaluationSupportModel(evaluationEntity);
+
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        // when
+        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+
+        // then
+        assertThat(evaluationInfo.getSupportIdx()).isEqualTo(supportIdx);
+        assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
+
+        // verify
+        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verifyNoMoreInteractions(mockAdminSupportJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity);
+    }
+
+    @Test
+    @DisplayName("지원 모델 평가 BDD 테스트")
+    void 지원모델평가BDD테스트() {
+        // given
+        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+
+        evaluationEntity = EvaluationEntity.builder()
+                .supportIdx(supportIdx)
+                .evaluateComment("합격")
+                .visible("Y")
+                .build();
+
+        adminSupportJpaRepository.evaluationSupportModel(evaluationEntity);
+
+        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+
+        // when
+        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+
+        // then
+        assertThat(evaluationInfo.getSupportIdx()).isEqualTo(supportIdx);
+        assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
+
+        // verify
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
