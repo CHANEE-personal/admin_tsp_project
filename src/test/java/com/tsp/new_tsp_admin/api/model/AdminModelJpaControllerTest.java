@@ -502,7 +502,7 @@ class AdminModelJpaControllerTest {
                 .status("active")
                 .build();
 
-        mockMvc.perform(put("/api/jpa-model/1")
+        mockMvc.perform(put("/api/jpa-model/{idx}", adminModelEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
@@ -585,7 +585,7 @@ class AdminModelJpaControllerTest {
                         "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
         );
 
-        mockMvc.perform(multipart("/api/jpa-model/1/images")
+        mockMvc.perform(multipart("/api/jpa-model/{idx}/images", adminModelEntity.getIdx())
                         .file("images", imageFiles.get(0).getBytes())
                         .file("images", imageFiles.get(1).getBytes())
                 .contentType(MULTIPART_FORM_DATA_VALUE))
@@ -692,7 +692,7 @@ class AdminModelJpaControllerTest {
         LinkedMultiValueMap<String, String> newModelMap = new LinkedMultiValueMap<>();
         newModelMap.add("jpaStartPage", "1");
         newModelMap.add("size", "3");
-        mockMvc.perform(get("/api/jpa-model/lists/new/1").queryParams(newModelMap)
+        mockMvc.perform(get("/api/jpa-model/lists/new/{categoryCd}", adminModelEntity.getCategoryCd()).queryParams(newModelMap)
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
