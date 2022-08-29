@@ -114,6 +114,10 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @NotEmpty(message = "모델 상태값 선택은 필수입니다.")
     private String status;
 
+    @Column(name = "new_yn")
+    @NotEmpty(message = "새로운 모델 선택은 필수입니다.")
+    private String newYn;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newModelCodeJpaDTO;
