@@ -14,7 +14,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
-import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -112,6 +111,10 @@ public class AdminModelDTO extends NewCommonDTO {
     @NotEmpty(message = "모델 상태 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "model status")
     private String status;
+
+    @NotEmpty(message = "새로운 모델 선택은 필수입니다.")
+    @ApiModelProperty(required = true, value = "새로운 모델((ex)Y,N")
+    private String newYn;
 
     @ApiModelProperty(value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();

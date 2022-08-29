@@ -120,4 +120,26 @@ public interface AdminModelJpaService {
      * </pre>
      */
     List<AdminCommentDTO> findModelAdminComment(AdminModelEntity adminModelEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNewModelsCount
+     * 2. ClassName  : AdminModelJpaService.java
+     * 3. Comment    : 관리자 새로운 모델 리스트 수 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 29.
+     * </pre>
+     */
+    Integer findNewModelsCount(Map<String, Object> modelMap) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNewModelsList
+     * 2. ClassName  : AdminModelJpaService.java
+     * 3. Comment    : 관리자 새로운 모델 리스트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 29.
+     * </pre>
+     */
+    List<AdminModelDTO> findNewModelsList(Map<String, Object> modelMap) throws Exception;
 }
