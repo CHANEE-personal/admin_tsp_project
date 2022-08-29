@@ -101,6 +101,7 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
+                .newYn("N")
                 .favoriteCount(1)
                 .viewCount(1)
                 .agencyIdx(adminAgencyEntity.getIdx())
@@ -490,6 +491,7 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
+                .newYn("N")
                 .height(170)
                 .size3("34-24-34")
                 .shoes(270)
@@ -535,6 +537,7 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
+                .newYn("N")
                 .height(170)
                 .size3("34-24-34")
                 .shoes(270)
@@ -680,6 +683,7 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
+                .newYn("N")
                 .favoriteCount(1)
                 .viewCount(1)
                 .agencyIdx(adminAgencyEntity.getIdx())
@@ -754,6 +758,7 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
+                .newYn("N")
                 .favoriteCount(1)
                 .viewCount(1)
                 .agencyIdx(adminAgencyEntity.getIdx())
@@ -821,6 +826,7 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
+                .newYn("N")
                 .favoriteCount(1)
                 .viewCount(1)
                 .height(170)
@@ -876,6 +882,7 @@ class AdminModelJpaRepositoryTest {
                 .modelDescription("chaneeCho")
                 .modelMainYn("Y")
                 .status("active")
+                .newYn("N")
                 .favoriteCount(1)
                 .viewCount(1)
                 .height(170)
@@ -910,6 +917,74 @@ class AdminModelJpaRepositoryTest {
         // verify
         then(mockAdminModelJpaRepository).should(times(1)).findModelAdminComment(adminModelEntity);
         then(mockAdminModelJpaRepository).should(atLeastOnce()).findModelAdminComment(adminModelEntity);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("새로운 모델 Mockito 조회 테스트")
+    void 새로운모델Mockito조회테스트() {
+        // given
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("categoryCd", 1);
+        modelMap.put("jpaStartPage", 1);
+        modelMap.put("size", 3);
+
+        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
+        commonImageDtoList.add(commonImageDTO);
+
+        List<AdminModelDTO> modelList = new ArrayList<>();
+        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").newYn("Y")
+                .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
+
+        // when
+        when(mockAdminModelJpaRepository.findNewModelsList(modelMap)).thenReturn(modelList);
+        List<AdminModelDTO> newModelList = mockAdminModelJpaRepository.findNewModelsList(modelMap);
+
+        // then
+        assertThat(newModelList.get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
+        assertThat(newModelList.get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
+        assertThat(newModelList.get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
+        assertThat(newModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(modelList.get(0).getModelAgency().getAgencyName());
+        assertThat(newModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(modelList.get(0).getModelAgency().getAgencyDescription());
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(1)).findNewModelsList(modelMap);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findNewModelsList(modelMap);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaRepository);
+        inOrder.verify(mockAdminModelJpaRepository).findNewModelsList(modelMap);
+    }
+
+    @Test
+    @DisplayName("새로운 모델 리스트 조회 BDD 테스트")
+    void 새로운모델리스트조회BDD테스트() {
+        // given
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("categoryCd", 1);
+        modelMap.put("jpaStartPage", 1);
+        modelMap.put("size", 3);
+
+        List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
+        commonImageDtoList.add(commonImageDTO);
+
+        List<AdminModelDTO> modelList = new ArrayList<>();
+        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").newYn("Y").modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
+
+        // when
+        given(mockAdminModelJpaRepository.findNewModelsList(modelMap)).willReturn(modelList);
+        List<AdminModelDTO> newModelList = mockAdminModelJpaRepository.findNewModelsList(modelMap);
+
+        // then
+        assertThat(newModelList.get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
+        assertThat(newModelList.get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
+        assertThat(newModelList.get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
+        assertThat(newModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(modelList.get(0).getModelAgency().getAgencyName());
+        assertThat(newModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(modelList.get(0).getModelAgency().getAgencyDescription());
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(1)).findNewModelsList(modelMap);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findNewModelsList(modelMap);
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 }
