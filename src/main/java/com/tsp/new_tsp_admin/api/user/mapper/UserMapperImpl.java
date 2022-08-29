@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class UserMapperImpl implements UserMapper {
     @Override
     public AdminUserDTO toDto(AdminUserEntity entity) {

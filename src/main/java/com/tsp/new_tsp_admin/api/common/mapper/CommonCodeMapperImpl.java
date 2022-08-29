@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Mapper
 public class CommonCodeMapperImpl implements CommonCodeMapper {
     @Override

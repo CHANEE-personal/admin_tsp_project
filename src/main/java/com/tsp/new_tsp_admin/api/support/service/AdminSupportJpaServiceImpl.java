@@ -150,7 +150,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Transactional(readOnly = true)
     public Integer findEvaluationsCount(Map<String, Object> evaluationMap) throws TspException {
         try {
-            return adminSupportJpaRepository.findEvaluationsCount(evaluationMap);
+            return adminSupportJpaRepository.findEvaluationsCount();
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_EVALUATION_LIST, e);
         }

@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.production;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.service.AdminProductionJpaService;

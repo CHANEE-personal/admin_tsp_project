@@ -155,7 +155,7 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer findEvaluationsCount(Map<String, Object> evaluationMap) {
+    public Integer findEvaluationsCount() {
         return queryFactory.selectFrom(evaluationEntity).fetch().size();
     }
 

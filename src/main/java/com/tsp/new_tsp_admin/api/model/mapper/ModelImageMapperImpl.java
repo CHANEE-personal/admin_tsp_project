@@ -9,7 +9,6 @@ import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity.*;
 
-
 @Mapper
 public class ModelImageMapperImpl implements ModelImageMapper {
     @Override
