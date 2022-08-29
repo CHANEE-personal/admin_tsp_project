@@ -684,4 +684,18 @@ class AdminModelJpaControllerTest {
                 .andExpect(jsonPath("$.commentType").value("model"))
                 .andExpect(jsonPath("$.commentTypeIdx").value(adminModelEntity.getIdx()));
     }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 새로운 모델 조회 테스트")
+    void 새로운모델조회Api테스트() throws Exception {
+        LinkedMultiValueMap<String, String> newModelMap = new LinkedMultiValueMap<>();
+        newModelMap.add("jpaStartPage", "1");
+        newModelMap.add("size", "3");
+        mockMvc.perform(get("/api/jpa-model/lists/new/1").queryParams(newModelMap)
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
+    }
 }
