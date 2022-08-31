@@ -93,7 +93,14 @@ public enum ApiExceptionType implements BaseExceptionType {
     NOT_FOUND_COMMENT("NOT_FOUND_COMMENT", 200, "코멘트 없음"),
     ERROR_COMMENT("ERROR_COMMENT", 500, "코멘트 등록 에러"),
     ERROR_UPDATE_COMMENT("ERROR_UPDATE_COMMENT", 500, "코멘트 수정 에러"),
-    ERROR_DELETE_COMMENT("ERROR_DELETE_COMMENT", 500, "코멘트 삭제 에러");
+    ERROR_DELETE_COMMENT("ERROR_DELETE_COMMENT", 500, "코멘트 삭제 에러"),
+
+    // 모델 스케줄 관련 TYPE
+    NOT_FOUND_MODEL_SCHEDULE_LIST("NOT_FOUND_MODEL_SCHEDULE_LIST", 200, "모델 스케줄 리스트 없음"),
+    NOT_FOUND_MODEL_SCHEDULE("NOT_FOUND_MODEL_SCHEDULE", 200, "모델 스케줄 없음"),
+    ERROR_MODEL_SCHEDULE("ERROR_MODEL_SCHEDULE", 500, "모델 스케줄 등록 에러"),
+    ERROR_UPDATE_MODEL_SCHEDULE("ERROR_UPDATE_MODEL_SCHEDULE", 500, "모델 스케줄 수정 에러"),
+    ERROR_DELETE_MODEL_SCHEDULE("ERROR_DELETE_MODEL_SCHEDULE", 500, "모델 스케줄 삭제 에러");
 
     private final String errorCode;
     private final int httpStatus;
