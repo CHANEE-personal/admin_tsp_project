@@ -60,7 +60,6 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
         try {
             return adminAgencyJpaRepository.findAgencyList(agencyMap);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new TspException(NOT_FOUND_AGENCY_LIST, e);
         }
     }
