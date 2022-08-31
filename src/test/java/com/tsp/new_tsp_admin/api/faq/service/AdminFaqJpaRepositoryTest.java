@@ -231,6 +231,30 @@ class AdminFaqJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("FAQ등록Mockito테스트")
+    void FAQ등록Mockito테스트() {
+        // given
+        adminFaqJpaRepository.insertFaq(adminFaqEntity);
+
+        // when
+        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getTitle()).isEqualTo("FAQ 테스트");
+        assertThat(faqInfo.getDescription()).isEqualTo("FAQ 테스트");
+        assertThat(faqInfo.getVisible()).isEqualTo("Y");
+
+        // verify
+        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity);
+        verifyNoMoreInteractions(mockAdminFaqJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
+        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity);
+    }
+
+    @Test
     @DisplayName("FAQ등록BDD테스트")
     void FAQ등록BDD테스트() {
         // given
