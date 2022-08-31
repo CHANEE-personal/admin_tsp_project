@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -46,7 +47,7 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
     @Column(name = "model_schedule_time")
     @Temporal(value = TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotEmpty(message = "모델 스케줄 일정 입력은 필수입니다.")
+    @NotNull(message = "모델 스케줄 일정 입력은 필수입니다.")
     private Date modelScheduleTime;
 
     @Column(name = "visible")
