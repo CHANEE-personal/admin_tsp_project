@@ -65,7 +65,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @TestConstructor(autowireMode = ALL)
 @RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
-@DisplayName("소속사 Api Test")
+@DisplayName("모델 스케줄 Api Test")
 class AdminScheduleJpaControllerTest {
     private MockMvc mockMvc;
     private final ObjectMapper objectMapper;
