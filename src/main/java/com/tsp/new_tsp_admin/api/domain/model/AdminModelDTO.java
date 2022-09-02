@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.domain.model;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.common.CustomConverter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -121,4 +122,7 @@ public class AdminModelDTO extends NewCommonDTO {
 
     @ApiModelProperty(value = "modelAgency", hidden = true)
     private AdminAgencyDTO modelAgency;
+
+    @ApiModelProperty(value = "modelScheduleList", hidden = true)
+    private List<AdminScheduleDTO> modelSchedule = new ArrayList<>();
 }
