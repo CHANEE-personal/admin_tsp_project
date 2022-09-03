@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.model;
 
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.api.model.service.schedule.AdminScheduleJpaService;
@@ -54,10 +55,10 @@ public class AdminScheduleJpaController {
         Map<String, Object> scheduleMap = searchCommon.searchCommon(page, paramMap);
 
         Integer scheduleListCount = this.adminScheduleJpaService.findScheduleCount(scheduleMap);
-        List<AdminScheduleDTO> scheduleList = new ArrayList<>();
+        List<AdminModelDTO> scheduleList = new ArrayList<>();
 
         if (scheduleListCount > 0) {
-            scheduleList = this.adminScheduleJpaService.findScheduleList(scheduleMap);
+            scheduleList = this.adminScheduleJpaService.findModelScheduleList(scheduleMap);
         }
 
         // 리스트 수
