@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service.schedule;
 
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -34,7 +35,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Transactional(readOnly = true)
     public Integer findScheduleCount(Map<String, Object> scheduleMap) throws TspException {
         try {
-            return adminScheduleJpaRepository.findScheduleCount();
+            return adminScheduleJpaRepository.findScheduleCount(scheduleMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_SCHEDULE_LIST, e);
         }
@@ -50,11 +51,11 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("schedule")
+    @Cacheable("model")
     @Transactional(readOnly = true)
-    public List<AdminScheduleDTO> findScheduleList(Map<String, Object> scheduleMap) throws TspException {
+    public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) throws TspException {
         try {
-            return adminScheduleJpaRepository.findScheduleList(scheduleMap);
+            return adminScheduleJpaRepository.findModelScheduleList(scheduleMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_SCHEDULE_LIST, e);
         }
