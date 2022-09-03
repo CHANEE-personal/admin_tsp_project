@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
 import com.tsp.new_tsp_admin.common.Page;
 import com.tsp.new_tsp_admin.common.SearchCommon;
@@ -299,5 +300,27 @@ public class AdminModelJpaController {
         newModelMap.put("newModelList", newModelsList);
 
         return newModelMap;
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneModelSchedule
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 모델 스케줄 리스트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 03.
+     * </pre>
+     */
+    @ApiOperation(value = "모델 스케줄 조회", notes = "모델 스케줄을 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "모델 스케줄 조회성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping(value = "/{idx}/schedule")
+    public List<AdminScheduleDTO> findOneModelSchedule(@PathVariable Integer idx) throws Exception {
+        return adminModelJpaService.findOneModelSchedule(AdminModelEntity.builder().idx(idx).build());
     }
 }
