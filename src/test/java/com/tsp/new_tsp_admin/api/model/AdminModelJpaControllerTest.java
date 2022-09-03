@@ -703,13 +703,11 @@ class AdminModelJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 스케줄 조회 테스트")
     void 모델스케줄조회Api테스트() throws Exception {
-        LinkedMultiValueMap<String, String> scheduleMap = new LinkedMultiValueMap<>();
-        scheduleMap.add("jpaStartPage", "1");
-        scheduleMap.add("size", "3");
         mockMvc.perform(get("/api/jpa-model/{idx}/schedule", adminModelEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=utf-8"));
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.modelIdx").value(adminModelEntity.getIdx()));
     }
 }
