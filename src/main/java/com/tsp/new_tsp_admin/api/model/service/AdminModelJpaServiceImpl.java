@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -258,6 +259,26 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
             return adminModelJpaRepository.findNewModelsList(modelMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_LIST, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneModelSchedule
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 스케줄 리스트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 03.
+     * </pre>
+     */
+    @Override
+    @Cacheable("schedule")
+    @Transactional(readOnly = true)
+    public List<AdminScheduleDTO> findOneModelSchedule(AdminModelEntity adminModelEntity) throws TspException {
+        try {
+            return adminModelJpaRepository.findOneModelSchedule(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL_SCHEDULE_LIST, e);
         }
     }
 }

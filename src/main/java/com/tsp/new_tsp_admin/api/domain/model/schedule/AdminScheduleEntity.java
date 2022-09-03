@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.model.schedule;
 
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import java.util.Date;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -53,4 +55,8 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
     @Column(name = "visible")
     @NotEmpty(message = "모델 스케줄 노출 여부 선택은 필수입니다.")
     private String visible;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "model_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+    private AdminModelEntity adminModelEntity;
 }

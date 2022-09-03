@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.common.CustomConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -128,4 +129,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @OneToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "agency_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminAgencyEntity adminAgencyEntity;
+
+    @OneToMany(mappedBy = "adminModelEntity")
+    private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
 }

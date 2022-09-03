@@ -11,7 +11,10 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.schedule.ScheduleMapper;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ import java.util.Map;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.*;
+import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.*;
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
@@ -328,5 +332,25 @@ public class AdminModelJpaRepository {
                 .setRnum(getInt(modelMap.get("startPage"), 1) * (getInt(modelMap.get("size"), 1)) - (2 - newModelList.indexOf(list))));
 
         return INSTANCE.toDtoList(newModelList);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneModelSchedule
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 모델 스케줄 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 03.
+     * </pre>
+     */
+    public List<AdminScheduleDTO> findOneModelSchedule(AdminModelEntity adminModelEntity) {
+        List<AdminScheduleEntity> scheduleList = queryFactory
+                .selectFrom(adminScheduleEntity)
+                .orderBy(adminScheduleEntity.idx.desc())
+                .where(adminScheduleEntity.modelIdx.eq(adminModelEntity.getIdx())
+                        .and(adminScheduleEntity.visible.eq("Y")))
+                .fetch();
+
+        return ScheduleMapper.INSTANCE.toDtoList(scheduleList);
     }
 }

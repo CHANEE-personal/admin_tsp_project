@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.model.mapper;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.schedule.ScheduleMapper;
 import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class ModelMapperImpl implements ModelMapper {
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
                 .updateTime(entity.getUpdateTime())
+                .modelSchedule(ScheduleMapper.INSTANCE.toDtoList(entity.getScheduleList()))
                 .modelAgency(AgencyMapper.INSTANCE.toDto(entity.getAdminAgencyEntity()))
                 .modelImage(ModelImageMapper.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
                 .build();
