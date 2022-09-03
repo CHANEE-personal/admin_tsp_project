@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -142,4 +143,15 @@ public interface AdminModelJpaService {
      * </pre>
      */
     List<AdminModelDTO> findNewModelsList(Map<String, Object> modelMap) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneModelSchedule
+     * 2. ClassName  : AdminModelJpaService.java
+     * 3. Comment    : 관리자 모델 스케줄 리스트 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 03.
+     * </pre>
+     */
+    List<AdminScheduleDTO> findOneModelSchedule(AdminModelEntity adminModelEntity) throws Exception;
 }

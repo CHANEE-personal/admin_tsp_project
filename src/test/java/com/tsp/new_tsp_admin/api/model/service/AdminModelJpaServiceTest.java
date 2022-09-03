@@ -8,6 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
 import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaService;
@@ -28,10 +29,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -933,6 +931,65 @@ class AdminModelJpaServiceTest {
         // verify
         then(mockAdminModelJpaService).should(times(1)).findNewModelsList(modelMap);
         then(mockAdminModelJpaService).should(atLeastOnce()).findNewModelsList(modelMap);
+        then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("모델 스케줄 Mockito 조회 테스트")
+    void 모델스케줄Mockito조회테스트() throws Exception {
+        // given
+        Map<String, Object> scheduleMap = new HashMap<>();
+        scheduleMap.put("jpaStartPage", 1);
+        scheduleMap.put("size", 3);
+
+        List<AdminScheduleDTO> scheduleList = new ArrayList<>();
+        scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
+                .modelSchedule("스케줄 테스트").modelScheduleTime(new Date()).build());
+
+        // when
+        when(mockAdminModelJpaService.findOneModelSchedule(adminModelEntity)).thenReturn(scheduleList);
+        List<AdminScheduleDTO> newScheduleList = mockAdminModelJpaService.findOneModelSchedule(adminModelEntity);
+
+        // then
+        assertThat(newScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
+        assertThat(newScheduleList.get(0).getModelIdx()).isEqualTo(scheduleList.get(0).getModelIdx());
+        assertThat(newScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
+        assertThat(newScheduleList.get(0).getModelScheduleTime()).isEqualTo(scheduleList.get(0).getModelScheduleTime());
+
+        // verify
+        verify(mockAdminModelJpaService, times(1)).findOneModelSchedule(adminModelEntity);
+        verify(mockAdminModelJpaService, atLeastOnce()).findOneModelSchedule(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaService);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaService);
+        inOrder.verify(mockAdminModelJpaService).findOneModelSchedule(adminModelEntity);
+    }
+
+    @Test
+    @DisplayName("모델 스케줄 BDD 조회 테스트")
+    void 모델스케줄BDD조회테스트() throws Exception {
+        // given
+        Map<String, Object> scheduleMap = new HashMap<>();
+        scheduleMap.put("jpaStartPage", 1);
+        scheduleMap.put("size", 3);
+
+        List<AdminScheduleDTO> scheduleList = new ArrayList<>();
+        scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
+                .modelSchedule("스케줄 테스트").modelScheduleTime(new Date()).build());
+
+        // when
+        when(mockAdminModelJpaService.findOneModelSchedule(adminModelEntity)).thenReturn(scheduleList);
+        List<AdminScheduleDTO> newScheduleList = mockAdminModelJpaService.findOneModelSchedule(adminModelEntity);
+
+        // then
+        assertThat(newScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
+        assertThat(newScheduleList.get(0).getModelIdx()).isEqualTo(scheduleList.get(0).getModelIdx());
+        assertThat(newScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
+        assertThat(newScheduleList.get(0).getModelScheduleTime()).isEqualTo(scheduleList.get(0).getModelScheduleTime());
+
+        // verify
+        then(mockAdminModelJpaService).should(times(1)).findOneModelSchedule(adminModelEntity);
+        then(mockAdminModelJpaService).should(atLeastOnce()).findOneModelSchedule(adminModelEntity);
         then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }
 }
