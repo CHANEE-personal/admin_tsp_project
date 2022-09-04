@@ -10,7 +10,6 @@ import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.ModelMap;
 
 import javax.persistence.EntityManager;
 import java.util.List;
