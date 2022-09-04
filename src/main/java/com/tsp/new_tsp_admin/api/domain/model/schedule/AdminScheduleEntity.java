@@ -8,18 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
-import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Getter
@@ -47,10 +45,9 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
     private String modelSchedule;
 
     @Column(name = "model_schedule_time")
-    @Temporal(value = TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "모델 스케줄 일정 입력은 필수입니다.")
-    private Date modelScheduleTime;
+    private LocalDateTime modelScheduleTime;
 
     @Column(name = "visible")
     @NotEmpty(message = "모델 스케줄 노출 여부 선택은 필수입니다.")
