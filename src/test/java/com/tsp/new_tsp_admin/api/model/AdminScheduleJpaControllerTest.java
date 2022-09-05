@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -135,7 +138,10 @@ class AdminScheduleJpaControllerTest {
         LinkedMultiValueMap<String, String> scheduleMap = new LinkedMultiValueMap<>();
         scheduleMap.add("jpaStartPage", "1");
         scheduleMap.add("size", "3");
-        mockMvc.perform(get("/api/jpa-schedule/lists").queryParams(scheduleMap)
+        mockMvc.perform(get("/api/jpa-schedule/lists")
+                        .queryParams(scheduleMap)
+                        .queryParam("searchStartTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0).format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                        .queryParam("searchEndTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59).format(DateTimeFormatter.ofPattern("yyyyMMdd")))
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())

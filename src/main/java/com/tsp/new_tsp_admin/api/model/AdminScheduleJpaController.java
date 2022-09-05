@@ -30,7 +30,7 @@ import static java.lang.Math.ceil;
 @RequiredArgsConstructor
 public class AdminScheduleJpaController {
     private final AdminScheduleJpaService adminScheduleJpaService;
-    private SearchCommon searchCommon;
+    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -50,9 +50,17 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findScheduleList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findScheduleList(@RequestParam(required = false) Map<String, Object> paramMap,
+                                                @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
+                                                @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
+                                                Page page) throws Exception {
         // 페이징 및 검색
         Map<String, Object> scheduleMap = searchCommon.searchCommon(page, paramMap);
+
+        if (searchStartTime != null && searchEndTime != null) {
+            scheduleMap.put("searchStart", searchStartTime);
+            scheduleMap.put("searchEnd", searchEndTime);
+        }
 
         Integer scheduleListCount = this.adminScheduleJpaService.findScheduleCount(scheduleMap);
         List<AdminModelDTO> scheduleList = new ArrayList<>();
