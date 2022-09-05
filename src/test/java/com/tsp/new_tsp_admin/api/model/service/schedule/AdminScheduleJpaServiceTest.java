@@ -27,6 +27,7 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -111,6 +112,37 @@ class AdminScheduleJpaServiceTest {
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         createModelAndSchedule();
+    }
+
+    @Test
+    @DisplayName("모델 스케줄 리스트 조회 테스트")
+    void 모델스케줄리스트조회테스트() throws Exception {
+        // given
+        Map<String, Object> scheduleMap = new HashMap<>();
+        scheduleMap.put("searchKeyword", "김예영");
+        scheduleMap.put("jpaStartPage", 0);
+        scheduleMap.put("size", 100);
+
+        // then
+        assertThat(adminScheduleJpaService.findModelScheduleList(scheduleMap)).isNotEmpty();
+
+        Map<String, Object> lastMonthScheduleMap = new HashMap<>();
+        lastMonthScheduleMap.put("searchStartTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 1, 0, 0, 0, 0));
+        lastMonthScheduleMap.put("searchEndTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 30, 23, 59, 59));
+        lastMonthScheduleMap.put("jpaStartPage", 0);
+        lastMonthScheduleMap.put("size", 100);
+
+        // then
+        assertThat(adminScheduleJpaService.findModelScheduleList(lastMonthScheduleMap)).isEmpty();
+
+        Map<String, Object> currentScheduleMap = new HashMap<>();
+        currentScheduleMap.put("searchStartTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0));
+        currentScheduleMap.put("searchEndTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59));
+        currentScheduleMap.put("jpaStartPage", 0);
+        currentScheduleMap.put("size", 100);
+
+        // then
+        assertThat(adminScheduleJpaService.findModelScheduleList(currentScheduleMap)).isNotEmpty();
     }
 
     @Test
