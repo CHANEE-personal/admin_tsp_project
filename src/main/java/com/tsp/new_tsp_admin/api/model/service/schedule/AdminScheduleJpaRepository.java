@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +65,9 @@ public class AdminScheduleJpaRepository {
      * </pre>
      */
     public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) {
+        LocalDateTime startDateTime = LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()-1).atStartOfDay();
+        LocalDateTime endDateTime = LocalDateTime.of(LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()).plusMonths(1), LocalTime.of(23,59,59));
+
         List<AdminModelEntity> modelScheduleList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminScheduleEntity.idx.desc())
@@ -69,7 +75,8 @@ public class AdminScheduleJpaRepository {
                 .fetchJoin()
                 .where(searchModelSchedule(scheduleMap)
                         .and(adminModelEntity.visible.eq("Y"))
-                        .and(adminScheduleEntity.visible.eq("Y")))
+                        .and(adminScheduleEntity.visible.eq("Y"))
+                        .and(adminScheduleEntity.modelScheduleTime.between(startDateTime, endDateTime)))
                 .offset(getInt(scheduleMap.get("jpaStartPage"), 0))
                 .limit(getInt(scheduleMap.get("size"), 0))
                 .fetch();
