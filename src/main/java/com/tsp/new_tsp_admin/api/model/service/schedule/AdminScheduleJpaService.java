@@ -21,7 +21,7 @@ public interface AdminScheduleJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findScheduleList
+     * 1. MethodName : findModelScheduleList
      * 2. ClassName  : AdminScheduleJpaService.java
      * 3. Comment    : 관리자 모델 스케줄 리스트 조회
      * 4. 작성자       : CHO

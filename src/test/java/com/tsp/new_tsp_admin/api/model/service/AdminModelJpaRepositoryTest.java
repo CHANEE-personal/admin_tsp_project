@@ -34,6 +34,7 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -1001,7 +1002,7 @@ class AdminModelJpaRepositoryTest {
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트").modelScheduleTime(new Date()).build());
+                .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
 
         // when
         when(mockAdminModelJpaRepository.findOneModelSchedule(adminModelEntity)).thenReturn(scheduleList);
@@ -1032,7 +1033,7 @@ class AdminModelJpaRepositoryTest {
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트").modelScheduleTime(new Date()).build());
+                .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
 
         // when
         when(mockAdminModelJpaRepository.findOneModelSchedule(adminModelEntity)).thenReturn(scheduleList);

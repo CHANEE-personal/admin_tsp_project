@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +33,25 @@ public class AdminScheduleJpaRepository {
 
     private BooleanExpression searchModelSchedule(Map<String, Object> scheduleMap) {
         String searchKeyword = getString(scheduleMap.get("searchKeyword"), "");
+        LocalDateTime searchStartTime = (LocalDateTime) scheduleMap.get("searchStartTime");
+        LocalDateTime searchEndTime = (LocalDateTime) scheduleMap.get("searchEndTime");
 
-        return adminModelEntity.modelKorName.contains(searchKeyword)
-                .or(adminModelEntity.modelEngName.contains(searchKeyword)
-                        .or(adminModelEntity.modelDescription.contains(searchKeyword)))
-                .or(adminScheduleEntity.modelSchedule.contains(searchKeyword));
+        if (searchStartTime != null && searchEndTime != null) {
+            searchStartTime = (LocalDateTime) scheduleMap.get("searchStartTime");
+            searchEndTime = (LocalDateTime) scheduleMap.get("searchEndTime");
+        } else {
+            searchStartTime = LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()-1).atStartOfDay();
+            searchEndTime = LocalDateTime.of(LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()).plusMonths(1), LocalTime.of(23,59,59));
+        }
+
+        if (!"".equals(searchKeyword)) {
+            return adminModelEntity.modelKorName.contains(searchKeyword)
+                    .or(adminModelEntity.modelEngName.contains(searchKeyword)
+                            .or(adminModelEntity.modelDescription.contains(searchKeyword)))
+                    .or(adminScheduleEntity.modelSchedule.contains(searchKeyword));
+        } else {
+            return adminScheduleEntity.modelScheduleTime.between(searchStartTime, searchEndTime);
+        }
     }
 
     /**
