@@ -31,6 +31,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -109,7 +110,7 @@ class AdminScheduleJpaControllerTest {
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .modelIdx(1)
                 .modelSchedule("스케줄 테스트")
-                .modelScheduleTime(new Date())
+                .modelScheduleTime(LocalDateTime.now())
                 .visible("Y")
                 .build();
     }
