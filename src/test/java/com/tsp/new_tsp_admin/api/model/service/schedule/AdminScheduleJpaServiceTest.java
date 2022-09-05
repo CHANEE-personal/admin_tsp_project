@@ -27,6 +27,7 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -99,7 +100,7 @@ class AdminScheduleJpaServiceTest {
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
-                .modelScheduleTime(new Date())
+                .modelScheduleTime(LocalDateTime.now())
                 .visible("Y")
                 .build();
 
@@ -122,9 +123,9 @@ class AdminScheduleJpaServiceTest {
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트").modelScheduleTime(new Date()).build());
+                .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(new Date()).build());
+                .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(LocalDateTime.now()).build());
 
         List<AdminModelDTO> modelScheduleList = new ArrayList<>();
         modelScheduleList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희")
@@ -158,9 +159,9 @@ class AdminScheduleJpaServiceTest {
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트").modelScheduleTime(new Date()).build());
+                .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(new Date()).build());
+                .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(LocalDateTime.now()).build());
 
         List<AdminModelDTO> modelScheduleList = new ArrayList<>();
         modelScheduleList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희")
@@ -189,7 +190,7 @@ class AdminScheduleJpaServiceTest {
                 .idx(1)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
-                .modelScheduleTime(new Date())
+                .modelScheduleTime(LocalDateTime.now())
                 .visible("Y")
                 .build();
 
@@ -222,7 +223,7 @@ class AdminScheduleJpaServiceTest {
                 .idx(1)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
-                .modelScheduleTime(new Date())
+                .modelScheduleTime(LocalDateTime.now())
                 .visible("Y")
                 .build();
 
@@ -299,7 +300,7 @@ class AdminScheduleJpaServiceTest {
                 .idx(idx)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 수정 테스트")
-                .modelScheduleTime(new Date())
+                .modelScheduleTime(LocalDateTime.now())
                 .visible("Y")
                 .build();
 
@@ -334,7 +335,7 @@ class AdminScheduleJpaServiceTest {
                 .idx(idx)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 수정 테스트")
-                .modelScheduleTime(new Date())
+                .modelScheduleTime(LocalDateTime.now())
                 .visible("Y")
                 .build();
 
