@@ -32,8 +32,10 @@ public class SearchCommon {
         page.setSize(getInt(page.getSize(), 10));
 
         // 검색 조건
-        searchMap.put("searchType", getString(paramMap.get("searchType"), ""));
-        searchMap.put("searchKeyword", getString(paramMap.get("searchKeyword"), ""));
+        if (paramMap.get("searchType") != null && paramMap.get("searchKeyword") != null) {
+            searchMap.put("searchType", getString(paramMap.get("searchType"), ""));
+            searchMap.put("searchKeyword", getString(paramMap.get("searchKeyword"), ""));
+        }
         searchMap.put("jpaStartPage", getInt(page.getStartPage(), 0));
         searchMap.put("startPage", getInt(page.getPage(), 1));
         searchMap.put("size", getInt(page.getSize(), 10));
