@@ -33,11 +33,25 @@ public class AdminScheduleJpaRepository {
 
     private BooleanExpression searchModelSchedule(Map<String, Object> scheduleMap) {
         String searchKeyword = getString(scheduleMap.get("searchKeyword"), "");
+        LocalDateTime searchStartTime = (LocalDateTime) scheduleMap.get("searchStartTime");
+        LocalDateTime searchEndTime = (LocalDateTime) scheduleMap.get("searchEndTime");
 
-        return adminModelEntity.modelKorName.contains(searchKeyword)
-                .or(adminModelEntity.modelEngName.contains(searchKeyword)
-                        .or(adminModelEntity.modelDescription.contains(searchKeyword)))
-                .or(adminScheduleEntity.modelSchedule.contains(searchKeyword));
+        if (searchStartTime != null && searchEndTime != null) {
+            searchStartTime = (LocalDateTime) scheduleMap.get("searchStartTime");
+            searchEndTime = (LocalDateTime) scheduleMap.get("searchEndTime");
+        } else {
+            searchStartTime = LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()-1).atStartOfDay();
+            searchEndTime = LocalDateTime.of(LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()).plusMonths(1), LocalTime.of(23,59,59));
+        }
+
+        if (!"".equals(searchKeyword)) {
+            return adminModelEntity.modelKorName.contains(searchKeyword)
+                    .or(adminModelEntity.modelEngName.contains(searchKeyword)
+                            .or(adminModelEntity.modelDescription.contains(searchKeyword)))
+                    .or(adminScheduleEntity.modelSchedule.contains(searchKeyword));
+        } else {
+            return adminScheduleEntity.modelScheduleTime.between(searchStartTime, searchEndTime);
+        }
     }
 
     /**
@@ -65,9 +79,6 @@ public class AdminScheduleJpaRepository {
      * </pre>
      */
     public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) {
-        LocalDateTime startDateTime = LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()-1).atStartOfDay();
-        LocalDateTime endDateTime = LocalDateTime.of(LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()).plusMonths(1), LocalTime.of(23,59,59));
-
         List<AdminModelEntity> modelScheduleList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminScheduleEntity.idx.desc())
@@ -75,8 +86,7 @@ public class AdminScheduleJpaRepository {
                 .fetchJoin()
                 .where(searchModelSchedule(scheduleMap)
                         .and(adminModelEntity.visible.eq("Y"))
-                        .and(adminScheduleEntity.visible.eq("Y"))
-                        .and(adminScheduleEntity.modelScheduleTime.between(startDateTime, endDateTime)))
+                        .and(adminScheduleEntity.visible.eq("Y")))
                 .offset(getInt(scheduleMap.get("jpaStartPage"), 0))
                 .limit(getInt(scheduleMap.get("size"), 0))
                 .fetch();
