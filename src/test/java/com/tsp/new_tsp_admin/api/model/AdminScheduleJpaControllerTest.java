@@ -3,7 +3,6 @@ package com.tsp.new_tsp_admin.api.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.common.StringUtil;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
