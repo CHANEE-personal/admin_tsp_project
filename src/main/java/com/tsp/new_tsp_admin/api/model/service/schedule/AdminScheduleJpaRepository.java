@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -23,6 +22,8 @@ import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEnti
 import static com.tsp.new_tsp_admin.api.model.mapper.schedule.ScheduleMapper.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static java.time.LocalDate.now;
+import static java.time.LocalDateTime.of;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,8 +41,8 @@ public class AdminScheduleJpaRepository {
             searchStartTime = (LocalDateTime) scheduleMap.get("searchStartTime");
             searchEndTime = (LocalDateTime) scheduleMap.get("searchEndTime");
         } else {
-            searchStartTime = LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()-1).atStartOfDay();
-            searchEndTime = LocalDateTime.of(LocalDate.now().minusDays(LocalDate.now().getDayOfMonth()).plusMonths(1), LocalTime.of(23,59,59));
+            searchStartTime = now().minusDays(now().getDayOfMonth()-1).atStartOfDay();
+            searchEndTime = of(now().minusDays(now().getDayOfMonth()).plusMonths(1), LocalTime.of(23,59,59));
         }
 
         if (!"".equals(searchKeyword)) {

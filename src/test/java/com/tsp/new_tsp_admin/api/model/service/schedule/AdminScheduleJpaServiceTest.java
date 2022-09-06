@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static java.time.LocalDateTime.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -101,7 +102,7 @@ class AdminScheduleJpaServiceTest {
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
-                .modelScheduleTime(LocalDateTime.now())
+                .modelScheduleTime(now())
                 .visible("Y")
                 .build();
 
@@ -127,8 +128,8 @@ class AdminScheduleJpaServiceTest {
         assertThat(adminScheduleJpaService.findModelScheduleList(scheduleMap)).isNotEmpty();
 
         Map<String, Object> lastMonthScheduleMap = new HashMap<>();
-        lastMonthScheduleMap.put("searchStartTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 1, 0, 0, 0, 0));
-        lastMonthScheduleMap.put("searchEndTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 30, 23, 59, 59));
+        lastMonthScheduleMap.put("searchStartTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 1, 0, 0, 0, 0));
+        lastMonthScheduleMap.put("searchEndTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 30, 23, 59, 59));
         lastMonthScheduleMap.put("jpaStartPage", 0);
         lastMonthScheduleMap.put("size", 100);
 
@@ -136,8 +137,8 @@ class AdminScheduleJpaServiceTest {
         assertThat(adminScheduleJpaService.findModelScheduleList(lastMonthScheduleMap)).isEmpty();
 
         Map<String, Object> currentScheduleMap = new HashMap<>();
-        currentScheduleMap.put("searchStartTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0));
-        currentScheduleMap.put("searchEndTime", LocalDateTime.of(LocalDateTime.now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59));
+        currentScheduleMap.put("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0));
+        currentScheduleMap.put("searchEndTime", of(now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59));
         currentScheduleMap.put("jpaStartPage", 0);
         currentScheduleMap.put("size", 100);
 
@@ -155,9 +156,9 @@ class AdminScheduleJpaServiceTest {
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
+                .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(LocalDateTime.now()).build());
+                .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
         List<AdminModelDTO> modelScheduleList = new ArrayList<>();
         modelScheduleList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희")
@@ -191,9 +192,9 @@ class AdminScheduleJpaServiceTest {
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
+                .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(LocalDateTime.now()).build());
+                .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
         List<AdminModelDTO> modelScheduleList = new ArrayList<>();
         modelScheduleList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희")
@@ -222,7 +223,7 @@ class AdminScheduleJpaServiceTest {
                 .idx(1)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
-                .modelScheduleTime(LocalDateTime.now())
+                .modelScheduleTime(now())
                 .visible("Y")
                 .build();
 
@@ -255,7 +256,7 @@ class AdminScheduleJpaServiceTest {
                 .idx(1)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
-                .modelScheduleTime(LocalDateTime.now())
+                .modelScheduleTime(now())
                 .visible("Y")
                 .build();
 
@@ -332,7 +333,7 @@ class AdminScheduleJpaServiceTest {
                 .idx(idx)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 수정 테스트")
-                .modelScheduleTime(LocalDateTime.now())
+                .modelScheduleTime(now())
                 .visible("Y")
                 .build();
 
@@ -367,7 +368,7 @@ class AdminScheduleJpaServiceTest {
                 .idx(idx)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 수정 테스트")
-                .modelScheduleTime(LocalDateTime.now())
+                .modelScheduleTime(now())
                 .visible("Y")
                 .build();
 
