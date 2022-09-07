@@ -979,7 +979,7 @@ class AdminModelJpaServiceTest {
                 .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
 
         // when
-        when(mockAdminModelJpaService.findOneModelSchedule(adminModelEntity)).thenReturn(scheduleList);
+        given(mockAdminModelJpaService.findOneModelSchedule(adminModelEntity)).willReturn(scheduleList);
         List<AdminScheduleDTO> newScheduleList = mockAdminModelJpaService.findOneModelSchedule(adminModelEntity);
 
         // then

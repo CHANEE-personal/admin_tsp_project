@@ -143,8 +143,8 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminScheduleDTO updateSchedule(@Valid @RequestBody AdminScheduleEntity adminAgencyEntity) throws Exception {
-        return adminScheduleJpaService.updateSchedule(adminAgencyEntity);
+    public AdminScheduleDTO updateSchedule(@Valid @RequestBody AdminScheduleEntity adminScheduleEntity) throws Exception {
+        return adminScheduleJpaService.updateSchedule(adminScheduleEntity);
     }
 
     /**

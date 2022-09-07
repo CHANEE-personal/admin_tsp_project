@@ -1036,7 +1036,7 @@ class AdminModelJpaRepositoryTest {
                 .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
 
         // when
-        when(mockAdminModelJpaRepository.findOneModelSchedule(adminModelEntity)).thenReturn(scheduleList);
+        given(mockAdminModelJpaRepository.findOneModelSchedule(adminModelEntity)).willReturn(scheduleList);
         List<AdminScheduleDTO> newScheduleList = mockAdminModelJpaRepository.findOneModelSchedule(adminModelEntity);
 
         // then
