@@ -32,7 +32,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -41,6 +40,7 @@ import java.util.List;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static java.time.LocalDateTime.*;
+import static java.time.format.DateTimeFormatter.*;
 import static javax.swing.text.html.parser.DTDConstants.NUMBER;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -139,8 +139,8 @@ class AdminScheduleJpaControllerTest {
         scheduleMap.add("size", "3");
         mockMvc.perform(get("/api/jpa-schedule/lists")
                         .queryParams(scheduleMap)
-                        .queryParam("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0).format(DateTimeFormatter.ofPattern("yyyyMMdd")))
-                        .queryParam("searchEndTime", of(now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59).format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                        .queryParam("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0).format(ofPattern("yyyyMMdd")))
+                        .queryParam("searchEndTime", of(now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59).format(ofPattern("yyyyMMdd")))
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())

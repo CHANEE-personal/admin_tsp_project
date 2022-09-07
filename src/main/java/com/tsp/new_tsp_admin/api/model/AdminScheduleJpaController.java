@@ -58,8 +58,8 @@ public class AdminScheduleJpaController {
         Map<String, Object> scheduleMap = searchCommon.searchCommon(page, paramMap);
 
         if (searchStartTime != null && searchEndTime != null) {
-            scheduleMap.put("searchStart", searchStartTime);
-            scheduleMap.put("searchEnd", searchEndTime);
+            scheduleMap.put("searchStartTime", searchStartTime);
+            scheduleMap.put("searchEndTime", searchEndTime);
         }
 
         Integer scheduleListCount = this.adminScheduleJpaService.findScheduleCount(scheduleMap);
