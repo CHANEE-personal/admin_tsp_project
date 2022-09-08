@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
+import static java.time.LocalDateTime.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -945,7 +946,7 @@ class AdminModelJpaServiceTest {
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
+                .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
 
         // when
         when(mockAdminModelJpaService.findOneModelSchedule(adminModelEntity)).thenReturn(scheduleList);
@@ -976,7 +977,7 @@ class AdminModelJpaServiceTest {
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
-                .modelSchedule("스케줄 테스트").modelScheduleTime(LocalDateTime.now()).build());
+                .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
 
         // when
         given(mockAdminModelJpaService.findOneModelSchedule(adminModelEntity)).willReturn(scheduleList);
