@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.common.CustomConverter;
 import lombok.AllArgsConstructor;
@@ -132,4 +133,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
 
     @OneToMany(mappedBy = "adminModelEntity")
     private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "adminModelEntity")
+    private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
 }
