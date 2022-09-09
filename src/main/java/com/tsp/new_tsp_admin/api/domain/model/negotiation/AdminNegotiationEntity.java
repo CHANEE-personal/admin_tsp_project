@@ -39,6 +39,10 @@ public class AdminNegotiationEntity extends NewCommonMappedClass {
     @ApiModelProperty(value = "모델 idx", required = true)
     private Integer modelIdx;
 
+    @Column(name = "model_kor_name")
+    @NotEmpty(message = "모델 국문 이름 입력은 필수입니다.")
+    private String modelKorName;
+
     @Column(name = "model_negotiation_desc")
     @Lob
     @NotEmpty(message = "모델 섭외 내용 입력은 필수입니다.")

@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -33,6 +34,10 @@ public class AdminNegotiationDTO extends NewCommonDTO {
     @NotNull(message = "모델 IDX 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "modelIdx", example = "1")
     private Integer modelIdx;
+
+    @NotEmpty(message = "모델 국문 이름 입력은 필수입니다.")
+    @ApiModelProperty(required = true, value = "model Kor Name", hidden = true)
+    private String modelKorName;
 
     @NotEmpty(message = "모델 섭외 내용 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "modelNegotiationDesc")
