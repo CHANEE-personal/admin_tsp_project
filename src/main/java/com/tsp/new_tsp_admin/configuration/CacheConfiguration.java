@@ -37,7 +37,8 @@ public class CacheConfiguration {
                 new ConcurrentMapCache("notice"),
                 new ConcurrentMapCache("faq"),
                 new ConcurrentMapCache("comment"),
-                new ConcurrentMapCache("schedule")));
+                new ConcurrentMapCache("schedule"),
+                new ConcurrentMapCache("negotiation")));
         return cacheManager;
     }
 }
