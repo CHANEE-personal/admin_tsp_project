@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import com.tsp.new_tsp_admin.api.model.mapper.negotiation.NegotiationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +20,7 @@ import java.util.Map;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.negotiation.QAdminNegotiationEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.adminScheduleEntity;
+import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static java.time.LocalDate.now;
@@ -96,7 +96,7 @@ public class AdminNegotiationJpaRepository {
         modelNegotiationList.forEach(list -> modelNegotiationList.get(modelNegotiationList.indexOf(list))
                 .setRnum(getInt(negotiationMap.get("startPage"), 1) * (getInt(negotiationMap.get("size"), 1)) - (2 - modelNegotiationList.indexOf(list))));
 
-        return ModelMapper.INSTANCE.toDtoList(modelNegotiationList);
+        return INSTANCE.toDtoList(modelNegotiationList);
     }
 
     /**
@@ -139,7 +139,7 @@ public class AdminNegotiationJpaRepository {
                         .and(adminNegotiationEntity.idx.eq(existAdminNegotiationEntity.getIdx())))
                 .fetchOne();
 
-        return ModelMapper.INSTANCE.toDto(findOneModelNegotiation);
+        return INSTANCE.toDto(findOneModelNegotiation);
     }
 
     /**
