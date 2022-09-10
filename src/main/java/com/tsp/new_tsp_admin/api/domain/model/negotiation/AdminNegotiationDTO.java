@@ -60,7 +60,7 @@ public class AdminNegotiationDTO extends NewCommonDTO {
     @ApiModelProperty(value = "모델 섭외자 휴대폰 번호", required = true)
     private String phone;
 
-    @NotEmpty(message = "모델 스케줄 노출 여부 선택은 필수입니다.")
+    @NotEmpty(message = "모델 섭외 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "visible")
     private String visible;
 }

@@ -25,7 +25,7 @@ import static java.lang.Math.ceil;
 
 @Validated
 @RestController
-@Api(tags = "모델 스케줄 관련 API")
+@Api(tags = "모델 섭외 관련 API")
 @RequestMapping("/api/jpa-negotiation")
 @RequiredArgsConstructor
 public class AdminNegotiationJpaController {
