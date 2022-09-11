@@ -307,8 +307,8 @@ class AdminNegotiationJpaServiceTest {
     }
 
     @Test
-    @DisplayName("모델스케줄수정BDD테스트")
-    void 모델스케줄수정BDD테스트() throws Exception {
+    @DisplayName("모델섭외수정BDD테스트")
+    void 모델섭외수정BDD테스트() throws Exception {
         // given
         Integer idx = adminNegotiationJpaService.insertModelNegotiation(adminNegotiationEntity).getIdx();
 
