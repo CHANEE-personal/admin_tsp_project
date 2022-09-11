@@ -67,7 +67,7 @@ public class AdminNegotiationEntity extends NewCommonMappedClass {
     private String phone;
 
     @Column(name = "visible")
-    @NotEmpty(message = "모델 스케줄 노출 여부 선택은 필수입니다.")
+    @NotEmpty(message = "모델 섭외 노출 여부 선택은 필수입니다.")
     private String visible;
 
     @ManyToOne(fetch = LAZY)
