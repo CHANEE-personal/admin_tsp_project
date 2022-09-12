@@ -134,6 +134,7 @@ class AdminModelJpaControllerTest {
                 .shoes(270)
                 .status("draft")
                 .careerList(careerList)
+                .newYn("Y")
                 .visible("Y")
                 .build();
     }
@@ -659,15 +660,15 @@ class AdminModelJpaControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminModelEntity)))
                     .andDo(print())
-                .andDo(document("model/put/agency",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        relaxedRequestFields(
-                                fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
-                        ),
-                        relaxedResponseFields(
-                                fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
-                        )))
+                    .andDo(document("model/put/agency",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            relaxedRequestFields(
+                                    fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
+                            ),
+                            relaxedResponseFields(
+                                    fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
+                            )))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.agencyIdx").value(adminAgencyEntity.getIdx()));
     }
@@ -697,6 +698,18 @@ class AdminModelJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 새로운 모델 설정 테스트")
+    void 새로운모델설정Api테스트() throws Exception {
+        mockMvc.perform(put("/api/jpa-model/{idx}/toggle-new", adminModelEntity.getIdx())
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.newYn").value("N"));
     }
 
     @Test
