@@ -88,6 +88,46 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneModel
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 이전 모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @Cacheable("model")
+    @Transactional(readOnly = true)
+    public AdminModelDTO findPrevOneModel(AdminModelEntity adminModelEntity) throws TspException {
+        try {
+            return adminModelJpaRepository.findPrevOneModel(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneModel
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 다음 모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 05. 02.
+     * </pre>
+     */
+    @Override
+    @Cacheable("model")
+    @Transactional(readOnly = true)
+    public AdminModelDTO findNextOneModel(AdminModelEntity adminModelEntity) throws TspException {
+        try {
+            return adminModelJpaRepository.findNextOneModel(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL, e);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertModel
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 등록
