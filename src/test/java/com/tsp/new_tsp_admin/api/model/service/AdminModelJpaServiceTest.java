@@ -10,6 +10,7 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaService;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -932,6 +933,89 @@ class AdminModelJpaServiceTest {
         // verify
         then(mockAdminModelJpaService).should(times(1)).findNewModelsList(modelMap);
         then(mockAdminModelJpaService).should(atLeastOnce()).findNewModelsList(modelMap);
+        then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("새로운 모델 설정 Mockito 테스트")
+    void 새로운모델설정Mockito테스트() throws Exception {
+        adminModelEntity = AdminModelEntity.builder()
+                .idx(1)
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .newYn("N")
+                .favoriteCount(1)
+                .viewCount(1)
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        adminModelJpaService.toggleModelNewYn(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
+
+        // when
+        when(mockAdminModelJpaService.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(adminModelEntity);
+
+        assertThat(modelInfo.getNewYn()).isEqualTo("N");
+
+        // verify
+        verify(mockAdminModelJpaService, times(1)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaService, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaService);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaService);
+        inOrder.verify(mockAdminModelJpaService).findOneModel(adminModelEntity);
+    }
+
+    @Test
+    @DisplayName("새로운 모델 설정 BDD 테스트")
+    void 새로운모델설정BDD테스트() throws Exception {
+        adminModelEntity = AdminModelEntity.builder()
+                .idx(1)
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .newYn("N")
+                .favoriteCount(1)
+                .viewCount(1)
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        adminModelJpaService.toggleModelNewYn(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
+
+        // when
+        given(mockAdminModelJpaService.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(adminModelEntity);
+
+        assertThat(modelInfo.getNewYn()).isEqualTo("N");
+
+        // verify
+        then(mockAdminModelJpaService).should(times(1)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaService).should(atLeastOnce()).findOneModel(adminModelEntity);
         then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }
 
