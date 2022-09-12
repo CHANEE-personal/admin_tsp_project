@@ -280,6 +280,101 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("이전 or 다음 모델 상세 조회 테스트")
+    void 이전or다음모델상세조회테스트() {
+        // given
+        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+
+        // when
+        adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
+
+        // 이전 모델
+        assertThat(adminModelJpaRepository.findPrevOneModel(adminModelEntity).getIdx()).isEqualTo(144);
+        // 다음 모델
+        assertThat(adminModelJpaRepository.findNextOneModel(adminModelEntity).getIdx()).isEqualTo(147);
+    }
+
+    @Test
+    @DisplayName("이전 모델 상세 조회 Mockito 테스트")
+    void 이전모델상세조회Mockito테스트() {
+        // given
+        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        // when
+        adminModelDTO = adminModelJpaRepository.findPrevOneModel(adminModelEntity);
+
+        when(mockAdminModelJpaRepository.findPrevOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findPrevOneModel(adminModelEntity);
+
+        assertThat(modelInfo.getIdx()).isEqualTo(144);
+        // verify
+        verify(mockAdminModelJpaRepository, times(1)).findPrevOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findPrevOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaRepository);
+        inOrder.verify(mockAdminModelJpaRepository).findPrevOneModel(adminModelEntity);
+    }
+
+    @Test
+    @DisplayName("이전 모델 상세 조회 BDD 테스트")
+    void 이전모델상세조회BDD테스트() {
+        // given
+        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        // when
+        adminModelDTO = adminModelJpaRepository.findPrevOneModel(adminModelEntity);
+
+        given(mockAdminModelJpaRepository.findPrevOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findPrevOneModel(adminModelEntity);
+
+        assertThat(modelInfo.getIdx()).isEqualTo(144);
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(1)).findPrevOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findPrevOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("다음 모델 상세 조회 Mockito 테스트")
+    void 다음모델상세조회Mockito테스트() {
+        // given
+        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        // when
+        adminModelDTO = adminModelJpaRepository.findNextOneModel(adminModelEntity);
+
+        when(mockAdminModelJpaRepository.findNextOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findNextOneModel(adminModelEntity);
+
+        assertThat(modelInfo.getIdx()).isEqualTo(147);
+        // verify
+        verify(mockAdminModelJpaRepository, times(1)).findNextOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findNextOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaRepository);
+        inOrder.verify(mockAdminModelJpaRepository).findNextOneModel(adminModelEntity);
+    }
+
+    @Test
+    @DisplayName("다음 모델 상세 조회 BDD 테스트")
+    void 다음모델상세조회BDD테스트() {
+        // given
+        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        // when
+        adminModelDTO = adminModelJpaRepository.findNextOneModel(adminModelEntity);
+
+        given(mockAdminModelJpaRepository.findNextOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findNextOneModel(adminModelEntity);
+
+        assertThat(modelInfo.getIdx()).isEqualTo(147);
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(1)).findNextOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findNextOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("모델 상세 조회 Mockito 테스트")
     void 모델상세조회Mockito테스트() {
         // given
