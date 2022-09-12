@@ -993,6 +993,89 @@ class AdminModelJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("새로운 모델 설정 Mockito 테스트")
+    void 새로운모델설정Mockito테스트() {
+        adminModelEntity = AdminModelEntity.builder()
+                .idx(1)
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .newYn("N")
+                .favoriteCount(1)
+                .viewCount(1)
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        adminModelJpaRepository.toggleModelNewYn(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
+
+        // when
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+
+        assertThat(modelInfo.getNewYn()).isEqualTo("N");
+
+        // verify
+        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verifyNoMoreInteractions(mockAdminModelJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminModelJpaRepository);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity);
+    }
+
+    @Test
+    @DisplayName("새로운 모델 설정 BDD 테스트")
+    void 새로운모델설정BDD테스트() {
+        adminModelEntity = AdminModelEntity.builder()
+                .idx(1)
+                .categoryCd(1)
+                .categoryAge(2)
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .status("active")
+                .newYn("N")
+                .favoriteCount(1)
+                .viewCount(1)
+                .height(170)
+                .size3("34-24-34")
+                .shoes(270)
+                .visible("Y")
+                .build();
+
+        adminModelJpaRepository.toggleModelNewYn(adminModelEntity);
+        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
+
+        // when
+        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+
+        assertThat(modelInfo.getNewYn()).isEqualTo("N");
+
+        // verify
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("모델 스케줄 Mockito 조회 테스트")
     void 모델스케줄Mockito조회테스트() {
         // given

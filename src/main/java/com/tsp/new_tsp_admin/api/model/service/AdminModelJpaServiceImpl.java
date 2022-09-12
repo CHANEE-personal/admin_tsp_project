@@ -264,6 +264,27 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : toggleModelNewYn
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 새로운 모델 설정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 29.
+     * </pre>
+     */
+    @Override
+    @CachePut("model")
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public AdminModelDTO toggleModelNewYn(AdminModelEntity adminModelEntity) throws Exception {
+        try {
+            return adminModelJpaRepository.toggleModelNewYn(adminModelEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_UPDATE_MODEL, e);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : findOneModelSchedule
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 스케줄 리스트 조회

@@ -81,8 +81,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:1.18.22"
 
     // junit
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 
     // junit jsonpath
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
@@ -93,21 +93,18 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-cache')
 
     // spring security
-    compile 'org.springframework.security:spring-security-web:5.7.1'
-    compile 'org.springframework.security:spring-security-config:5.7.1'
+    compile 'org.springframework.security:spring-security-web:5.7.3'
+    compile 'org.springframework.security:spring-security-config:5.7.3'
     testImplementation 'org.springframework.security:spring-security-test'
 
     implementation 'junit:junit:4.13.2'
 
-    // jwt
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5',
-            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
-            //'org.bouncycastle:bcprov-jdk15on:1.60',
-            'io.jsonwebtoken:jjwt-jackson:0.11.5' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
     // flywaydb
-    compile "org.flywaydb:flyway-core:8.5.12"
+    compile 'org.flywaydb:flyway-core:9.2.2'
 
 //    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 }

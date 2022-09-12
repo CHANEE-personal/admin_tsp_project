@@ -24,6 +24,7 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
@@ -332,6 +333,28 @@ public class AdminModelJpaRepository {
                 .setRnum(getInt(modelMap.get("startPage"), 1) * (getInt(modelMap.get("size"), 1)) - (2 - newModelList.indexOf(list))));
 
         return INSTANCE.toDtoList(newModelList);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : toggleModelNewYn
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 새로운 모델 설정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 29.
+     * </pre>
+     */
+    public AdminModelDTO toggleModelNewYn(AdminModelEntity existAdminModelEntity) {
+        queryFactory
+                .update(adminModelEntity)
+                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx()))
+                .set(adminModelEntity.newYn, Objects.equals(existAdminModelEntity.getNewYn(), "Y") ? "N" : "Y")
+                .execute();
+
+        em.flush();
+        em.clear();
+
+        return INSTANCE.toDto(existAdminModelEntity);
     }
 
     /**
