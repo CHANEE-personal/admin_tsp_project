@@ -131,7 +131,7 @@ public class AdminModelJpaController {
      * <pre>
      * 1. MethodName : getNextModelEdit
      * 2. ClassName  : AdminModelJpaController.java
-     * 3. Comment    : 관리자 이전 모델 상세
+     * 3. Comment    : 관리자 다음 모델 상세
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 09. 12.
      * </pre>
