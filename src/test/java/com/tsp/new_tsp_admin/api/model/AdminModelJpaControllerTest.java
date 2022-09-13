@@ -248,6 +248,32 @@ class AdminModelJpaControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 이전 모델 상세 조회 테스트")
+    void 이전모델상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-model/2/145/prev")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("144"))
+                .andExpect(jsonPath("$.categoryCd").value("2"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 다음 모델 상세 조회 테스트")
+    void 다음모델상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-model/2/145/next")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("147"))
+                .andExpect(jsonPath("$.categoryCd").value("2"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 등록 테스트")
     void 모델등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-model")

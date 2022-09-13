@@ -47,6 +47,28 @@ public interface AdminModelJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneModel
+     * 2. ClassName  : AdminModelJpaService.java
+     * 3. Comment    : 관리자 이전 모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 12.
+     * </pre>
+     */
+    AdminModelDTO findPrevOneModel(AdminModelEntity adminModelEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneModel
+     * 2. ClassName  : AdminModelJpaService.java
+     * 3. Comment    : 관리자 다음 모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 12.
+     * </pre>
+     */
+    AdminModelDTO findNextOneModel(AdminModelEntity adminModelEntity) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : insertModel
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 등록

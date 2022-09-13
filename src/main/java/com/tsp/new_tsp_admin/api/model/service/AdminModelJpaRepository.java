@@ -21,10 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
@@ -109,7 +106,7 @@ public class AdminModelJpaRepository {
     /**
      * <pre>
      * 1. MethodName : findOneModel
-     * 2. ClassName  : ModelRepository.java
+     * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 상세 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
@@ -129,6 +126,50 @@ public class AdminModelJpaRepository {
                 .fetchOne();
 
         return INSTANCE.toDto(findOneModel);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneModel
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 이전 모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 12.
+     * </pre>
+     */
+    public AdminModelDTO findPrevOneModel(AdminModelEntity existAdminModelEntity) {
+        // 이전 모델 조회
+        AdminModelEntity findPrevOneModel = queryFactory
+                .selectFrom(adminModelEntity)
+                .orderBy(adminModelEntity.idx.desc())
+                .where(adminModelEntity.idx.lt(existAdminModelEntity.getIdx())
+                        .and(adminModelEntity.categoryCd.eq(existAdminModelEntity.getCategoryCd()))
+                        .and(adminModelEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return INSTANCE.toDto(findPrevOneModel);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneModel
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 다음 모델 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 12.
+     * </pre>
+     */
+    public AdminModelDTO findNextOneModel(AdminModelEntity existAdminModelEntity) {
+        // 다음 모델 조회
+        AdminModelEntity findNextOneModel = queryFactory
+                .selectFrom(adminModelEntity)
+                .orderBy(adminModelEntity.idx.asc())
+                .where(adminModelEntity.idx.gt(existAdminModelEntity.getIdx())
+                        .and(adminModelEntity.categoryCd.eq(existAdminModelEntity.getCategoryCd()))
+                        .and(adminModelEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return INSTANCE.toDto(findNextOneModel);
     }
 
     /**
