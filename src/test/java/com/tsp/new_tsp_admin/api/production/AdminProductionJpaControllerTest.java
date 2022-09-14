@@ -191,6 +191,30 @@ class AdminProductionJpaControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 이전 프로덕션 상세 조회 테스트")
+    void 이전프로덕션상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-production/2/118/prev")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("117"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 다음 프로덕션 상세 조회 테스트")
+    void 다음프로덕션상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-production/2/118/next")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("119"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 등록 테스트")
     void 프로덕션등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-production")
