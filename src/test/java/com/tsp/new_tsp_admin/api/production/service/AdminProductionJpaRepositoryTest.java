@@ -304,7 +304,9 @@ class AdminProductionJpaRepositoryTest {
         when(mockAdminProductionJpaRepository.findPrevOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaRepository.findPrevOneProduction(adminProductionEntity);
 
+        // then
         assertThat(productionInfo.getIdx()).isEqualTo(117);
+
         // verify
         verify(mockAdminProductionJpaRepository, times(1)).findPrevOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findPrevOneProduction(adminProductionEntity);
@@ -326,6 +328,7 @@ class AdminProductionJpaRepositoryTest {
         given(mockAdminProductionJpaRepository.findPrevOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaRepository.findPrevOneProduction(adminProductionEntity);
 
+        // then
         assertThat(productionInfo.getIdx()).isEqualTo(117);
 
         // verify
@@ -346,7 +349,9 @@ class AdminProductionJpaRepositoryTest {
         when(mockAdminProductionJpaRepository.findNextOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaRepository.findNextOneProduction(adminProductionEntity);
 
+        // then
         assertThat(productionInfo.getIdx()).isEqualTo(119);
+
         // verify
         verify(mockAdminProductionJpaRepository, times(1)).findNextOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaRepository, atLeastOnce()).findNextOneProduction(adminProductionEntity);
@@ -368,6 +373,7 @@ class AdminProductionJpaRepositoryTest {
         given(mockAdminProductionJpaRepository.findNextOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaRepository.findNextOneProduction(adminProductionEntity);
 
+        // then
         assertThat(productionInfo.getIdx()).isEqualTo(119);
 
         // verify

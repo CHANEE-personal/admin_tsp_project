@@ -305,7 +305,9 @@ class AdminModelJpaRepositoryTest {
         when(mockAdminModelJpaRepository.findPrevOneModel(adminModelEntity)).thenReturn(adminModelDTO);
         AdminModelDTO modelInfo = mockAdminModelJpaRepository.findPrevOneModel(adminModelEntity);
 
+        // then
         assertThat(modelInfo.getIdx()).isEqualTo(144);
+
         // verify
         verify(mockAdminModelJpaRepository, times(1)).findPrevOneModel(adminModelEntity);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findPrevOneModel(adminModelEntity);
@@ -326,6 +328,7 @@ class AdminModelJpaRepositoryTest {
         given(mockAdminModelJpaRepository.findPrevOneModel(adminModelEntity)).willReturn(adminModelDTO);
         AdminModelDTO modelInfo = mockAdminModelJpaRepository.findPrevOneModel(adminModelEntity);
 
+        // then
         assertThat(modelInfo.getIdx()).isEqualTo(144);
 
         // verify
@@ -345,7 +348,9 @@ class AdminModelJpaRepositoryTest {
         when(mockAdminModelJpaRepository.findNextOneModel(adminModelEntity)).thenReturn(adminModelDTO);
         AdminModelDTO modelInfo = mockAdminModelJpaRepository.findNextOneModel(adminModelEntity);
 
+        // then
         assertThat(modelInfo.getIdx()).isEqualTo(147);
+
         // verify
         verify(mockAdminModelJpaRepository, times(1)).findNextOneModel(adminModelEntity);
         verify(mockAdminModelJpaRepository, atLeastOnce()).findNextOneModel(adminModelEntity);
@@ -366,6 +371,7 @@ class AdminModelJpaRepositoryTest {
         given(mockAdminModelJpaRepository.findNextOneModel(adminModelEntity)).willReturn(adminModelDTO);
         AdminModelDTO modelInfo = mockAdminModelJpaRepository.findNextOneModel(adminModelEntity);
 
+        // then
         assertThat(modelInfo.getIdx()).isEqualTo(147);
 
         // verify

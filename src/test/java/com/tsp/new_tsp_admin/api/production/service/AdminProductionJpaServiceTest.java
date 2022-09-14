@@ -214,7 +214,9 @@ class AdminProductionJpaServiceTest {
         when(mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity);
 
+        // then
         assertThat(productionInfo.getIdx()).isEqualTo(117);
+
         // verify
         verify(mockAdminProductionJpaService, times(1)).findPrevOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaService, atLeastOnce()).findPrevOneProduction(adminProductionEntity);
@@ -236,6 +238,7 @@ class AdminProductionJpaServiceTest {
         given(mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity);
 
+        // then
         assertThat(productionInfo.getIdx()).isEqualTo(117);
 
         // verify
@@ -256,7 +259,9 @@ class AdminProductionJpaServiceTest {
         when(mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity);
 
+        // then
         assertThat(productionInfo.getIdx()).isEqualTo(119);
+
         // verify
         verify(mockAdminProductionJpaService, times(1)).findNextOneProduction(adminProductionEntity);
         verify(mockAdminProductionJpaService, atLeastOnce()).findNextOneProduction(adminProductionEntity);
@@ -278,6 +283,7 @@ class AdminProductionJpaServiceTest {
         given(mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity);
 
+        // then
         assertThat(productionInfo.getIdx()).isEqualTo(119);
 
         // verify
