@@ -203,6 +203,90 @@ class AdminProductionJpaServiceTest {
     }
 
     @Test
+    @DisplayName("이전 프로덕션 상세 조회 Mockito 테스트")
+    void 이전프로덕션상세조회Mockito테스트() throws Exception {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
+
+        when(mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity);
+
+        assertThat(productionInfo.getIdx()).isEqualTo(117);
+        // verify
+        verify(mockAdminProductionJpaService, times(1)).findPrevOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, atLeastOnce()).findPrevOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaService);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaService);
+        inOrder.verify(mockAdminProductionJpaService).findPrevOneProduction(adminProductionEntity);
+    }
+
+    @Test
+    @DisplayName("이전 프로덕션 상세 조회 BDD 테스트")
+    void 이전프로덕션상세조회BDD테스트() throws Exception {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
+
+        given(mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity);
+
+        assertThat(productionInfo.getIdx()).isEqualTo(117);
+
+        // verify
+        then(mockAdminProductionJpaService).should(times(1)).findPrevOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findPrevOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("다음 프로덕션 상세 조회 Mockito 테스트")
+    void 다음프로덕션상세조회Mockito테스트() throws Exception {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
+
+        when(mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity);
+
+        assertThat(productionInfo.getIdx()).isEqualTo(119);
+        // verify
+        verify(mockAdminProductionJpaService, times(1)).findNextOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, atLeastOnce()).findNextOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaService);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaService);
+        inOrder.verify(mockAdminProductionJpaService).findNextOneProduction(adminProductionEntity);
+    }
+
+    @Test
+    @DisplayName("다음 프로덕션 상세 조회 BDD 테스트")
+    void 다음프로덕션상세조회BDD테스트() throws Exception {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
+
+        given(mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity);
+
+        assertThat(productionInfo.getIdx()).isEqualTo(119);
+
+        // verify
+        then(mockAdminProductionJpaService).should(times(1)).findNextOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findNextOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("프로덕션 등록 Mockito 테스트")
     void 프로덕션등록Mockito테스트() throws Exception {
         // given

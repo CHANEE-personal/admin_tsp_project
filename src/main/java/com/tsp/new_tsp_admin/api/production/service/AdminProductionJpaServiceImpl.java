@@ -83,6 +83,46 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneProduction
+     * 2. ClassName  : AdminProductionJpaServiceImpl.java
+     * 3. Comment    : 관리자 이전 프로덕션 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 13.
+     * </pre>
+     */
+    @Override
+    @Cacheable("production")
+    @Transactional(readOnly = true)
+    public AdminProductionDTO findPrevOneProduction(AdminProductionEntity adminProductionEntity) throws TspException {
+        try {
+            return adminProductionJpaRepository.findPrevOneProduction(adminProductionEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_PRODUCTION, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneProduction
+     * 2. ClassName  : AdminProductionJpaServiceImpl.java
+     * 3. Comment    : 관리자 다음 프로덕션 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 13.
+     * </pre>
+     */
+    @Override
+    @Cacheable("production")
+    @Transactional(readOnly = true)
+    public AdminProductionDTO findNextOneProduction(AdminProductionEntity adminProductionEntity) throws TspException {
+        try {
+            return adminProductionJpaRepository.findNextOneProduction(adminProductionEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_PRODUCTION, e);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertProduction
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 등록
