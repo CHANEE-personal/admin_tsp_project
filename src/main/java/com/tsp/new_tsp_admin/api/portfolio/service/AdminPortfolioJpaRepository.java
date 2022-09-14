@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
+import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
 import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
@@ -104,6 +105,48 @@ public class AdminPortfolioJpaRepository {
                 .fetchOne();
 
         return INSTANCE.toDto(findOnePortfolio);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaRepository.java
+     * 3. Comment    : 관리자 이전 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 14.
+     * </pre>
+     */
+    public AdminPortFolioDTO findPrevOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+        // 이전 포트폴리오 조회
+        AdminPortFolioEntity findPrevOnePortfolio = queryFactory
+                .selectFrom(adminPortFolioEntity)
+                .orderBy(adminPortFolioEntity.idx.desc())
+                .where(adminPortFolioEntity.idx.lt(existAdminPortfolioEntity.getIdx())
+                        .and(adminProductionEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return INSTANCE.toDto(findPrevOnePortfolio);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaRepository.java
+     * 3. Comment    : 관리자 다음 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 14.
+     * </pre>
+     */
+    public AdminPortFolioDTO findNextOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+        // 다음 포트폴리오 조회
+        AdminPortFolioEntity findPrevOnePortfolio = queryFactory
+                .selectFrom(adminPortFolioEntity)
+                .orderBy(adminPortFolioEntity.idx.desc())
+                .where(adminPortFolioEntity.idx.gt(existAdminPortfolioEntity.getIdx())
+                        .and(adminProductionEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return INSTANCE.toDto(findPrevOnePortfolio);
     }
 
     /**
