@@ -83,6 +83,46 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
+     * 3. Comment    : 관리자 이전 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 14.
+     * </pre>
+     */
+    @Override
+    @Cacheable("portfolio")
+    @Transactional(readOnly = true)
+    public AdminPortFolioDTO findPrevOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException {
+        try {
+            return adminPortfolioJpaRepository.findPrevOnePortfolio(adminPortFolioEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_PORTFOLIO, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
+     * 3. Comment    : 관리자 다음 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 14.
+     * </pre>
+     */
+    @Override
+    @Cacheable("portfolio")
+    @Transactional(readOnly = true)
+    public AdminPortFolioDTO findNextOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws TspException {
+        try {
+            return adminPortfolioJpaRepository.findNextOnePortfolio(adminPortFolioEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_PORTFOLIO, e);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertPortfolio
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 등록
