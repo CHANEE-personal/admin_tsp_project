@@ -278,6 +278,105 @@ class AdminProductionJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("이전 or 다음 프로덕션 상세 조회 테스트")
+    void 이전or다음프로덕션상세조회테스트() {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
+
+        // 이전 프로덕션
+        assertThat(adminProductionJpaRepository.findPrevOneProduction(adminProductionEntity).getIdx()).isEqualTo(117);
+        // 다음 프로덕션
+        assertThat(adminProductionJpaRepository.findNextOneProduction(adminProductionEntity).getIdx()).isEqualTo(119);
+    }
+
+    @Test
+    @DisplayName("이전 프로덕션 상세 조회 Mockito 테스트")
+    void 이전프로덕션상세조회Mockito테스트() {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
+
+        when(mockAdminProductionJpaRepository.findPrevOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaRepository.findPrevOneProduction(adminProductionEntity);
+
+        assertThat(productionInfo.getIdx()).isEqualTo(117);
+        // verify
+        verify(mockAdminProductionJpaRepository, times(1)).findPrevOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaRepository, atLeastOnce()).findPrevOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaRepository);
+        inOrder.verify(mockAdminProductionJpaRepository).findPrevOneProduction(adminProductionEntity);
+    }
+
+    @Test
+    @DisplayName("이전 프로덕션 상세 조회 BDD 테스트")
+    void 이전프로덕션상세조회BDD테스트() {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
+
+        given(mockAdminProductionJpaRepository.findPrevOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaRepository.findPrevOneProduction(adminProductionEntity);
+
+        assertThat(productionInfo.getIdx()).isEqualTo(117);
+
+        // verify
+        then(mockAdminProductionJpaRepository).should(times(1)).findPrevOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).should(atLeastOnce()).findPrevOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("다음 프로덕션 상세 조회 Mockito 테스트")
+    void 다음프로덕션상세조회Mockito테스트() {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
+
+        when(mockAdminProductionJpaRepository.findNextOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaRepository.findNextOneProduction(adminProductionEntity);
+
+        assertThat(productionInfo.getIdx()).isEqualTo(119);
+        // verify
+        verify(mockAdminProductionJpaRepository, times(1)).findNextOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaRepository, atLeastOnce()).findNextOneProduction(adminProductionEntity);
+        verifyNoMoreInteractions(mockAdminProductionJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminProductionJpaRepository);
+        inOrder.verify(mockAdminProductionJpaRepository).findNextOneProduction(adminProductionEntity);
+    }
+
+    @Test
+    @DisplayName("다음 프로덕션 상세 조회 BDD 테스트")
+    void 다음프로덕션상세조회BDD테스트() {
+        // given
+        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+
+        // when
+        adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
+
+        given(mockAdminProductionJpaRepository.findNextOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaRepository.findNextOneProduction(adminProductionEntity);
+
+        assertThat(productionInfo.getIdx()).isEqualTo(119);
+
+        // verify
+        then(mockAdminProductionJpaRepository).should(times(1)).findNextOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).should(atLeastOnce()).findNextOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("프로덕션등록Mockito테스트")
     void 프로덕션등록Mockito테스트() {
         // given

@@ -1,6 +1,8 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 
@@ -41,6 +43,28 @@ public interface AdminProductionJpaService {
      * </pre>
      */
     AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneProduction
+     * 2. ClassName  : AdminProductionJpaService.java
+     * 3. Comment    : 관리자 이전 프로덕션 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 13.
+     * </pre>
+     */
+    AdminProductionDTO findPrevOneProduction(AdminProductionEntity adminProductionEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneProduction
+     * 2. ClassName  : AdminProductionJpaService.java
+     * 3. Comment    : 관리자 다음 프로덕션 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 13.
+     * </pre>
+     */
+    AdminProductionDTO findNextOneProduction(AdminProductionEntity adminProductionEntity) throws Exception;
 
     /**
      * <pre>

@@ -44,6 +44,28 @@ public interface AdminPortfolioJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaService.java
+     * 3. Comment    : 관리자 이전 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 14.
+     * </pre>
+     */
+    AdminPortFolioDTO findPrevOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOnePortfolio
+     * 2. ClassName  : AdminPortfolioJpaService.java
+     * 3. Comment    : 관리자 다음 포트폴리오 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 14.
+     * </pre>
+     */
+    AdminPortFolioDTO findNextOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : insertPortfolio
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 포트폴리오 등록

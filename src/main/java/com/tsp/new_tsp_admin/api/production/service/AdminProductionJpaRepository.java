@@ -9,6 +9,7 @@ import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
+import com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -105,6 +106,48 @@ public class AdminProductionJpaRepository {
                 .fetchOne();
 
         return INSTANCE.toDto(findOneProduction);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneProduction
+     * 2. ClassName  : AdminProductionJpaRepository.java
+     * 3. Comment    : 관리자 이전 프로덕션 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 13.
+     * </pre>
+     */
+    public AdminProductionDTO findPrevOneProduction(AdminProductionEntity existAdminProductionEntity) {
+        // 이전 프로덕션 조회
+        AdminProductionEntity findPrevOneProduction = queryFactory
+                .selectFrom(adminProductionEntity)
+                .orderBy(adminProductionEntity.idx.desc())
+                .where(adminProductionEntity.idx.lt(existAdminProductionEntity.getIdx())
+                        .and(adminProductionEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return ProductionMapper.INSTANCE.toDto(findPrevOneProduction);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneProduction
+     * 2. ClassName  : AdminProductionJpaRepository.java
+     * 3. Comment    : 관리자 다음 프로덕션 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 13.
+     * </pre>
+     */
+    public AdminProductionDTO findNextOneProduction(AdminProductionEntity existAdminProductionEntity) {
+        // 다음 프로덕션 조회
+        AdminProductionEntity findNextOneProduction = queryFactory
+                .selectFrom(adminProductionEntity)
+                .orderBy(adminProductionEntity.idx.asc())
+                .where(adminProductionEntity.idx.gt(existAdminProductionEntity.getIdx())
+                        .and(adminProductionEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return ProductionMapper.INSTANCE.toDto(findNextOneProduction);
     }
 
     /**
