@@ -193,7 +193,7 @@ class AdminProductionJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 이전 프로덕션 상세 조회 테스트")
     void 이전프로덕션상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-production/2/118/prev")
+        mockMvc.perform(get("/api/jpa-production/118/prev")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -205,7 +205,7 @@ class AdminProductionJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 다음 프로덕션 상세 조회 테스트")
     void 다음프로덕션상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-production/2/118/next")
+        mockMvc.perform(get("/api/jpa-production/118/next")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())

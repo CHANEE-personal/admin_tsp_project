@@ -198,6 +198,30 @@ class AdminPortfolioJpaControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 이전 포트폴리오 상세 조회 테스트")
+    void 이전포트폴리오상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-portfolio/2/prev")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("1"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 다음 포트폴리오 상세 조회 테스트")
+    void 다음포트폴리오상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-portfolio/2/next")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("3"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 등록 테스트")
     void 포트폴리오등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/jpa-portfolio")
