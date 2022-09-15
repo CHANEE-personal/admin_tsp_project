@@ -25,7 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/jpa-comment")
-@Api(tags = "어드민코멘트 관련 API")
+@Api(tags = "어드민 코멘트 관련 API")
 @RequiredArgsConstructor
 public class AdminCommentJpaController {
     private final AdminCommentJpaService adminCommentJpaService;
