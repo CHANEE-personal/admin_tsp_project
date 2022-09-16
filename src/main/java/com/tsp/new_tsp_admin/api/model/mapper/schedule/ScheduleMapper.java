@@ -2,13 +2,14 @@ package com.tsp.new_tsp_admin.api.model.mapper.schedule;
 
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
 import com.tsp.new_tsp_admin.common.StructMapper;
+import org.mapstruct.Mapper;
 
 import java.util.List;
 
 import static org.mapstruct.factory.Mappers.getMapper;
 
+@Mapper
 public interface ScheduleMapper extends StructMapper<AdminScheduleDTO, AdminScheduleEntity> {
     ScheduleMapper INSTANCE = getMapper(ScheduleMapper.class);
 
