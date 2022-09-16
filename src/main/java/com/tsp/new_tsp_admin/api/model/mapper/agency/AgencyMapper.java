@@ -3,11 +3,13 @@ package com.tsp.new_tsp_admin.api.model.mapper.agency;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.common.StructMapper;
+import org.mapstruct.Mapper;
 
 import java.util.List;
 
 import static org.mapstruct.factory.Mappers.getMapper;
 
+@Mapper
 public interface AgencyMapper extends StructMapper<AdminAgencyDTO, AdminAgencyEntity> {
 
     AgencyMapper INSTANCE = getMapper(AgencyMapper.class);
