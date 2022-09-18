@@ -291,8 +291,8 @@ class AdminFaqJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("다음 공지사항 상세 조회 Mockito 테스트")
-    void 다음공지사항상세조회Mockito테스트() {
+    @DisplayName("다음 FAQ 상세 조회 Mockito 테스트")
+    void 다음FAQ상세조회Mockito테스트() {
         // given
         adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
 
@@ -315,8 +315,8 @@ class AdminFaqJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("다음 공지사항 상세 조회 BDD 테스트")
-    void 다음공지사항상세조회BDD테스트() {
+    @DisplayName("다음 FAQ 상세 조회 BDD 테스트")
+    void 다음FAQ상세조회BDD테스트() {
         // given
         adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
 
