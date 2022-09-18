@@ -32,7 +32,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findNoticeCount(Map<String, Object> noticeMap) throws Exception {
+    public Integer findNoticeCount(Map<String, Object> noticeMap) throws TspException {
         try {
             return adminNoticeJpaRepository.findNoticeCount(noticeMap);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public List<AdminNoticeDTO> findNoticesList(Map<String, Object> noticeMap) throws Exception {
+    public List<AdminNoticeDTO> findNoticesList(Map<String, Object> noticeMap) throws TspException {
         try {
             return adminNoticeJpaRepository.findNoticesList(noticeMap);
         } catch (Exception e) {
@@ -72,9 +72,49 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public AdminNoticeDTO findOneNotice(AdminNoticeEntity adminNoticeEntity) throws Exception {
+    public AdminNoticeDTO findOneNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
         try {
             return adminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_NOTICE, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneNotice
+     * 2. ClassName  : AdminNoticeServiceImpl.java
+     * 3. Comment    : 관리자 이전 공지사항 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    @Override
+    @Cacheable("notice")
+    @Transactional(readOnly = true)
+    public AdminNoticeDTO findPrevOneNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
+        try {
+            return adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_NOTICE, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneNotice
+     * 2. ClassName  : AdminNoticeServiceImpl.java
+     * 3. Comment    : 관리자 다음 공지사항 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    @Override
+    @Cacheable("notice")
+    @Transactional(readOnly = true)
+    public AdminNoticeDTO findNextOneNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
+        try {
+            return adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_NOTICE, e);
         }
@@ -93,7 +133,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CachePut("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity) throws Exception {
+    public AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
         try {
             return adminNoticeJpaRepository.insertNotice(adminNoticeEntity);
         } catch (Exception e) {
@@ -114,7 +154,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CachePut("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity) throws Exception {
+    public AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
         try {
             return adminNoticeJpaRepository.updateNotice(adminNoticeEntity);
         } catch (Exception e) {
@@ -135,7 +175,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CacheEvict("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteNotice(Integer idx) throws Exception {
+    public Integer deleteNotice(Integer idx) throws TspException {
         try {
             return adminNoticeJpaRepository.deleteNotice(idx);
         } catch (Exception e) {
