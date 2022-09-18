@@ -287,9 +287,9 @@ class AdminPortfolioJpaRepositoryTest {
         // when
         adminPortFolioDTO = adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
 
-        // 이전 프로덕션
+        // 이전 포트폴리오
         assertThat(adminPortfolioJpaRepository.findPrevOnePortfolio(adminPortFolioEntity).getIdx()).isEqualTo(1);
-        // 다음 프로덕션
+        // 다음 포트폴리오
         assertThat(adminPortfolioJpaRepository.findNextOnePortfolio(adminPortFolioEntity).getIdx()).isEqualTo(3);
     }
 

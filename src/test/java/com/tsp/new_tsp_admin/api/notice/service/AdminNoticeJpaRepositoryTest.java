@@ -239,9 +239,9 @@ class AdminNoticeJpaRepositoryTest {
         // when
         adminNoticeDTO = adminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
 
-        // 이전 프로덕션
+        // 이전 공지사항
         assertThat(adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity).getIdx()).isEqualTo(1);
-        // 다음 프로덕션
+        // 다음 공지사항
         assertThat(adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity).getIdx()).isEqualTo(3);
     }
 
