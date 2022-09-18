@@ -95,6 +95,50 @@ public class AdminFaqJpaController {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneFaq
+     * 2. ClassName  : AdminFaqJpaController.java
+     * 3. Comment    : 관리자 이전 FAQ 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    @ApiOperation(value = "이전 FAQ 상세 조회", notes = "이전 FAQ를 상세 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "이전 FAQ 상세 조회 성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}/prev")
+    public AdminFaqDTO findPrevOneFaq(@PathVariable Integer idx) throws Exception {
+        return adminFaqJpaService.findPrevOneFaq(AdminFaqEntity.builder().idx(idx).build());
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneFaq
+     * 2. ClassName  : AdminFaqJpaController.java
+     * 3. Comment    : 관리자 다음 FAQ 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    @ApiOperation(value = "다음 FAQ 상세 조회", notes = "다음 FAQ를 상세 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "다음 FAQ 상세 조회 성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}/prev")
+    public AdminFaqDTO findNextOneFaq(@PathVariable Integer idx) throws Exception {
+        return adminFaqJpaService.findNextOneFaq(AdminFaqEntity.builder().idx(idx).build());
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertFaq
      * 2. ClassName  : AdminFaqJpaController.java
      * 3. Comment    : 관리자 FAQ 저장
