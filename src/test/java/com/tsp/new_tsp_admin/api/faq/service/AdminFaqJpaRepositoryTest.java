@@ -231,6 +231,111 @@ class AdminFaqJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("이전 or 다음 FAQ 상세 조회 테스트")
+    void 이전or다음FAQ상세조회테스트() {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaRepository.findOneFaq(adminFaqEntity);
+
+        // 이전 FAQ
+        assertThat(adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity).getIdx()).isEqualTo(1);
+        // 다음 FAQ
+        assertThat(adminFaqJpaRepository.findNextOneFaq(adminFaqEntity).getIdx()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("이전 FAQ 상세 조회 Mockito 테스트")
+    void 이전FAQ상세조회Mockito테스트() {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+
+        when(mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        verify(mockAdminFaqJpaRepository, times(1)).findPrevOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findPrevOneFaq(adminFaqEntity);
+        verifyNoMoreInteractions(mockAdminFaqJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
+        inOrder.verify(mockAdminFaqJpaRepository).findPrevOneFaq(adminFaqEntity);
+    }
+
+    @Test
+    @DisplayName("이전 FAQ 상세 조회 BDD 테스트")
+    void 이전FAQ상세조회BDD테스트() {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+
+        given(mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        then(mockAdminFaqJpaRepository).should(times(1)).findPrevOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findPrevOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("다음 FAQ 상세 조회 Mockito 테스트")
+    void 다음FAQ상세조회Mockito테스트() {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+
+        when(mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        verify(mockAdminFaqJpaRepository, times(1)).findNextOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findNextOneFaq(adminFaqEntity);
+        verifyNoMoreInteractions(mockAdminFaqJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
+        inOrder.verify(mockAdminFaqJpaRepository).findNextOneFaq(adminFaqEntity);
+    }
+
+    @Test
+    @DisplayName("다음 FAQ 상세 조회 BDD 테스트")
+    void 다음FAQ상세조회BDD테스트() {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+
+        given(mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        then(mockAdminFaqJpaRepository).should(times(1)).findNextOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findNextOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("FAQ등록Mockito테스트")
     void FAQ등록Mockito테스트() {
         // given

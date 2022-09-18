@@ -209,6 +209,111 @@ class AdminFaqJpaServiceTest {
     }
 
     @Test
+    @DisplayName("이전 or 다음 FAQ 상세 조회 테스트")
+    void 이전or다음FAQ상세조회테스트() throws Exception {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaService.findOneFaq(adminFaqEntity);
+
+        // 이전 FAQ
+        assertThat(adminFaqJpaService.findPrevOneFaq(adminFaqEntity).getIdx()).isEqualTo(1);
+        // 다음 FAQ
+        assertThat(adminFaqJpaService.findNextOneFaq(adminFaqEntity).getIdx()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("이전 FAQ 상세 조회 Mockito 테스트")
+    void 이전FAQ상세조회Mockito테스트() throws Exception {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaService.findPrevOneFaq(adminFaqEntity);
+
+        when(mockAdminFaqJpaService.findPrevOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaService.findPrevOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        verify(mockAdminFaqJpaService, times(1)).findPrevOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaService, atLeastOnce()).findPrevOneFaq(adminFaqEntity);
+        verifyNoMoreInteractions(mockAdminFaqJpaService);
+
+        InOrder inOrder = inOrder(mockAdminFaqJpaService);
+        inOrder.verify(mockAdminFaqJpaService).findPrevOneFaq(adminFaqEntity);
+    }
+
+    @Test
+    @DisplayName("이전 FAQ 상세 조회 BDD 테스트")
+    void 이전FAQ상세조회BDD테스트() throws Exception {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaService.findPrevOneFaq(adminFaqEntity);
+
+        given(mockAdminFaqJpaService.findPrevOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaService.findPrevOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        then(mockAdminFaqJpaService).should(times(1)).findPrevOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaService).should(atLeastOnce()).findPrevOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("다음 FAQ 상세 조회 Mockito 테스트")
+    void 다음FAQ상세조회Mockito테스트() throws Exception {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaService.findNextOneFaq(adminFaqEntity);
+
+        when(mockAdminFaqJpaService.findNextOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaService.findNextOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        verify(mockAdminFaqJpaService, times(1)).findNextOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaService, atLeastOnce()).findNextOneFaq(adminFaqEntity);
+        verifyNoMoreInteractions(mockAdminFaqJpaService);
+
+        InOrder inOrder = inOrder(mockAdminFaqJpaService);
+        inOrder.verify(mockAdminFaqJpaService).findNextOneFaq(adminFaqEntity);
+    }
+
+    @Test
+    @DisplayName("다음 FAQ 상세 조회 BDD 테스트")
+    void 다음FAQ상세조회BDD테스트() throws Exception {
+        // given
+        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+
+        // when
+        adminFaqDTO = adminFaqJpaService.findNextOneFaq(adminFaqEntity);
+
+        given(mockAdminFaqJpaService.findNextOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaService.findNextOneFaq(adminFaqEntity);
+
+        // then
+        assertThat(faqInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        then(mockAdminFaqJpaService).should(times(1)).findNextOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaService).should(atLeastOnce()).findNextOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("FAQ등록Mockito테스트")
     void FAQ등록Mockito테스트() throws Exception {
         // given

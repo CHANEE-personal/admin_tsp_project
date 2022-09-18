@@ -42,6 +42,28 @@ public interface AdminFaqJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneFaq
+     * 2. ClassName  : AdminFaqJpaService.java
+     * 3. Comment    : 관리자 이전 FAQ 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    AdminFaqDTO findPrevOneFaq(AdminFaqEntity adminFaqEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneFaq
+     * 2. ClassName  : AdminFaqJpaService.java
+     * 3. Comment    : 관리자 다음 FAQ 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    AdminFaqDTO findNextOneFaq(AdminFaqEntity adminFaqEntity) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : insertFaq
      * 2. ClassName  : AdminFaqJpaService.java
      * 3. Comment    : 관리자 FAQ 등록

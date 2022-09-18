@@ -42,6 +42,28 @@ public interface AdminNoticeJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneNotice
+     * 2. ClassName  : AdminNoticeJpaService.java
+     * 3. Comment    : 관리자 이전 공지사항 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    AdminNoticeDTO findPrevOneNotice(AdminNoticeEntity adminNoticeEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneNotice
+     * 2. ClassName  : AdminNoticeJpaService.java
+     * 3. Comment    : 관리자 다음 공지사항 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    AdminNoticeDTO findNextOneNotice(AdminNoticeEntity adminNoticeEntity) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : insertNotice
      * 2. ClassName  : AdminNoticeJpaService.java
      * 3. Comment    : 관리자 공지사항 등록

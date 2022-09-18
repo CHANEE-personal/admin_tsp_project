@@ -49,6 +49,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -164,6 +165,28 @@ class AdminNoticeJpaControllerTest {
                 .andExpect(jsonPath("$.idx").value("1"))
                 .andExpect(jsonPath("$.title").value("테스트1"))
                 .andExpect(jsonPath("$.description").value("테스트1"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 이전 공지사항 상세 조회 테스트")
+    void 이전공지사항상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-notice/2/prev"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("1"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 다음 공지사항 상세 조회 테스트")
+    void 다음공지사항상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-notice/2/next"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("3"));
     }
 
     @Test

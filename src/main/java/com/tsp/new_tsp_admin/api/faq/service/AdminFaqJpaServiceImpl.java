@@ -82,6 +82,46 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneFaq
+     * 2. ClassName  : AdminFaqJpaServiceImpl.java
+     * 3. Comment    : 관리자 이전 FAQ 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    @Override
+    @Cacheable("faq")
+    @Transactional(readOnly = true)
+    public AdminFaqDTO findPrevOneFaq(AdminFaqEntity adminFaqEntity) throws TspException {
+        try {
+            return adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_FAQ, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneFaq
+     * 2. ClassName  : AdminFaqJpaServiceImpl.java
+     * 3. Comment    : 관리자 다음 FAQ 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    @Override
+    @Cacheable("faq")
+    @Transactional(readOnly = true)
+    public AdminFaqDTO findNextOneFaq(AdminFaqEntity adminFaqEntity) throws TspException {
+        try {
+            return adminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_FAQ, e);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertFaq
      * 2. ClassName  : AdminFaqServiceImpl.java
      * 3. Comment    : 관리자 FAQ 등록

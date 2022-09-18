@@ -98,6 +98,46 @@ public class AdminNoticeJpaRepository {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneNotice
+     * 2. ClassName  : AdminNoticeJpaRepository.java
+     * 3. Comment    : 관리자 이전 공지사항 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    AdminNoticeDTO findPrevOneNotice(AdminNoticeEntity existAdminNoticeEntity) {
+        AdminNoticeEntity findPrevOneNotice = queryFactory
+                .selectFrom(adminNoticeEntity)
+                .orderBy(adminNoticeEntity.idx.desc())
+                .where(adminNoticeEntity.idx.lt(existAdminNoticeEntity.getIdx())
+                        .and(adminNoticeEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return INSTANCE.toDto(findPrevOneNotice);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneNotice
+     * 2. ClassName  : AdminNoticeJpaRepository.java
+     * 3. Comment    : 관리자 이전 공지사항 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 18.
+     * </pre>
+     */
+    AdminNoticeDTO findNextOneNotice(AdminNoticeEntity existAdminNoticeEntity) {
+        AdminNoticeEntity findNextOneNotice = queryFactory
+                .selectFrom(adminNoticeEntity)
+                .orderBy(adminNoticeEntity.idx.desc())
+                .where(adminNoticeEntity.idx.gt(existAdminNoticeEntity.getIdx())
+                        .and(adminNoticeEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return INSTANCE.toDto(findNextOneNotice);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertNotice
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 등록

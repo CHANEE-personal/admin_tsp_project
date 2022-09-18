@@ -207,6 +207,112 @@ class AdminNoticeJpaServiceTest {
         then(mockAdminNoticeJpaService).should(atLeastOnce()).findOneNotice(adminNoticeEntity);
         then(mockAdminNoticeJpaService).shouldHaveNoMoreInteractions();
     }
+
+    @Test
+    @DisplayName("이전 or 다음 공지사항 상세 조회 테스트")
+    void 이전or다음공지사항상세조회테스트() throws Exception {
+        // given
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+
+        // when
+        adminNoticeDTO = adminNoticeJpaService.findOneNotice(adminNoticeEntity);
+
+        // 이전 프로덕션
+        assertThat(adminNoticeJpaService.findPrevOneNotice(adminNoticeEntity).getIdx()).isEqualTo(1);
+        // 다음 프로덕션
+        assertThat(adminNoticeJpaService.findNextOneNotice(adminNoticeEntity).getIdx()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("이전 공지사항 상세 조회 Mockito 테스트")
+    void 이전공지사항상세조회Mockito테스트() throws Exception {
+        // given
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+
+        // when
+        adminNoticeDTO = adminNoticeJpaService.findPrevOneNotice(adminNoticeEntity);
+
+        when(mockAdminNoticeJpaService.findPrevOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaService.findPrevOneNotice(adminNoticeEntity);
+
+        // then
+        assertThat(noticeInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        verify(mockAdminNoticeJpaService, times(1)).findPrevOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaService, atLeastOnce()).findPrevOneNotice(adminNoticeEntity);
+        verifyNoMoreInteractions(mockAdminNoticeJpaService);
+
+        InOrder inOrder = inOrder(mockAdminNoticeJpaService);
+        inOrder.verify(mockAdminNoticeJpaService).findPrevOneNotice(adminNoticeEntity);
+    }
+
+    @Test
+    @DisplayName("이전 공지사항 상세 조회 BDD 테스트")
+    void 이전공지사항상세조회BDD테스트() throws Exception {
+        // given
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+
+        // when
+        adminNoticeDTO = adminNoticeJpaService.findPrevOneNotice(adminNoticeEntity);
+
+        given(mockAdminNoticeJpaService.findPrevOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaService.findPrevOneNotice(adminNoticeEntity);
+
+        // then
+        assertThat(noticeInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        then(mockAdminNoticeJpaService).should(times(1)).findPrevOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaService).should(atLeastOnce()).findPrevOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("다음 공지사항 상세 조회 Mockito 테스트")
+    void 다음공지사항상세조회Mockito테스트() throws Exception {
+        // given
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+
+        // when
+        adminNoticeDTO = adminNoticeJpaService.findNextOneNotice(adminNoticeEntity);
+
+        when(mockAdminNoticeJpaService.findNextOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaService.findNextOneNotice(adminNoticeEntity);
+
+        // then
+        assertThat(noticeInfo.getIdx()).isEqualTo(3);
+
+        // verify
+        verify(mockAdminNoticeJpaService, times(1)).findNextOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaService, atLeastOnce()).findNextOneNotice(adminNoticeEntity);
+        verifyNoMoreInteractions(mockAdminNoticeJpaService);
+
+        InOrder inOrder = inOrder(mockAdminNoticeJpaService);
+        inOrder.verify(mockAdminNoticeJpaService).findNextOneNotice(adminNoticeEntity);
+    }
+
+    @Test
+    @DisplayName("다음 공지사항 상세 조회 BDD 테스트")
+    void 다음공지사항상세조회BDD테스트() throws Exception {
+        // given
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+
+        // when
+        adminNoticeDTO = adminNoticeJpaService.findNextOneNotice(adminNoticeEntity);
+
+        given(mockAdminNoticeJpaService.findNextOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaService.findNextOneNotice(adminNoticeEntity);
+
+        // then
+        assertThat(noticeInfo.getIdx()).isEqualTo(3);
+
+        // verify
+        then(mockAdminNoticeJpaService).should(times(1)).findNextOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaService).should(atLeastOnce()).findNextOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaService).shouldHaveNoMoreInteractions();
+    }
+
     @Test
     @DisplayName("공지사항등록Mockito테스트")
     void 공지사항등록Mockito테스트() throws Exception {
