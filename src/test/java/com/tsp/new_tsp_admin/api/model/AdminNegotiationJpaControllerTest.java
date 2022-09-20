@@ -171,7 +171,7 @@ class AdminNegotiationJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 섭외 이전 상세 조회 테스트")
-    void 모델섭외상세조회이전Api테스트() throws Exception {
+    void 모델섭외이전상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-negotiation/2/prev")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
@@ -186,7 +186,7 @@ class AdminNegotiationJpaControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 섭외 다음 상세 조회 테스트")
-    void 모델섭외상세조회다음Api테스트() throws Exception {
+    void 모델섭외다음상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/jpa-negotiation/2/next")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
