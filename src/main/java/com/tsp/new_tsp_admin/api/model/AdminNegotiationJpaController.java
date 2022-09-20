@@ -90,7 +90,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    @ApiOperation(value = "모델 섭외 상세 조회", notes = "모델 섭외을 상세 조회한다.")
+    @ApiOperation(value = "모델 섭외 상세 조회", notes = "모델 섭외를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 상세 조회 성공", response = Map.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
@@ -101,6 +101,50 @@ public class AdminNegotiationJpaController {
     @GetMapping("/{idx}")
     public AdminNegotiationDTO findOneNegotiation(@PathVariable Integer idx) throws Exception {
         return this.adminNegotiationJpaService.findOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneNegotiation
+     * 2. ClassName  : AdminNegotiationJpaController.java
+     * 3. Comment    : 관리자 모델 섭외 이전 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 21.
+     * </pre>
+     */
+    @ApiOperation(value = "모델 섭외 이전 상세 조회", notes = "모델 섭외를 이전 상세 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "모델 섭외 이전 상세 조회 성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}/prev")
+    public AdminNegotiationDTO findPrevOneNegotiation(@PathVariable Integer idx) throws Exception {
+        return this.adminNegotiationJpaService.findPrevOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneNegotiation
+     * 2. ClassName  : AdminNegotiationJpaController.java
+     * 3. Comment    : 관리자 모델 섭외 다음 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 21.
+     * </pre>
+     */
+    @ApiOperation(value = "모델 섭외 다음 상세 조회", notes = "모델 섭외를 다음 상세 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "모델 섭외 다음 상세 조회 성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}/next")
+    public AdminNegotiationDTO findNextOneNegotiation(@PathVariable Integer idx) throws Exception {
+        return this.adminNegotiationJpaService.findNextOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
     }
 
     /**
