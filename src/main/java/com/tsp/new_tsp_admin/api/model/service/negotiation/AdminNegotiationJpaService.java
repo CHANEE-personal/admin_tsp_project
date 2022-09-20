@@ -43,6 +43,28 @@ public interface AdminNegotiationJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneNegotiation
+     * 2. ClassName  : AdminNegotiationJpaService.java
+     * 3. Comment    : 관리자 모델 섭외 이전 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 21.
+     * </pre>
+     */
+    AdminNegotiationDTO findPrevOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneNegotiation
+     * 2. ClassName  : AdminNegotiationJpaService.java
+     * 3. Comment    : 관리자 모델 섭외 다음 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 21.
+     * </pre>
+     */
+    AdminNegotiationDTO findNextOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : insertModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaService.java
      * 3. Comment    : 관리자 모델 섭외 등록
