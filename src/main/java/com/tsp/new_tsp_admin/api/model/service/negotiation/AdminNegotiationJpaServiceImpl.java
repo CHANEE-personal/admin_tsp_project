@@ -84,6 +84,46 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneNegotiation
+     * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 섭외 이전 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 21.
+     * </pre>
+     */
+    @Override
+    @Cacheable("negotiation")
+    @Transactional(readOnly = true)
+    public AdminNegotiationDTO findPrevOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws TspException {
+        try {
+            return adminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL_NEGOTIATION, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneNegotiation
+     * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 섭외 다음 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 21.
+     * </pre>
+     */
+    @Override
+    @Cacheable("negotiation")
+    @Transactional(readOnly = true)
+    public AdminNegotiationDTO findNextOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws TspException {
+        try {
+            return adminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL_NEGOTIATION, e);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 등록

@@ -224,6 +224,111 @@ class AdminNegotiationJpaRepositoryTest {
     }
 
     @Test
+    @DisplayName("이전 or 다음 모델 섭외 상세 조회 테스트")
+    void 이전or다음모델섭외상세조회테스트() {
+        // given
+        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2).build();
+
+        // when
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+
+        // 이전 모델 섭외
+        assertThat(adminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity).getIdx()).isEqualTo(1);
+        // 다음 모델 섭외
+        assertThat(adminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity).getIdx()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("이전 모델 섭외 상세 조회 Mockito 테스트")
+    void 이전모델섭외상세조회Mockito테스트() {
+        // given
+        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2).build();
+
+        // when
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+
+        when(mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity)).thenReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity);
+
+        // then
+        assertThat(negotiationInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        verify(mockAdminNegotiationJpaRepository, times(1)).findPrevOneNegotiation(adminNegotiationEntity);
+        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findPrevOneNegotiation(adminNegotiationEntity);
+        verifyNoMoreInteractions(mockAdminNegotiationJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminNegotiationJpaRepository);
+        inOrder.verify(mockAdminNegotiationJpaRepository).findPrevOneNegotiation(adminNegotiationEntity);
+    }
+
+    @Test
+    @DisplayName("이전 모델 섭외 상세 조회 BDD 테스트")
+    void 이전모델섭외상세조회BDD테스트() {
+        // given
+        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2).build();
+
+        // when
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+
+        given(mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity)).willReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity);
+
+        // then
+        assertThat(negotiationInfo.getIdx()).isEqualTo(1);
+
+        // verify
+        then(mockAdminNegotiationJpaRepository).should(times(1)).findPrevOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findPrevOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("다음 모델 섭외 상세 조회 Mockito 테스트")
+    void 다음모델섭외상세조회Mockito테스트() {
+        // given
+        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2).build();
+
+        // when
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+
+        when(mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity)).thenReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity);
+
+        // then
+        assertThat(negotiationInfo.getIdx()).isEqualTo(3);
+
+        // verify
+        verify(mockAdminNegotiationJpaRepository, times(1)).findNextOneNegotiation(adminNegotiationEntity);
+        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findNextOneNegotiation(adminNegotiationEntity);
+        verifyNoMoreInteractions(mockAdminNegotiationJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminNegotiationJpaRepository);
+        inOrder.verify(mockAdminNegotiationJpaRepository).findNextOneNegotiation(adminNegotiationEntity);
+    }
+
+    @Test
+    @DisplayName("다음 모델 섭외 상세 조회 BDD 테스트")
+    void 다음모델섭외상세조회BDD테스트() {
+        // given
+        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2).build();
+
+        // when
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+
+        given(mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity)).willReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity);
+
+        // then
+        assertThat(negotiationInfo.getIdx()).isEqualTo(3);
+
+        // verify
+        then(mockAdminNegotiationJpaRepository).should(times(1)).findNextOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findNextOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("모델섭외등록Mockito테스트")
     void 모델섭외등록Mockito테스트() {
         // given
