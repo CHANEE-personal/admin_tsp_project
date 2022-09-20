@@ -84,7 +84,7 @@ public class AdminCommentJpaRepository {
                         .and(adminCommentEntity.visible.eq("Y")))
                 .fetchOne();
 
-        return AdminCommentMapper.INSTANCE.toDto(findOneAdminComment);
+        return INSTANCE.toDto(findOneAdminComment);
     }
 
     /**
@@ -98,7 +98,7 @@ public class AdminCommentJpaRepository {
      */
     public AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity) {
         em.persist(adminCommentEntity);
-        return AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
+        return INSTANCE.toDto(adminCommentEntity);
     }
 
     /**
@@ -114,7 +114,7 @@ public class AdminCommentJpaRepository {
         em.merge(existAdminCommentEntity);
         em.flush();
         em.clear();
-        return AdminCommentMapper.INSTANCE.toDto(existAdminCommentEntity);
+        return INSTANCE.toDto(existAdminCommentEntity);
     }
 
     /**

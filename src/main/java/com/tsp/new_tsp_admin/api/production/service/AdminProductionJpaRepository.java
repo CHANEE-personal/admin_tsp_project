@@ -126,7 +126,7 @@ public class AdminProductionJpaRepository {
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return ProductionMapper.INSTANCE.toDto(findPrevOneProduction);
+        return INSTANCE.toDto(findPrevOneProduction);
     }
 
     /**
@@ -147,7 +147,7 @@ public class AdminProductionJpaRepository {
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return ProductionMapper.INSTANCE.toDto(findNextOneProduction);
+        return INSTANCE.toDto(findNextOneProduction);
     }
 
     /**
