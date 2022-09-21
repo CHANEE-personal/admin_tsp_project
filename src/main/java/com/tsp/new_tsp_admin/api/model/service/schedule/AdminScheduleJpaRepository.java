@@ -4,9 +4,13 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
+import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.negotiation.NegotiationMapper;
+import com.tsp.new_tsp_admin.api.model.mapper.schedule.ScheduleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -18,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
+import static com.tsp.new_tsp_admin.api.domain.model.negotiation.QAdminNegotiationEntity.adminNegotiationEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.adminScheduleEntity;
 import static com.tsp.new_tsp_admin.api.model.mapper.schedule.ScheduleMapper.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
@@ -139,6 +144,48 @@ public class AdminScheduleJpaRepository {
                 .fetchOne();
 
         return INSTANCE.toDto(findOneSchedule);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneSchedule
+     * 2. ClassName  : AdminScheduleJpaRepository.java
+     * 3. Comment    : 관리자 이전 모델 스케줄 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 22.
+     * </pre>
+     */
+    public AdminScheduleDTO findPrevOneSchedule(AdminScheduleEntity existAdminScheduleEntity) {
+        // 이전 모델 스케줄 조회
+        AdminScheduleEntity findPrevOneSchedule = queryFactory
+                .selectFrom(adminScheduleEntity)
+                .orderBy(adminScheduleEntity.idx.desc())
+                .where(adminScheduleEntity.idx.lt(existAdminScheduleEntity.getIdx())
+                        .and(adminScheduleEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return INSTANCE.toDto(findPrevOneSchedule);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneSchedule
+     * 2. ClassName  : AdminScheduleJpaRepository.java
+     * 3. Comment    : 관리자 다음 모델 스케줄 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 22.
+     * </pre>
+     */
+    public AdminScheduleDTO findNextOneSchedule(AdminScheduleEntity existAdminScheduleEntity) {
+        // 다음 모델 스케줄 조회
+        AdminScheduleEntity findNextOneSchedule = queryFactory
+                .selectFrom(adminScheduleEntity)
+                .orderBy(adminScheduleEntity.idx.asc())
+                .where(adminScheduleEntity.idx.gt(existAdminScheduleEntity.getIdx())
+                        .and(adminScheduleEntity.visible.eq("Y")))
+                .fetchFirst();
+
+        return INSTANCE.toDto(findNextOneSchedule);
     }
 
     /**
