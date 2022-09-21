@@ -160,7 +160,7 @@ public class AdminNegotiationJpaRepository {
                         .and(adminNegotiationEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return NegotiationMapper.INSTANCE.toDto(existAdminNegotiationEntity);
+        return NegotiationMapper.INSTANCE.toDto(findPrevOneNegotiation);
     }
 
     /**
@@ -181,7 +181,7 @@ public class AdminNegotiationJpaRepository {
                         .and(adminNegotiationEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return NegotiationMapper.INSTANCE.toDto(existAdminNegotiationEntity);
+        return NegotiationMapper.INSTANCE.toDto(findNextOneNegotiation);
     }
 
     /**
