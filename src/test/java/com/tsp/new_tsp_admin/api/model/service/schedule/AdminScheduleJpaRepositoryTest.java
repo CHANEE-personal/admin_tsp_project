@@ -401,8 +401,8 @@ class AdminScheduleJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("다음 모델 섭외 상세 조회 BDD 테스트")
-    void 다음모델섭외상세조회BDD테스트() {
+    @DisplayName("다음 모델 스케줄 상세 조회 BDD 테스트")
+    void 다음모델스케줄상세조회BDD테스트() {
         // given
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2).build();
 
