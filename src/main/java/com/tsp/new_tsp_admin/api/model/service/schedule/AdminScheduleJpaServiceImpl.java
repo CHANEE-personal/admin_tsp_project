@@ -83,6 +83,46 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneSchedule
+     * 2. ClassName  : AdminScheduleJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 이전 스케줄 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 22.
+     * </pre>
+     */
+    @Override
+    @Cacheable("schedule")
+    @Transactional(readOnly = true)
+    public AdminScheduleDTO findPrevOneSchedule(AdminScheduleEntity adminScheduleEntity) throws TspException {
+        try {
+            return adminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL_SCHEDULE, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneSchedule
+     * 2. ClassName  : AdminScheduleJpaServiceImpl.java
+     * 3. Comment    : 관리자 모델 다음 스케줄 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 22.
+     * </pre>
+     */
+    @Override
+    @Cacheable("schedule")
+    @Transactional(readOnly = true)
+    public AdminScheduleDTO findNextOneSchedule(AdminScheduleEntity adminScheduleEntity) throws TspException {
+        try {
+            return adminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity);
+        } catch (Exception e) {
+            throw new TspException(NOT_FOUND_MODEL_SCHEDULE, e);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertSchedule
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 스케줄 등록

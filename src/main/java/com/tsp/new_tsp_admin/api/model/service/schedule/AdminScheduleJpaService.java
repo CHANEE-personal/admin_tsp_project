@@ -1,6 +1,8 @@
 package com.tsp.new_tsp_admin.api.model.service.schedule;
 
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
+import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
+import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 
@@ -40,6 +42,28 @@ public interface AdminScheduleJpaService {
      * </pre>
      */
     AdminScheduleDTO findOneSchedule(AdminScheduleEntity adminScheduleEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findPrevOneSchedule
+     * 2. ClassName  : AdminScheduleJpaService.java
+     * 3. Comment    : 관리자 모델 스케줄 이전 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 22.
+     * </pre>
+     */
+    AdminScheduleDTO findPrevOneSchedule(AdminScheduleEntity adminScheduleEntity) throws Exception;
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneSchedule
+     * 2. ClassName  : AdminScheduleJpaService.java
+     * 3. Comment    : 관리자 모델 스케줄 다음 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 22.
+     * </pre>
+     */
+    AdminScheduleDTO findNextOneSchedule(AdminScheduleEntity adminScheduleEntity) throws Exception;
 
     /**
      * <pre>
