@@ -387,8 +387,8 @@ class AdminCommentJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("공지사항삭제BDD테스트")
-    void 공지사항삭제BDD테스트() {
+    @DisplayName("어드민코멘트삭제BDD테스트")
+    void 어드민코멘트삭제BDD테스트() {
         // given
         em.persist(adminCommentEntity);
         adminCommentDTO = AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
