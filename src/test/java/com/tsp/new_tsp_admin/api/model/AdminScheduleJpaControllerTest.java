@@ -160,7 +160,36 @@ class AdminScheduleJpaControllerTest {
                 .andExpect(jsonPath("$.modelIdx").value(1))
                 .andExpect(jsonPath("$.modelSchedule").value("스케줄 테스트"))
                 .andExpect(jsonPath("$.visible").value("Y"));
+    }
 
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 모델 이전 스케줄 상세 조회 테스트")
+    void 모델이전스케줄상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-schedule/2/prev")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("1"))
+                .andExpect(jsonPath("$.modelIdx").value(1))
+                .andExpect(jsonPath("$.modelSchedule").value("스케줄 테스트"))
+                .andExpect(jsonPath("$.visible").value("Y"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 모델 다음 스케줄 상세 조회 테스트")
+    void 모델다음스케줄상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-schedule/2/next")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value("3"))
+                .andExpect(jsonPath("$.modelIdx").value(1))
+                .andExpect(jsonPath("$.modelSchedule").value("스케줄 테스트"))
+                .andExpect(jsonPath("$.visible").value("Y"));
     }
 
     @Test

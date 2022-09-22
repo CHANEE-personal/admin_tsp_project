@@ -105,6 +105,50 @@ public class AdminScheduleJpaController {
 
     /**
      * <pre>
+     * 1. MethodName : findPrevOneSchedule
+     * 2. ClassName  : AdminScheduleJpaController.java
+     * 3. Comment    : 관리자 모델 이전 스케줄 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 22.
+     * </pre>
+     */
+    @ApiOperation(value = "이전 모델 스케줄 상세 조회", notes = "이전 모델 스케줄을 상세 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "이전 모델 스케줄 상세 조회 성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}/prev")
+    public AdminScheduleDTO findPrevOneSchedule(@PathVariable Integer idx) throws Exception {
+        return this.adminScheduleJpaService.findPrevOneSchedule(AdminScheduleEntity.builder().idx(idx).build());
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findNextOneSchedule
+     * 2. ClassName  : AdminScheduleJpaController.java
+     * 3. Comment    : 관리자 모델 다음 스케줄 상세 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 22.
+     * </pre>
+     */
+    @ApiOperation(value = "다음 모델 스케줄 상세 조회", notes = "다음 모델 스케줄을 상세 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "다음 모델 스케줄 상세 조회 성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping("/{idx}/next")
+    public AdminScheduleDTO findNextOneSchedule(@PathVariable Integer idx) throws Exception {
+        return this.adminScheduleJpaService.findNextOneSchedule(AdminScheduleEntity.builder().idx(idx).build());
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : insertSchedule
      * 2. ClassName  : AdminScheduleJpaController.java
      * 3. Comment    : 관리자 모델 스켸줄 저장
