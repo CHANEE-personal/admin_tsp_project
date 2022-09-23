@@ -1,8 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service.schedule;
 
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
-import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
-import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 
