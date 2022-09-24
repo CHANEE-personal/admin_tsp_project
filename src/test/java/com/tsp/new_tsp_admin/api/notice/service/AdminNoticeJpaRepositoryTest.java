@@ -59,6 +59,7 @@ class AdminNoticeJpaRepositoryTest {
                 .title("공지사항 테스트")
                 .description("공지사항 테스트")
                 .visible("Y")
+                .topFixed(false)
                 .viewCount(1)
                 .build();
 
@@ -438,6 +439,71 @@ class AdminNoticeJpaRepositoryTest {
         // then
         assertThat(noticeInfo.getTitle()).isEqualTo("공지사항 테스트1");
         assertThat(noticeInfo.getDescription()).isEqualTo("공지사항 테스트1");
+
+        // verify
+        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("공지사항상단고정Mockito테스트")
+    void 공지사항상단고정Mockito테스트() {
+        // given
+        Integer idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
+
+        Boolean fixed = adminNoticeJpaRepository.toggleFixed(adminNoticeEntity).getTopFixed();
+
+        adminNoticeEntity = AdminNoticeEntity.builder()
+                .idx(idx)
+                .title("공지사항 테스트1")
+                .description("공지사항 테스트1")
+                .topFixed(fixed)
+                .visible("Y")
+                .build();
+
+        AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+
+        // when
+        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+
+        // then
+        assertThat(noticeInfo.getTopFixed()).isTrue();
+
+        // verify
+        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity);
+        verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
+
+        InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
+        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity);
+    }
+
+    @Test
+    @DisplayName("공지사항상단고정BDD테스트")
+    void 공지사항상단고정BDD테스트() {
+        // given
+        Integer idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
+
+        Boolean fixed = adminNoticeJpaRepository.toggleFixed(adminNoticeEntity).getTopFixed();
+
+        adminNoticeEntity = AdminNoticeEntity.builder()
+                .idx(idx)
+                .title("공지사항 테스트1")
+                .description("공지사항 테스트1")
+                .topFixed(fixed)
+                .visible("Y")
+                .build();
+
+        AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+
+        // when
+        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+
+        // then
+        assertThat(noticeInfo.getTopFixed()).isTrue();
 
         // verify
         then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity);
