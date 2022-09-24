@@ -424,6 +424,71 @@ class AdminNoticeJpaServiceTest {
     }
 
     @Test
+    @DisplayName("공지사항상단고정Mockito테스트")
+    void 공지사항상단고정Mockito테스트() throws Exception {
+        // given
+        Integer idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
+
+        Boolean fixed = adminNoticeJpaService.toggleFixed(adminNoticeEntity).getTopFixed();
+
+        adminNoticeEntity = AdminNoticeEntity.builder()
+                .idx(idx)
+                .title("공지사항 테스트1")
+                .description("공지사항 테스트1")
+                .topFixed(fixed)
+                .visible("Y")
+                .build();
+
+        AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+
+        // when
+        when(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity);
+
+        // then
+        assertThat(noticeInfo.getTopFixed()).isTrue();
+
+        // verify
+        verify(mockAdminNoticeJpaService, times(1)).findOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaService, atLeastOnce()).findOneNotice(adminNoticeEntity);
+        verifyNoMoreInteractions(mockAdminNoticeJpaService);
+
+        InOrder inOrder = inOrder(mockAdminNoticeJpaService);
+        inOrder.verify(mockAdminNoticeJpaService).findOneNotice(adminNoticeEntity);
+    }
+
+    @Test
+    @DisplayName("공지사항상단고정BDD테스트")
+    void 공지사항상단고정BDD테스트() throws Exception {
+        // given
+        Integer idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
+
+        Boolean fixed = adminNoticeJpaService.toggleFixed(adminNoticeEntity).getTopFixed();
+
+        adminNoticeEntity = AdminNoticeEntity.builder()
+                .idx(idx)
+                .title("공지사항 테스트1")
+                .description("공지사항 테스트1")
+                .topFixed(fixed)
+                .visible("Y")
+                .build();
+
+        AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+
+        // when
+        given(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity);
+
+        // then
+        assertThat(noticeInfo.getTopFixed()).isTrue();
+
+        // verify
+        then(mockAdminNoticeJpaService).should(times(1)).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaService).should(atLeastOnce()).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("공지사항삭제테스트")
     void 공지사항삭제테스트() throws Exception {
         // given

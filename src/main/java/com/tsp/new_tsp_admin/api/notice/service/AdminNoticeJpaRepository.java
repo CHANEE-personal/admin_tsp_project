@@ -168,6 +168,30 @@ public class AdminNoticeJpaRepository {
 
     /**
      * <pre>
+     * 1. MethodName : toggleFixed
+     * 2. ClassName  : AdminNoticeJpaRepository.java
+     * 3. Comment    : 관리자 공지사항 상단 고정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 23.
+     * </pre>
+     */
+    public AdminNoticeDTO toggleFixed(AdminNoticeEntity existAdminNoticeEntity) {
+        Boolean fixed = !existAdminNoticeEntity.getTopFixed();
+
+        queryFactory
+                .update(adminNoticeEntity)
+                .where(adminNoticeEntity.idx.eq(existAdminNoticeEntity.getIdx()))
+                .set(adminNoticeEntity.topFixed, fixed)
+                .execute();
+
+        em.flush();
+        em.clear();
+
+        return INSTANCE.toDto(em.find(AdminNoticeEntity.class, existAdminNoticeEntity.getIdx()));
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : deleteNotice
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 삭제

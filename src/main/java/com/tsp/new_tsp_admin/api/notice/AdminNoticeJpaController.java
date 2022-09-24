@@ -183,6 +183,20 @@ public class AdminNoticeJpaController {
 
     /**
      * <pre>
+     * 1. MethodName : toggleFixed
+     * 2. ClassName  : AdminNoticeJpaController.java
+     * 3. Comment    : 관리자 공지사항 상단 고정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 23.
+     * </pre>
+     */
+    @PutMapping(value = "/{idx}/fixed")
+    public AdminNoticeDTO toggleFixed(@Valid @RequestBody AdminNoticeEntity adminNoticeEntity) throws Exception {
+        return adminNoticeJpaService.toggleFixed(adminNoticeEntity);
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : deleteNotice
      * 2. ClassName  : AdminNoticeJpaController.java
      * 3. Comment    : 관리자 공지사항 삭제
