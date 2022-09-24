@@ -251,6 +251,17 @@ class AdminNoticeJpaControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
+    @DisplayName("Admin 공지사항 상단 고정 테스트")
+    void 다음공지사항상단고정Api테스트() throws Exception {
+        mockMvc.perform(get("/api/jpa-notice/2/fixed"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.topFixed").isBoolean());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공지사항 삭제 테스트")
     void 공지사항삭제Api테스트() throws Exception {
         em.persist(adminNoticeEntity);
