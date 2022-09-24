@@ -429,7 +429,7 @@ class AdminNoticeJpaServiceTest {
         // given
         Integer idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
 
-        Boolean fixed = adminNoticeJpaService.toggleFixed(adminNoticeEntity).getTopFixed();
+        Boolean fixed = adminNoticeJpaService.toggleFixed(idx).getTopFixed();
 
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(idx)
@@ -463,7 +463,7 @@ class AdminNoticeJpaServiceTest {
         // given
         Integer idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
 
-        Boolean fixed = adminNoticeJpaService.toggleFixed(adminNoticeEntity).getTopFixed();
+        Boolean fixed = adminNoticeJpaService.toggleFixed(idx).getTopFixed();
 
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(idx)

@@ -175,19 +175,19 @@ public class AdminNoticeJpaRepository {
      * 5. 작성일       : 2022. 09. 23.
      * </pre>
      */
-    public AdminNoticeDTO toggleFixed(AdminNoticeEntity existAdminNoticeEntity) {
-        Boolean fixed = !existAdminNoticeEntity.getTopFixed();
+    public AdminNoticeDTO toggleFixed(Integer idx) {
+        Boolean fixed = !em.find(AdminNoticeEntity.class, idx).getTopFixed();
 
         queryFactory
                 .update(adminNoticeEntity)
-                .where(adminNoticeEntity.idx.eq(existAdminNoticeEntity.getIdx()))
+                .where(adminNoticeEntity.idx.eq(idx))
                 .set(adminNoticeEntity.topFixed, fixed)
                 .execute();
 
         em.flush();
         em.clear();
 
-        return INSTANCE.toDto(em.find(AdminNoticeEntity.class, existAdminNoticeEntity.getIdx()));
+        return INSTANCE.toDto(em.find(AdminNoticeEntity.class, idx));
     }
 
     /**

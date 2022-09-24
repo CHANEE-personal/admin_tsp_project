@@ -175,9 +175,9 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CachePut("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNoticeDTO toggleFixed(AdminNoticeEntity adminNoticeEntity) throws TspException {
+    public AdminNoticeDTO toggleFixed(Integer idx) throws TspException {
         try {
-            return adminNoticeJpaRepository.toggleFixed(adminNoticeEntity);
+            return adminNoticeJpaRepository.toggleFixed(idx);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_NOTICE, e);
         }
