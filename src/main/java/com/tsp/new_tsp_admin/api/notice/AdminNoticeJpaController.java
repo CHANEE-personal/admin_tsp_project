@@ -191,8 +191,8 @@ public class AdminNoticeJpaController {
      * </pre>
      */
     @PutMapping(value = "/{idx}/fixed")
-    public AdminNoticeDTO toggleFixed(@Valid @RequestBody AdminNoticeEntity adminNoticeEntity) throws Exception {
-        return adminNoticeJpaService.toggleFixed(adminNoticeEntity);
+    public AdminNoticeDTO toggleFixed(@PathVariable Integer idx) throws Exception {
+        return adminNoticeJpaService.toggleFixed(idx);
     }
 
     /**
