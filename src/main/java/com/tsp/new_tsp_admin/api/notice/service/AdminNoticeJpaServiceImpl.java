@@ -164,6 +164,27 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : toggleFixed
+     * 2. ClassName  : AdminNoticeServiceImpl.java
+     * 3. Comment    : 관리자 공지사항 상단 고정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 23.
+     * </pre>
+     */
+    @Override
+    @CachePut("notice")
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    public AdminNoticeDTO toggleFixed(AdminNoticeEntity adminNoticeEntity) throws TspException {
+        try {
+            return adminNoticeJpaRepository.toggleFixed(adminNoticeEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_UPDATE_NOTICE, e);
+        }
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : deleteNotice
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 삭제

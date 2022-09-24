@@ -86,6 +86,17 @@ public interface AdminNoticeJpaService {
 
     /**
      * <pre>
+     * 1. MethodName : toggleFixed
+     * 2. ClassName  : AdminNoticeJpaService.java
+     * 3. Comment    : 관리자 공지사항 상단 고정
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 09. 23.
+     * </pre>
+     */
+    AdminNoticeDTO toggleFixed(AdminNoticeEntity adminNoticeEntity) throws Exception;
+
+    /**
+     * <pre>
      * 1. MethodName : deleteNotice
      * 2. ClassName  : AdminNoticeJpaService.java
      * 3. Comment    : 관리자 공지사항 삭제
