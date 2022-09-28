@@ -24,9 +24,11 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
+import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -526,23 +528,11 @@ class AdminSupportJpaServiceTest {
     void 지원모델합격Mockito테스트() throws Exception {
         // given
         Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
-        adminSupportEntity = AdminSupportEntity.builder()
-                .idx(supportIdx)
-                .supportName("조찬희")
-                .supportHeight(170)
-                .supportMessage("조찬희")
-                .supportPhone("010-9466-2702")
-                .supportSize3("31-24-31")
-                .passYn("Y")
-                .passTime(new Date())
-                .visible("Y")
-                .build();
 
-        adminSupportJpaService.updatePass(adminSupportEntity);
-        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+        AdminSupportDTO supportDTO = adminSupportJpaService.updatePass(supportIdx);
 
         // when
-        when(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        when(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity)).thenReturn(supportDTO);
         AdminSupportDTO supportInfo = mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity);
 
         // then
@@ -563,23 +553,11 @@ class AdminSupportJpaServiceTest {
     void 지원모델합격BDD테스트() throws Exception {
         // given
         Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
-        adminSupportEntity = AdminSupportEntity.builder()
-                .idx(supportIdx)
-                .supportName("조찬희")
-                .supportHeight(170)
-                .supportMessage("조찬희")
-                .supportPhone("010-9466-2702")
-                .supportSize3("31-24-31")
-                .passYn("Y")
-                .passTime(new Date())
-                .visible("Y")
-                .build();
 
-        adminSupportJpaService.updatePass(adminSupportEntity);
-        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+        AdminSupportDTO supportDTO = adminSupportJpaService.updatePass(supportIdx);
 
         // when
-        when(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        when(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity)).thenReturn(supportDTO);
         AdminSupportDTO supportInfo = mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity);
 
         // then
@@ -602,7 +580,7 @@ class AdminSupportJpaServiceTest {
                 .supportPhone("010-9466-2702")
                 .supportSize3("31-24-31")
                 .passYn("Y")
-                .passTime(new Date())
+                .passTime(now())
                 .visible("Y")
                 .build();
 
@@ -647,7 +625,7 @@ class AdminSupportJpaServiceTest {
                 .supportPhone("010-9466-2702")
                 .supportSize3("31-24-31")
                 .passYn("Y")
-                .passTime(new Date())
+                .passTime(now())
                 .visible("Y")
                 .build();
 

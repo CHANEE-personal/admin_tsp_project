@@ -269,9 +269,9 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @CachePut("support")
     @Transactional
-    public AdminSupportDTO updatePass(AdminSupportEntity adminSupportEntity) throws TspException {
+    public AdminSupportDTO updatePass(Integer idx) throws TspException {
         try {
-            return adminSupportJpaRepository.updatePass(adminSupportEntity);
+            return adminSupportJpaRepository.updatePass(idx);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_SUPPORT, e);
         }
