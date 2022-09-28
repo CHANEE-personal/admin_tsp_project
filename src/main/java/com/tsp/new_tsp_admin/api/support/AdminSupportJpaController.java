@@ -272,7 +272,7 @@ public class AdminSupportJpaController {
     })
     @PutMapping("/{idx}/pass")
     public AdminSupportDTO updatePass(@PathVariable Integer idx) throws Exception {
-        return adminSupportJpaService.updatePass(AdminSupportEntity.builder().idx(idx).passYn("Y").passTime(new Date()).build());
+        return adminSupportJpaService.updatePass(idx);
     }
 
     /**
