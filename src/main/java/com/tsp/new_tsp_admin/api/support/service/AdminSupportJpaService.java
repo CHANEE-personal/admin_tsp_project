@@ -152,7 +152,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO updatePass(AdminSupportEntity adminSupportEntity) throws Exception;
+    AdminSupportDTO updatePass(Integer idx) throws Exception;
 
     /**
      * <pre>

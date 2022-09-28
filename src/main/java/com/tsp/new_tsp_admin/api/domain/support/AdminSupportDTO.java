@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,7 +72,7 @@ public class AdminSupportDTO extends NewCommonDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @ApiModelProperty(value = "합격 시각", required = true)
-    private Date passTime;
+    private LocalDateTime passTime;
 
     @ApiModelProperty(required = true, value = "evaluationList", hidden = true)
     private List<EvaluationDTO> evaluationList = new ArrayList<>();

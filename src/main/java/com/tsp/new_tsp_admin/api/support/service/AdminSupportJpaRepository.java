@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -255,17 +256,17 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public AdminSupportDTO updatePass(AdminSupportEntity existSupportEntity) {
+    public AdminSupportDTO updatePass(Integer idx) {
         queryFactory.update(adminSupportEntity)
-                .set(adminSupportEntity.passYn, existSupportEntity.getPassYn())
-                .set(adminSupportEntity.passTime, existSupportEntity.getPassTime())
-                .where(adminSupportEntity.idx.eq(existSupportEntity.getIdx()))
+                .set(adminSupportEntity.passYn, "Y")
+                .set(adminSupportEntity.passTime, LocalDateTime.now())
+                .where(adminSupportEntity.idx.eq(idx))
                 .execute();
 
         em.flush();
         em.clear();
 
-        return INSTANCE.toDto(existSupportEntity);
+        return INSTANCE.toDto(em.find(AdminSupportEntity.class, idx));
     }
 
     /**

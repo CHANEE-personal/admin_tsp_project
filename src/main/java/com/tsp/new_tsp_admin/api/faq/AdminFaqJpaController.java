@@ -132,7 +132,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @GetMapping("/{idx}/prev")
+    @GetMapping("/{idx}/next")
     public AdminFaqDTO findNextOneFaq(@PathVariable Integer idx) throws Exception {
         return adminFaqJpaService.findNextOneFaq(AdminFaqEntity.builder().idx(idx).build());
     }

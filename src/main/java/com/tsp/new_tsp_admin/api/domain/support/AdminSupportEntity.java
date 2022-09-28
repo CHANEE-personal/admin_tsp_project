@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,7 +70,8 @@ public class AdminSupportEntity extends NewCommonMappedClass {
     private String passYn;
 
     @Column(name = "pass_time")
-    private Date passTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime passTime;
 
     @OneToMany(mappedBy = "adminSupportEntity")
     private List<EvaluationEntity> evaluationEntityList = new ArrayList<>();
