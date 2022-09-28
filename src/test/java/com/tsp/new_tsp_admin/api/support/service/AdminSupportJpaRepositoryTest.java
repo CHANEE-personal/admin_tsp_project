@@ -26,9 +26,11 @@ import org.springframework.test.context.TestPropertySource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
+import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -606,27 +608,15 @@ class AdminSupportJpaRepositoryTest {
     void 지원모델합격Mockito테스트() {
         // given
         Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
-        adminSupportEntity = AdminSupportEntity.builder()
-                .idx(supportIdx)
-                .supportName("조찬희")
-                .supportHeight(170)
-                .supportMessage("조찬희")
-                .supportPhone("010-9466-2702")
-                .supportSize3("31-24-31")
-                .passYn("Y")
-                .passTime(new Date())
-                .visible("Y")
-                .build();
 
-        adminSupportJpaRepository.updatePass(adminSupportEntity);
-        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+        AdminSupportDTO supportDTO = adminSupportJpaRepository.updatePass(supportIdx);
 
         // when
-        when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
+        when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(supportDTO);
         AdminSupportDTO supportInfo = mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity);
 
         // then
-        assertThat(supportInfo.getIdx()).isEqualTo(adminSupportEntity.getIdx());
+        assertThat(supportInfo.getIdx()).isEqualTo(supportIdx);
         assertThat(supportInfo.getPassYn()).isEqualTo("Y");
         assertThat(supportInfo.getPassTime()).isNotNull();
 
@@ -643,19 +633,8 @@ class AdminSupportJpaRepositoryTest {
     void 지원모델합격BDD테스트() {
         // given
         Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
-        adminSupportEntity = AdminSupportEntity.builder()
-                .idx(supportIdx)
-                .supportName("조찬희")
-                .supportHeight(170)
-                .supportMessage("조찬희")
-                .supportPhone("010-9466-2702")
-                .supportSize3("31-24-31")
-                .passYn("Y")
-                .passTime(new Date())
-                .visible("Y")
-                .build();
 
-        adminSupportJpaRepository.updatePass(adminSupportEntity);
+        adminSupportJpaRepository.updatePass(supportIdx);
         adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
 
         // when
@@ -682,7 +661,7 @@ class AdminSupportJpaRepositoryTest {
                 .supportPhone("010-9466-2702")
                 .supportSize3("31-24-31")
                 .passYn("Y")
-                .passTime(new Date())
+                .passTime(now())
                 .visible("Y")
                 .build();
 
@@ -727,7 +706,7 @@ class AdminSupportJpaRepositoryTest {
                 .supportPhone("010-9466-2702")
                 .supportSize3("31-24-31")
                 .passYn("Y")
-                .passTime(new Date())
+                .passTime(now())
                 .visible("Y")
                 .build();
 
