@@ -89,7 +89,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminNoticeDTO findOneNotice(@PathVariable Integer idx) throws Exception {
+    public AdminNoticeDTO findOneNotice(@PathVariable Long idx) throws Exception {
         return adminNoticeJpaService.findOneNotice(AdminNoticeEntity.builder().idx(idx).build());
     }
 
@@ -111,7 +111,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminNoticeDTO findPrevOneNotice(@PathVariable Integer idx) throws Exception {
+    public AdminNoticeDTO findPrevOneNotice(@PathVariable Long idx) throws Exception {
         return adminNoticeJpaService.findPrevOneNotice(AdminNoticeEntity.builder().idx(idx).build());
     }
 
@@ -133,7 +133,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminNoticeDTO findNextOneNotice(@PathVariable Integer idx) throws Exception {
+    public AdminNoticeDTO findNextOneNotice(@PathVariable Long idx) throws Exception {
         return adminNoticeJpaService.findNextOneNotice(AdminNoticeEntity.builder().idx(idx).build());
     }
 
@@ -191,7 +191,7 @@ public class AdminNoticeJpaController {
      * </pre>
      */
     @PutMapping(value = "/{idx}/fixed")
-    public AdminNoticeDTO toggleFixed(@PathVariable Integer idx) throws Exception {
+    public AdminNoticeDTO toggleFixed(@PathVariable Long idx) throws Exception {
         return adminNoticeJpaService.toggleFixed(idx);
     }
 
@@ -213,7 +213,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Integer deleteNotice(@PathVariable Integer idx) throws Exception {
+    public Long deleteNotice(@PathVariable Long idx) throws Exception {
         return adminNoticeJpaService.deleteNotice(idx);
     }
 }

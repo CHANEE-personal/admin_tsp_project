@@ -175,7 +175,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CachePut("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNoticeDTO toggleFixed(Integer idx) throws TspException {
+    public AdminNoticeDTO toggleFixed(Long idx) throws TspException {
         try {
             return adminNoticeJpaRepository.toggleFixed(idx);
         } catch (Exception e) {
@@ -196,7 +196,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CacheEvict("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteNotice(Integer idx) throws TspException {
+    public Long deleteNotice(Long idx) throws TspException {
         try {
             return adminNoticeJpaRepository.deleteNotice(idx);
         } catch (Exception e) {

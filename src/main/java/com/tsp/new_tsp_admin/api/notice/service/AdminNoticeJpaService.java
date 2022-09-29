@@ -93,7 +93,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 09. 23.
      * </pre>
      */
-    AdminNoticeDTO toggleFixed(Integer idx) throws Exception;
+    AdminNoticeDTO toggleFixed(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -104,5 +104,5 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    Integer deleteNotice(Integer idx) throws Exception;
+    Long deleteNotice(Long idx) throws Exception;
 }

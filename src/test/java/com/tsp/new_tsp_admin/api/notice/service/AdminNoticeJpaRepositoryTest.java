@@ -90,7 +90,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("공지사항상세조회테스트")
     void 공지사항상세조회테스트() {
         // given
-        adminNoticeEntity = AdminNoticeEntity.builder().idx(1).build();
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(1L).build();
 
         // when
         adminNoticeDTO = adminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
@@ -120,7 +120,7 @@ class AdminNoticeJpaRepositoryTest {
         noticeMap.put("size", 3);
 
         List<AdminNoticeDTO> noticeList = new ArrayList<>();
-        noticeList.add(AdminNoticeDTO.builder().idx(1).title("공지사항 테스트")
+        noticeList.add(AdminNoticeDTO.builder().idx(1L).title("공지사항 테스트")
                 .description("공지사항 테스트").build());
 
         // when
@@ -151,7 +151,7 @@ class AdminNoticeJpaRepositoryTest {
         noticeMap.put("size", 3);
 
         List<AdminNoticeDTO> noticeList = new ArrayList<>();
-        noticeList.add(AdminNoticeDTO.builder().idx(1).title("공지사항 테스트")
+        noticeList.add(AdminNoticeDTO.builder().idx(1L).title("공지사항 테스트")
                 .description("공지사항 테스트").build());
 
         // when
@@ -175,7 +175,7 @@ class AdminNoticeJpaRepositoryTest {
     void 공지사항상세Mockito조회테스트() {
         // given
         AdminNoticeEntity adminNoticeEntity = AdminNoticeEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .title("공지사항 테스트")
                 .description("공지사항 테스트")
                 .visible("Y")
@@ -207,7 +207,7 @@ class AdminNoticeJpaRepositoryTest {
     void 공지사항상세BDD조회테스트() {
         // given
         AdminNoticeEntity adminNoticeEntity = AdminNoticeEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .title("공지사항 테스트")
                 .description("공지사항 테스트")
                 .visible("Y")
@@ -235,7 +235,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("이전 or 다음 공지사항 상세 조회 테스트")
     void 이전or다음공지사항상세조회테스트() {
         // given
-        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
         adminNoticeDTO = adminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
@@ -250,7 +250,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("이전 공지사항 상세 조회 Mockito 테스트")
     void 이전공지사항상세조회Mockito테스트() {
         // given
-        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
         adminNoticeDTO = adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity);
@@ -274,7 +274,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("이전 공지사항 상세 조회 BDD 테스트")
     void 이전공지사항상세조회BDD테스트() {
         // given
-        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
         adminNoticeDTO = adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity);
@@ -295,7 +295,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("다음 공지사항 상세 조회 Mockito 테스트")
     void 다음공지사항상세조회Mockito테스트() {
         // given
-        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
         adminNoticeDTO = adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity);
@@ -319,7 +319,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("다음 공지사항 상세 조회 BDD 테스트")
     void 다음공지사항상세조회BDD테스트() {
         // given
-        adminNoticeEntity = AdminNoticeEntity.builder().idx(2).build();
+        adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
         adminNoticeDTO = adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity);
@@ -385,7 +385,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("공지사항수정Mockito테스트")
     void 공지사항수정Mockito테스트() {
         // given
-        Integer idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
+        Long idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
 
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(idx)
@@ -419,7 +419,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("공지사항수정BDD테스트")
     void 공지사항수정BDD테스트() {
         // given
-        Integer idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
+        Long idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
 
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(idx)
@@ -450,7 +450,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("공지사항상단고정Mockito테스트")
     void 공지사항상단고정Mockito테스트() {
         // given
-        Integer idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
+        Long idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
 
         Boolean fixed = adminNoticeJpaRepository.toggleFixed(idx).getTopFixed();
 
@@ -484,7 +484,7 @@ class AdminNoticeJpaRepositoryTest {
     @DisplayName("공지사항상단고정BDD테스트")
     void 공지사항상단고정BDD테스트() {
         // given
-        Integer idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
+        Long idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
 
         Boolean fixed = adminNoticeJpaRepository.toggleFixed(idx).getTopFixed();
 
@@ -517,8 +517,8 @@ class AdminNoticeJpaRepositoryTest {
         // given
         em.persist(adminNoticeEntity);
 
-        Integer entityIdx = adminNoticeEntity.getIdx();
-        Integer idx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
+        Long entityIdx = adminNoticeEntity.getIdx();
+        Long idx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(entityIdx).isEqualTo(idx);
@@ -533,7 +533,7 @@ class AdminNoticeJpaRepositoryTest {
 
         // when
         when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
-        Integer deleteIdx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
+        Long deleteIdx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity).getIdx()).isEqualTo(deleteIdx);
@@ -556,7 +556,7 @@ class AdminNoticeJpaRepositoryTest {
 
         // when
         given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
-        Integer deleteIdx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
+        Long deleteIdx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity).getIdx()).isEqualTo(deleteIdx);
