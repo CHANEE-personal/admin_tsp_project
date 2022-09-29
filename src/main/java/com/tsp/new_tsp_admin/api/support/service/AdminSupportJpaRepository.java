@@ -140,7 +140,7 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer deleteSupportModel(Integer idx) {
+    public Long deleteSupportModel(Long idx) {
         em.remove(em.find(AdminSupportEntity.class, idx));
         em.flush();
         em.clear();
@@ -240,7 +240,7 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer deleteEvaluation(Integer idx) {
+    public Long deleteEvaluation(Long idx) {
         em.remove(em.find(EvaluationEntity.class, idx));
         em.flush();
         em.clear();
@@ -256,7 +256,7 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public AdminSupportDTO updatePass(Integer idx) {
+    public AdminSupportDTO updatePass(Long idx) {
         queryFactory.update(adminSupportEntity)
                 .set(adminSupportEntity.passYn, "Y")
                 .set(adminSupportEntity.passTime, LocalDateTime.now())

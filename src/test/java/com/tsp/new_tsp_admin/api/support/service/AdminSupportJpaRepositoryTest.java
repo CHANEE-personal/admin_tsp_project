@@ -94,7 +94,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원모델 상세 조회 테스트")
     void 지원모델상세조회테스트() {
         // given
-        adminSupportEntity = AdminSupportEntity.builder().idx(1).build();
+        adminSupportEntity = AdminSupportEntity.builder().idx(1L).build();
 
         // when
         adminSupportDTO = adminSupportJpaRepository.findOneSupportModel(adminSupportEntity);
@@ -112,7 +112,7 @@ class AdminSupportJpaRepositoryTest {
         supportMap.put("size", 3);
 
         List<AdminSupportDTO> supportList = new ArrayList<>();
-        supportList.add(AdminSupportDTO.builder().idx(1).supportName("조찬희").supportPhone("010-9466-2702").build());
+        supportList.add(AdminSupportDTO.builder().idx(1L).supportName("조찬희").supportPhone("010-9466-2702").build());
 
         // when
         when(mockAdminSupportJpaRepository.findSupportsList(supportMap)).thenReturn(supportList);
@@ -140,7 +140,7 @@ class AdminSupportJpaRepositoryTest {
         supportMap.put("size", 3);
 
         List<AdminSupportDTO> supportList = new ArrayList<>();
-        supportList.add(AdminSupportDTO.builder().idx(1).supportName("조찬희").supportPhone("010-9466-2702").build());
+        supportList.add(AdminSupportDTO.builder().idx(1L).supportName("조찬희").supportPhone("010-9466-2702").build());
 
         // when
         given(mockAdminSupportJpaRepository.findSupportsList(supportMap)).willReturn(supportList);
@@ -161,7 +161,7 @@ class AdminSupportJpaRepositoryTest {
     void 지원모델수정Mockito테스트() {
         // given
         em.persist(adminSupportEntity);
-        Integer idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
+        Long idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
 
         adminSupportEntity = AdminSupportEntity.builder()
                 .idx(idx)
@@ -201,7 +201,7 @@ class AdminSupportJpaRepositoryTest {
     void 지원모델수정BDD테스트() {
         // given
         em.persist(adminSupportEntity);
-        Integer idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
+        Long idx = em.find(AdminSupportEntity.class, this.adminSupportEntity.getIdx()).getIdx();
 
         adminSupportEntity = AdminSupportEntity.builder()
                 .idx(idx)
@@ -239,8 +239,8 @@ class AdminSupportJpaRepositoryTest {
         // given
         em.persist(adminSupportEntity);
 
-        Integer entityIdx = adminSupportEntity.getIdx();
-        Integer deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
+        Long entityIdx = adminSupportEntity.getIdx();
+        Long deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
 
         // then
         assertThat(deleteIdx).isEqualTo(entityIdx);
@@ -255,7 +255,7 @@ class AdminSupportJpaRepositoryTest {
 
         // when
         when(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).thenReturn(adminSupportDTO);
-        Integer deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
+        Long deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
 
         // then
         assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getIdx()).isEqualTo(deleteIdx);
@@ -278,7 +278,7 @@ class AdminSupportJpaRepositoryTest {
 
         // when
         given(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity)).willReturn(adminSupportDTO);
-        Integer deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
+        Long deleteIdx = adminSupportJpaRepository.deleteSupportModel(adminSupportEntity.getIdx());
 
         // then
         assertThat(mockAdminSupportJpaRepository.findOneSupportModel(adminSupportEntity).getIdx()).isEqualTo(deleteIdx);
@@ -298,7 +298,7 @@ class AdminSupportJpaRepositoryTest {
         evaluationMap.put("size", 3);
 
         List<EvaluationDTO> evaluationList = new ArrayList<>();
-        evaluationList.add(EvaluationDTO.builder().idx(1)
+        evaluationList.add(EvaluationDTO.builder().idx(1L)
                 .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
 
         // when
@@ -328,7 +328,7 @@ class AdminSupportJpaRepositoryTest {
         evaluationMap.put("size", 3);
 
         List<EvaluationDTO> evaluationList = new ArrayList<>();
-        evaluationList.add(EvaluationDTO.builder().idx(1)
+        evaluationList.add(EvaluationDTO.builder().idx(1L)
                 .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
 
         // when
@@ -351,7 +351,7 @@ class AdminSupportJpaRepositoryTest {
     void 지원모델평가상세조회Mockito테스트() {
         // given
         evaluationEntity = EvaluationEntity.builder()
-                .idx(1).supportIdx(adminSupportEntity.getIdx())
+                .idx(1L).supportIdx(adminSupportEntity.getIdx())
                 .evaluateComment("합격").visible("Y").build();
 
         evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
@@ -379,7 +379,7 @@ class AdminSupportJpaRepositoryTest {
     void 지원모델평가상세조회BDD테스트() {
         // given
         evaluationEntity = EvaluationEntity.builder()
-                .idx(1).supportIdx(adminSupportEntity.getIdx())
+                .idx(1L).supportIdx(adminSupportEntity.getIdx())
                 .evaluateComment("합격").visible("Y").build();
 
         evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
@@ -403,7 +403,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원 모델 평가 Mockito 테스트")
     void 지원모델평가Mockito테스트() {
         // given
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -436,7 +436,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원 모델 평가 BDD 테스트")
     void 지원모델평가BDD테스트() {
         // given
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -466,7 +466,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원 모델 평가 수정 Mockito 테스트")
     void 지원모델평가수정Mockito테스트() {
         // given
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -475,7 +475,7 @@ class AdminSupportJpaRepositoryTest {
         // 지원모델 평가 저장
         em.persist(evaluationEntity);
 
-        Integer idx = em.find(EvaluationEntity.class, this.evaluationEntity.getIdx()).getIdx();
+        Long idx = em.find(EvaluationEntity.class, this.evaluationEntity.getIdx()).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .idx(idx)
@@ -510,7 +510,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원 모델 평가 수정 BDD 테스트")
     void 지원모델평가수정BDD테스트() {
         // given
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -519,7 +519,7 @@ class AdminSupportJpaRepositoryTest {
         // 지원모델 평가 저장
         em.persist(evaluationEntity);
 
-        Integer idx = em.find(EvaluationEntity.class, this.evaluationEntity.getIdx()).getIdx();
+        Long idx = em.find(EvaluationEntity.class, this.evaluationEntity.getIdx()).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .idx(idx)
@@ -551,7 +551,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원 모델 평가 삭제 Mockito 테스트")
     void 지원모델평가삭제Mockito테스트() {
         // given
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -562,7 +562,7 @@ class AdminSupportJpaRepositoryTest {
         evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
 
         when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
-        Integer deleteIdx = adminSupportJpaRepository.deleteEvaluation(evaluationEntity.getIdx());
+        Long deleteIdx = adminSupportJpaRepository.deleteEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
@@ -580,7 +580,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원 모델 평가 삭제 BDD 테스트")
     void 지원모델평가삭제BDD테스트() {
         // given
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -591,7 +591,7 @@ class AdminSupportJpaRepositoryTest {
         evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
 
         given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
-        Integer deleteIdx = adminSupportJpaRepository.deleteEvaluation(evaluationEntity.getIdx());
+        Long deleteIdx = adminSupportJpaRepository.deleteEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
@@ -606,7 +606,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원 모델 합격 Mockito 테스트")
     void 지원모델합격Mockito테스트() {
         // given
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         AdminSupportDTO supportDTO = adminSupportJpaRepository.updatePass(supportIdx);
 
@@ -631,7 +631,7 @@ class AdminSupportJpaRepositoryTest {
     @DisplayName("지원 모델 합격 BDD 테스트")
     void 지원모델합격BDD테스트() {
         // given
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         adminSupportJpaRepository.updatePass(supportIdx);
         adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
@@ -664,7 +664,7 @@ class AdminSupportJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -709,7 +709,7 @@ class AdminSupportJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaRepository.insertSupportModel(adminSupportEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
