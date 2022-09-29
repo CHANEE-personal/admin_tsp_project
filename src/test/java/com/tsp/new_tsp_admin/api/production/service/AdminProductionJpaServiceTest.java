@@ -90,8 +90,8 @@ class AdminProductionJpaServiceTest {
 
         List<AdminProductionDTO> returnProductionList = new ArrayList<>();
 
-        returnProductionList.add(AdminProductionDTO.builder().idx(1).title("프로덕션테스트").description("프로덕션테스트").visible("Y").build());
-        returnProductionList.add(AdminProductionDTO.builder().idx(2).title("productionTest").description("productionTest").visible("Y").build());
+        returnProductionList.add(AdminProductionDTO.builder().idx(1L).title("프로덕션테스트").description("프로덕션테스트").visible("Y").build());
+        returnProductionList.add(AdminProductionDTO.builder().idx(2L).title("productionTest").description("productionTest").visible("Y").build());
 
         // when
         when(mockAdminProductionJpaService.findProductionsList(productionMap)).thenReturn(returnProductionList);
@@ -127,8 +127,8 @@ class AdminProductionJpaServiceTest {
 
         List<AdminProductionDTO> returnProductionList = new ArrayList<>();
 
-        returnProductionList.add(AdminProductionDTO.builder().idx(1).title("프로덕션테스트").description("프로덕션테스트").visible("Y").build());
-        returnProductionList.add(AdminProductionDTO.builder().idx(2).title("productionTest").description("productionTest").visible("Y").build());
+        returnProductionList.add(AdminProductionDTO.builder().idx(1L).title("프로덕션테스트").description("프로덕션테스트").visible("Y").build());
+        returnProductionList.add(AdminProductionDTO.builder().idx(2L).title("productionTest").description("productionTest").visible("Y").build());
 
         // when
         given(mockAdminProductionJpaService.findProductionsList(productionMap)).willReturn(returnProductionList);
@@ -155,7 +155,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("프로덕션 상세 조회 테스트")
     void 프로덕션상세조회테스트() throws Exception {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(119).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(119L).build();
 
         // then
         assertThat(adminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("하하");
@@ -206,7 +206,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("이전 프로덕션 상세 조회 Mockito 테스트")
     void 이전프로덕션상세조회Mockito테스트() throws Exception {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
@@ -230,7 +230,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("이전 프로덕션 상세 조회 BDD 테스트")
     void 이전프로덕션상세조회BDD테스트() throws Exception {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
@@ -251,7 +251,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("다음 프로덕션 상세 조회 Mockito 테스트")
     void 다음프로덕션상세조회Mockito테스트() throws Exception {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
@@ -275,7 +275,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("다음 프로덕션 상세 조회 BDD 테스트")
     void 다음프로덕션상세조회BDD테스트() throws Exception {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
@@ -339,7 +339,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("프로덕션 수정 Mockito 테스트")
     void 프로덕션수정Mockito테스트() throws Exception {
         // given
-        Integer idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
+        Long idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
         adminProductionEntity = AdminProductionEntity.builder()
                 .idx(idx)
@@ -373,7 +373,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("프로덕션 수정 BDD 테스트")
     void 프로덕션수정BDD테스트() throws Exception {
         // given
-        Integer idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
+        Long idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
         adminProductionEntity = AdminProductionEntity.builder()
                 .idx(idx)
@@ -404,7 +404,7 @@ class AdminProductionJpaServiceTest {
     @DisplayName("프로덕션 삭제 테스트")
     void 프로덕션삭제테스트() throws Exception {
         // given
-        Integer idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
+        Long idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
         // then
         assertThat(adminProductionJpaService.deleteProduction(idx)).isNotNull();
@@ -419,7 +419,7 @@ class AdminProductionJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer productionIdx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
+        Long productionIdx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -460,7 +460,7 @@ class AdminProductionJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer productionIdx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
+        Long productionIdx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
