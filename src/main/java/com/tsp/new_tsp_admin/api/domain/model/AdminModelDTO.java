@@ -34,7 +34,7 @@ public class AdminModelDTO extends NewCommonDTO {
     private Integer rnum;
 
     @ApiModelProperty(required = true, value = "idx", hidden = true, example = "1")
-    private Integer idx;
+    private Long idx;
 
     @Range(min = 1, max = 3, message = "모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.")
     @ApiModelProperty(position = 1, required = true, value = "남자,여자,시니어 모델 구분((ex)1,2,3)", example = "1")
@@ -104,7 +104,7 @@ public class AdminModelDTO extends NewCommonDTO {
     private Integer viewCount;
 
     @ApiModelProperty(position = 9, value = "소속사 idx((ex)1", example = "1")
-    private Integer agencyIdx;
+    private Long agencyIdx;
 
     @Convert(converter = CustomConverter.class)
     @ApiModelProperty(value = "model career")

@@ -75,12 +75,12 @@ class AdminModelJpaServiceTest {
         adminAgencyDTO = AgencyMapper.INSTANCE.toDto(adminAgencyEntity);
 
         commonImageEntity = CommonImageEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
-                .typeIdx(1)
+                .typeIdx(1L)
                 .typeName("model")
                 .build();
 
@@ -156,13 +156,13 @@ class AdminModelJpaServiceTest {
 
         List<AdminModelDTO> returnModelList = new ArrayList<>();
         // 남성
-        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel")
+        returnModelList.add(AdminModelDTO.builder().idx(1L).categoryCd(1).modelKorName("남성모델").modelEngName("menModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 여성
-        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel")
+        returnModelList.add(AdminModelDTO.builder().idx(2L).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 시니어
-        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel")
+        returnModelList.add(AdminModelDTO.builder().idx(3L).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
@@ -176,21 +176,21 @@ class AdminModelJpaServiceTest {
         );
 
         assertThat(modelList.get(0).getIdx()).isEqualTo(returnModelList.get(0).getIdx());
-        assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getIdx());
+        assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getCategoryCd());
         assertThat(modelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
         assertThat(modelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
         assertThat(modelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
         assertThat(modelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
 
         assertThat(modelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
-        assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getIdx());
+        assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getCategoryCd());
         assertThat(modelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
         assertThat(modelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
         assertThat(modelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
         assertThat(modelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
 
         assertThat(modelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
-        assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getIdx());
+        assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getCategoryCd());
         assertThat(modelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
         assertThat(modelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
         assertThat(modelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
@@ -220,13 +220,13 @@ class AdminModelJpaServiceTest {
         List<AdminModelDTO> returnModelList = new ArrayList<>();
 
         // 남성
-        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel")
+        returnModelList.add(AdminModelDTO.builder().idx(1L).categoryCd(1).modelKorName("남성모델").modelEngName("menModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 여성
-        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel")
+        returnModelList.add(AdminModelDTO.builder().idx(2L).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 시니어
-        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel")
+        returnModelList.add(AdminModelDTO.builder().idx(3L).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
@@ -240,21 +240,21 @@ class AdminModelJpaServiceTest {
         );
 
         assertThat(modelList.get(0).getIdx()).isEqualTo(returnModelList.get(0).getIdx());
-        assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getIdx());
+        assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getCategoryCd());
         assertThat(modelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
         assertThat(modelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
         assertThat(modelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
         assertThat(modelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
 
         assertThat(modelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
-        assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getIdx());
+        assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getCategoryCd());
         assertThat(modelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
         assertThat(modelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
         assertThat(modelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
         assertThat(modelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
 
         assertThat(modelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
-        assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getIdx());
+        assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getCategoryCd());
         assertThat(modelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
         assertThat(modelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
         assertThat(modelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
@@ -280,7 +280,7 @@ class AdminModelJpaServiceTest {
     @Test
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() throws Exception {
-        AdminModelDTO modelInfo = adminModelJpaService.findOneModel(AdminModelEntity.builder().idx(143).categoryCd(2).build());
+        AdminModelDTO modelInfo = adminModelJpaService.findOneModel(AdminModelEntity.builder().idx(143L).categoryCd(2).build());
         // then
         assertThat(modelInfo).isNotNull();
         assertThat(modelInfo.getIdx()).isEqualTo(143);
@@ -338,7 +338,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("이전 or 다음 모델 상세 조회 테스트")
     void 이전or다음모델상세조회테스트() throws Exception {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
 
         // when
         adminModelDTO = adminModelJpaService.findOneModel(adminModelEntity);
@@ -353,7 +353,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("이전 모델 상세 조회 Mockito 테스트")
     void 이전모델상세조회Mockito테스트() throws Exception {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
         adminModelDTO = adminModelJpaService.findPrevOneModel(adminModelEntity);
 
@@ -376,7 +376,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("이전 모델 상세 조회 BDD 테스트")
     void 이전모델상세조회BDD테스트() throws Exception {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
         adminModelDTO = adminModelJpaService.findPrevOneModel(adminModelEntity);
 
@@ -396,7 +396,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("다음 모델 상세 조회 Mockito 테스트")
     void 다음모델상세조회Mockito테스트() throws Exception {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
         adminModelDTO = adminModelJpaService.findNextOneModel(adminModelEntity);
 
@@ -419,7 +419,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("다음 모델 상세 조회 BDD 테스트")
     void 다음모델상세조회BDD테스트() throws Exception {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
         adminModelDTO = adminModelJpaService.findNextOneModel(adminModelEntity);
 
@@ -514,7 +514,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("모델 수정 Mockito 테스트")
     void 모델수정Mockito테스트() throws Exception {
         // given
-        Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
@@ -561,7 +561,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("모델 수정 BDD 테스트")
     void 모델수정BDD테스트() throws Exception {
         // given
-        Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
@@ -605,7 +605,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("모델 삭제 테스트")
     void 모델삭제테스트() throws Exception {
         // given
-        Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
         // then
         assertThat(adminModelJpaService.deleteModel(idx)).isNotNull();
@@ -620,7 +620,7 @@ class AdminModelJpaServiceTest {
 
         // when
         when(mockAdminModelJpaService.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
-        Integer deleteIdx = adminModelJpaService.deleteModel(adminModelEntity.getIdx());
+        Long deleteIdx = adminModelJpaService.deleteModel(adminModelEntity.getIdx());
 
         // then
         assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
@@ -643,7 +643,7 @@ class AdminModelJpaServiceTest {
 
         // when
         given(mockAdminModelJpaService.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
-        Integer deleteIdx = adminModelJpaService.deleteModel(adminModelEntity.getIdx());
+        Long deleteIdx = adminModelJpaService.deleteModel(adminModelEntity.getIdx());
 
         // then
         assertThat(mockAdminModelJpaService.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
@@ -659,7 +659,7 @@ class AdminModelJpaServiceTest {
     void 모델소속사수정Mockito테스트() throws Exception {
         // 소속사 등록
         AdminAgencyDTO newAgencyDTO = adminAgencyJpaService.insertAgency(adminAgencyEntity);
-        Integer agencyIdx = newAgencyDTO.getIdx();
+        Long agencyIdx = newAgencyDTO.getIdx();
 
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
@@ -685,7 +685,7 @@ class AdminModelJpaServiceTest {
                 .build();
 
         // 모델 소속사 수정
-        Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
         AdminModelEntity newAdminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
@@ -734,7 +734,7 @@ class AdminModelJpaServiceTest {
     void 모델소속사수정BDD테스트() throws Exception {
         // 소속사 등록
         AdminAgencyDTO newAgencyDTO = adminAgencyJpaService.insertAgency(adminAgencyEntity);
-        Integer agencyIdx = newAgencyDTO.getIdx();
+        Long agencyIdx = newAgencyDTO.getIdx();
 
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
@@ -760,7 +760,7 @@ class AdminModelJpaServiceTest {
                 .build();
 
         // 모델 소속사 수정
-        Integer idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
         AdminModelEntity newAdminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
@@ -825,7 +825,7 @@ class AdminModelJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer modelIdx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+        Long modelIdx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -881,7 +881,7 @@ class AdminModelJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer modelIdx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
+        Long modelIdx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -924,13 +924,13 @@ class AdminModelJpaServiceTest {
 
         List<AdminModelDTO> returnModelList = new ArrayList<>();
         // 남성
-        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel").newYn("Y")
+        returnModelList.add(AdminModelDTO.builder().idx(1L).categoryCd(1).modelKorName("남성모델").modelEngName("menModel").newYn("Y")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 여성
-        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel").newYn("Y")
+        returnModelList.add(AdminModelDTO.builder().idx(2L).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel").newYn("Y")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 시니어
-        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel").newYn("Y")
+        returnModelList.add(AdminModelDTO.builder().idx(3L).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel").newYn("Y")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
@@ -991,13 +991,13 @@ class AdminModelJpaServiceTest {
         List<AdminModelDTO> returnModelList = new ArrayList<>();
 
         // 남성
-        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel").newYn("Y")
+        returnModelList.add(AdminModelDTO.builder().idx(1L).categoryCd(1).modelKorName("남성모델").modelEngName("menModel").newYn("Y")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 여성
-        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel").newYn("Y")
+        returnModelList.add(AdminModelDTO.builder().idx(2L).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel").newYn("Y")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
         // 시니어
-        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel").newYn("Y")
+        returnModelList.add(AdminModelDTO.builder().idx(3L).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel").newYn("Y")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
@@ -1011,21 +1011,21 @@ class AdminModelJpaServiceTest {
         );
 
         assertThat(newModelList.get(0).getIdx()).isEqualTo(returnModelList.get(0).getIdx());
-        assertThat(newModelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getIdx());
+        assertThat(newModelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getCategoryCd());
         assertThat(newModelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
         assertThat(newModelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
         assertThat(newModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
         assertThat(newModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
 
         assertThat(newModelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
-        assertThat(newModelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getIdx());
+        assertThat(newModelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getCategoryCd());
         assertThat(newModelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
         assertThat(newModelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
         assertThat(newModelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
         assertThat(newModelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
 
         assertThat(newModelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
-        assertThat(newModelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getIdx());
+        assertThat(newModelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getCategoryCd());
         assertThat(newModelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
         assertThat(newModelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
         assertThat(newModelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
@@ -1041,7 +1041,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("새로운 모델 설정 Mockito 테스트")
     void 새로운모델설정Mockito테스트() throws Exception {
         adminModelEntity = AdminModelEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryAge(2)
                 .modelKorFirstName("조")
@@ -1084,7 +1084,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("새로운 모델 설정 BDD 테스트")
     void 새로운모델설정BDD테스트() throws Exception {
         adminModelEntity = AdminModelEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryAge(2)
                 .modelKorFirstName("조")
@@ -1129,7 +1129,7 @@ class AdminModelJpaServiceTest {
         scheduleMap.put("size", 3);
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
-        scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
+        scheduleList.add(AdminScheduleDTO.builder().idx(1L).modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
 
         // when
@@ -1160,7 +1160,7 @@ class AdminModelJpaServiceTest {
         scheduleMap.put("size", 3);
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
-        scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
+        scheduleList.add(AdminScheduleDTO.builder().idx(1L).modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
 
         // when

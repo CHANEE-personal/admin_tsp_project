@@ -181,7 +181,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @CacheEvict("model")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteModel(Integer idx) throws TspException {
+    public Long deleteModel(Long idx) throws TspException {
         try {
             return adminModelJpaRepository.deleteModelByEm(idx);
         } catch (Exception e) {
@@ -219,7 +219,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    public Integer deleteModelImage(Integer idx) {
+    public Long deleteModelImage(Long idx) {
         return imageRepository.deleteModelImage(idx);
     }
 

@@ -98,7 +98,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    Integer deleteModel(Integer idx) throws Exception;
+    Long deleteModel(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -120,7 +120,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    Integer deleteModelImage(Integer idx) throws Exception;
+    Long deleteModelImage(Long idx) throws Exception;
 
     /**
      * <pre>
