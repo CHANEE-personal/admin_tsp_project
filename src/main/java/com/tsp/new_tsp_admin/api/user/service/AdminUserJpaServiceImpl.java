@@ -177,7 +177,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @CacheEvict("user")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteAdminUser(Integer idx) throws TspException {
+    public Long deleteAdminUser(Long idx) throws TspException {
         try {
             return adminUserJpaRepository.deleteAdminUser(idx);
         } catch (Exception e) {

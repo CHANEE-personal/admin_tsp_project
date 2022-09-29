@@ -21,37 +21,37 @@ import javax.validation.constraints.NotEmpty;
 @ApiModel
 public class AdminUserDTO extends NewCommonDTO {
     @ApiModelProperty(required = true, value = "rnum", hidden = true, example = "1")
-    Integer rnum;
+    private Integer rnum;
 
     @ApiModelProperty(required = true, value = "user Seq", hidden = true, example = "1")
-    Integer idx;
+    private Long idx;
 
     @NotEmpty(message = "유저 아이디 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "user Id")
-    String userId;
+    private String userId;
 
     @NotEmpty(message = "유저 패스워드 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "user Password")
-    String password;
+    private String password;
 
     @NotEmpty(message = "유저 이름 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "user Name", hidden = true)
-    String name;
+    private String name;
 
     @NotEmpty(message = "유저 이메일 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "user email", hidden = true)
-    String email;
+    private String email;
 
     @NotEmpty(message = "유저 사용여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "user visible", hidden = true)
-    String visible;
+    private String visible;
 
     @ApiModelProperty(value = "user Token", hidden = true)
-    String userToken;
+    private String userToken;
 
     @ApiModelProperty(value = "user refresh Token", hidden = true)
-    String userRefreshToken;
+    private String userRefreshToken;
 
     @ApiModelProperty(value = "role", hidden = true)
-    Role role;
+    private Role role;
 }

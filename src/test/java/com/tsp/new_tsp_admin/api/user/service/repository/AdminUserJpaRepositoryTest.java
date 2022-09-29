@@ -51,7 +51,7 @@ class AdminUserJpaRepositoryTest {
     private AdminUserDTO adminUserDTO;
 
     void createUser() {
-        adminUserEntity = AdminUserEntity.builder().idx(2).userId("admin01").build();
+        adminUserEntity = AdminUserEntity.builder().idx(2L).userId("admin01").build();
         adminUserDTO = INSTANCE.toDto(adminUserEntity);
     }
 
@@ -167,7 +167,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 Mockito 상세 조회 테스트")
     void 유저Mockito상세조회테스트() {
         // given
-        adminUserEntity = AdminUserEntity.builder().idx(1).userId("test").build();
+        adminUserEntity = AdminUserEntity.builder().idx(1L).userId("test").build();
 
         AdminUserEntity bddUserEntity = AdminUserEntity.builder()
                 .userId("test")
@@ -200,7 +200,7 @@ class AdminUserJpaRepositoryTest {
     @DisplayName("유저 상세 BDD 조회 테스트")
     void 유저상세BDD조회테스트() {
         // given
-        adminUserEntity = AdminUserEntity.builder().idx(1).userId("test").build();
+        adminUserEntity = AdminUserEntity.builder().idx(1L).userId("test").build();
 
         AdminUserEntity bddUserEntity = AdminUserEntity.builder()
                 .userId("test")
@@ -245,7 +245,7 @@ class AdminUserJpaRepositoryTest {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin01")
-                .idx(2)
+                .idx(2L)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
                 .build();
 
@@ -260,7 +260,7 @@ class AdminUserJpaRepositoryTest {
     void 유저토큰저장테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
                 .build();
 
@@ -345,7 +345,7 @@ class AdminUserJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer idx = adminUserJpaRepository.insertAdminUser(adminUserEntity).getIdx();
+        Long idx = adminUserJpaRepository.insertAdminUser(adminUserEntity).getIdx();
 
         AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
@@ -387,7 +387,7 @@ class AdminUserJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer idx = adminUserJpaRepository.insertAdminUser(adminUserEntity).getIdx();
+        Long idx = adminUserJpaRepository.insertAdminUser(adminUserEntity).getIdx();
 
         AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
@@ -425,7 +425,7 @@ class AdminUserJpaRepositoryTest {
     void 유저회원탈퇴Mockito테스트() {
         // when
         when(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
-        Integer deleteIdx = adminUserJpaRepository.deleteAdminUser(adminUserEntity.getIdx());
+        Long deleteIdx = adminUserJpaRepository.deleteAdminUser(adminUserEntity.getIdx());
 
         // then
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserDTO.getUserId()).getIdx()).isEqualTo(deleteIdx);
@@ -444,7 +444,7 @@ class AdminUserJpaRepositoryTest {
     void 유저회원탈퇴BDD테스트() {
         // when
         given(mockAdminUserJpaRepository.findOneUser(adminUserEntity.getUserId())).willReturn(adminUserEntity);
-        Integer deleteIdx = adminUserJpaRepository.deleteAdminUser(adminUserEntity.getIdx());
+        Long deleteIdx = adminUserJpaRepository.deleteAdminUser(adminUserEntity.getIdx());
 
         // then
         assertThat(mockAdminUserJpaRepository.findOneUser(adminUserDTO.getUserId()).getIdx()).isEqualTo(deleteIdx);
