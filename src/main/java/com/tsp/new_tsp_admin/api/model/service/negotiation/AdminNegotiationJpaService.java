@@ -94,5 +94,5 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    Integer deleteModelNegotiation(Integer idx) throws Exception;
+    Long deleteModelNegotiation(Long idx) throws Exception;
 }

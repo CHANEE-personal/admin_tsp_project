@@ -223,7 +223,7 @@ public class AdminNegotiationJpaRepository {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    public Integer deleteModelNegotiation(Integer idx) {
+    public Long deleteModelNegotiation(Long idx) {
         em.remove(em.find(AdminNegotiationEntity.class, idx));
         em.flush();
         em.clear();
