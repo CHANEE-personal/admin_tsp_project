@@ -126,7 +126,7 @@ public class AdminCommentJpaRepository {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    public Integer deleteAdminComment(Integer idx) {
+    public Long deleteAdminComment(Long idx) {
         em.remove(em.find(AdminCommentEntity.class, idx));
         em.flush();
         em.clear();

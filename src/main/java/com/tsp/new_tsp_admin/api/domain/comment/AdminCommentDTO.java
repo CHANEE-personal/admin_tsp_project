@@ -22,14 +22,14 @@ public class AdminCommentDTO extends NewCommonDTO {
     private Integer rnum;
 
     @ApiModelProperty(required = true, value = "idx", hidden = true, example = "1")
-    private Integer idx;
+    private Long idx;
 
     @NotEmpty(message = "코멘트 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "comment")
     private String comment;
 
     @ApiModelProperty(required = true, value = "commentTypeIdx", example = "1")
-    private Integer commentTypeIdx;
+    private Long commentTypeIdx;
 
     @ApiModelProperty(required = true, value = "commentType")
     private String commentType;

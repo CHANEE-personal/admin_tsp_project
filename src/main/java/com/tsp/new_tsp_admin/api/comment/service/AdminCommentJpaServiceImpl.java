@@ -135,7 +135,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     @CacheEvict("comment")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteAdminComment(Integer idx) throws TspException {
+    public Long deleteAdminComment(Long idx) throws TspException {
         try {
             return adminCommentJpaRepository.deleteAdminComment(idx);
         } catch (Exception e) {

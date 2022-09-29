@@ -32,7 +32,7 @@ public class AdminCommentEntity extends NewCommonMappedClass {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
-    private Integer idx;
+    private Long idx;
 
     @Column(name = "comment")
     @Lob
@@ -41,7 +41,7 @@ public class AdminCommentEntity extends NewCommonMappedClass {
 
     @Column(name = "comment_type_idx")
     @ApiModelProperty(value = "코멘트 타입 idx", required = true)
-    private Integer commentTypeIdx;
+    private Long commentTypeIdx;
 
     @Column(name = "comment_type")
     @ApiModelProperty(value = "코멘트 타입", required = true)

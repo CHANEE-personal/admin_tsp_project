@@ -76,7 +76,7 @@ class AdminCommentJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        Long modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -113,7 +113,7 @@ class AdminCommentJpaRepositoryTest {
     void 어드민코멘트상세조회테스트() {
         // given
         adminCommentEntity = AdminCommentEntity.builder()
-                .idx(1).build();
+                .idx(1L).build();
 
         // when
         adminCommentDTO = adminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
@@ -128,7 +128,7 @@ class AdminCommentJpaRepositoryTest {
         commentMap.put("size", 3);
 
         List<AdminCommentDTO> commentList = new ArrayList<>();
-        commentList.add(AdminCommentDTO.builder().idx(1)
+        commentList.add(AdminCommentDTO.builder().idx(1L)
                 .commentType("model").commentTypeIdx(adminModelEntity.getIdx())
                 .comment("model").build());
 
@@ -159,7 +159,7 @@ class AdminCommentJpaRepositoryTest {
         commentMap.put("size", 3);
 
         List<AdminCommentDTO> commentList = new ArrayList<>();
-        commentList.add(AdminCommentDTO.builder().idx(1)
+        commentList.add(AdminCommentDTO.builder().idx(1L)
                 .commentType("model").commentTypeIdx(adminModelEntity.getIdx())
                 .comment("model").build());
 
@@ -183,7 +183,7 @@ class AdminCommentJpaRepositoryTest {
     void 어드민코멘트상세Mockito조회테스트() {
         // given
         AdminCommentEntity adminCommentEntity = AdminCommentEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .comment("코멘트 테스트")
                 .commentType("model")
                 .commentTypeIdx(adminModelEntity.getIdx())
@@ -215,7 +215,7 @@ class AdminCommentJpaRepositoryTest {
     @DisplayName("어드민코멘트상세BDD조회테스트")
     void 어드민코멘트상세BDD조회테스트() {
         AdminCommentEntity adminCommentEntity = AdminCommentEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .comment("코멘트 테스트")
                 .commentType("model")
                 .commentTypeIdx(adminModelEntity.getIdx())
@@ -289,7 +289,7 @@ class AdminCommentJpaRepositoryTest {
     @DisplayName("어드민코멘트수정Mockito테스트")
     void 어드민코멘트수정Mockito테스트() {
         // given
-        Integer idx = adminCommentJpaRepository.insertAdminComment(adminCommentEntity).getIdx();
+        Long idx = adminCommentJpaRepository.insertAdminComment(adminCommentEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .idx(idx)
@@ -323,7 +323,7 @@ class AdminCommentJpaRepositoryTest {
     @DisplayName("공지사항수정BDD테스트")
     void 공지사항수정BDD테스트() {
         // given
-        Integer idx = adminCommentJpaRepository.insertAdminComment(adminCommentEntity).getIdx();
+        Long idx = adminCommentJpaRepository.insertAdminComment(adminCommentEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .idx(idx)
@@ -356,8 +356,8 @@ class AdminCommentJpaRepositoryTest {
         // given
         em.persist(adminCommentEntity);
 
-        Integer entityIdx = adminCommentEntity.getIdx();
-        Integer idx = adminCommentJpaRepository.deleteAdminComment(adminCommentEntity.getIdx());
+        Long entityIdx = adminCommentEntity.getIdx();
+        Long idx = adminCommentJpaRepository.deleteAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(entityIdx).isEqualTo(idx);
@@ -372,7 +372,7 @@ class AdminCommentJpaRepositoryTest {
 
         // when
         when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
-        Integer deleteIdx = adminCommentJpaRepository.deleteAdminComment(adminCommentEntity.getIdx());
+        Long deleteIdx = adminCommentJpaRepository.deleteAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity).getIdx()).isEqualTo(deleteIdx);
@@ -395,7 +395,7 @@ class AdminCommentJpaRepositoryTest {
 
         // when
         given(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).willReturn(adminCommentDTO);
-        Integer deleteIdx = adminCommentJpaRepository.deleteAdminComment(adminCommentEntity.getIdx());
+        Long deleteIdx = adminCommentJpaRepository.deleteAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity).getIdx()).isEqualTo(deleteIdx);

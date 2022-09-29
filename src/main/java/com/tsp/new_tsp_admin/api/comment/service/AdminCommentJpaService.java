@@ -72,5 +72,5 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    Integer deleteAdminComment(Integer idx) throws Exception;
+    Long deleteAdminComment(Long idx) throws Exception;
 }
