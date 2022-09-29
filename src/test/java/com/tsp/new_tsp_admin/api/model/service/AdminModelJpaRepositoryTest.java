@@ -118,12 +118,12 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         commonImageEntity = CommonImageEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
-                .typeIdx(1)
+                .typeIdx(1L)
                 .typeName("model")
                 .build();
 
@@ -162,7 +162,7 @@ class AdminModelJpaRepositoryTest {
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminModelDTO> modelList = new ArrayList<>();
-        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희")
+        modelList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
@@ -198,7 +198,7 @@ class AdminModelJpaRepositoryTest {
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminModelDTO> modelList = new ArrayList<>();
-        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
+        modelList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
         given(mockAdminModelJpaRepository.findModelsList(modelMap)).willReturn(modelList);
@@ -221,7 +221,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(143).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(143L).categoryCd(2).build();
 
         // when
         adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
@@ -283,7 +283,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("이전 or 다음 모델 상세 조회 테스트")
     void 이전or다음모델상세조회테스트() {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
 
         // when
         adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
@@ -298,7 +298,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("이전 모델 상세 조회 Mockito 테스트")
     void 이전모델상세조회Mockito테스트() {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
         adminModelDTO = adminModelJpaRepository.findPrevOneModel(adminModelEntity);
 
@@ -321,7 +321,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("이전 모델 상세 조회 BDD 테스트")
     void 이전모델상세조회BDD테스트() {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
         adminModelDTO = adminModelJpaRepository.findPrevOneModel(adminModelEntity);
 
@@ -341,7 +341,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("다음 모델 상세 조회 Mockito 테스트")
     void 다음모델상세조회Mockito테스트() {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
         adminModelDTO = adminModelJpaRepository.findNextOneModel(adminModelEntity);
 
@@ -364,7 +364,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("다음 모델 상세 조회 BDD 테스트")
     void 다음모델상세조회BDD테스트() {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(145).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
         adminModelDTO = adminModelJpaRepository.findNextOneModel(adminModelEntity);
 
@@ -387,10 +387,10 @@ class AdminModelJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        adminModelEntity = AdminModelEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminModelEntity = AdminModelEntity.builder().idx(1L).commonImageEntityList(commonImageEntityList).build();
 
         adminModelDTO = AdminModelDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryAge(2)
                 .modelKorName("조찬희")
@@ -443,10 +443,10 @@ class AdminModelJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        adminModelEntity = AdminModelEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminModelEntity = AdminModelEntity.builder().idx(1L).commonImageEntityList(commonImageEntityList).build();
 
         adminModelDTO = AdminModelDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryAge(2)
                 .modelKorName("조찬희")
@@ -579,7 +579,7 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 수정 Mockito 테스트")
     void 모델수정Mockito테스트() {
-        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
@@ -625,7 +625,7 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 수정 BDD 테스트")
     void 모델수정BDD테스트() {
-        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
@@ -697,8 +697,8 @@ class AdminModelJpaRepositoryTest {
         // given
         em.persist(adminModelEntity);
 
-        Integer entityIdx = adminModelEntity.getIdx();
-        Integer deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
+        Long entityIdx = adminModelEntity.getIdx();
+        Long deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
 
         // then
         assertThat(deleteIdx).isEqualTo(entityIdx);
@@ -713,7 +713,7 @@ class AdminModelJpaRepositoryTest {
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
-        Integer deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
+        Long deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
 
         // then
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
@@ -736,7 +736,7 @@ class AdminModelJpaRepositoryTest {
 
         // when
         given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
-        Integer deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
+        Long deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
 
         // then
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
@@ -750,7 +750,7 @@ class AdminModelJpaRepositoryTest {
     @Test
     @DisplayName("모델 이미지 등록 테스트")
     void 모델이미지등록테스트() {
-        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        Long modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -772,7 +772,7 @@ class AdminModelJpaRepositoryTest {
     void 모델소속사수정Mockito테스트() {
         // 소속사 등록
         em.persist(adminAgencyEntity);
-        Integer agencyIdx = adminAgencyEntity.getIdx();
+        Long agencyIdx = adminAgencyEntity.getIdx();
 
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
@@ -798,7 +798,7 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         // 모델 소속사 수정
-        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         AdminModelEntity newAdminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
@@ -847,7 +847,7 @@ class AdminModelJpaRepositoryTest {
     void 모델소속사수정BDD테스트() {
         // 소속사 등록
         em.persist(adminAgencyEntity);
-        Integer agencyIdx = adminAgencyEntity.getIdx();
+        Long agencyIdx = adminAgencyEntity.getIdx();
 
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
@@ -873,7 +873,7 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         // 모델 소속사 수정
-        Integer idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        Long idx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         AdminModelEntity newAdminModelEntity = AdminModelEntity.builder()
                 .idx(idx)
@@ -938,7 +938,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        Long modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -994,7 +994,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        Long modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -1036,7 +1036,7 @@ class AdminModelJpaRepositoryTest {
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminModelDTO> modelList = new ArrayList<>();
-        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").newYn("Y")
+        modelList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희").newYn("Y")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
@@ -1073,7 +1073,7 @@ class AdminModelJpaRepositoryTest {
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminModelDTO> modelList = new ArrayList<>();
-        modelList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희").newYn("Y").modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
+        modelList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희").newYn("Y").modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
         // when
         given(mockAdminModelJpaRepository.findNewModelsList(newModelMap)).willReturn(modelList);
@@ -1097,7 +1097,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("새로운 모델 설정 Mockito 테스트")
     void 새로운모델설정Mockito테스트() {
         adminModelEntity = AdminModelEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryAge(2)
                 .modelKorFirstName("조")
@@ -1140,7 +1140,7 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("새로운 모델 설정 BDD 테스트")
     void 새로운모델설정BDD테스트() {
         adminModelEntity = AdminModelEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryAge(2)
                 .modelKorFirstName("조")
@@ -1185,7 +1185,7 @@ class AdminModelJpaRepositoryTest {
         scheduleMap.put("size", 3);
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
-        scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
+        scheduleList.add(AdminScheduleDTO.builder().idx(1L).modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
 
         // when
@@ -1216,7 +1216,7 @@ class AdminModelJpaRepositoryTest {
         scheduleMap.put("size", 3);
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
-        scheduleList.add(AdminScheduleDTO.builder().idx(1).modelIdx(adminModelEntity.getIdx())
+        scheduleList.add(AdminScheduleDTO.builder().idx(1L).modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트").modelScheduleTime(now()).build());
 
         // when

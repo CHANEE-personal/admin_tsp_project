@@ -89,7 +89,7 @@ public class AdminCommentJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminCommentDTO findOneAdminComment(@PathVariable Integer idx) throws Exception {
+    public AdminCommentDTO findOneAdminComment(@PathVariable Long idx) throws Exception {
         return adminCommentJpaService.findOneAdminComment(AdminCommentEntity.builder().idx(idx).build());
     }
 
@@ -155,7 +155,7 @@ public class AdminCommentJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Integer deleteAdminComment(@PathVariable Integer idx) throws Exception {
+    public Long deleteAdminComment(@PathVariable Long idx) throws Exception {
         return adminCommentJpaService.deleteAdminComment(idx);
     }
 }

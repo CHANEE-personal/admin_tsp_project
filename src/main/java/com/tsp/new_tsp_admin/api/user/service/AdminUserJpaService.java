@@ -94,5 +94,5 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      */
-    Integer deleteAdminUser(Integer idx) throws Exception;
+    Long deleteAdminUser(Long idx) throws Exception;
 }

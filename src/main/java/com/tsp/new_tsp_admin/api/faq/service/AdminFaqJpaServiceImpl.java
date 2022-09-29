@@ -175,7 +175,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @CacheEvict("faq")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteFaq(Integer idx) throws TspException {
+    public Long deleteFaq(Long idx) throws TspException {
         try {
             return adminFaqJpaRepository.deleteFaq(idx);
         } catch (Exception e) {

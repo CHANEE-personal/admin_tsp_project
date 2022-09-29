@@ -100,7 +100,7 @@ public class AdminModelJpaController {
     })
     @GetMapping("/{categoryCd}/{idx}")
     public AdminModelDTO getModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                      @PathVariable Integer idx) throws Exception {
+                                      @PathVariable Long idx) throws Exception {
         return this.adminModelJpaService.findOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
     }
 
@@ -123,7 +123,7 @@ public class AdminModelJpaController {
     })
     @GetMapping("/{categoryCd}/{idx}/prev")
     public AdminModelDTO getPrevModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                      @PathVariable Integer idx) throws Exception {
+                                      @PathVariable Long idx) throws Exception {
         return this.adminModelJpaService.findPrevOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
     }
 
@@ -146,7 +146,7 @@ public class AdminModelJpaController {
     })
     @GetMapping("/{categoryCd}/{idx}/next")
     public AdminModelDTO getNextModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                          @PathVariable Integer idx) throws Exception {
+                                          @PathVariable Long idx) throws Exception {
         return this.adminModelJpaService.findNextOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
     }
 
@@ -190,7 +190,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
-    public String insertModelImage(@PathVariable Integer idx, @RequestParam("images") List<MultipartFile> fileName) throws Exception {
+    public String insertModelImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) throws Exception {
         return this.adminModelJpaService.insertModelImage(CommonImageEntity.builder().typeName("model").typeIdx(idx).visible("Y").build(), fileName);
     }
 
@@ -212,7 +212,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}/images")
-    public Integer deleteModelImage(@PathVariable Integer idx) throws Exception {
+    public Long deleteModelImage(@PathVariable Long idx) throws Exception {
         return this.adminModelJpaService.deleteModelImage(idx);
     }
 
@@ -256,7 +256,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteModel(@PathVariable Integer idx) throws Exception {
+    public Long deleteModel(@PathVariable Long idx) throws Exception {
         return adminModelJpaService.deleteModel(idx);
     }
 
@@ -279,7 +279,7 @@ public class AdminModelJpaController {
     })
     @PutMapping("/{idx}/agency")
     public AdminModelDTO updateModelAgency(@Valid @RequestBody AdminModelEntity adminModelEntity,
-                                           @PathVariable Integer idx) throws Exception {
+                                           @PathVariable Long idx) throws Exception {
         return adminModelJpaService.updateModelAgency(AdminModelEntity.builder().idx(idx).agencyIdx(adminModelEntity.getAgencyIdx()).build());
     }
 
@@ -301,7 +301,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")
-    public List<AdminCommentDTO> findModelAdminComment(@PathVariable Integer idx) throws Exception {
+    public List<AdminCommentDTO> findModelAdminComment(@PathVariable Long idx) throws Exception {
         return adminModelJpaService.findModelAdminComment(AdminModelEntity.builder().idx(idx).build());
     }
 
@@ -366,7 +366,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}/toggle-new")
-    public AdminModelDTO toggleModelNewYn(@PathVariable Integer idx) throws Exception {
+    public AdminModelDTO toggleModelNewYn(@PathVariable Long idx) throws Exception {
         return adminModelJpaService.toggleModelNewYn(AdminModelEntity.builder().idx(idx).build());
     }
 
@@ -388,7 +388,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}/schedule")
-    public List<AdminScheduleDTO> findOneModelSchedule(@PathVariable Integer idx) throws Exception {
+    public List<AdminScheduleDTO> findOneModelSchedule(@PathVariable Long idx) throws Exception {
         return adminModelJpaService.findOneModelSchedule(AdminModelEntity.builder().idx(idx).build());
     }
 }

@@ -75,7 +75,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer deleteSupportModel(Integer idx) throws Exception;
+    Long deleteSupportModel(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -141,7 +141,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer deleteEvaluation(Integer idx) throws Exception;
+    Long deleteEvaluation(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -152,7 +152,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO updatePass(Integer idx) throws Exception;
+    AdminSupportDTO updatePass(Long idx) throws Exception;
 
     /**
      * <pre>

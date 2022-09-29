@@ -175,7 +175,7 @@ public class AdminNoticeJpaRepository {
      * 5. 작성일       : 2022. 09. 23.
      * </pre>
      */
-    public AdminNoticeDTO toggleFixed(Integer idx) {
+    public AdminNoticeDTO toggleFixed(Long idx) {
         Boolean fixed = !em.find(AdminNoticeEntity.class, idx).getTopFixed();
 
         queryFactory
@@ -199,7 +199,7 @@ public class AdminNoticeJpaRepository {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    public Integer deleteNotice(Integer idx) {
+    public Long deleteNotice(Long idx) {
         em.remove(em.find(AdminNoticeEntity.class, idx));
         em.flush();
         em.clear();

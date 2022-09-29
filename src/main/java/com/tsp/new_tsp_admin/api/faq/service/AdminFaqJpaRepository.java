@@ -174,7 +174,7 @@ public class AdminFaqJpaRepository {
      * 5. 작성일       : 2022. 08. 18.
      * </pre>
      */
-    public Integer deleteFaq(Integer idx) {
+    public Long deleteFaq(Long idx) {
         em.remove(em.find(AdminFaqEntity.class, idx));
         em.flush();
         em.clear();

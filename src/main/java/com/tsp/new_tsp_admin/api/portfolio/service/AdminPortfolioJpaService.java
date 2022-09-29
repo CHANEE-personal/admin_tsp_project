@@ -95,7 +95,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    Integer deletePortfolio(Integer idx) throws Exception;
+    Long deletePortfolio(Long idx) throws Exception;
 
     /**
      * <pre>

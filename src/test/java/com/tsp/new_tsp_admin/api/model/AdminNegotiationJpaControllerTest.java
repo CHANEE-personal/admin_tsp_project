@@ -112,7 +112,7 @@ class AdminNegotiationJpaControllerTest {
         createUser();
 
         adminNegotiationEntity = AdminNegotiationEntity.builder()
-                .modelIdx(1)
+                .modelIdx(1L)
                 .modelKorName("테스트")
                 .modelNegotiationDesc("섭외 테스트")
                 .modelNegotiationDate(now())
@@ -249,7 +249,7 @@ class AdminNegotiationJpaControllerTest {
 
         adminNegotiationEntity = AdminNegotiationEntity.builder()
                 .idx(adminNegotiationEntity.getIdx())
-                .modelIdx(1)
+                .modelIdx(1L)
                 .modelKorName("테스트")
                 .modelNegotiationDesc("섭외 수정 테스트")
                 .modelNegotiationDate(LocalDateTime.now())
@@ -289,7 +289,7 @@ class AdminNegotiationJpaControllerTest {
 
         AdminNegotiationEntity newAdminNegotiationEntity = AdminNegotiationEntity.builder()
                 .idx(adminNegotiationEntity.getIdx())
-                .modelIdx(1)
+                .modelIdx(1L)
                 .modelKorName("테스트")
                 .modelNegotiationDesc("섭외 수정 테스트")
                 .modelNegotiationDate(LocalDateTime.now())

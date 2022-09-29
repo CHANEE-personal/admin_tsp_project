@@ -176,7 +176,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @CacheEvict("production")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteProduction(Integer idx) throws TspException {
+    public Long deleteProduction(Long idx) throws TspException {
         try {
             return adminProductionJpaRepository.deleteProductionByEm(idx);
         } catch (Exception e) {

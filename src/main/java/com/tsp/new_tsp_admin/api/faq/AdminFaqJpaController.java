@@ -89,7 +89,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminFaqDTO findOneFaq(@PathVariable Integer idx) throws Exception {
+    public AdminFaqDTO findOneFaq(@PathVariable Long idx) throws Exception {
         return adminFaqJpaService.findOneFaq(AdminFaqEntity.builder().idx(idx).build());
     }
 
@@ -111,7 +111,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminFaqDTO findPrevOneFaq(@PathVariable Integer idx) throws Exception {
+    public AdminFaqDTO findPrevOneFaq(@PathVariable Long idx) throws Exception {
         return adminFaqJpaService.findPrevOneFaq(AdminFaqEntity.builder().idx(idx).build());
     }
 
@@ -133,7 +133,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminFaqDTO findNextOneFaq(@PathVariable Integer idx) throws Exception {
+    public AdminFaqDTO findNextOneFaq(@PathVariable Long idx) throws Exception {
         return adminFaqJpaService.findNextOneFaq(AdminFaqEntity.builder().idx(idx).build());
     }
 
@@ -199,7 +199,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Integer deleteFaq(@PathVariable Integer idx) throws Exception {
+    public Long deleteFaq(@PathVariable Long idx) throws Exception {
         return adminFaqJpaService.deleteFaq(idx);
     }
 }

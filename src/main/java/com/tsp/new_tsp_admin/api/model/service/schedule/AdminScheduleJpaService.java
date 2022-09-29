@@ -94,5 +94,5 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    Integer deleteSchedule(Integer idx) throws Exception;
+    Long deleteSchedule(Long idx) throws Exception;
 }

@@ -28,11 +28,11 @@ public class EvaluationEntity extends NewCommonMappedClass {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
-    private Integer idx;
+    private Long idx;
 
     @Column(name = "support_idx")
     @NotNull(message = "지원모델 idx는 필수입니다.")
-    private Integer supportIdx;
+    private Long supportIdx;
 
     @Column(name = "visible")
     @NotEmpty(message = "지원모델 노출 여부 선택은 필수입니다.")

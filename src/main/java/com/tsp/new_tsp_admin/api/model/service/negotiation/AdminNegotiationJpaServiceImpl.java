@@ -177,7 +177,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @CacheEvict("negotiation")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteModelNegotiation(Integer idx) throws TspException {
+    public Long deleteModelNegotiation(Long idx) throws TspException {
         try {
             return adminNegotiationJpaRepository.deleteModelNegotiation(idx);
         } catch (Exception e) {

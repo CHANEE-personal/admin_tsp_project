@@ -97,7 +97,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    Integer deleteProduction(Integer idx) throws Exception;
+    Long deleteProduction(Long idx) throws Exception;
 
     /**
      * <pre>

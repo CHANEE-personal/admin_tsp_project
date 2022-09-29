@@ -129,7 +129,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @CacheEvict("support")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteSupportModel(Integer idx) throws TspException {
+    public Long deleteSupportModel(Long idx) throws TspException {
         try {
             return adminSupportJpaRepository.deleteSupportModel(idx);
         } catch (Exception e) {
@@ -249,7 +249,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @CacheEvict("evaluation")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteEvaluation(Integer idx) throws TspException {
+    public Long deleteEvaluation(Long idx) throws TspException {
         try {
             return adminSupportJpaRepository.deleteEvaluation(idx);
         } catch (Exception e) {
@@ -269,7 +269,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @CachePut("support")
     @Transactional
-    public AdminSupportDTO updatePass(Integer idx) throws TspException {
+    public AdminSupportDTO updatePass(Long idx) throws TspException {
         try {
             return adminSupportJpaRepository.updatePass(idx);
         } catch (Exception e) {

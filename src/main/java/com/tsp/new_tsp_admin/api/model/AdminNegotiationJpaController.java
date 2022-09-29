@@ -99,7 +99,7 @@ public class AdminNegotiationJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminNegotiationDTO findOneNegotiation(@PathVariable Integer idx) throws Exception {
+    public AdminNegotiationDTO findOneNegotiation(@PathVariable Long idx) throws Exception {
         return this.adminNegotiationJpaService.findOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
     }
 
@@ -121,7 +121,7 @@ public class AdminNegotiationJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminNegotiationDTO findPrevOneNegotiation(@PathVariable Integer idx) throws Exception {
+    public AdminNegotiationDTO findPrevOneNegotiation(@PathVariable Long idx) throws Exception {
         return this.adminNegotiationJpaService.findPrevOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
     }
 
@@ -143,7 +143,7 @@ public class AdminNegotiationJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminNegotiationDTO findNextOneNegotiation(@PathVariable Integer idx) throws Exception {
+    public AdminNegotiationDTO findNextOneNegotiation(@PathVariable Long idx) throws Exception {
         return this.adminNegotiationJpaService.findNextOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
     }
 
@@ -209,7 +209,7 @@ public class AdminNegotiationJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteModelNegotiation(@PathVariable Integer idx) throws Exception {
+    public Long deleteModelNegotiation(@PathVariable Long idx) throws Exception {
         return adminNegotiationJpaService.deleteModelNegotiation(idx);
     }
 }

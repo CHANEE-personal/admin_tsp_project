@@ -119,7 +119,7 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer insertUserTokenByEm(AdminUserEntity adminUserEntity) {
+    public Long insertUserTokenByEm(AdminUserEntity adminUserEntity) {
         em.merge(adminUserEntity);
         em.flush();
         em.clear();
@@ -136,7 +136,7 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      */
-    public Integer insertUserToken(AdminUserEntity existAdminUserEntity) throws TspException {
+    public Long insertUserToken(AdminUserEntity existAdminUserEntity) throws TspException {
         JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
         update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
@@ -187,7 +187,7 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      */
-    public Integer deleteAdminUser(Integer idx) {
+    public Long deleteAdminUser(Long idx) {
         em.remove(em.find(AdminUserEntity.class, idx));
         em.flush();
         em.clear();

@@ -99,7 +99,7 @@ class AdminSupportJpaServiceTest {
 
         List<AdminSupportDTO> returnSupportList = new ArrayList<>();
         returnSupportList.add(AdminSupportDTO.builder()
-                .idx(1).supportName("조찬희").supportHeight(170).supportMessage("조찬희")
+                .idx(1L).supportName("조찬희").supportHeight(170).supportMessage("조찬희")
                 .supportPhone("010-1234-5678").supportSize3("31-24-31").supportInstagram("https://instagram.com").visible("Y").build());
 
         // when
@@ -137,7 +137,7 @@ class AdminSupportJpaServiceTest {
 
         List<AdminSupportDTO> returnSupportList = new ArrayList<>();
         returnSupportList.add(AdminSupportDTO.builder()
-                .idx(1).supportName("조찬희").supportHeight(170).supportMessage("조찬희")
+                .idx(1L).supportName("조찬희").supportHeight(170).supportMessage("조찬희")
                 .supportPhone("010-1234-5678").supportSize3("31-24-31").supportInstagram("https://instagram.com").visible("Y").build());
 
         // when
@@ -167,7 +167,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원모델 상세 조회 테스트")
     void 지원모델상세조회테스트() throws Exception {
         // given
-        adminSupportEntity = AdminSupportEntity.builder().idx(1).build();
+        adminSupportEntity = AdminSupportEntity.builder().idx(1L).build();
 
         // when
         adminSupportDTO = adminSupportJpaService.findOneSupportModel(adminSupportEntity);
@@ -288,7 +288,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원모델 삭제 테스트")
     void 지원모델삭제테스트() throws Exception {
         // given
-        Integer idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         // then
         assertThat(adminSupportJpaService.deleteSupportModel(idx)).isNotNull();
@@ -303,7 +303,7 @@ class AdminSupportJpaServiceTest {
         evaluationMap.put("size", 3);
 
         List<EvaluationDTO> evaluationList = new ArrayList<>();
-        evaluationList.add(EvaluationDTO.builder().idx(1)
+        evaluationList.add(EvaluationDTO.builder().idx(1L)
                 .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
 
         // when
@@ -333,7 +333,7 @@ class AdminSupportJpaServiceTest {
         evaluationMap.put("size", 3);
 
         List<EvaluationDTO> evaluationList = new ArrayList<>();
-        evaluationList.add(EvaluationDTO.builder().idx(1)
+        evaluationList.add(EvaluationDTO.builder().idx(1L)
                 .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
 
         // when
@@ -356,7 +356,7 @@ class AdminSupportJpaServiceTest {
     void 지원모델평가상세조회Mockito테스트() throws Exception {
         // given
         evaluationEntity = EvaluationEntity.builder()
-                .idx(1).supportIdx(adminSupportEntity.getIdx())
+                .idx(1L).supportIdx(adminSupportEntity.getIdx())
                 .evaluateComment("합격").visible("Y").build();
 
         evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
@@ -384,7 +384,7 @@ class AdminSupportJpaServiceTest {
     void 지원모델평가상세조회BDD테스트() throws Exception {
         // given
         evaluationEntity = EvaluationEntity.builder()
-                .idx(1).supportIdx(adminSupportEntity.getIdx())
+                .idx(1L).supportIdx(adminSupportEntity.getIdx())
                 .evaluateComment("합격").visible("Y").build();
 
         evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
@@ -408,7 +408,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원 모델 평가 Mockito 테스트")
     void 지원모델평가Mockito테스트() throws Exception {
         // given
-        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -441,7 +441,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원 모델 평가 BDD 테스트")
     void 지원모델평가BDD테스트() throws Exception {
         // given
-        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -471,7 +471,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원 모델 평가 삭제 Mockito 테스트")
     void 지원모델평가삭제Mockito테스트() throws Exception {
         // given
-        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -482,7 +482,7 @@ class AdminSupportJpaServiceTest {
         evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
 
         given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
-        Integer deleteIdx = adminSupportJpaService.deleteEvaluation(evaluationEntity.getIdx());
+        Long deleteIdx = adminSupportJpaService.deleteEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
@@ -500,7 +500,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원 모델 평가 삭제 BDD 테스트")
     void 지원모델평가삭제BDD테스트() throws Exception {
         // given
-        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
                 .supportIdx(supportIdx)
@@ -511,7 +511,7 @@ class AdminSupportJpaServiceTest {
         evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
 
         given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
-        Integer deleteIdx = adminSupportJpaService.deleteEvaluation(evaluationEntity.getIdx());
+        Long deleteIdx = adminSupportJpaService.deleteEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
@@ -526,7 +526,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원 모델 합격 Mockito 테스트")
     void 지원모델합격Mockito테스트() throws Exception {
         // given
-        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         AdminSupportDTO supportDTO = adminSupportJpaService.updatePass(supportIdx);
 
@@ -551,7 +551,7 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원 모델 합격 BDD 테스트")
     void 지원모델합격BDD테스트() throws Exception {
         // given
-        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         AdminSupportDTO supportDTO = adminSupportJpaService.updatePass(supportIdx);
 
@@ -583,7 +583,7 @@ class AdminSupportJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -628,7 +628,7 @@ class AdminSupportJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
+        Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")

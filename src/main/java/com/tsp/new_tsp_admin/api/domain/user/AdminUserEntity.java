@@ -30,7 +30,7 @@ public class AdminUserEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
-    private Integer idx;
+    private Long idx;
 
     @Column(name = "user_id")
     @NotEmpty(message = "유저 ID 입력은 필수입니다.")

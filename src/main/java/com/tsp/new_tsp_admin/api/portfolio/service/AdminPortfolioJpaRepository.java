@@ -172,7 +172,7 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    public Integer insertPortfolioImage(CommonImageEntity commonImageEntity) throws TspException {
+    public Long insertPortfolioImage(CommonImageEntity commonImageEntity) throws TspException {
         try {
             em.persist(commonImageEntity);
 
@@ -207,7 +207,7 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    public Integer deletePortfolio(Integer idx) {
+    public Long deletePortfolio(Long idx) {
         em.remove(em.find(AdminPortFolioEntity.class, idx));
         em.flush();
         em.clear();

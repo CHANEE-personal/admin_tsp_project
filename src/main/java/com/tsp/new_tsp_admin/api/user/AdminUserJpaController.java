@@ -231,7 +231,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteAdminUser(@PathVariable Integer idx) throws Exception {
+    public Long deleteAdminUser(@PathVariable Long idx) throws Exception {
         return adminUserJpaService.deleteAdminUser(idx);
     }
 }

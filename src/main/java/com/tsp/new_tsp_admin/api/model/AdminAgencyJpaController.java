@@ -93,7 +93,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminAgencyDTO findOneAgency(@PathVariable Integer idx) throws Exception {
+    public AdminAgencyDTO findOneAgency(@PathVariable Long idx) throws Exception {
         return this.adminAgencyJpaService.findOneAgency(AdminAgencyEntity.builder().idx(idx).build());
     }
 
@@ -159,7 +159,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteAgency(@PathVariable Integer idx) throws Exception {
+    public Long deleteAgency(@PathVariable Long idx) throws Exception {
         return adminAgencyJpaService.deleteAgency(idx);
     }
 
@@ -181,7 +181,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
-    public String insertAgencyImage(@PathVariable Integer idx, @RequestParam("images") List<MultipartFile> fileName) throws Exception {
+    public String insertAgencyImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) throws Exception {
         return this.adminAgencyJpaService.insertAgencyImage(CommonImageEntity.builder().typeName("agency").typeIdx(idx).visible("Y").build(), fileName);
     }
 
@@ -203,7 +203,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}/images")
-    public Integer deleteAgencyImage(@PathVariable Integer idx) throws Exception {
+    public Long deleteAgencyImage(@PathVariable Long idx) throws Exception {
         return this.adminAgencyJpaService.deleteAgencyImage(idx);
     }
 }

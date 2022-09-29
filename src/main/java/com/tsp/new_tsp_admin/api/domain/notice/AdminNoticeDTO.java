@@ -22,7 +22,7 @@ public class AdminNoticeDTO extends NewCommonDTO {
     private Integer rnum;
 
     @ApiModelProperty(required = true, value = "idx", hidden = true, example = "1")
-    private Integer idx;
+    private Long idx;
 
     @NotEmpty(message = "제목 입력은 필수입니다.")
     @ApiModelProperty(required = true, value = "title")

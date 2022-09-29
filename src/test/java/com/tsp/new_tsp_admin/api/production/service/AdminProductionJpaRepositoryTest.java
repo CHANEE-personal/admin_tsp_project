@@ -77,7 +77,7 @@ class AdminProductionJpaRepositoryTest {
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
-                .typeIdx(1)
+                .typeIdx(1L)
                 .typeName("production")
                 .visible("Y")
                 .build();
@@ -107,7 +107,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("프로덕션상세조회테스트")
     void 프로덕션상세조회테스트() {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(1).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(1L).build();
 
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
@@ -145,7 +145,7 @@ class AdminProductionJpaRepositoryTest {
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminProductionDTO> productionList = new ArrayList<>();
-        productionList.add(AdminProductionDTO.builder().idx(1).title("프로덕션 테스트")
+        productionList.add(AdminProductionDTO.builder().idx(1L).title("프로덕션 테스트")
                 .description("프로덕션 테스트").productionImage(commonImageDtoList).build());
 
         // when
@@ -179,7 +179,7 @@ class AdminProductionJpaRepositoryTest {
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminProductionDTO> productionList = new ArrayList<>();
-        productionList.add(AdminProductionDTO.builder().idx(1).title("프로덕션 테스트")
+        productionList.add(AdminProductionDTO.builder().idx(1L).title("프로덕션 테스트")
                 .description("프로덕션 테스트").productionImage(commonImageDtoList).build());
 
         // when
@@ -205,10 +205,10 @@ class AdminProductionJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        AdminProductionEntity adminProductionEntity = AdminProductionEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        AdminProductionEntity adminProductionEntity = AdminProductionEntity.builder().idx(1L).commonImageEntityList(commonImageEntityList).build();
 
         AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
@@ -246,10 +246,10 @@ class AdminProductionJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        AdminProductionEntity adminProductionEntity = AdminProductionEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        AdminProductionEntity adminProductionEntity = AdminProductionEntity.builder().idx(1L).commonImageEntityList(commonImageEntityList).build();
 
         AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
@@ -281,7 +281,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("이전 or 다음 프로덕션 상세 조회 테스트")
     void 이전or다음프로덕션상세조회테스트() {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
@@ -296,7 +296,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("이전 프로덕션 상세 조회 Mockito 테스트")
     void 이전프로덕션상세조회Mockito테스트() {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
@@ -320,7 +320,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("이전 프로덕션 상세 조회 BDD 테스트")
     void 이전프로덕션상세조회BDD테스트() {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
@@ -341,7 +341,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("다음 프로덕션 상세 조회 Mockito 테스트")
     void 다음프로덕션상세조회Mockito테스트() {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
@@ -365,7 +365,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("다음 프로덕션 상세 조회 BDD 테스트")
     void 다음프로덕션상세조회BDD테스트() {
         // given
-        adminProductionEntity = AdminProductionEntity.builder().idx(118).build();
+        adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
         adminProductionDTO = adminProductionJpaRepository.findOneProduction(adminProductionEntity);
@@ -430,7 +430,7 @@ class AdminProductionJpaRepositoryTest {
     @Test
     @DisplayName("프로덕션이미지등록테스트")
     void 프로덕션이미지등록테스트() {
-        Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
+        Long productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -449,7 +449,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("프로덕션수정Mockito테스트")
     void 프로덕션수정Mockito테스트() {
         // given
-        Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
+        Long idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         adminProductionEntity = AdminProductionEntity.builder()
                 .idx(idx)
@@ -483,7 +483,7 @@ class AdminProductionJpaRepositoryTest {
     @DisplayName("프로덕션수정BDD테스트")
     void 프로덕션수정BDD테스트() {
         // given
-        Integer idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
+        Long idx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         adminProductionEntity = AdminProductionEntity.builder()
                 .idx(idx)
@@ -516,8 +516,8 @@ class AdminProductionJpaRepositoryTest {
         // given
         em.persist(adminProductionEntity);
 
-        Integer entityIdx = adminProductionEntity.getIdx();
-        Integer idx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
+        Long entityIdx = adminProductionEntity.getIdx();
+        Long idx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
 
         // then
         assertThat(entityIdx).isEqualTo(idx);
@@ -532,7 +532,7 @@ class AdminProductionJpaRepositoryTest {
 
         // when
         when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
-        Integer deleteIdx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
+        Long deleteIdx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
 
         // then
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx()).isEqualTo(deleteIdx);
@@ -555,7 +555,7 @@ class AdminProductionJpaRepositoryTest {
 
         // when
         when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
-        Integer deleteIdx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
+        Long deleteIdx = adminProductionJpaRepository.deleteProductionByEm(adminProductionEntity.getIdx());
 
         // then
         assertThat(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity).getIdx()).isEqualTo(deleteIdx);
@@ -575,7 +575,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
+        Long productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -616,7 +616,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
+        Long productionIdx = adminProductionJpaRepository.insertProduction(adminProductionEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")

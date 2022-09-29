@@ -28,8 +28,7 @@ import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminMode
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.*;
 import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
-import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
-import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static com.tsp.new_tsp_admin.common.StringUtil.*;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_AGENCY;
 import static java.util.Objects.requireNonNull;
 
@@ -277,7 +276,7 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    public Integer deleteModelByEm(Integer idx) {
+    public Long deleteModelByEm(Long idx) {
         em.remove(em.find(AdminModelEntity.class, idx));
         em.flush();
         em.clear();
@@ -295,7 +294,7 @@ public class AdminModelJpaRepository {
      */
     public AdminModelDTO updateModelAgency(AdminModelEntity existAdminModelEntity) {
         // 소속사 존재 여부 체크
-        Integer agencyIdx = requireNonNull(queryFactory
+        Long agencyIdx = requireNonNull(queryFactory
                 .selectFrom(adminAgencyEntity)
                 .where(adminAgencyEntity.idx.eq(existAdminModelEntity.getAgencyIdx())).fetchOne()).getIdx();
 

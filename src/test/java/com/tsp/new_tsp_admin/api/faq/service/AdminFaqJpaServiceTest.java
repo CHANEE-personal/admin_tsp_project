@@ -86,8 +86,8 @@ class AdminFaqJpaServiceTest {
 
         List<AdminFaqDTO> returnFaqList = new ArrayList<>();
 
-        returnFaqList.add(AdminFaqDTO.builder().idx(1).title("FAQ테스트").description("FAQ테스트").visible("Y").build());
-        returnFaqList.add(AdminFaqDTO.builder().idx(2).title("faqTest").description("faqTest").visible("Y").build());
+        returnFaqList.add(AdminFaqDTO.builder().idx(1L).title("FAQ테스트").description("FAQ테스트").visible("Y").build());
+        returnFaqList.add(AdminFaqDTO.builder().idx(2L).title("faqTest").description("faqTest").visible("Y").build());
 
         // when
         when(mockAdminFaqJpaService.findFaqsList(faqMap)).thenReturn(returnFaqList);
@@ -123,8 +123,8 @@ class AdminFaqJpaServiceTest {
 
         List<AdminFaqDTO> returnFaqList = new ArrayList<>();
 
-        returnFaqList.add(AdminFaqDTO.builder().idx(1).title("FAQ테스트").description("FAQ테스트").visible("Y").build());
-        returnFaqList.add(AdminFaqDTO.builder().idx(2).title("faqTest").description("faqTest").visible("Y").build());
+        returnFaqList.add(AdminFaqDTO.builder().idx(1L).title("FAQ테스트").description("FAQ테스트").visible("Y").build());
+        returnFaqList.add(AdminFaqDTO.builder().idx(2L).title("faqTest").description("faqTest").visible("Y").build());
 
         // when
         given(mockAdminFaqJpaService.findFaqsList(faqMap)).willReturn(returnFaqList);
@@ -152,7 +152,7 @@ class AdminFaqJpaServiceTest {
     void FAQ상세Mockito조회테스트() throws Exception {
         // given
         AdminFaqEntity adminFaqEntity = AdminFaqEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .title("FAQ 테스트")
                 .description("FAQ 테스트")
                 .visible("Y")
@@ -184,7 +184,7 @@ class AdminFaqJpaServiceTest {
     void FAQ상세BDD조회테스트() throws Exception {
         // given
         AdminFaqEntity adminFaqEntity = AdminFaqEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .title("FAQ 테스트")
                 .description("FAQ 테스트")
                 .visible("Y")
@@ -212,7 +212,7 @@ class AdminFaqJpaServiceTest {
     @DisplayName("이전 or 다음 FAQ 상세 조회 테스트")
     void 이전or다음FAQ상세조회테스트() throws Exception {
         // given
-        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+        adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
         adminFaqDTO = adminFaqJpaService.findOneFaq(adminFaqEntity);
@@ -227,7 +227,7 @@ class AdminFaqJpaServiceTest {
     @DisplayName("이전 FAQ 상세 조회 Mockito 테스트")
     void 이전FAQ상세조회Mockito테스트() throws Exception {
         // given
-        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+        adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
         adminFaqDTO = adminFaqJpaService.findPrevOneFaq(adminFaqEntity);
@@ -251,7 +251,7 @@ class AdminFaqJpaServiceTest {
     @DisplayName("이전 FAQ 상세 조회 BDD 테스트")
     void 이전FAQ상세조회BDD테스트() throws Exception {
         // given
-        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+        adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
         adminFaqDTO = adminFaqJpaService.findPrevOneFaq(adminFaqEntity);
@@ -272,7 +272,7 @@ class AdminFaqJpaServiceTest {
     @DisplayName("다음 FAQ 상세 조회 Mockito 테스트")
     void 다음FAQ상세조회Mockito테스트() throws Exception {
         // given
-        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+        adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
         adminFaqDTO = adminFaqJpaService.findNextOneFaq(adminFaqEntity);
@@ -296,7 +296,7 @@ class AdminFaqJpaServiceTest {
     @DisplayName("다음 FAQ 상세 조회 BDD 테스트")
     void 다음FAQ상세조회BDD테스트() throws Exception {
         // given
-        adminFaqEntity = AdminFaqEntity.builder().idx(2).build();
+        adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
         adminFaqDTO = adminFaqJpaService.findNextOneFaq(adminFaqEntity);
@@ -362,7 +362,7 @@ class AdminFaqJpaServiceTest {
     @DisplayName("FAQ수정Mockito테스트")
     void FAQ수정Mockito테스트() throws Exception {
         // given
-        Integer idx = adminFaqJpaService.insertFaq(adminFaqEntity).getIdx();
+        Long idx = adminFaqJpaService.insertFaq(adminFaqEntity).getIdx();
 
         adminFaqEntity = AdminFaqEntity.builder()
                 .idx(idx)
@@ -396,7 +396,7 @@ class AdminFaqJpaServiceTest {
     @DisplayName("FAQ수정BDD테스트")
     void FAQ수정BDD테스트() throws Exception {
         // given
-        Integer idx = adminFaqJpaService.insertFaq(adminFaqEntity).getIdx();
+        Long idx = adminFaqJpaService.insertFaq(adminFaqEntity).getIdx();
 
         adminFaqEntity = AdminFaqEntity.builder()
                 .idx(idx)
@@ -429,8 +429,8 @@ class AdminFaqJpaServiceTest {
         // given
         adminFaqJpaService.insertFaq(adminFaqEntity);
 
-        Integer entityIdx = adminFaqEntity.getIdx();
-        Integer idx = adminFaqJpaService.deleteFaq(adminFaqEntity.getIdx());
+        Long entityIdx = adminFaqEntity.getIdx();
+        Long idx = adminFaqJpaService.deleteFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(entityIdx).isEqualTo(idx);
@@ -445,7 +445,7 @@ class AdminFaqJpaServiceTest {
 
         // when
         when(mockAdminFaqJpaService.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
-        Integer deleteIdx = adminFaqJpaService.deleteFaq(adminFaqEntity.getIdx());
+        Long deleteIdx = adminFaqJpaService.deleteFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(mockAdminFaqJpaService.findOneFaq(adminFaqEntity).getIdx()).isEqualTo(deleteIdx);
@@ -468,7 +468,7 @@ class AdminFaqJpaServiceTest {
 
         // when
         when(mockAdminFaqJpaService.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
-        Integer deleteIdx = adminFaqJpaService.deleteFaq(adminFaqEntity.getIdx());
+        Long deleteIdx = adminFaqJpaService.deleteFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(mockAdminFaqJpaService.findOneFaq(adminFaqEntity).getIdx()).isEqualTo(deleteIdx);

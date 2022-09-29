@@ -74,7 +74,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    Integer deleteAgency(Integer idx) throws Exception;
+    Long deleteAgency(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -96,5 +96,5 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    Integer deleteAgencyImage(Integer idx) throws Exception;
+    Long deleteAgencyImage(Long idx) throws Exception;
 }

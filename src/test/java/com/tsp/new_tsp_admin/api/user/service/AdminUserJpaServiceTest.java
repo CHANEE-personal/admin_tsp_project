@@ -64,7 +64,7 @@ class AdminUserJpaServiceTest {
 
         List<AdminUserDTO> returnUserList = new ArrayList<>();
         returnUserList.add(AdminUserDTO.builder()
-                .idx(1).userId("admin05").password("test1234").name("admin05").visible("Y").build());
+                .idx(1L).userId("admin05").password("test1234").name("admin05").visible("Y").build());
 
         // when
         when(mockAdminUserJpaService.findUsersList(userMap)).thenReturn(returnUserList);
@@ -101,7 +101,7 @@ class AdminUserJpaServiceTest {
 
         List<AdminUserDTO> returnUserList = new ArrayList<>();
         returnUserList.add(AdminUserDTO.builder()
-                .idx(1).userId("admin05").password("test1234").name("admin05").visible("Y").build());
+                .idx(1L).userId("admin05").password("test1234").name("admin05").visible("Y").build());
 
         // when
         given(mockAdminUserJpaService.findUsersList(userMap)).willReturn(returnUserList);
@@ -198,7 +198,7 @@ class AdminUserJpaServiceTest {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin01")
-                .idx(2)
+                .idx(2L)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
                 .build();
 
@@ -309,7 +309,7 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
+        Long idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
 
         AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
@@ -352,7 +352,7 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
+        Long idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
 
         AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
@@ -392,7 +392,7 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
+        Long idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
 
         // then
         assertThat(adminUserJpaService.deleteAdminUser(idx)).isNotNull();

@@ -94,7 +94,7 @@ class AdminPortfolioJpaServiceTest {
 
         List<AdminPortFolioDTO> returnPortfolioList = new ArrayList<>();
         returnPortfolioList.add(AdminPortFolioDTO.builder()
-                .idx(1).title("portfolioTest").description("portfolioTest").hashTag("portfolio").videoUrl("test").visible("Y").build());
+                .idx(1L).title("portfolioTest").description("portfolioTest").hashTag("portfolio").videoUrl("test").visible("Y").build());
 
         // when
         when(mockAdminPortfolioJpaService.findPortfoliosList(portfolioMap)).thenReturn(returnPortfolioList);
@@ -132,7 +132,7 @@ class AdminPortfolioJpaServiceTest {
 
         List<AdminPortFolioDTO> returnPortfolioList = new ArrayList<>();
         returnPortfolioList.add(AdminPortFolioDTO.builder()
-                .idx(1).title("portfolioTest").description("portfolioTest").hashTag("portfolio").videoUrl("test").visible("Y").build());
+                .idx(1L).title("portfolioTest").description("portfolioTest").hashTag("portfolio").videoUrl("test").visible("Y").build());
 
         // when
         given(mockAdminPortfolioJpaService.findPortfoliosList(portfolioMap)).willReturn(returnPortfolioList);
@@ -162,7 +162,7 @@ class AdminPortfolioJpaServiceTest {
     @DisplayName("포트폴리오 상세 조회 테스트")
     void 포트폴리오상세조회테스트() throws Exception {
         // given
-        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1).build();
+        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1L).build();
 
         // then
         assertThat(adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isNotEmpty();
@@ -218,7 +218,7 @@ class AdminPortfolioJpaServiceTest {
     void 이전포트폴리오상세조회Mockito테스트() throws Exception {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -250,7 +250,7 @@ class AdminPortfolioJpaServiceTest {
     void 이전포트폴리오상세조회BDD테스트() throws Exception {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -279,7 +279,7 @@ class AdminPortfolioJpaServiceTest {
     void 다음포트폴리오상세조회Mockito테스트() throws Exception {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -311,7 +311,7 @@ class AdminPortfolioJpaServiceTest {
     void 다음포트폴리오상세조회BDD테스트() throws Exception {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -386,7 +386,7 @@ class AdminPortfolioJpaServiceTest {
     @DisplayName("포트폴리오 수정 Mockito 테스트")
     void 포트폴리오수정Mockito테스트() throws Exception {
         // given
-        Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(idx)
@@ -422,7 +422,7 @@ class AdminPortfolioJpaServiceTest {
     @DisplayName("포트폴리오 수정 BDD 테스트")
     void 포트폴리오수정BDD테스트() throws Exception {
         // given
-        Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(idx)
@@ -455,7 +455,7 @@ class AdminPortfolioJpaServiceTest {
     @DisplayName("포트폴리오 삭제 테스트")
     void 포트폴리오삭제테스트() throws Exception {
         // given
-        Integer idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
         // then
         assertThat(adminPortfolioJpaService.deletePortfolio(idx)).isNotNull();
@@ -472,7 +472,7 @@ class AdminPortfolioJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer portfolioIdx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long portfolioIdx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -515,7 +515,7 @@ class AdminPortfolioJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Integer portfolioIdx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long portfolioIdx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")

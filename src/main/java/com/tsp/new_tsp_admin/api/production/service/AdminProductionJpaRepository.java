@@ -173,7 +173,7 @@ public class AdminProductionJpaRepository {
      * </pre>
      */
     @Modifying(clearAutomatically = true)
-    public Integer insertProductionImage(CommonImageEntity commonImageEntity) {
+    public Long insertProductionImage(CommonImageEntity commonImageEntity) {
         try {
             em.persist(commonImageEntity);
 
@@ -208,7 +208,7 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    public Integer deleteProductionByEm(Integer idx) {
+    public Long deleteProductionByEm(Long idx) {
         em.remove(em.find(AdminProductionEntity.class, idx));
         em.flush();
         em.clear();

@@ -176,7 +176,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @CacheEvict("schedule")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteSchedule(Integer idx) throws TspException {
+    public Long deleteSchedule(Long idx) throws TspException {
         try {
             return adminScheduleJpaRepository.deleteSchedule(idx);
         } catch (Exception e) {
