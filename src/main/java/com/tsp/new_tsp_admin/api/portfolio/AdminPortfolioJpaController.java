@@ -90,7 +90,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}")
-    public AdminPortFolioDTO getPortfolioEdit(@PathVariable Integer idx) throws Exception {
+    public AdminPortFolioDTO getPortfolioEdit(@PathVariable Long idx) throws Exception {
         return this.adminPortfolioJpaService.findOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -112,7 +112,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminPortFolioDTO getPrevPortfolioEdit(@PathVariable Integer idx) throws Exception {
+    public AdminPortFolioDTO getPrevPortfolioEdit(@PathVariable Long idx) throws Exception {
         return this.adminPortfolioJpaService.findPrevOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -134,7 +134,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminPortFolioDTO getNextPortfolioEdit(@PathVariable Integer idx) throws Exception {
+    public AdminPortFolioDTO getNextPortfolioEdit(@PathVariable Long idx) throws Exception {
         return this.adminPortfolioJpaService.findNextOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -200,7 +200,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deletePortfolio(@PathVariable Integer idx) throws Exception {
+    public Long deletePortfolio(@PathVariable Long idx) throws Exception {
         return adminPortfolioJpaService.deletePortfolio(idx);
     }
 
@@ -222,7 +222,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")
-    public List<AdminCommentDTO> findPortfolioAdminComment(@PathVariable Integer idx) throws Exception {
+    public List<AdminCommentDTO> findPortfolioAdminComment(@PathVariable Long idx) throws Exception {
         return adminPortfolioJpaService.findPortfolioAdminComment(AdminPortFolioEntity.builder().idx(idx).build());
     }
 }

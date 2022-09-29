@@ -176,7 +176,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
     @CacheEvict("portfolio")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deletePortfolio(Integer idx) throws TspException {
+    public Long deletePortfolio(Long idx) throws TspException {
         try {
             return adminPortfolioJpaRepository.deletePortfolio(idx);
         } catch (Exception e) {

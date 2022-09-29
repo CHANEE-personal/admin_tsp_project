@@ -73,12 +73,12 @@ class AdminPortfolioJpaRepositoryTest {
         adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
 
         commonImageEntity = CommonImageEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .imageType("main")
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
-                .typeIdx(1)
+                .typeIdx(1L)
                 .typeName("portfolio")
                 .build();
 
@@ -107,7 +107,7 @@ class AdminPortfolioJpaRepositoryTest {
     @DisplayName("포트폴리오상세조회테스트")
     void 포트폴리오상세조회테스트() {
         // given
-        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1).build();
+        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1L).build();
 
         // when
         adminPortFolioDTO = adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
@@ -142,7 +142,7 @@ class AdminPortfolioJpaRepositoryTest {
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
-        portfolioList.add(AdminPortFolioDTO.builder().idx(1)
+        portfolioList.add(AdminPortFolioDTO.builder().idx(1L)
                 .title("포트폴리오 테스트").description("포트폴리오 테스트")
                 .portfolioImage(commonImageDtoList).build());
 
@@ -176,7 +176,7 @@ class AdminPortfolioJpaRepositoryTest {
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
-        portfolioList.add(AdminPortFolioDTO.builder().idx(1)
+        portfolioList.add(AdminPortFolioDTO.builder().idx(1L)
                 .title("포트폴리오 테스트").description("포트폴리오 테스트")
                 .portfolioImage(commonImageDtoList).build());
 
@@ -202,10 +202,10 @@ class AdminPortfolioJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1L).commonImageEntityList(commonImageEntityList).build();
 
         adminPortFolioDTO = AdminPortFolioDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
                 .hashTag("#test")
@@ -241,10 +241,10 @@ class AdminPortfolioJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1L).commonImageEntityList(commonImageEntityList).build();
 
         adminPortFolioDTO = AdminPortFolioDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
                 .hashTag("#test")
@@ -275,7 +275,7 @@ class AdminPortfolioJpaRepositoryTest {
     void 이전or다음포트폴리오상세조회테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -298,7 +298,7 @@ class AdminPortfolioJpaRepositoryTest {
     void 이전포트폴리오상세조회Mockito테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -330,7 +330,7 @@ class AdminPortfolioJpaRepositoryTest {
     void 이전포트폴리오상세조회BDD테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -359,7 +359,7 @@ class AdminPortfolioJpaRepositoryTest {
     void 다음포트폴리오상세조회Mockito테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -391,7 +391,7 @@ class AdminPortfolioJpaRepositoryTest {
     void 다음포트폴리오상세조회BDD테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .idx(2)
+                .idx(2L)
                 .categoryCd(1)
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -466,7 +466,7 @@ class AdminPortfolioJpaRepositoryTest {
     @DisplayName("포트폴리오이미지등록테스트")
     void 포트폴리오이미지등록테스트() {
         // given
-        Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         CommonImageEntity commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -486,7 +486,7 @@ class AdminPortfolioJpaRepositoryTest {
     @DisplayName("포트폴리오수정Mockito테스트")
     void 포트폴리오수정Mockito테스트() {
         // given
-        Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(idx)
@@ -525,7 +525,7 @@ class AdminPortfolioJpaRepositoryTest {
     @DisplayName("포트폴리오수정BDD테스트")
     void 포트폴리오수정BDD테스트() {
         // given
-        Integer idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long idx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(idx)
@@ -563,8 +563,8 @@ class AdminPortfolioJpaRepositoryTest {
         // given
         em.persist(adminPortFolioEntity);
 
-        Integer entityIdx = adminPortFolioEntity.getIdx();
-        Integer deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
+        Long entityIdx = adminPortFolioEntity.getIdx();
+        Long deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(deleteIdx).isEqualTo(entityIdx);
@@ -579,7 +579,7 @@ class AdminPortfolioJpaRepositoryTest {
 
         // when
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
-        Integer deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
+        Long deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getIdx()).isEqualTo(deleteIdx);
@@ -602,7 +602,7 @@ class AdminPortfolioJpaRepositoryTest {
 
         // when
         given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
-        Integer deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
+        Long deleteIdx = adminPortfolioJpaRepository.deletePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity).getIdx()).isEqualTo(deleteIdx);
@@ -624,7 +624,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
@@ -667,7 +667,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Integer portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
+        Long portfolioIdx = adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
