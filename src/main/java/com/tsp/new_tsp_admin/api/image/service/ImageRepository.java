@@ -95,7 +95,7 @@ public class ImageRepository {
      */
 //    @Transactional
     @Modifying(clearAutomatically = true)
-    public Integer insertImage(CommonImageEntity commonImageEntity) {
+    public Long insertImage(CommonImageEntity commonImageEntity) {
         try {
             em.persist(commonImageEntity);
             return commonImageEntity.getIdx();
@@ -115,7 +115,7 @@ public class ImageRepository {
      */
 //    @Transactional
     @Modifying(clearAutomatically = true)
-    public Integer deleteModelImage(Integer idx) {
+    public Long deleteModelImage(Long idx) {
         try {
             em.remove(em.find(CommonImageEntity.class, idx));
             em.flush();
