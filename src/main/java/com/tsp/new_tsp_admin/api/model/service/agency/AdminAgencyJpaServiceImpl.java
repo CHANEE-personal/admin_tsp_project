@@ -139,7 +139,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @CacheEvict("agency")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteAgency(Integer idx) throws TspException {
+    public Long deleteAgency(Long idx) throws TspException {
         try {
             return adminAgencyJpaRepository.deleteAgency(idx);
         } catch (Exception e) {
@@ -175,7 +175,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    public Integer deleteAgencyImage(Integer idx) throws TspException {
+    public Long deleteAgencyImage(Long idx) throws TspException {
         return imageRepository.deleteModelImage(idx);
     }
 }

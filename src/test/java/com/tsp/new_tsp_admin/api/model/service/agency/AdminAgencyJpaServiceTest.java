@@ -85,8 +85,8 @@ class AdminAgencyJpaServiceTest {
 
         List<AdminAgencyDTO> returnAgencyList = new ArrayList<>();
 
-        returnAgencyList.add(AdminAgencyDTO.builder().idx(1).agencyName("agency1").agencyDescription("agency1").visible("Y").build());
-        returnAgencyList.add(AdminAgencyDTO.builder().idx(2).agencyName("agency2").agencyDescription("agency2").visible("Y").build());
+        returnAgencyList.add(AdminAgencyDTO.builder().idx(1L).agencyName("agency1").agencyDescription("agency1").visible("Y").build());
+        returnAgencyList.add(AdminAgencyDTO.builder().idx(2L).agencyName("agency2").agencyDescription("agency2").visible("Y").build());
 
         // when
         when(mockAdminAgencyJpaService.findAgencyList(agencyMap)).thenReturn(returnAgencyList);
@@ -127,8 +127,8 @@ class AdminAgencyJpaServiceTest {
 
         List<AdminAgencyDTO> returnAgencyList = new ArrayList<>();
 
-        returnAgencyList.add(AdminAgencyDTO.builder().idx(1).agencyName("agency1").agencyDescription("agency1").visible("Y").build());
-        returnAgencyList.add(AdminAgencyDTO.builder().idx(2).agencyName("agency2").agencyDescription("agency2").visible("Y").build());
+        returnAgencyList.add(AdminAgencyDTO.builder().idx(1L).agencyName("agency1").agencyDescription("agency1").visible("Y").build());
+        returnAgencyList.add(AdminAgencyDTO.builder().idx(2L).agencyName("agency2").agencyDescription("agency2").visible("Y").build());
 
         // when
         given(mockAdminAgencyJpaService.findAgencyList(agencyMap)).willReturn(returnAgencyList);
@@ -160,7 +160,7 @@ class AdminAgencyJpaServiceTest {
     @DisplayName("소속사 상세 조회 테스트")
     void 소속사상세조회테스트() throws Exception {
         // given
-        adminAgencyEntity = AdminAgencyEntity.builder().idx(1).build();
+        adminAgencyEntity = AdminAgencyEntity.builder().idx(1L).build();
 
         // then
         assertThat(adminAgencyJpaService.findOneAgency(adminAgencyEntity).getAgencyName()).isEqualTo("agency");
@@ -211,7 +211,7 @@ class AdminAgencyJpaServiceTest {
     @DisplayName("소속사 수정 Mockito 테스트")
     void 소속사수정Mockito테스트() throws Exception {
         // given
-        Integer idx = adminAgencyJpaService.insertAgency(adminAgencyEntity).getIdx();
+        Long idx = adminAgencyJpaService.insertAgency(adminAgencyEntity).getIdx();
 
         adminAgencyEntity = AdminAgencyEntity.builder()
                 .idx(idx)
@@ -245,7 +245,7 @@ class AdminAgencyJpaServiceTest {
     @DisplayName("소속사 수정 BDD 테스트")
     void 소속사수정BDD테스트() throws Exception {
         // given
-        Integer idx = adminAgencyJpaService.insertAgency(adminAgencyEntity).getIdx();
+        Long idx = adminAgencyJpaService.insertAgency(adminAgencyEntity).getIdx();
 
         adminAgencyEntity = AdminAgencyEntity.builder()
                 .idx(idx)
@@ -281,7 +281,7 @@ class AdminAgencyJpaServiceTest {
 
         // when
         when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity)).thenReturn(adminAgencyDTO);
-        Integer deleteIdx = adminAgencyJpaService.deleteAgency(adminAgencyEntity.getIdx());
+        Long deleteIdx = adminAgencyJpaService.deleteAgency(adminAgencyEntity.getIdx());
 
         // then
         assertThat(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity).getIdx()).isEqualTo(deleteIdx);
@@ -304,7 +304,7 @@ class AdminAgencyJpaServiceTest {
 
         // when
         given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity)).willReturn(adminAgencyDTO);
-        Integer deleteIdx = adminAgencyJpaService.deleteAgency(adminAgencyEntity.getIdx());
+        Long deleteIdx = adminAgencyJpaService.deleteAgency(adminAgencyEntity.getIdx());
 
         // then
         assertThat(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity).getIdx()).isEqualTo(deleteIdx);

@@ -134,7 +134,7 @@ public class AdminAgencyJpaRepository {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    public Integer deleteAgency(Integer idx) {
+    public Long deleteAgency(Long idx) {
         em.remove(em.find(AdminAgencyEntity.class, idx));
         em.flush();
         em.clear();

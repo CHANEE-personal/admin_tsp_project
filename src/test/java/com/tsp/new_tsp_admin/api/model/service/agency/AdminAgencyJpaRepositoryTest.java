@@ -71,7 +71,7 @@ class AdminAgencyJpaRepositoryTest {
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
-                .typeIdx(1)
+                .typeIdx(1L)
                 .typeName("agency")
                 .visible("Y")
                 .build();
@@ -101,7 +101,7 @@ class AdminAgencyJpaRepositoryTest {
     @DisplayName("소속사상세조회테스트")
     void 소속사상세조회테스트() {
         // given
-        adminAgencyEntity = AdminAgencyEntity.builder().idx(1).build();
+        adminAgencyEntity = AdminAgencyEntity.builder().idx(1L).build();
 
         // when
         adminAgencyDTO = adminAgencyJpaRepository.findOneAgency(adminAgencyEntity);
@@ -131,7 +131,7 @@ class AdminAgencyJpaRepositoryTest {
         agencyMap.put("size", 3);
 
         List<AdminAgencyDTO> agencyList = new ArrayList<>();
-        agencyList.add(AdminAgencyDTO.builder().idx(1)
+        agencyList.add(AdminAgencyDTO.builder().idx(1L)
                 .agencyName("agency").agencyDescription("agency").build());
 
         // when
@@ -162,7 +162,7 @@ class AdminAgencyJpaRepositoryTest {
         agencyMap.put("size", 3);
 
         List<AdminAgencyDTO> agencyList = new ArrayList<>();
-        agencyList.add(AdminAgencyDTO.builder().idx(1)
+        agencyList.add(AdminAgencyDTO.builder().idx(1L)
                 .agencyName("agency").agencyDescription("agency").build());
 
         // when
@@ -188,9 +188,9 @@ class AdminAgencyJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        AdminAgencyEntity adminAgencyEntity = AdminAgencyEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        AdminAgencyEntity adminAgencyEntity = AdminAgencyEntity.builder().idx(1L).commonImageEntityList(commonImageEntityList).build();
         AdminAgencyDTO adminAgencyDTO = AdminAgencyDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .agencyName("agency")
                 .agencyDescription("agency")
                 .visible("Y")
@@ -228,9 +228,9 @@ class AdminAgencyJpaRepositoryTest {
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         commonImageEntityList.add(commonImageEntity);
 
-        AdminAgencyEntity adminAgencyEntity = AdminAgencyEntity.builder().idx(1).commonImageEntityList(commonImageEntityList).build();
+        AdminAgencyEntity adminAgencyEntity = AdminAgencyEntity.builder().idx(1L).commonImageEntityList(commonImageEntityList).build();
         AdminAgencyDTO adminAgencyDTO = AdminAgencyDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .agencyName("agency")
                 .agencyDescription("agency")
                 .visible("Y")
@@ -307,7 +307,7 @@ class AdminAgencyJpaRepositoryTest {
     @DisplayName("소속사수정Mockito테스트")
     void 소속사수정Mockito테스트() {
         // given
-        Integer idx = adminAgencyJpaRepository.insertAgency(adminAgencyEntity).getIdx();
+        Long idx = adminAgencyJpaRepository.insertAgency(adminAgencyEntity).getIdx();
 
         adminAgencyEntity = AdminAgencyEntity.builder()
                 .idx(idx)
@@ -341,7 +341,7 @@ class AdminAgencyJpaRepositoryTest {
     @DisplayName("소속사수정BDD테스트")
     void 소속사수정BDD테스트() {
         // given
-        Integer idx = adminAgencyJpaRepository.insertAgency(adminAgencyEntity).getIdx();
+        Long idx = adminAgencyJpaRepository.insertAgency(adminAgencyEntity).getIdx();
 
         adminAgencyEntity = AdminAgencyEntity.builder()
                 .idx(idx)
@@ -377,7 +377,7 @@ class AdminAgencyJpaRepositoryTest {
 
         // when
         when(mockAdminAgencyJpaRepository.findOneAgency(adminAgencyEntity)).thenReturn(adminAgencyDTO);
-        Integer deleteIdx = adminAgencyJpaRepository.deleteAgency(adminAgencyEntity.getIdx());
+        Long deleteIdx = adminAgencyJpaRepository.deleteAgency(adminAgencyEntity.getIdx());
 
         // then
         assertThat(mockAdminAgencyJpaRepository.findOneAgency(adminAgencyEntity).getIdx()).isEqualTo(deleteIdx);
@@ -400,7 +400,7 @@ class AdminAgencyJpaRepositoryTest {
 
         // when
         given(mockAdminAgencyJpaRepository.findOneAgency(adminAgencyEntity)).willReturn(adminAgencyDTO);
-        Integer deleteIdx = adminAgencyJpaRepository.deleteAgency(adminAgencyEntity.getIdx());
+        Long deleteIdx = adminAgencyJpaRepository.deleteAgency(adminAgencyEntity.getIdx());
 
         // then
         assertThat(mockAdminAgencyJpaRepository.findOneAgency(adminAgencyEntity).getIdx()).isEqualTo(deleteIdx);

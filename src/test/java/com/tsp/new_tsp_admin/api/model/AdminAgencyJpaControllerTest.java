@@ -313,7 +313,7 @@ class AdminAgencyJpaControllerTest {
                 .fileName("test.jpg")
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
-                .typeIdx(1)
+                .typeIdx(1L)
                 .typeName("agency")
                 .build();
 
