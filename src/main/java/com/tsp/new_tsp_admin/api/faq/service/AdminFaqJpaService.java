@@ -93,5 +93,5 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    Integer deleteFaq(Integer idx) throws Exception;
+    Long deleteFaq(Long idx) throws Exception;
 }
