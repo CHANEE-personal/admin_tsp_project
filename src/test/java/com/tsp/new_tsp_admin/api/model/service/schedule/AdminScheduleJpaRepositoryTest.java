@@ -163,7 +163,7 @@ class AdminScheduleJpaRepositoryTest {
                 .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
         List<AdminModelDTO> modelScheduleList = new ArrayList<>();
-        modelScheduleList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희")
+        modelScheduleList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
                 .modelSchedule(scheduleList).build());
 
         // when
@@ -199,7 +199,7 @@ class AdminScheduleJpaRepositoryTest {
                 .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
         List<AdminModelDTO> modelScheduleList = new ArrayList<>();
-        modelScheduleList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희")
+        modelScheduleList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
                 .modelSchedule(scheduleList).build());
 
         // when
@@ -232,7 +232,7 @@ class AdminScheduleJpaRepositoryTest {
                 .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
         List<AdminModelDTO> modelScheduleList = new ArrayList<>();
-        modelScheduleList.add(AdminModelDTO.builder().idx(3).categoryCd(1).modelKorName("조찬희")
+        modelScheduleList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
                 .modelSchedule(scheduleList).build());
 
         // when
@@ -258,7 +258,7 @@ class AdminScheduleJpaRepositoryTest {
     void 모델스케줄상세Mockito조회테스트() {
         // given
         AdminScheduleEntity adminScheduleEntity = AdminScheduleEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
                 .modelScheduleTime(now())
@@ -291,7 +291,7 @@ class AdminScheduleJpaRepositoryTest {
     void 모델스케줄상세BDD조회테스트() {
         // given
         AdminScheduleEntity adminScheduleEntity = AdminScheduleEntity.builder()
-                .idx(1)
+                .idx(1L)
                 .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
                 .modelScheduleTime(now())
@@ -320,7 +320,7 @@ class AdminScheduleJpaRepositoryTest {
     @DisplayName("이전 or 다음 모델 스케줄 상세 조회 테스트")
     void 이전or다음모델스케줄상세조회테스트() {
         // given
-        adminScheduleEntity = AdminScheduleEntity.builder().idx(2).build();
+        adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
         adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
@@ -335,7 +335,7 @@ class AdminScheduleJpaRepositoryTest {
     @DisplayName("이전 모델 스케줄 상세 조회 Mockito 테스트")
     void 이전모델스케줄상세조회Mockito테스트() {
         // given
-        adminScheduleEntity = AdminScheduleEntity.builder().idx(2).build();
+        adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
         adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
@@ -359,7 +359,7 @@ class AdminScheduleJpaRepositoryTest {
     @DisplayName("이전 모델 스케줄 상세 조회 BDD 테스트")
     void 이전모델스케줄상세조회BDD테스트() {
         // given
-        adminScheduleEntity = AdminScheduleEntity.builder().idx(2).build();
+        adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
         adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
@@ -380,7 +380,7 @@ class AdminScheduleJpaRepositoryTest {
     @DisplayName("다음 모델 스케줄 상세 조회 Mockito 테스트")
     void 다음모델스케줄상세조회Mockito테스트() {
         // given
-        adminScheduleEntity = AdminScheduleEntity.builder().idx(2).build();
+        adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
         adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
@@ -404,7 +404,7 @@ class AdminScheduleJpaRepositoryTest {
     @DisplayName("다음 모델 스케줄 상세 조회 BDD 테스트")
     void 다음모델스케줄상세조회BDD테스트() {
         // given
-        adminScheduleEntity = AdminScheduleEntity.builder().idx(2).build();
+        adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
         adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
@@ -470,7 +470,7 @@ class AdminScheduleJpaRepositoryTest {
     @DisplayName("모델스케줄수정Mockito테스트")
     void 모델스케줄수정Mockito테스트() {
         // given
-        Integer idx = adminScheduleJpaRepository.insertSchedule(adminScheduleEntity).getIdx();
+        Long idx = adminScheduleJpaRepository.insertSchedule(adminScheduleEntity).getIdx();
 
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(idx)
@@ -505,7 +505,7 @@ class AdminScheduleJpaRepositoryTest {
     @DisplayName("모델스케줄수정BDD테스트")
     void 모델스케줄수정BDD테스트() {
         // given
-        Integer idx = adminScheduleJpaRepository.insertSchedule(adminScheduleEntity).getIdx();
+        Long idx = adminScheduleJpaRepository.insertSchedule(adminScheduleEntity).getIdx();
 
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(idx)
@@ -542,7 +542,7 @@ class AdminScheduleJpaRepositoryTest {
 
         // when
         when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).thenReturn(adminScheduleDTO);
-        Integer deleteIdx = adminScheduleJpaRepository.deleteSchedule(adminScheduleEntity.getIdx());
+        Long deleteIdx = adminScheduleJpaRepository.deleteSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity).getIdx()).isEqualTo(deleteIdx);
@@ -565,7 +565,7 @@ class AdminScheduleJpaRepositoryTest {
 
         // when
         given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).willReturn(adminScheduleDTO);
-        Integer deleteIdx = adminScheduleJpaRepository.deleteSchedule(adminScheduleEntity.getIdx());
+        Long deleteIdx = adminScheduleJpaRepository.deleteSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity).getIdx()).isEqualTo(deleteIdx);

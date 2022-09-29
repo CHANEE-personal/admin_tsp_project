@@ -33,11 +33,11 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
-    private Integer idx;
+    private Long idx;
 
     @Column(name = "model_idx")
     @ApiModelProperty(value = "모델 idx", required = true)
-    private Integer modelIdx;
+    private Long modelIdx;
 
     @Column(name = "model_schedule")
     @Lob

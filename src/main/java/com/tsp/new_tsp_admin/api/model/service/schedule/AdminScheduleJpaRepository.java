@@ -222,7 +222,7 @@ public class AdminScheduleJpaRepository {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    public Integer deleteSchedule(Integer idx) {
+    public Long deleteSchedule(Long idx) {
         em.remove(em.find(AdminScheduleEntity.class, idx));
         em.flush();
         em.clear();
