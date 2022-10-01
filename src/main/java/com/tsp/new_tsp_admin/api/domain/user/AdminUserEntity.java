@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static javax.persistence.EnumType.STRING;
@@ -64,21 +65,21 @@ public class AdminUserEntity {
 
     @Column(name = "creator", updatable = false)
     @ApiModelProperty(required = true, value = "등록자")
-    private String creator;
+    private Long creator;
 
     @Column(name = "updater", insertable = false)
     @ApiModelProperty(required = true, value = "수정자")
-    private String updater;
+    private Long updater;
 
     @Column(name = "create_time", updatable = false)
     @Temporal(value = TIMESTAMP)
     @ApiModelProperty(required = true, value = "등록 일자")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     @Column(name = "update_time", insertable = false)
     @Temporal(value = TIMESTAMP)
     @ApiModelProperty(required = true, value = "수정 일자")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

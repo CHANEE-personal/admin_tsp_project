@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -29,24 +29,24 @@ public abstract class NewCommonMappedClass {
     @CreatedBy
     @Column(name = "creator", updatable = false)
     @ApiModelProperty(required = true, value = "등록자")
-    private String creator;
+    private Long creator;
 
     @LastModifiedBy
     @Column(name = "updater")
     @ApiModelProperty(required = true, value = "수정자")
-    private String updater;
+    private Long updater;
 
     @CreationTimestamp
     @Column(name = "create_time", updatable = false)
     @Temporal(value = TIMESTAMP)
     @ApiModelProperty(required = true, value = "등록 일자")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     @UpdateTimestamp
     @Column(name = "update_time")
     @Temporal(TIMESTAMP)
     @ApiModelProperty(required = true, value = "수정 일자")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }
