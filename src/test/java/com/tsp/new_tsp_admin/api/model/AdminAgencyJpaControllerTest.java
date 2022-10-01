@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
@@ -36,9 +35,9 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.io.FileInputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
@@ -253,8 +252,8 @@ class AdminAgencyJpaControllerTest {
                 .agencyName("newAgency")
                 .agencyDescription("newAgency")
                 .visible("Y")
-                .updater(adminUserEntity.getUserId())
-                .updateTime(new Date())
+                .updater(1L)
+                .updateTime(LocalDateTime.now())
                 .build();
 
         mockMvc.perform(put("/api/jpa-agency/{idx}", newAdminAgencyEntity.getIdx())

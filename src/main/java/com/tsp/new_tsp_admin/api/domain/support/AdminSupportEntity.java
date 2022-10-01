@@ -14,7 +14,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -64,7 +63,8 @@ public class AdminSupportEntity extends NewCommonMappedClass {
     private String visible;
 
     @Column(name = "support_time")
-    private Date supportTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime supportTime;
 
     @Column(name = "pass_yn")
     private String passYn;

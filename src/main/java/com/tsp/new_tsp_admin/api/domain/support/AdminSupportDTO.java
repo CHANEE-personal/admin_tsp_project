@@ -15,7 +15,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
@@ -63,7 +62,7 @@ public class AdminSupportDTO extends NewCommonDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @ApiModelProperty(value = "지원 시각", required = true)
-    private Date supportTime;
+    private LocalDateTime supportTime;
 
 //    @NotEmpty(message = "지원모델 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(value = "합격여부", required = true)

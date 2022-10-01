@@ -32,9 +32,9 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
@@ -281,8 +281,8 @@ class AdminScheduleJpaControllerTest {
                 .modelIdx(1L)
                 .modelSchedule("스케줄 수정")
                 .visible("Y")
-                .updater(adminUserEntity.getUserId())
-                .updateTime(new Date())
+                .updater(1L)
+                .updateTime(LocalDateTime.now())
                 .build();
 
         mockMvc.perform(put("/api/jpa-schedule/{idx}", newAdminScheduleEntity.getIdx())

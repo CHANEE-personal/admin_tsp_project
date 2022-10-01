@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -140,8 +140,8 @@ public class AdminUserJpaRepository {
         JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
         update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
-                .set(adminUserEntity.updater, "1")
-                .set(adminUserEntity.updateTime, new Date())
+                .set(adminUserEntity.updater, 1L)
+                .set(adminUserEntity.updateTime, LocalDateTime.now())
                 .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
 
         return existAdminUserEntity.getIdx();

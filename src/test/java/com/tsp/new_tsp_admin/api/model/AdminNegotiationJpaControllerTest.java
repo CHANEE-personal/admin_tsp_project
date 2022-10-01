@@ -35,7 +35,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
@@ -297,8 +296,8 @@ class AdminNegotiationJpaControllerTest {
                 .phone("010-1234-5678")
                 .email("test@gmail.com")
                 .visible("Y")
-                .updater(adminUserEntity.getUserId())
-                .updateTime(new Date())
+                .updater(1L)
+                .updateTime(LocalDateTime.now())
                 .build();
 
         mockMvc.perform(put("/api/jpa-negotiation/{idx}", newAdminNegotiationEntity.getIdx())
