@@ -72,5 +72,5 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer deleteCommonCode(Integer idx) throws Exception;
+    Long deleteCommonCode(Long idx) throws Exception;
 }
