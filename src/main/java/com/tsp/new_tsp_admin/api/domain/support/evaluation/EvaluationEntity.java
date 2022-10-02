@@ -2,10 +2,7 @@ package com.tsp.new_tsp_admin.api.domain.support.evaluation;
 
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -19,6 +16,7 @@ import static javax.persistence.GenerationType.*;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(of = "idx", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tsp_evaluate")

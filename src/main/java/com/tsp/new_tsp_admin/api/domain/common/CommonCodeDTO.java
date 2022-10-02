@@ -2,10 +2,7 @@ package com.tsp.new_tsp_admin.api.domain.common;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
 
@@ -14,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(of = "idx", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "공통코드 관련 변수")

@@ -1,9 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @Entity
 @SuperBuilder
+@EqualsAndHashCode(of = "idx", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tsp_cmm_code")

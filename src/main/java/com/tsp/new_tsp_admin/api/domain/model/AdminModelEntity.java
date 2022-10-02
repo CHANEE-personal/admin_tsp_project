@@ -7,10 +7,7 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.common.CustomConverter;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
 
@@ -28,6 +25,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(of = "idx", callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tsp_model")
