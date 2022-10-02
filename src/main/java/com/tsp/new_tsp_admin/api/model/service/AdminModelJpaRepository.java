@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
@@ -258,12 +259,12 @@ public class AdminModelJpaRepository {
     public Long deleteModel(AdminModelEntity existAdminModelEntity) {
         JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-        existAdminModelEntity.setUpdater("1");
-        existAdminModelEntity.setUpdateTime(new Date());
+        existAdminModelEntity.setUpdater(1L);
+        existAdminModelEntity.setUpdateTime(LocalDateTime.now());
 
         return update.set(adminModelEntity.visible, "N")
                 .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                .set(adminModelEntity.updater, "1")
+                .set(adminModelEntity.updater, 1L)
                 .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
     }
 

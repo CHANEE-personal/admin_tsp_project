@@ -19,6 +19,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(of = "idx", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)

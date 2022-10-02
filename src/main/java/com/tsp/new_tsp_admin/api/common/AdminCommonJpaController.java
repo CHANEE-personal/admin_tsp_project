@@ -92,7 +92,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public CommonCodeDTO commonCodeInfo(@PathVariable Integer idx) throws Exception {
+    public CommonCodeDTO commonCodeInfo(@PathVariable Long idx) throws Exception {
         return this.adminCommonJpaService.findOneCommonCode(builder().idx(idx).build());
     }
 
@@ -158,7 +158,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Integer deleteCommonCode(@PathVariable Integer idx) throws Exception {
+    public Long deleteCommonCode(@PathVariable Long idx) throws Exception {
         return adminCommonJpaService.deleteCommonCode(idx);
     }
 }

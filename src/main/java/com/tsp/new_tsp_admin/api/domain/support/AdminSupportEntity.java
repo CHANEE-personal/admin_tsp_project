@@ -2,10 +2,7 @@ package com.tsp.new_tsp_admin.api.domain.support;
 
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,6 +19,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(of = "idx", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tsp_support")

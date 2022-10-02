@@ -117,7 +117,7 @@ public class AdminCommonJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer deleteCommonCode(Integer idx) {
+    public Long deleteCommonCode(Long idx) {
         em.remove(em.find(CommonCodeEntity.class, idx));
         em.flush();
         em.clear();

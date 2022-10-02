@@ -8,10 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.common.CustomConverter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
@@ -26,6 +23,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(of = "idx", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "모델 관련 변수")

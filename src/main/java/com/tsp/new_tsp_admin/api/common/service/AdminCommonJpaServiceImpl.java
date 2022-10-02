@@ -132,7 +132,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @CacheEvict("common")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Integer deleteCommonCode(Integer idx) throws TspException {
+    public Long deleteCommonCode(Long idx) throws TspException {
         try {
             return adminCommonJpaRepository.deleteCommonCode(idx);
         } catch (Exception e) {

@@ -1,9 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @Entity
 @SuperBuilder
+@EqualsAndHashCode(of = "idx", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tsp_cmm_code")
@@ -24,17 +22,17 @@ public class CommonCodeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
-    Integer idx;
+    private Long idx;
 
     @Column(name = "category_cd")
-    Integer categoryCd;
+    private Integer categoryCd;
 
     @Column(name = "category_nm")
-    String categoryNm;
+    private String categoryNm;
 
     @Column(name = "visible")
-    String visible;
+    private String visible;
 
     @Column(name = "cmm_type")
-    String cmmType;
+    private String cmmType;
 }
