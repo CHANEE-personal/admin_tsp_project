@@ -1,14 +1,19 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
+
+import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -63,8 +68,10 @@ public class CommonImageEntity {
     private String visible;
 
     @Column(name = "reg_date", insertable = false, updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @ApiModelProperty(value = "등록일자", hidden = true)
-    private String regDate;
+    private LocalDateTime regDate;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
