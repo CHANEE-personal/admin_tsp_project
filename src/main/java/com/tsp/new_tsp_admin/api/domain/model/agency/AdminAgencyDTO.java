@@ -38,7 +38,7 @@ public class AdminAgencyDTO extends NewCommonDTO {
 
     @NotEmpty(message = "소속사 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "visible")
-    String visible;
+    private String visible;
 
     @ApiModelProperty(required = true, value = "agencyImageList", hidden = true)
     private List<CommonImageDTO> agencyImage = new ArrayList<>();

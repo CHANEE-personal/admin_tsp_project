@@ -25,19 +25,19 @@ public class NewCodeEntity extends NewCommonMappedClass {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
-    Integer idx;
+    private Integer idx;
 
     @Column(name = "category_cd")
-    Integer categoryCd;
+    private Integer categoryCd;
 
     @Column(name = "category_nm")
-    String categoryNm;
+    private String categoryNm;
 
     @Column(name = "visible")
-    String visible;
+    private String visible;
 
     @Column(name = "cmm_type")
-    String cmmType;
+    private String cmmType;
 
     @OneToMany(mappedBy = "newModelCodeJpaDTO", cascade = MERGE, fetch = LAZY)
     private List<AdminModelEntity> adminModelEntityList = new ArrayList<>();
