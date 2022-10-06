@@ -33,7 +33,7 @@ public class AdminUserEntity {
     @Column(name = "idx")
     private Long idx;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", unique = true)
     @NotEmpty(message = "유저 ID 입력은 필수입니다.")
     private String userId;
 
@@ -45,7 +45,7 @@ public class AdminUserEntity {
     @NotEmpty(message = "유저 이름 입력은 필수입니다.")
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @Email
     @NotEmpty(message = "유저 이메일 입력은 필수입니다.")
     private String email;
