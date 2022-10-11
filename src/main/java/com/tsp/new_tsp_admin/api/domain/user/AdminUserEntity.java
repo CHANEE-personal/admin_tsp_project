@@ -1,19 +1,16 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
+import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDateTime;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.*;
-import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Getter
@@ -24,7 +21,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "tsp_admin")
-public class AdminUserEntity {
+public class AdminUserEntity extends NewCommonMappedClass {
     @Transient
     private Integer rnum;
 
@@ -62,24 +59,4 @@ public class AdminUserEntity {
 
     @Enumerated(value = STRING)
     private Role role;
-
-    @Column(name = "creator", updatable = false)
-    @ApiModelProperty(required = true, value = "등록자")
-    private Long creator;
-
-    @Column(name = "updater", insertable = false)
-    @ApiModelProperty(required = true, value = "수정자")
-    private Long updater;
-
-    @Column(name = "create_time", updatable = false)
-    @Temporal(value = TIMESTAMP)
-    @ApiModelProperty(required = true, value = "등록 일자")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime createTime;
-
-    @Column(name = "update_time", insertable = false)
-    @Temporal(value = TIMESTAMP)
-    @ApiModelProperty(required = true, value = "수정 일자")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime updateTime;
 }
