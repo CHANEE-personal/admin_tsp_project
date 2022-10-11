@@ -156,7 +156,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @CachePut("user")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
+    public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) throws TspException {
         try {
             return adminUserJpaRepository.updateAdminUser(adminUserEntity);
         } catch (Exception e) {
