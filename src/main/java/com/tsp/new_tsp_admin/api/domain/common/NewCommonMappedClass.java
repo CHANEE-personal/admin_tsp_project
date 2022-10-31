@@ -16,8 +16,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
-
 @Getter
 @Setter
 @SuperBuilder
