@@ -1118,7 +1118,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelJpaRepository.toggleModelNewYn(adminModelEntity);
+        adminModelJpaRepository.toggleModelNewYn(adminModelEntity.getIdx());
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
@@ -1161,7 +1161,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelJpaRepository.toggleModelNewYn(adminModelEntity);
+        adminModelJpaRepository.toggleModelNewYn(adminModelEntity.getIdx());
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when

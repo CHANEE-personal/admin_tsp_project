@@ -175,7 +175,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 08. 29.
      * </pre>
      */
-    AdminModelDTO toggleModelNewYn(AdminModelEntity adminModelEntity) throws Exception;
+    AdminModelDTO toggleModelNewYn(Long idx) throws Exception;
 
     /**
      * <pre>
