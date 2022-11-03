@@ -102,7 +102,7 @@ class AdminCommonJpaRepositoryTest {
         commonMap.put("size", 3);
 
         List<CommonCodeDTO> commonCodeList = new ArrayList<>();
-        commonCodeList.add(CommonCodeDTO.builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
+        commonCodeList.add(CommonCodeDTO.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
 
         // when
         when(mockAdminCommonJpaRepository.findCommonCodeList(commonMap)).thenReturn(commonCodeList);
@@ -131,7 +131,7 @@ class AdminCommonJpaRepositoryTest {
         commonMap.put("size", 3);
 
         List<CommonCodeDTO> commonCodeList = new ArrayList<>();
-        commonCodeList.add(CommonCodeDTO.builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
+        commonCodeList.add(CommonCodeDTO.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
 
         // when
         given(mockAdminCommonJpaRepository.findCommonCodeList(commonMap)).willReturn(commonCodeList);
@@ -153,7 +153,7 @@ class AdminCommonJpaRepositoryTest {
     @DisplayName("공통코드 상세 조회 테스트")
     void 공통코드상세조회테스트() {
         // given
-        commonCodeEntity = CommonCodeEntity.builder().idx(1).categoryCd(1).build();
+        commonCodeEntity = CommonCodeEntity.builder().idx(1L).categoryCd(1).build();
 
         commonCodeDTO = adminCommonJpaRepository.findOneCommonCode(commonCodeEntity);
 
@@ -178,10 +178,10 @@ class AdminCommonJpaRepositoryTest {
     @DisplayName("공통코드 상세 조회 Mockito 테스트")
     void 공통코드상세조회Mockito테스트() {
         // given
-        commonCodeEntity = CommonCodeEntity.builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
+        commonCodeEntity = CommonCodeEntity.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
 
         commonCodeDTO = CommonCodeDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryNm("men")
                 .cmmType("model")
@@ -211,10 +211,10 @@ class AdminCommonJpaRepositoryTest {
     @DisplayName("공통코드 상세 조회 BDD 테스트")
     void 공통코드상세조회BDD테스트() {
         // given
-        commonCodeEntity = CommonCodeEntity.builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
+        commonCodeEntity = CommonCodeEntity.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
 
         commonCodeDTO = CommonCodeDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryNm("men")
                 .cmmType("model")
@@ -285,7 +285,7 @@ class AdminCommonJpaRepositoryTest {
     @Test
     @DisplayName("공통코드 수정 Mockito 테스트")
     void 공통코드수정Mockito테스트() {
-        Integer idx = adminCommonJpaRepository.insertCommonCode(commonCodeEntity).getIdx();
+        Long idx = adminCommonJpaRepository.insertCommonCode(commonCodeEntity).getIdx();
 
         commonCodeEntity = CommonCodeEntity.builder()
                 .idx(idx)
@@ -319,7 +319,7 @@ class AdminCommonJpaRepositoryTest {
     @Test
     @DisplayName("공통코드 수정 BDD 테스트")
     void 공통코드수정BDD테스트() {
-        Integer idx = adminCommonJpaRepository.insertCommonCode(commonCodeEntity).getIdx();
+        Long idx = adminCommonJpaRepository.insertCommonCode(commonCodeEntity).getIdx();
 
         commonCodeEntity = CommonCodeEntity.builder()
                 .idx(idx)
@@ -353,8 +353,8 @@ class AdminCommonJpaRepositoryTest {
         // given
         em.persist(commonCodeEntity);
 
-        Integer entityIdx = commonCodeEntity.getIdx();
-        Integer deleteIdx = adminCommonJpaRepository.deleteCommonCode(commonCodeEntity.getIdx());
+        Long entityIdx = commonCodeEntity.getIdx();
+        Long deleteIdx = adminCommonJpaRepository.deleteCommonCode(commonCodeEntity.getIdx());
 
         // then
         assertThat(deleteIdx).isEqualTo(entityIdx);

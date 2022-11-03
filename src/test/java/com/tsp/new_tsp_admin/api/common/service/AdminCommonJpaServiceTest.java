@@ -85,7 +85,7 @@ class AdminCommonJpaServiceTest {
         commonMap.put("size", 3);
 
         List<CommonCodeDTO> commonCodeList = new ArrayList<>();
-        commonCodeList.add(CommonCodeDTO.builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
+        commonCodeList.add(CommonCodeDTO.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
 
         // when
         when(mockAdminCommonJpaService.findCommonCodeList(commonMap)).thenReturn(commonCodeList);
@@ -114,7 +114,7 @@ class AdminCommonJpaServiceTest {
         commonMap.put("size", 3);
 
         List<CommonCodeDTO> commonCodeList = new ArrayList<>();
-        commonCodeList.add(CommonCodeDTO.builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
+        commonCodeList.add(CommonCodeDTO.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
 
         // when
         given(mockAdminCommonJpaService.findCommonCodeList(commonMap)).willReturn(commonCodeList);
@@ -136,10 +136,10 @@ class AdminCommonJpaServiceTest {
     @DisplayName("공통코드 상세 조회 Mockito 테스트")
     void 공통코드상세조회Mockito테스트() throws Exception {
         // given
-        commonCodeEntity = builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
+        commonCodeEntity = builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
 
         commonCodeDTO = CommonCodeDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryNm("men")
                 .cmmType("model")
@@ -169,10 +169,10 @@ class AdminCommonJpaServiceTest {
     @DisplayName("공통코드 상세 조회 BDD 테스트")
     void 공통코드상세조회BDD테스트() throws Exception {
         // given
-        commonCodeEntity = builder().idx(1).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
+        commonCodeEntity = builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
 
         commonCodeDTO = CommonCodeDTO.builder()
-                .idx(1)
+                .idx(1L)
                 .categoryCd(1)
                 .categoryNm("men")
                 .cmmType("model")
@@ -244,7 +244,7 @@ class AdminCommonJpaServiceTest {
     @DisplayName("공통코드 수정 Mockito 테스트")
     void 공통코드수정Mockito테스트() throws Exception {
         // given
-        Integer idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
+        Long idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
 
         commonCodeEntity = CommonCodeEntity.builder()
                 .idx(idx)
@@ -279,7 +279,7 @@ class AdminCommonJpaServiceTest {
     @DisplayName("공통코드 수정 BDD 테스트")
     void 공통코드수정BDD테스트() throws Exception {
         // given
-        Integer idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
+        Long idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
 
         commonCodeEntity = CommonCodeEntity.builder()
                 .idx(idx)
@@ -311,7 +311,7 @@ class AdminCommonJpaServiceTest {
     @DisplayName("공통코드 삭제 테스트")
     void 공통코드삭제테스트() throws Exception {
         // given
-        Integer idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
+        Long idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
 
         // then
         assertThat(adminCommonJpaService.deleteCommonCode(idx)).isNotNull();
