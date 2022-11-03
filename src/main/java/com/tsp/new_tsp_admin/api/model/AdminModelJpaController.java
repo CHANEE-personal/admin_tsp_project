@@ -367,7 +367,7 @@ public class AdminModelJpaController {
     })
     @PutMapping(value = "/{idx}/toggle-new")
     public AdminModelDTO toggleModelNewYn(@PathVariable Long idx) throws Exception {
-        return adminModelJpaService.toggleModelNewYn(AdminModelEntity.builder().idx(idx).build());
+        return adminModelJpaService.toggleModelNewYn(idx);
     }
 
     /**

@@ -385,17 +385,19 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 08. 29.
      * </pre>
      */
-    public AdminModelDTO toggleModelNewYn(AdminModelEntity existAdminModelEntity) {
+    public AdminModelDTO toggleModelNewYn(Long idx) {
+        String newYn = Objects.equals(em.find(AdminModelEntity.class, idx).getNewYn(), "Y") ? "N" : "Y";
+
         queryFactory
                 .update(adminModelEntity)
-                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx()))
-                .set(adminModelEntity.newYn, Objects.equals(existAdminModelEntity.getNewYn(), "Y") ? "N" : "Y")
+                .where(adminModelEntity.idx.eq(idx))
+                .set(adminModelEntity.newYn, newYn)
                 .execute();
 
         em.flush();
         em.clear();
 
-        return INSTANCE.toDto(existAdminModelEntity);
+        return INSTANCE.toDto(em.find(AdminModelEntity.class, idx));
     }
 
     /**

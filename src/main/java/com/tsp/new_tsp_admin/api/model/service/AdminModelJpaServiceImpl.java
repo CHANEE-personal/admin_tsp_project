@@ -315,9 +315,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @CachePut("model")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelDTO toggleModelNewYn(AdminModelEntity adminModelEntity) throws Exception {
+    public AdminModelDTO toggleModelNewYn(Long idx) throws TspException {
         try {
-            return adminModelJpaRepository.toggleModelNewYn(adminModelEntity);
+            return adminModelJpaRepository.toggleModelNewYn(idx);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_MODEL, e);
         }
