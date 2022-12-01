@@ -78,9 +78,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Cacheable("model")
     @Transactional(readOnly = true)
-    public AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) throws TspException {
+    public AdminModelDTO findOneModel(Long idx) throws TspException {
         try {
-            return adminModelJpaRepository.findOneModel(adminModelEntity);
+            return adminModelJpaRepository.findOneModel(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL, e);
         }

@@ -210,7 +210,7 @@ class AdminModelJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 상세 조회 테스트")
     void 모델상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-model/2/143")
+        mockMvc.perform(get("/api/jpa-model/143")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -225,22 +225,22 @@ class AdminModelJpaControllerTest {
                 .andExpect(jsonPath("$.size3").value("31-24-34"))
                 .andExpect(jsonPath("$.shoes").value("240"));
     }
-    @Test
-    @DisplayName("Admin 모델 상세 조회 예외 테스트")
-    void 모델상세조회Api예외테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-model/-1/1")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn().getResponse().getContentAsString().equals("모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.");
-    }
+//    @Test
+//    @DisplayName("Admin 모델 상세 조회 예외 테스트")
+//    void 모델상세조회Api예외테스트() throws Exception {
+//        mockMvc.perform(get("/api/jpa-model/-1")
+//                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+//                .andDo(print())
+//                .andExpect(status().isBadRequest())
+//                .andReturn().getResponse().getContentAsString().equals("모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.");
+//    }
 
     @Test
     @Disabled
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 모델 상세 조회 권한 테스트")
     void 모델상세조회Api권한테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-model/2/143")
+        mockMvc.perform(get("/api/jpa-model/143")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());

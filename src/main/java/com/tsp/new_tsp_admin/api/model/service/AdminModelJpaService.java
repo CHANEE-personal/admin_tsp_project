@@ -43,7 +43,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) throws Exception;
+    AdminModelDTO findOneModel(Long idx) throws Exception;
 
     /**
      * <pre>
