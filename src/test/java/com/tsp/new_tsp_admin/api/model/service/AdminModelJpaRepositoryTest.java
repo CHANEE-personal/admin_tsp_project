@@ -224,7 +224,7 @@ class AdminModelJpaRepositoryTest {
         adminModelEntity = AdminModelEntity.builder().idx(143L).categoryCd(2).build();
 
         // when
-        adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
+        adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertAll(() -> {
@@ -286,7 +286,7 @@ class AdminModelJpaRepositoryTest {
         adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
 
         // when
-        adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity);
+        adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // 이전 모델
         assertThat(adminModelJpaRepository.findPrevOneModel(adminModelEntity).getIdx()).isEqualTo(144);
@@ -405,8 +405,8 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         // when
-        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertThat(modelInfo.getIdx()).isEqualTo(1);
@@ -428,12 +428,12 @@ class AdminModelJpaRepositoryTest {
         assertThat(modelInfo.getModelImage().get(0).getTypeName()).isEqualTo("model");
 
         // verify
-        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
-        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity.getIdx());
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         verifyNoMoreInteractions(mockAdminModelJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminModelJpaRepository);
-        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity.getIdx());
     }
 
     @Test
@@ -461,8 +461,8 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         // when
-        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertThat(modelInfo.getIdx()).isEqualTo(1);
@@ -484,8 +484,8 @@ class AdminModelJpaRepositoryTest {
         assertThat(modelInfo.getModelImage().get(0).getTypeName()).isEqualTo("model");
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
-        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity.getIdx());
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -496,20 +496,20 @@ class AdminModelJpaRepositoryTest {
         adminModelJpaRepository.insertModel(adminModelEntity);
 
         // when
-        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
         assertThat(modelInfo.getCategoryAge()).isEqualTo(2);
 
         // verify
-        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
-        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity.getIdx());
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         verifyNoMoreInteractions(mockAdminModelJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminModelJpaRepository);
-        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity.getIdx());
     }
 
     @Test
@@ -519,16 +519,16 @@ class AdminModelJpaRepositoryTest {
         adminModelJpaRepository.insertModel(adminModelEntity);
 
         // when
-        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertThat(modelInfo.getCategoryCd()).isEqualTo(1);
         assertThat(modelInfo.getCategoryAge()).isEqualTo(2);
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
-        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity.getIdx());
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -539,15 +539,15 @@ class AdminModelJpaRepositoryTest {
         AdminModelDTO modelInfo = adminModelJpaRepository.insertModel(adminModelEntity);
 
         // when
-        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(modelInfo);
-        AdminModelDTO newModelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).thenReturn(modelInfo);
+        AdminModelDTO newModelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertThat(newModelInfo.getCreator()).isNotNull();
         assertThat(newModelInfo.getCreateTime()).isNotNull();
 
         InOrder inOrder = inOrder(mockAdminModelJpaRepository);
-        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity.getIdx());
     }
 
     @Test
@@ -606,20 +606,20 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
-        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertThat(modelInfo.getCategoryCd()).isEqualTo(2);
         assertThat(modelInfo.getCategoryAge()).isEqualTo(3);
 
         // verify
-        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
-        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity.getIdx());
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         verifyNoMoreInteractions(mockAdminModelJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminModelJpaRepository);
-        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity.getIdx());
     }
 
     @Test
@@ -652,16 +652,16 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
-        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertThat(modelInfo.getCategoryCd()).isEqualTo(2);
         assertThat(modelInfo.getCategoryAge()).isEqualTo(3);
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
-        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity.getIdx());
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -712,19 +712,19 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
-        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).thenReturn(adminModelDTO);
         Long deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
 
         // then
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
-        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity.getIdx());
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         verifyNoMoreInteractions(mockAdminModelJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminModelJpaRepository);
-        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity.getIdx());
     }
 
     @Test
@@ -735,15 +735,15 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
-        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
+        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).willReturn(adminModelDTO);
         Long deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
 
         // then
-        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
-        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity.getIdx());
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -825,8 +825,8 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(newAdminModelEntity);
 
         // when
-        when(mockAdminModelJpaRepository.findOneModel(newAdminModelEntity)).thenReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(newAdminModelEntity);
+        when(mockAdminModelJpaRepository.findOneModel(newAdminModelEntity.getIdx())).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(newAdminModelEntity.getIdx());
 
         // then
         assertThat(modelInfo.getAgencyIdx()).isEqualTo(adminModelEntity.getAgencyIdx());
@@ -834,12 +834,12 @@ class AdminModelJpaRepositoryTest {
         assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyDescription());
 
         // verify
-        verify(mockAdminModelJpaRepository, times(1)).findOneModel(newAdminModelEntity);
-        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(newAdminModelEntity);
+        verify(mockAdminModelJpaRepository, times(1)).findOneModel(newAdminModelEntity.getIdx());
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(newAdminModelEntity.getIdx());
         verifyNoMoreInteractions(mockAdminModelJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminModelJpaRepository);
-        inOrder.verify(mockAdminModelJpaRepository).findOneModel(newAdminModelEntity);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(newAdminModelEntity.getIdx());
     }
 
     @Test
@@ -900,8 +900,8 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(newAdminModelEntity);
 
         // when
-        given(mockAdminModelJpaRepository.findOneModel(newAdminModelEntity)).willReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(newAdminModelEntity);
+        given(mockAdminModelJpaRepository.findOneModel(newAdminModelEntity.getIdx())).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(newAdminModelEntity.getIdx());
 
         // then
         assertThat(modelInfo.getAgencyIdx()).isEqualTo(adminModelEntity.getAgencyIdx());
@@ -909,8 +909,8 @@ class AdminModelJpaRepositoryTest {
         assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyDescription());
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(newAdminModelEntity);
-        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(newAdminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(newAdminModelEntity.getIdx());
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(newAdminModelEntity.getIdx());
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -1122,18 +1122,18 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
-        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).thenReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        when(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).thenReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         assertThat(modelInfo.getNewYn()).isEqualTo("N");
 
         // verify
-        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity);
-        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity);
+        verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity.getIdx());
+        verify(mockAdminModelJpaRepository, atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         verifyNoMoreInteractions(mockAdminModelJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminModelJpaRepository);
-        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity);
+        inOrder.verify(mockAdminModelJpaRepository).findOneModel(adminModelEntity.getIdx());
     }
 
     @Test
@@ -1165,14 +1165,14 @@ class AdminModelJpaRepositoryTest {
         adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
 
         // when
-        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity)).willReturn(adminModelDTO);
-        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity);
+        given(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).willReturn(adminModelDTO);
+        AdminModelDTO modelInfo = mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         assertThat(modelInfo.getNewYn()).isEqualTo("N");
 
         // verify
-        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity);
-        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity);
+        then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity.getIdx());
+        then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModel(adminModelEntity.getIdx());
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
     }
 

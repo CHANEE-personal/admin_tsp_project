@@ -112,7 +112,7 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) {
+    public AdminModelDTO findOneModel(Long idx) {
         //모델 상세 조회
         AdminModelEntity findOneModel = queryFactory
                 .selectFrom(adminModelEntity)
@@ -120,7 +120,7 @@ public class AdminModelJpaRepository {
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
-                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())
+                .where(adminModelEntity.idx.eq(idx)
                         .and(adminModelEntity.visible.eq("Y"))
                         .and(commonImageEntity.typeName.eq("model")))
                 .fetchOne();

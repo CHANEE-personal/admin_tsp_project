@@ -8,6 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
 import com.tsp.new_tsp_admin.common.Page;
 import com.tsp.new_tsp_admin.common.SearchCommon;
+import com.tsp.new_tsp_admin.exception.TspException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL;
 import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
@@ -83,7 +85,7 @@ public class AdminModelJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getModelEdit
+     * 1. MethodName : findOneModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 상세
      * 4. 작성자       : CHO
@@ -98,10 +100,9 @@ public class AdminModelJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @GetMapping("/{categoryCd}/{idx}")
-    public AdminModelDTO getModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                      @PathVariable Long idx) throws Exception {
-        return this.adminModelJpaService.findOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
+    @GetMapping("/{idx}")
+    public AdminModelDTO findOneModel(@PathVariable Long idx) throws Exception {
+        return this.adminModelJpaService.findOneModel(idx);
     }
 
     /**
@@ -234,7 +235,10 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminModelDTO updateModel(@Valid @RequestBody AdminModelEntity adminModelEntity) throws Exception {
+    public AdminModelDTO updateModel(@PathVariable Long idx, @Valid @RequestBody AdminModelEntity adminModelEntity) throws Exception {
+        if (adminModelJpaService.findOneModel(idx) == null) {
+            throw new TspException(NOT_FOUND_MODEL, new Throwable());
+        }
         return adminModelJpaService.updateModel(adminModelEntity);
     }
 
