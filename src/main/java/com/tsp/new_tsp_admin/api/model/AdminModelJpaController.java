@@ -34,7 +34,7 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 @Validated
 @RestController
 @Api(tags = "모델 관련 API")
-@RequestMapping("/api/jpa-model")
+@RequestMapping("/api/model")
 @RequiredArgsConstructor
 public class AdminModelJpaController {
     private final AdminModelJpaService adminModelJpaService;
@@ -42,7 +42,7 @@ public class AdminModelJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getModelList
+     * 1. MethodName : findModelList
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
@@ -58,17 +58,17 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists/{categoryCd}")
-    public Map<String, Object> getModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+    public Map<String, Object> findModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                             @RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         // 페이징 및 검색
         Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
         modelMap.put("categoryCd", categoryCd);
 
-        Integer modelListCount = this.adminModelJpaService.findModelsCount(modelMap);
+        Integer modelListCount = this.adminModelJpaService.findModelCount(modelMap);
         List<AdminModelDTO> modelList = new ArrayList<>();
 
         if (modelListCount > 0) {
-            modelList = this.adminModelJpaService.findModelsList(modelMap);
+            modelList = this.adminModelJpaService.findModelList(modelMap);
         }
 
         // 리스트 수
@@ -107,7 +107,7 @@ public class AdminModelJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getPrevModelEdit
+     * 1. MethodName : findPrevOneModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 이전 모델 상세
      * 4. 작성자       : CHO
@@ -123,14 +123,14 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{categoryCd}/{idx}/prev")
-    public AdminModelDTO getPrevModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+    public AdminModelDTO findPrevOneModel(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                       @PathVariable Long idx) throws Exception {
         return this.adminModelJpaService.findPrevOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
     }
 
     /**
      * <pre>
-     * 1. MethodName : getNextModelEdit
+     * 1. MethodName : findNextOneModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 다음 모델 상세
      * 4. 작성자       : CHO
@@ -146,7 +146,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{categoryCd}/{idx}/next")
-    public AdminModelDTO getNextModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+    public AdminModelDTO findNextOneModel(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                           @PathVariable Long idx) throws Exception {
         return this.adminModelJpaService.findNextOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
     }
@@ -306,7 +306,7 @@ public class AdminModelJpaController {
     })
     @GetMapping("/{idx}/admin-comment")
     public List<AdminCommentDTO> findModelAdminComment(@PathVariable Long idx) throws Exception {
-        return adminModelJpaService.findModelAdminComment(AdminModelEntity.builder().idx(idx).build());
+        return adminModelJpaService.findModelAdminComment(idx);
     }
 
     /**
@@ -393,6 +393,6 @@ public class AdminModelJpaController {
     })
     @GetMapping(value = "/{idx}/schedule")
     public List<AdminScheduleDTO> findOneModelSchedule(@PathVariable Long idx) throws Exception {
-        return adminModelJpaService.findOneModelSchedule(AdminModelEntity.builder().idx(idx).build());
+        return adminModelJpaService.findOneModelSchedule(idx);
     }
 }

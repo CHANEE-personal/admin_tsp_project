@@ -73,9 +73,9 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Cacheable("schedule")
     @Transactional(readOnly = true)
-    public AdminScheduleDTO findOneSchedule(AdminScheduleEntity adminScheduleEntity) throws TspException {
+    public AdminScheduleDTO findOneSchedule(Long idx) throws TspException {
         try {
-            return adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+            return adminScheduleJpaRepository.findOneSchedule(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_SCHEDULE, e);
         }
@@ -93,9 +93,9 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Cacheable("schedule")
     @Transactional(readOnly = true)
-    public AdminScheduleDTO findPrevOneSchedule(AdminScheduleEntity adminScheduleEntity) throws TspException {
+    public AdminScheduleDTO findPrevOneSchedule(Long idx) throws TspException {
         try {
-            return adminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity);
+            return adminScheduleJpaRepository.findPrevOneSchedule(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_SCHEDULE, e);
         }
@@ -113,9 +113,9 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Cacheable("schedule")
     @Transactional(readOnly = true)
-    public AdminScheduleDTO findNextOneSchedule(AdminScheduleEntity adminScheduleEntity) throws TspException {
+    public AdminScheduleDTO findNextOneSchedule(Long idx) throws TspException {
         try {
-            return adminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity);
+            return adminScheduleJpaRepository.findNextOneSchedule(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_SCHEDULE, e);
         }

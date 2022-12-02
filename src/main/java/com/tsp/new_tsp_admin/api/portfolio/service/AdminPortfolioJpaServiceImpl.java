@@ -33,9 +33,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws TspException {
+    public Integer findPortfolioCount(Map<String, Object> portfolioMap) throws TspException {
         try {
-            return adminPortfolioJpaRepository.findPortfoliosCount(portfolioMap);
+            return adminPortfolioJpaRepository.findPortfolioCount(portfolioMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
         }
@@ -43,7 +43,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findPortfoliosList
+     * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
      * 4. 작성자       : CHO
@@ -53,9 +53,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
     @Override
     @Cacheable("portfolio")
     @Transactional(readOnly = true)
-    public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws TspException {
+    public List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) throws TspException {
         try {
-            return adminPortfolioJpaRepository.findPortfoliosList(portfolioMap);
+            return adminPortfolioJpaRepository.findPortfolioList(portfolioMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
         }
@@ -195,9 +195,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findPortfolioAdminComment(AdminPortFolioEntity adminPortfolioEntity) throws TspException{
+    public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) throws TspException{
         try {
-            return adminPortfolioJpaRepository.findPortfolioAdminComment(adminPortfolioEntity);
+            return adminPortfolioJpaRepository.findPortfolioAdminComment(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMENT_LIST, e);
         }

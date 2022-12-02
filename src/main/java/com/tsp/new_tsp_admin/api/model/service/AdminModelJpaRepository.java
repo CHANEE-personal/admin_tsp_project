@@ -40,59 +40,60 @@ public class AdminModelJpaRepository {
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
-    private BooleanExpression searchModel(Map<String, Object> modelMap) {
+    private BooleanExpression searchCategory(Map<String, Object> modelMap) {
+        int categoryCd = getInt(modelMap.get("categoryCd"), 0);
+
+        return adminModelEntity.categoryCd.eq(categoryCd);
+    }
+
+    private BooleanExpression searchModelInfo(Map<String, Object> modelMap) {
         String searchType = getString(modelMap.get("searchType"), "");
         String searchKeyword = getString(modelMap.get("searchKeyword"), "");
-        Integer categoryCd = getInt(modelMap.get("categoryCd"), 0);
 
         if ("0".equals(searchType)) {
             return adminModelEntity.modelKorName.contains(searchKeyword)
                     .or(adminModelEntity.modelEngName.contains(searchKeyword)
-                    .or(adminModelEntity.modelDescription.contains(searchKeyword)))
-                    .and(adminModelEntity.categoryCd.eq(categoryCd));
+                    .or(adminModelEntity.modelDescription.contains(searchKeyword)));
         } else if ("1".equals(searchType)) {
             return adminModelEntity.modelKorName.contains(searchKeyword)
-                    .or(adminModelEntity.modelEngName.contains(searchKeyword))
-                    .and(adminModelEntity.categoryCd.eq(categoryCd));
+                    .or(adminModelEntity.modelEngName.contains(searchKeyword));
         } else {
-            if (!"".equals(searchKeyword)) {
-                return adminModelEntity.modelDescription.contains(searchKeyword).and(adminModelEntity.categoryCd.eq(categoryCd));
-            } else {
-                return adminModelEntity.categoryCd.eq(categoryCd);
-            }
+            return adminModelEntity.modelDescription.contains(searchKeyword);
         }
     }
 
     /**
      * <pre>
-     * 1. MethodName : findModelsCount
+     * 1. MethodName : findModelCount
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 리스트 갯수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer findModelsCount(Map<String, Object> modelMap) {
-        return queryFactory.selectFrom(adminModelEntity).where(searchModel(modelMap)).fetch().size();
+    public int findModelCount(Map<String, Object> modelMap) {
+        return queryFactory.selectFrom(adminModelEntity)
+                .where(searchCategory(modelMap).or(searchModelInfo(modelMap)))
+                .fetch().size();
     }
 
 
     /**
      * <pre>
-     * 1. MethodName : findModelsList
+     * 1. MethodName : findModelList
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
+    public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) {
         List<AdminModelEntity> modelList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
-                .where(searchModel(modelMap).and(adminModelEntity.visible.eq("Y")))
+                .where((searchCategory(modelMap).or(searchModelInfo(modelMap))))
                 .offset(getInt(modelMap.get("jpaStartPage"), 0))
                 .limit(getInt(modelMap.get("size"), 0))
                 .fetch();
@@ -116,7 +117,6 @@ public class AdminModelJpaRepository {
         //모델 상세 조회
         AdminModelEntity findOneModel = queryFactory
                 .selectFrom(adminModelEntity)
-                .orderBy(adminModelEntity.idx.desc())
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
@@ -324,11 +324,11 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    public List<AdminCommentDTO> findModelAdminComment(AdminModelEntity existAdminModelEntity) {
+    public List<AdminCommentDTO> findModelAdminComment(Long idx) {
         List<AdminCommentEntity> adminCommentEntity = queryFactory
                 .selectFrom(QAdminCommentEntity.adminCommentEntity)
                 .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("model")
-                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(existAdminModelEntity.getIdx()))
+                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(idx))
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
@@ -346,7 +346,8 @@ public class AdminModelJpaRepository {
      */
     public Integer findNewModelsCount(Map<String, Object> modelMap) {
         return queryFactory.selectFrom(adminModelEntity)
-                .where(searchModel(modelMap).and(adminModelEntity.newYn.eq("Y")))
+                .where((searchCategory(modelMap).or(searchModelInfo(modelMap)))
+                        .and(adminModelEntity.newYn.eq("Y")))
                 .fetch().size();
     }
 
@@ -365,7 +366,8 @@ public class AdminModelJpaRepository {
                 .orderBy(adminModelEntity.idx.desc())
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
-                .where(searchModel(modelMap).and(adminModelEntity.visible.eq("Y")).and(adminModelEntity.newYn.eq("Y")))
+                .where((searchCategory(modelMap).or(searchModelInfo(modelMap)))
+                        .and(adminModelEntity.newYn.eq("Y")))
                 .offset(getInt(modelMap.get("jpaStartPage"), 0))
                 .limit(getInt(modelMap.get("size"), 0))
                 .fetch();
@@ -409,11 +411,11 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 09. 03.
      * </pre>
      */
-    public List<AdminScheduleDTO> findOneModelSchedule(AdminModelEntity adminModelEntity) {
+    public List<AdminScheduleDTO> findOneModelSchedule(Long idx) {
         List<AdminScheduleEntity> scheduleList = queryFactory
                 .selectFrom(adminScheduleEntity)
                 .orderBy(adminScheduleEntity.idx.desc())
-                .where(adminScheduleEntity.modelIdx.eq(adminModelEntity.getIdx())
+                .where(adminScheduleEntity.modelIdx.eq(idx)
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .fetch();
 

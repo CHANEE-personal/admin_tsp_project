@@ -26,7 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
 @RestController
-@RequestMapping("/api/jpa-production")
+@RequestMapping("/api/production")
 @Api(tags = "프로덕션 관련 API")
 @RequiredArgsConstructor
 public class AdminProductionJpaController {
@@ -35,7 +35,7 @@ public class AdminProductionJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getProductionList
+     * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
      * 4. 작성자       : CHO
@@ -51,14 +51,14 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> getProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         Map<String, Object> productionMap = new HashMap<>();
 
-        Integer productionCnt = this.adminProductionJpaService.findProductionsCount(searchCommon.searchCommon(page, paramMap));
+        Integer productionCnt = this.adminProductionJpaService.findProductionCount(searchCommon.searchCommon(page, paramMap));
         List<AdminProductionDTO> productionList = new ArrayList<>();
 
         if (productionCnt > 0) {
-            productionList = this.adminProductionJpaService.findProductionsList(searchCommon.searchCommon(page, paramMap));
+            productionList = this.adminProductionJpaService.findProductionList(searchCommon.searchCommon(page, paramMap));
         }
 
         // 리스트 수
@@ -75,7 +75,7 @@ public class AdminProductionJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getProductionEdit
+     * 1. MethodName : findOneProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 상세 조회
      * 4. 작성자       : CHO
@@ -91,13 +91,13 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminProductionDTO getProductionEdit(@PathVariable Long idx) throws Exception {
-        return adminProductionJpaService.findOneProduction(AdminProductionEntity.builder().idx(idx).build());
+    public AdminProductionDTO findOneProduction(@PathVariable Long idx) throws Exception {
+        return adminProductionJpaService.findOneProduction(idx);
     }
 
     /**
      * <pre>
-     * 1. MethodName : getPrevProductionEdit
+     * 1. MethodName : findPrevOneProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 이전 프로덕션 상세
      * 4. 작성자       : CHO
@@ -113,13 +113,13 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminProductionDTO getPrevProductionEdit(@PathVariable Long idx) throws Exception {
-        return this.adminProductionJpaService.findPrevOneProduction(AdminProductionEntity.builder().idx(idx).build());
+    public AdminProductionDTO findPrevOneProduction(@PathVariable Long idx) throws Exception {
+        return this.adminProductionJpaService.findPrevOneProduction(idx);
     }
 
     /**
      * <pre>
-     * 1. MethodName : getNextProductionEdit
+     * 1. MethodName : findNextOneProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 다음 프로덕션 상세
      * 4. 작성자       : CHO
@@ -135,8 +135,8 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminProductionDTO getNextProductionEdit(@PathVariable Long idx) throws Exception {
-        return this.adminProductionJpaService.findNextOneProduction(AdminProductionEntity.builder().idx(idx).build());
+    public AdminProductionDTO findNextOneProduction(@PathVariable Long idx) throws Exception {
+        return this.adminProductionJpaService.findNextOneProduction(idx);
     }
 
     /**
@@ -224,6 +224,6 @@ public class AdminProductionJpaController {
     })
     @GetMapping("/{idx}/admin-comment")
     public List<AdminCommentDTO> findProductionAdminComment(@PathVariable Long idx) throws Exception {
-        return adminProductionJpaService.findProductionAdminComment(AdminProductionEntity.builder().idx(idx).build());
+        return adminProductionJpaService.findProductionAdminComment(idx);
     }
 }

@@ -41,7 +41,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    AdminAgencyDTO findOneAgency(AdminAgencyEntity adminAgencyEntity) throws Exception;
+    AdminAgencyDTO findOneAgency(Long idx) throws Exception;
 
     /**
      * <pre>

@@ -108,12 +108,12 @@ public class AdminNegotiationJpaRepository {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    public AdminNegotiationDTO findOneNegotiation(AdminNegotiationEntity existAdminNegotiationEntity) {
+    public AdminNegotiationDTO findOneNegotiation(Long idx) {
         AdminNegotiationEntity findOneNegotiation = queryFactory
                 .selectFrom(adminNegotiationEntity)
                 .orderBy(adminNegotiationEntity.idx.desc())
                 .where(adminNegotiationEntity.visible.eq("Y")
-                        .and(adminNegotiationEntity.idx.eq(existAdminNegotiationEntity.getIdx())))
+                        .and(adminNegotiationEntity.idx.eq(idx)))
                 .fetchOne();
 
         return NegotiationMapper.INSTANCE.toDto(findOneNegotiation);
@@ -151,12 +151,12 @@ public class AdminNegotiationJpaRepository {
      * 5. 작성일       : 2022. 09. 21.
      * </pre>
      */
-    public AdminNegotiationDTO findPrevOneNegotiation(AdminNegotiationEntity existAdminNegotiationEntity) {
+    public AdminNegotiationDTO findPrevOneNegotiation(Long idx) {
         // 이전 모델 섭외 조회
         AdminNegotiationEntity findPrevOneNegotiation = queryFactory
                 .selectFrom(adminNegotiationEntity)
                 .orderBy(adminNegotiationEntity.idx.desc())
-                .where(adminNegotiationEntity.idx.lt(existAdminNegotiationEntity.getIdx())
+                .where(adminNegotiationEntity.idx.lt(idx)
                         .and(adminNegotiationEntity.visible.eq("Y")))
                 .fetchFirst();
 
@@ -172,12 +172,12 @@ public class AdminNegotiationJpaRepository {
      * 5. 작성일       : 2022. 09. 21.
      * </pre>
      */
-    public AdminNegotiationDTO findNextOneNegotiation(AdminNegotiationEntity existAdminNegotiationEntity) {
+    public AdminNegotiationDTO findNextOneNegotiation(Long idx) {
         // 다음 모델 섭외 조회
         AdminNegotiationEntity findNextOneNegotiation = queryFactory
                 .selectFrom(adminNegotiationEntity)
                 .orderBy(adminNegotiationEntity.idx.asc())
-                .where(adminNegotiationEntity.idx.gt(existAdminNegotiationEntity.getIdx())
+                .where(adminNegotiationEntity.idx.gt(idx)
                         .and(adminNegotiationEntity.visible.eq("Y")))
                 .fetchFirst();
 

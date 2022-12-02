@@ -34,7 +34,7 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 
 @RestController
 @Api(tags = "관리자 회원 관련 API")
-@RequestMapping("/api/jpa-user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class AdminUserJpaController {
     private final AdminUserJpaService adminUserJpaService;
@@ -45,7 +45,7 @@ public class AdminUserJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : findUsersList
+     * 1. MethodName : findUserList
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : Admin User 조회
      * 4. 작성자       : CHO
@@ -61,8 +61,8 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping
-    public List<AdminUserDTO> findUsersList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
-        return adminUserJpaService.findUsersList(searchCommon.searchCommon(page, paramMap));
+    public List<AdminUserDTO> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+        return adminUserJpaService.findUserList(searchCommon.searchCommon(page, paramMap));
     }
 
     /**

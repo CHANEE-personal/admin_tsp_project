@@ -54,14 +54,14 @@ public class AdminNoticeJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findNoticesList
+     * 1. MethodName : findNoticeList
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    public List<AdminNoticeDTO> findNoticesList(Map<String, Object> noticeMap) {
+    public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) {
         List<AdminNoticeEntity> noticeList = queryFactory
                 .selectFrom(adminNoticeEntity)
                 .orderBy(adminNoticeEntity.idx.desc())
@@ -85,11 +85,11 @@ public class AdminNoticeJpaRepository {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    AdminNoticeDTO findOneNotice(AdminNoticeEntity existAdminNoticeEntity) {
+    AdminNoticeDTO findOneNotice(Long idx) {
         AdminNoticeEntity findOneNotice = queryFactory
                 .selectFrom(adminNoticeEntity)
                 .orderBy(adminNoticeEntity.idx.desc())
-                .where(adminNoticeEntity.idx.eq(existAdminNoticeEntity.getIdx())
+                .where(adminNoticeEntity.idx.eq(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
                 .fetchOne();
 
@@ -105,11 +105,11 @@ public class AdminNoticeJpaRepository {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminNoticeDTO findPrevOneNotice(AdminNoticeEntity existAdminNoticeEntity) {
+    AdminNoticeDTO findPrevOneNotice(Long idx) {
         AdminNoticeEntity findPrevOneNotice = queryFactory
                 .selectFrom(adminNoticeEntity)
                 .orderBy(adminNoticeEntity.idx.desc())
-                .where(adminNoticeEntity.idx.lt(existAdminNoticeEntity.getIdx())
+                .where(adminNoticeEntity.idx.lt(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
                 .fetchFirst();
 
@@ -125,11 +125,11 @@ public class AdminNoticeJpaRepository {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminNoticeDTO findNextOneNotice(AdminNoticeEntity existAdminNoticeEntity) {
+    AdminNoticeDTO findNextOneNotice(Long idx) {
         AdminNoticeEntity findNextOneNotice = queryFactory
                 .selectFrom(adminNoticeEntity)
                 .orderBy(adminNoticeEntity.idx.desc())
-                .where(adminNoticeEntity.idx.gt(existAdminNoticeEntity.getIdx())
+                .where(adminNoticeEntity.idx.gt(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
                 .fetchFirst();
 

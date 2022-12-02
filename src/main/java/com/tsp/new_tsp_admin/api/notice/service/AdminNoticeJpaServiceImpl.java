@@ -42,7 +42,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findNoticesList
+     * 1. MethodName : findNoticeList
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 리스트 조회
      * 4. 작성자       : CHO
@@ -52,9 +52,9 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public List<AdminNoticeDTO> findNoticesList(Map<String, Object> noticeMap) throws TspException {
+    public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) throws TspException {
         try {
-            return adminNoticeJpaRepository.findNoticesList(noticeMap);
+            return adminNoticeJpaRepository.findNoticeList(noticeMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_NOTICE_LIST, e);
         }
@@ -72,9 +72,9 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public AdminNoticeDTO findOneNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
+    public AdminNoticeDTO findOneNotice(Long idx) throws TspException {
         try {
-            return adminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+            return adminNoticeJpaRepository.findOneNotice(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_NOTICE, e);
         }
@@ -92,9 +92,9 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public AdminNoticeDTO findPrevOneNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
+    public AdminNoticeDTO findPrevOneNotice(Long idx) throws TspException {
         try {
-            return adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity);
+            return adminNoticeJpaRepository.findPrevOneNotice(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_NOTICE, e);
         }
@@ -112,9 +112,9 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public AdminNoticeDTO findNextOneNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
+    public AdminNoticeDTO findNextOneNotice(Long idx) throws TspException {
         try {
-            return adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity);
+            return adminNoticeJpaRepository.findNextOneNotice(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_NOTICE, e);
         }

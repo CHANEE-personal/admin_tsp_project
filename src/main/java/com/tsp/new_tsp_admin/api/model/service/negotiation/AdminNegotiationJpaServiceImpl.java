@@ -74,9 +74,9 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Cacheable("negotiation")
     @Transactional(readOnly = true)
-    public AdminNegotiationDTO findOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws TspException {
+    public AdminNegotiationDTO findOneNegotiation(Long idx) throws TspException {
         try {
-            return adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+            return adminNegotiationJpaRepository.findOneNegotiation(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_NEGOTIATION, e);
         }
@@ -94,9 +94,9 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Cacheable("negotiation")
     @Transactional(readOnly = true)
-    public AdminNegotiationDTO findPrevOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws TspException {
+    public AdminNegotiationDTO findPrevOneNegotiation(Long idx) throws TspException {
         try {
-            return adminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity);
+            return adminNegotiationJpaRepository.findPrevOneNegotiation(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_NEGOTIATION, e);
         }
@@ -114,9 +114,9 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Cacheable("negotiation")
     @Transactional(readOnly = true)
-    public AdminNegotiationDTO findNextOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws TspException {
+    public AdminNegotiationDTO findNextOneNegotiation(Long idx) throws TspException {
         try {
-            return adminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity);
+            return adminNegotiationJpaRepository.findNextOneNegotiation(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_NEGOTIATION, e);
         }

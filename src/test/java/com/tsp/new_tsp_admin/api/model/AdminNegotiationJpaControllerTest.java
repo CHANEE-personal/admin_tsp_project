@@ -142,7 +142,7 @@ class AdminNegotiationJpaControllerTest {
         LinkedMultiValueMap<String, String> negotiationMap = new LinkedMultiValueMap<>();
         negotiationMap.add("jpaStartPage", "1");
         negotiationMap.add("size", "3");
-        mockMvc.perform(get("/api/jpa-negotiation/lists")
+        mockMvc.perform(get("/api/negotiation/lists")
                         .queryParams(negotiationMap)
                         .queryParam("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0).format(ofPattern("yyyyMMdd")))
                         .queryParam("searchEndTime", of(now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59).format(ofPattern("yyyyMMdd")))
@@ -156,7 +156,7 @@ class AdminNegotiationJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 섭외 상세 조회 테스트")
     void 모델섭외상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-negotiation/1")
+        mockMvc.perform(get("/api/negotiation/1")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -171,7 +171,7 @@ class AdminNegotiationJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 섭외 이전 상세 조회 테스트")
     void 모델섭외이전상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-negotiation/2/prev")
+        mockMvc.perform(get("/api/negotiation/2/prev")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -186,7 +186,7 @@ class AdminNegotiationJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 섭외 다음 상세 조회 테스트")
     void 모델섭외다음상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-negotiation/2/next")
+        mockMvc.perform(get("/api/negotiation/2/next")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -201,7 +201,7 @@ class AdminNegotiationJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 섭외 등록 테스트")
     void 모델섭외등록Api테스트() throws Exception {
-        mockMvc.perform(post("/api/jpa-negotiation")
+        mockMvc.perform(post("/api/negotiation")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminNegotiationEntity)))
@@ -258,7 +258,7 @@ class AdminNegotiationJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        mockMvc.perform(put("/api/jpa-negotiation/{idx}", adminNegotiationEntity.getIdx())
+        mockMvc.perform(put("/api/negotiation/{idx}", adminNegotiationEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminNegotiationEntity)))
@@ -300,7 +300,7 @@ class AdminNegotiationJpaControllerTest {
                 .updateTime(LocalDateTime.now())
                 .build();
 
-        mockMvc.perform(put("/api/jpa-negotiation/{idx}", newAdminNegotiationEntity.getIdx())
+        mockMvc.perform(put("/api/negotiation/{idx}", newAdminNegotiationEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(newAdminNegotiationEntity)))
@@ -319,7 +319,7 @@ class AdminNegotiationJpaControllerTest {
     void 모델섭외삭제Api테스트() throws Exception {
         em.persist(adminNegotiationEntity);
 
-        mockMvc.perform(delete("/api/jpa-negotiation/{idx}", adminNegotiationEntity.getIdx())
+        mockMvc.perform(delete("/api/negotiation/{idx}", adminNegotiationEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())

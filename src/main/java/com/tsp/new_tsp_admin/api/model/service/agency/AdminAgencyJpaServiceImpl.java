@@ -76,9 +76,9 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @Override
     @Cacheable("agency")
     @Transactional(readOnly = true)
-    public AdminAgencyDTO findOneAgency(AdminAgencyEntity adminAgencyEntity) throws TspException {
+    public AdminAgencyDTO findOneAgency(Long idx) throws TspException {
         try {
-            return adminAgencyJpaRepository.findOneAgency(adminAgencyEntity);
+            return adminAgencyJpaRepository.findOneAgency(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_AGENCY, e);
         }

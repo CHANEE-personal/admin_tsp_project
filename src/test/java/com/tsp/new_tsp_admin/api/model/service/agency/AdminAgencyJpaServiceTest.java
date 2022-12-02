@@ -163,15 +163,15 @@ class AdminAgencyJpaServiceTest {
         adminAgencyEntity = AdminAgencyEntity.builder().idx(1L).build();
 
         // then
-        assertThat(adminAgencyJpaService.findOneAgency(adminAgencyEntity).getAgencyName()).isEqualTo("agency");
+        assertThat(adminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx()).getAgencyName()).isEqualTo("agency");
     }
 
     @Test
     @DisplayName("소속사상세조회Mockito테스트")
     void 소속사상세조회Mockito테스트() throws Exception {
         // when
-        when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity)).thenReturn(adminAgencyDTO);
-        AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity);
+        when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).thenReturn(adminAgencyDTO);
+        AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx());
 
         // then
         assertThat(agencyInfo.getIdx()).isEqualTo(adminAgencyDTO.getIdx());
@@ -180,20 +180,20 @@ class AdminAgencyJpaServiceTest {
         assertThat(agencyInfo.getVisible()).isEqualTo(adminAgencyDTO.getVisible());
 
         // verify
-        verify(mockAdminAgencyJpaService, times(1)).findOneAgency(adminAgencyEntity);
-        verify(mockAdminAgencyJpaService, atLeastOnce()).findOneAgency(adminAgencyEntity);
+        verify(mockAdminAgencyJpaService, times(1)).findOneAgency(adminAgencyEntity.getIdx());
+        verify(mockAdminAgencyJpaService, atLeastOnce()).findOneAgency(adminAgencyEntity.getIdx());
         verifyNoMoreInteractions(mockAdminAgencyJpaService);
 
         InOrder inOrder = inOrder(mockAdminAgencyJpaService);
-        inOrder.verify(mockAdminAgencyJpaService).findOneAgency(adminAgencyEntity);
+        inOrder.verify(mockAdminAgencyJpaService).findOneAgency(adminAgencyEntity.getIdx());
     }
 
     @Test
     @DisplayName("소속사상세조회BDD테스트")
     void 소속사상세조회BDD테스트() throws Exception {
         // when
-        given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity)).willReturn(adminAgencyDTO);
-        AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity);
+        given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).willReturn(adminAgencyDTO);
+        AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx());
 
         // then
         assertThat(agencyInfo.getIdx()).isEqualTo(adminAgencyDTO.getIdx());
@@ -202,8 +202,8 @@ class AdminAgencyJpaServiceTest {
         assertThat(agencyInfo.getVisible()).isEqualTo(adminAgencyDTO.getVisible());
 
         // verify
-        then(mockAdminAgencyJpaService).should(times(1)).findOneAgency(adminAgencyEntity);
-        then(mockAdminAgencyJpaService).should(atLeastOnce()).findOneAgency(adminAgencyEntity);
+        then(mockAdminAgencyJpaService).should(times(1)).findOneAgency(adminAgencyEntity.getIdx());
+        then(mockAdminAgencyJpaService).should(atLeastOnce()).findOneAgency(adminAgencyEntity.getIdx());
         then(mockAdminAgencyJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -225,20 +225,20 @@ class AdminAgencyJpaServiceTest {
         adminAgencyJpaService.updateAgency(adminAgencyEntity);
 
         // when
-        when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity)).thenReturn(adminAgencyDTO);
-        AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity);
+        when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).thenReturn(adminAgencyDTO);
+        AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx());
 
         // then
         assertThat(agencyInfo.getAgencyName()).isEqualTo("newAgency");
         assertThat(agencyInfo.getAgencyDescription()).isEqualTo("newAgency");
 
         // verify
-        verify(mockAdminAgencyJpaService, times(1)).findOneAgency(adminAgencyEntity);
-        verify(mockAdminAgencyJpaService, atLeastOnce()).findOneAgency(adminAgencyEntity);
+        verify(mockAdminAgencyJpaService, times(1)).findOneAgency(adminAgencyEntity.getIdx());
+        verify(mockAdminAgencyJpaService, atLeastOnce()).findOneAgency(adminAgencyEntity.getIdx());
         verifyNoMoreInteractions(mockAdminAgencyJpaService);
 
         InOrder inOrder = inOrder(mockAdminAgencyJpaService);
-        inOrder.verify(mockAdminAgencyJpaService).findOneAgency(adminAgencyEntity);
+        inOrder.verify(mockAdminAgencyJpaService).findOneAgency(adminAgencyEntity.getIdx());
     }
 
     @Test
@@ -259,16 +259,16 @@ class AdminAgencyJpaServiceTest {
         adminAgencyJpaService.updateAgency(adminAgencyEntity);
 
         // when
-        given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity)).willReturn(adminAgencyDTO);
-        AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity);
+        given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).willReturn(adminAgencyDTO);
+        AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx());
 
         // then
         assertThat(agencyInfo.getAgencyName()).isEqualTo("newAgency");
         assertThat(agencyInfo.getAgencyDescription()).isEqualTo("newAgency");
 
         // verify
-        then(mockAdminAgencyJpaService).should(times(1)).findOneAgency(adminAgencyEntity);
-        then(mockAdminAgencyJpaService).should(atLeastOnce()).findOneAgency(adminAgencyEntity);
+        then(mockAdminAgencyJpaService).should(times(1)).findOneAgency(adminAgencyEntity.getIdx());
+        then(mockAdminAgencyJpaService).should(atLeastOnce()).findOneAgency(adminAgencyEntity.getIdx());
         then(mockAdminAgencyJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -280,19 +280,19 @@ class AdminAgencyJpaServiceTest {
         adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
 
         // when
-        when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity)).thenReturn(adminAgencyDTO);
+        when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).thenReturn(adminAgencyDTO);
         Long deleteIdx = adminAgencyJpaService.deleteAgency(adminAgencyEntity.getIdx());
 
         // then
-        assertThat(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        verify(mockAdminAgencyJpaService, times(1)).findOneAgency(adminAgencyEntity);
-        verify(mockAdminAgencyJpaService, atLeastOnce()).findOneAgency(adminAgencyEntity);
+        verify(mockAdminAgencyJpaService, times(1)).findOneAgency(adminAgencyEntity.getIdx());
+        verify(mockAdminAgencyJpaService, atLeastOnce()).findOneAgency(adminAgencyEntity.getIdx());
         verifyNoMoreInteractions(mockAdminAgencyJpaService);
 
         InOrder inOrder = inOrder(mockAdminAgencyJpaService);
-        inOrder.verify(mockAdminAgencyJpaService).findOneAgency(adminAgencyEntity);
+        inOrder.verify(mockAdminAgencyJpaService).findOneAgency(adminAgencyEntity.getIdx());
     }
 
     @Test
@@ -303,15 +303,15 @@ class AdminAgencyJpaServiceTest {
         adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
 
         // when
-        given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity)).willReturn(adminAgencyDTO);
+        given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).willReturn(adminAgencyDTO);
         Long deleteIdx = adminAgencyJpaService.deleteAgency(adminAgencyEntity.getIdx());
 
         // then
-        assertThat(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        then(mockAdminAgencyJpaService).should(times(1)).findOneAgency(adminAgencyEntity);
-        then(mockAdminAgencyJpaService).should(atLeastOnce()).findOneAgency(adminAgencyEntity);
+        then(mockAdminAgencyJpaService).should(times(1)).findOneAgency(adminAgencyEntity.getIdx());
+        then(mockAdminAgencyJpaService).should(atLeastOnce()).findOneAgency(adminAgencyEntity.getIdx());
         then(mockAdminAgencyJpaService).shouldHaveNoMoreInteractions();
     }
 }

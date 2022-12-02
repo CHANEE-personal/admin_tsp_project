@@ -49,27 +49,27 @@ public class AdminProductionJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findProductionsCount
+     * 1. MethodName : findProductionCount
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 리스트 갯수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    public Integer findProductionsCount(Map<String, Object> productionMap) {
+    public Integer findProductionCount(Map<String, Object> productionMap) {
         return queryFactory.selectFrom(adminProductionEntity).where(searchProduction(productionMap)).fetch().size();
     }
 
     /**
      * <pre>
-     * 1. MethodName : findProductionsList
+     * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) {
+    public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
         List<AdminProductionEntity> productionList = queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.desc())
@@ -93,13 +93,13 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) {
+    public AdminProductionDTO findOneProduction(Long idx) {
         AdminProductionEntity findOneProduction = queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.desc())
                 .leftJoin(adminProductionEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
-                .where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx())
+                .where(adminProductionEntity.idx.eq(idx)
                         .and(adminProductionEntity.visible.eq("Y"))
                         .and(commonImageEntity.typeName.eq("production")))
                 .fetchOne();
@@ -116,12 +116,12 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 09. 13.
      * </pre>
      */
-    public AdminProductionDTO findPrevOneProduction(AdminProductionEntity existAdminProductionEntity) {
+    public AdminProductionDTO findPrevOneProduction(Long idx) {
         // 이전 프로덕션 조회
         AdminProductionEntity findPrevOneProduction = queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.desc())
-                .where(adminProductionEntity.idx.lt(existAdminProductionEntity.getIdx())
+                .where(adminProductionEntity.idx.lt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
@@ -137,12 +137,12 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 09. 13.
      * </pre>
      */
-    public AdminProductionDTO findNextOneProduction(AdminProductionEntity existAdminProductionEntity) {
+    public AdminProductionDTO findNextOneProduction(Long idx) {
         // 다음 프로덕션 조회
         AdminProductionEntity findNextOneProduction = queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.asc())
-                .where(adminProductionEntity.idx.gt(existAdminProductionEntity.getIdx())
+                .where(adminProductionEntity.idx.gt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
@@ -224,11 +224,11 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    public List<AdminCommentDTO> findProductionAdminComment(AdminProductionEntity existAdminProductionEntity) {
+    public List<AdminCommentDTO> findProductionAdminComment(Long idx) {
         List<AdminCommentEntity> adminCommentEntity = queryFactory
                 .selectFrom(QAdminCommentEntity.adminCommentEntity)
                 .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("production")
-                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(existAdminProductionEntity.getIdx()))
+                        .and(QAdminCommentEntity.adminCommentEntity.idx.eq(idx))
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 

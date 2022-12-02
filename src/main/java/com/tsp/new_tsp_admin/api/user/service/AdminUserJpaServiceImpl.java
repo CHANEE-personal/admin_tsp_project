@@ -34,9 +34,9 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @Override
     @Cacheable("user")
     @Transactional(readOnly = true)
-    public List<AdminUserDTO> findUsersList(Map<String, Object> userMap) throws TspException {
+    public List<AdminUserDTO> findUserList(Map<String, Object> userMap) throws TspException {
         try {
-            return adminUserJpaRepository.findUsersList(userMap);
+            return adminUserJpaRepository.findUserList(userMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_USER_LIST, e);
         }

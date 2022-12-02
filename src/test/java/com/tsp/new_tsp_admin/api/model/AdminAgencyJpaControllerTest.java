@@ -140,7 +140,7 @@ class AdminAgencyJpaControllerTest {
         LinkedMultiValueMap<String, String> agencyMap = new LinkedMultiValueMap<>();
         agencyMap.add("jpaStartPage", "1");
         agencyMap.add("size", "3");
-        mockMvc.perform(get("/api/jpa-agency/lists").queryParams(agencyMap)
+        mockMvc.perform(get("/api/agency/lists").queryParams(agencyMap)
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -151,7 +151,7 @@ class AdminAgencyJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 소속사 상세 조회 테스트")
     void 소속사상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-agency/1")
+        mockMvc.perform(get("/api/agency/1")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -167,7 +167,7 @@ class AdminAgencyJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 소속사 등록 테스트")
     void 소속사등록Api테스트() throws Exception {
-        mockMvc.perform(post("/api/jpa-agency")
+        mockMvc.perform(post("/api/agency")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminAgencyEntity)))
@@ -193,7 +193,7 @@ class AdminAgencyJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("CreatedBy, CreationTimestamp 테스트")
     void CreatedByAndCreationTimestamp테스트() throws Exception {
-        mockMvc.perform(post("/api/jpa-agency")
+        mockMvc.perform(post("/api/agency")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminAgencyEntity)))
@@ -219,7 +219,7 @@ class AdminAgencyJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        mockMvc.perform(put("/api/jpa-agency/{idx}", adminAgencyEntity.getIdx())
+        mockMvc.perform(put("/api/agency/{idx}", adminAgencyEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminAgencyEntity)))
@@ -256,7 +256,7 @@ class AdminAgencyJpaControllerTest {
                 .updateTime(LocalDateTime.now())
                 .build();
 
-        mockMvc.perform(put("/api/jpa-agency/{idx}", newAdminAgencyEntity.getIdx())
+        mockMvc.perform(put("/api/agency/{idx}", newAdminAgencyEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(newAdminAgencyEntity)))
@@ -275,7 +275,7 @@ class AdminAgencyJpaControllerTest {
     void 소속사삭제Api테스트() throws Exception {
         em.persist(adminAgencyEntity);
 
-        mockMvc.perform(delete("/api/jpa-agency/{idx}", adminAgencyEntity.getIdx())
+        mockMvc.perform(delete("/api/agency/{idx}", adminAgencyEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -294,7 +294,7 @@ class AdminAgencyJpaControllerTest {
                         "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
         );
 
-        mockMvc.perform(multipart("/api/jpa-agency/1/images")
+        mockMvc.perform(multipart("/api/agency/1/images")
                         .file("images", imageFiles.get(0).getBytes())
                         .file("images", imageFiles.get(1).getBytes())
                         .contentType(MULTIPART_FORM_DATA_VALUE))
@@ -318,7 +318,7 @@ class AdminAgencyJpaControllerTest {
 
         em.persist(commonImageEntity);
 
-        mockMvc.perform(delete("/api/jpa-agency/{idx}/images", commonImageEntity.getIdx())
+        mockMvc.perform(delete("/api/agency/{idx}/images", commonImageEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE))
                 .andDo(print())

@@ -39,7 +39,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    AdminNegotiationDTO findOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws Exception;
+    AdminNegotiationDTO findOneNegotiation(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -50,7 +50,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 21.
      * </pre>
      */
-    AdminNegotiationDTO findPrevOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws Exception;
+    AdminNegotiationDTO findPrevOneNegotiation(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -61,7 +61,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 21.
      * </pre>
      */
-    AdminNegotiationDTO findNextOneNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws Exception;
+    AdminNegotiationDTO findNextOneNegotiation(Long idx) throws Exception;
 
     /**
      * <pre>

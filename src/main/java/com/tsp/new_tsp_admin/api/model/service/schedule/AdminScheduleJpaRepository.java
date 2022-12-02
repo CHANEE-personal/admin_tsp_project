@@ -130,12 +130,12 @@ public class AdminScheduleJpaRepository {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    public AdminScheduleDTO findOneSchedule(AdminScheduleEntity existAdminScheduleEntity) {
+    public AdminScheduleDTO findOneSchedule(Long idx) {
         AdminScheduleEntity findOneSchedule = queryFactory
                 .selectFrom(adminScheduleEntity)
                 .orderBy(adminScheduleEntity.idx.desc())
                 .where(adminScheduleEntity.visible.eq("Y")
-                        .and(adminScheduleEntity.idx.eq(existAdminScheduleEntity.getIdx())))
+                        .and(adminScheduleEntity.idx.eq(idx)))
                 .fetchOne();
 
         return INSTANCE.toDto(findOneSchedule);
@@ -150,12 +150,12 @@ public class AdminScheduleJpaRepository {
      * 5. 작성일       : 2022. 09. 22.
      * </pre>
      */
-    public AdminScheduleDTO findPrevOneSchedule(AdminScheduleEntity existAdminScheduleEntity) {
+    public AdminScheduleDTO findPrevOneSchedule(Long idx) {
         // 이전 모델 스케줄 조회
         AdminScheduleEntity findPrevOneSchedule = queryFactory
                 .selectFrom(adminScheduleEntity)
                 .orderBy(adminScheduleEntity.idx.desc())
-                .where(adminScheduleEntity.idx.lt(existAdminScheduleEntity.getIdx())
+                .where(adminScheduleEntity.idx.lt(idx)
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .fetchFirst();
 
@@ -171,12 +171,12 @@ public class AdminScheduleJpaRepository {
      * 5. 작성일       : 2022. 09. 22.
      * </pre>
      */
-    public AdminScheduleDTO findNextOneSchedule(AdminScheduleEntity existAdminScheduleEntity) {
+    public AdminScheduleDTO findNextOneSchedule(Long idx) {
         // 다음 모델 스케줄 조회
         AdminScheduleEntity findNextOneSchedule = queryFactory
                 .selectFrom(adminScheduleEntity)
                 .orderBy(adminScheduleEntity.idx.asc())
-                .where(adminScheduleEntity.idx.gt(existAdminScheduleEntity.getIdx())
+                .where(adminScheduleEntity.idx.gt(idx)
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .fetchFirst();
 

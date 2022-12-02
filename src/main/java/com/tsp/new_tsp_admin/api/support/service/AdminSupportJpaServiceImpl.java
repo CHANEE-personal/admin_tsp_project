@@ -26,7 +26,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findSupportsList
+     * 1. MethodName : findSupportCount
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 리스트 갯수 조회
      * 4. 작성자       : CHO
@@ -35,9 +35,9 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findSupportsCount(Map<String, Object> supportMap) throws TspException {
+    public Integer findSupportCount(Map<String, Object> supportMap) throws TspException {
         try {
-            return adminSupportJpaRepository.findSupportsCount(supportMap);
+            return adminSupportJpaRepository.findSupportCount(supportMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
         }
@@ -45,7 +45,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findSupportsList
+     * 1. MethodName : findSupportList
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 리스트 조회
      * 4. 작성자       : CHO
@@ -55,9 +55,9 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @Cacheable("support")
     @Transactional(readOnly = true)
-    public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws TspException {
+    public List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) throws TspException {
         try {
-            return adminSupportJpaRepository.findSupportsList(supportMap);
+            return adminSupportJpaRepository.findSupportList(supportMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
         }
@@ -75,9 +75,9 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @Cacheable("support")
     @Transactional(readOnly = true)
-    public AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) throws TspException {
+    public AdminSupportDTO findOneSupportModel(Long idx) throws TspException {
         try {
-            return adminSupportJpaRepository.findOneSupportModel(adminSupportEntity);
+            return adminSupportJpaRepository.findOneSupportModel(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_SUPPORT, e);
         }
@@ -287,9 +287,9 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    public List<AdminCommentDTO> findSupportAdminComment(AdminSupportEntity adminSupportEntity) throws TspException {
+    public List<AdminCommentDTO> findSupportAdminComment(Long idx) throws TspException {
         try {
-            return adminSupportJpaRepository.findSupportAdminComment(adminSupportEntity);
+            return adminSupportJpaRepository.findSupportAdminComment(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMENT_LIST, e);
         }

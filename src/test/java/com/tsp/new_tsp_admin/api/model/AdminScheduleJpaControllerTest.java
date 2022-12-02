@@ -137,7 +137,7 @@ class AdminScheduleJpaControllerTest {
         LinkedMultiValueMap<String, String> scheduleMap = new LinkedMultiValueMap<>();
         scheduleMap.add("jpaStartPage", "1");
         scheduleMap.add("size", "3");
-        mockMvc.perform(get("/api/jpa-schedule/lists")
+        mockMvc.perform(get("/api/schedule/lists")
                         .queryParams(scheduleMap)
                         .queryParam("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0).format(ofPattern("yyyyMMdd")))
                         .queryParam("searchEndTime", of(now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59).format(ofPattern("yyyyMMdd")))
@@ -151,7 +151,7 @@ class AdminScheduleJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 스케줄 상세 조회 테스트")
     void 모델스케줄상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-schedule/1")
+        mockMvc.perform(get("/api/schedule/1")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -166,7 +166,7 @@ class AdminScheduleJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 이전 스케줄 상세 조회 테스트")
     void 모델이전스케줄상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-schedule/2/prev")
+        mockMvc.perform(get("/api/schedule/2/prev")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -181,7 +181,7 @@ class AdminScheduleJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 다음 스케줄 상세 조회 테스트")
     void 모델다음스케줄상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-schedule/2/next")
+        mockMvc.perform(get("/api/schedule/2/next")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -196,7 +196,7 @@ class AdminScheduleJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 스케줄 등록 테스트")
     void 모델스케줄등록Api테스트() throws Exception {
-        mockMvc.perform(post("/api/jpa-schedule")
+        mockMvc.perform(post("/api/schedule")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminScheduleEntity)))
@@ -222,7 +222,7 @@ class AdminScheduleJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("CreatedBy, CreationTimestamp 테스트")
     void CreatedByAndCreationTimestamp테스트() throws Exception {
-        mockMvc.perform(post("/api/jpa-schedule")
+        mockMvc.perform(post("/api/schedule")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminScheduleEntity)))
@@ -248,7 +248,7 @@ class AdminScheduleJpaControllerTest {
                 .visible("Y")
                 .build();
 
-        mockMvc.perform(put("/api/jpa-schedule/{idx}", adminScheduleEntity.getIdx())
+        mockMvc.perform(put("/api/schedule/{idx}", adminScheduleEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminScheduleEntity)))
@@ -285,7 +285,7 @@ class AdminScheduleJpaControllerTest {
                 .updateTime(LocalDateTime.now())
                 .build();
 
-        mockMvc.perform(put("/api/jpa-schedule/{idx}", newAdminScheduleEntity.getIdx())
+        mockMvc.perform(put("/api/schedule/{idx}", newAdminScheduleEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(newAdminScheduleEntity)))
@@ -304,7 +304,7 @@ class AdminScheduleJpaControllerTest {
     void 모델스케줄삭제Api테스트() throws Exception {
         em.persist(adminScheduleEntity);
 
-        mockMvc.perform(delete("/api/jpa-schedule/{idx}", adminScheduleEntity.getIdx())
+        mockMvc.perform(delete("/api/schedule/{idx}", adminScheduleEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())

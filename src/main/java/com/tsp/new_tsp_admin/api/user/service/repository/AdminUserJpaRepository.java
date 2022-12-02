@@ -36,14 +36,14 @@ public class AdminUserJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findUsersList
+     * 1. MethodName : findUserList
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 유저 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public List<AdminUserDTO> findUsersList(Map<String, Object> userMap) {
+    public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
         List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
                 .where(adminUserEntity.visible.eq("Y"))
                 .orderBy(adminUserEntity.idx.desc())

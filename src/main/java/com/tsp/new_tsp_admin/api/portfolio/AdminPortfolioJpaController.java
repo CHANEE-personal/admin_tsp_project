@@ -25,7 +25,7 @@ import static java.lang.Math.ceil;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
 @RestController
-@RequestMapping("/api/jpa-portfolio")
+@RequestMapping("/api/portfolio")
 @Api(tags = "포트폴리오 관련 API")
 @RequiredArgsConstructor
 public class AdminPortfolioJpaController {
@@ -34,7 +34,7 @@ public class AdminPortfolioJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getPortfolioList
+     * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaController.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
      * 4. 작성자       : CHO
@@ -50,14 +50,14 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> getPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         Map<String, Object> portfolioMap = new HashMap<>();
 
-        Integer portfolioCnt = this.adminPortfolioJpaService.findPortfoliosCount(searchCommon.searchCommon(page, paramMap));
+        Integer portfolioCnt = this.adminPortfolioJpaService.findPortfolioCount(searchCommon.searchCommon(page, paramMap));
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
 
         if (portfolioCnt > 0) {
-            portfolioList = this.adminPortfolioJpaService.findPortfoliosList(searchCommon.searchCommon(page, paramMap));
+            portfolioList = this.adminPortfolioJpaService.findPortfolioList(searchCommon.searchCommon(page, paramMap));
         }
 
         // 리스트 수
@@ -74,7 +74,7 @@ public class AdminPortfolioJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getPortfolioEdit
+     * 1. MethodName : findOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaController.java
      * 3. Comment    : 관리자 포트폴리오 상세 조회
      * 4. 작성자       : CHO
@@ -90,13 +90,13 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}")
-    public AdminPortFolioDTO getPortfolioEdit(@PathVariable Long idx) throws Exception {
+    public AdminPortFolioDTO findOnePortfolio(@PathVariable Long idx) throws Exception {
         return this.adminPortfolioJpaService.findOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
     /**
      * <pre>
-     * 1. MethodName : getPrevPortfolioEdit
+     * 1. MethodName : findPrevOnePortfolio
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 이전 포트폴리오 상세
      * 4. 작성자       : CHO
@@ -112,13 +112,13 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminPortFolioDTO getPrevPortfolioEdit(@PathVariable Long idx) throws Exception {
+    public AdminPortFolioDTO findPrevOnePortfolio(@PathVariable Long idx) throws Exception {
         return this.adminPortfolioJpaService.findPrevOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
     /**
      * <pre>
-     * 1. MethodName : getNextPortfolioEdit
+     * 1. MethodName : findNextOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaController.java
      * 3. Comment    : 관리자 다음 포트폴리오 상세
      * 4. 작성자       : CHO
@@ -134,7 +134,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminPortFolioDTO getNextPortfolioEdit(@PathVariable Long idx) throws Exception {
+    public AdminPortFolioDTO findNextOnePortfolio(@PathVariable Long idx) throws Exception {
         return this.adminPortfolioJpaService.findNextOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -223,6 +223,6 @@ public class AdminPortfolioJpaController {
     })
     @GetMapping("/{idx}/admin-comment")
     public List<AdminCommentDTO> findPortfolioAdminComment(@PathVariable Long idx) throws Exception {
-        return adminPortfolioJpaService.findPortfolioAdminComment(AdminPortFolioEntity.builder().idx(idx).build());
+        return adminPortfolioJpaService.findPortfolioAdminComment(idx);
     }
 }

@@ -26,7 +26,7 @@ import static java.lang.Math.ceil;
 @Validated
 @RestController
 @Api(tags = "모델 스케줄 관련 API")
-@RequestMapping("/api/jpa-schedule")
+@RequestMapping("/api/schedule")
 @RequiredArgsConstructor
 public class AdminScheduleJpaController {
     private final AdminScheduleJpaService adminScheduleJpaService;
@@ -100,7 +100,7 @@ public class AdminScheduleJpaController {
     })
     @GetMapping("/{idx}")
     public AdminScheduleDTO findOneSchedule(@PathVariable Long idx) throws Exception {
-        return this.adminScheduleJpaService.findOneSchedule(AdminScheduleEntity.builder().idx(idx).build());
+        return this.adminScheduleJpaService.findOneSchedule(idx);
     }
 
     /**
@@ -122,7 +122,7 @@ public class AdminScheduleJpaController {
     })
     @GetMapping("/{idx}/prev")
     public AdminScheduleDTO findPrevOneSchedule(@PathVariable Long idx) throws Exception {
-        return this.adminScheduleJpaService.findPrevOneSchedule(AdminScheduleEntity.builder().idx(idx).build());
+        return this.adminScheduleJpaService.findPrevOneSchedule(idx);
     }
 
     /**
@@ -144,7 +144,7 @@ public class AdminScheduleJpaController {
     })
     @GetMapping("/{idx}/next")
     public AdminScheduleDTO findNextOneSchedule(@PathVariable Long idx) throws Exception {
-        return this.adminScheduleJpaService.findNextOneSchedule(AdminScheduleEntity.builder().idx(idx).build());
+        return this.adminScheduleJpaService.findNextOneSchedule(idx);
     }
 
     /**

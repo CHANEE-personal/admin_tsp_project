@@ -268,8 +268,8 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
 
         // when
-        when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).thenReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getIdx()).isEqualTo(1);
@@ -278,12 +278,12 @@ class AdminScheduleJpaRepositoryTest {
         assertThat(scheduleInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        verify(mockAdminScheduleJpaRepository, times(1)).findOneSchedule(adminScheduleEntity);
-        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findOneSchedule(adminScheduleEntity);
+        verify(mockAdminScheduleJpaRepository, times(1)).findOneSchedule(adminScheduleEntity.getIdx());
+        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
         verifyNoMoreInteractions(mockAdminScheduleJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaRepository);
-        inOrder.verify(mockAdminScheduleJpaRepository).findOneSchedule(adminScheduleEntity);
+        inOrder.verify(mockAdminScheduleJpaRepository).findOneSchedule(adminScheduleEntity.getIdx());
     }
 
     @Test
@@ -301,8 +301,8 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
 
         // when
-        given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).willReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getIdx()).isEqualTo(1);
@@ -311,8 +311,8 @@ class AdminScheduleJpaRepositoryTest {
         assertThat(scheduleInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        then(mockAdminScheduleJpaRepository).should(times(1)).findOneSchedule(adminScheduleEntity);
-        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findOneSchedule(adminScheduleEntity);
+        then(mockAdminScheduleJpaRepository).should(times(1)).findOneSchedule(adminScheduleEntity.getIdx());
+        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
         then(mockAdminScheduleJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -323,12 +323,12 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
-        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
         // 이전 모델 섭외
-        assertThat(adminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity).getIdx()).isEqualTo(1);
+        assertThat(adminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity.getIdx()).getIdx()).isEqualTo(1);
         // 다음 모델 섭외
-        assertThat(adminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity).getIdx()).isEqualTo(3);
+        assertThat(adminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity.getIdx()).getIdx()).isEqualTo(3);
     }
 
     @Test
@@ -338,21 +338,21 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
-        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
-        when(mockAdminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity)).thenReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity);
+        when(mockAdminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getIdx()).isEqualTo(1);
 
         // verify
-        verify(mockAdminScheduleJpaRepository, times(1)).findPrevOneSchedule(adminScheduleEntity);
-        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findPrevOneSchedule(adminScheduleEntity);
+        verify(mockAdminScheduleJpaRepository, times(1)).findPrevOneSchedule(adminScheduleEntity.getIdx());
+        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findPrevOneSchedule(adminScheduleEntity.getIdx());
         verifyNoMoreInteractions(mockAdminScheduleJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaRepository);
-        inOrder.verify(mockAdminScheduleJpaRepository).findPrevOneSchedule(adminScheduleEntity);
+        inOrder.verify(mockAdminScheduleJpaRepository).findPrevOneSchedule(adminScheduleEntity.getIdx());
     }
 
     @Test
@@ -362,17 +362,17 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
-        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
-        given(mockAdminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity)).willReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity);
+        given(mockAdminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findPrevOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getIdx()).isEqualTo(1);
 
         // verify
-        then(mockAdminScheduleJpaRepository).should(times(1)).findPrevOneSchedule(adminScheduleEntity);
-        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findPrevOneSchedule(adminScheduleEntity);
+        then(mockAdminScheduleJpaRepository).should(times(1)).findPrevOneSchedule(adminScheduleEntity.getIdx());
+        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findPrevOneSchedule(adminScheduleEntity.getIdx());
         then(mockAdminScheduleJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -383,21 +383,21 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
-        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
-        when(mockAdminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity)).thenReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity);
+        when(mockAdminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getIdx()).isEqualTo(3);
 
         // verify
-        verify(mockAdminScheduleJpaRepository, times(1)).findNextOneSchedule(adminScheduleEntity);
-        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findNextOneSchedule(adminScheduleEntity);
+        verify(mockAdminScheduleJpaRepository, times(1)).findNextOneSchedule(adminScheduleEntity.getIdx());
+        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findNextOneSchedule(adminScheduleEntity.getIdx());
         verifyNoMoreInteractions(mockAdminScheduleJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaRepository);
-        inOrder.verify(mockAdminScheduleJpaRepository).findNextOneSchedule(adminScheduleEntity);
+        inOrder.verify(mockAdminScheduleJpaRepository).findNextOneSchedule(adminScheduleEntity.getIdx());
     }
 
     @Test
@@ -407,17 +407,17 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
         // when
-        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        adminScheduleDTO = adminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
-        given(mockAdminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity)).willReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity);
+        given(mockAdminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findNextOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getIdx()).isEqualTo(3);
 
         // verify
-        then(mockAdminScheduleJpaRepository).should(times(1)).findNextOneSchedule(adminScheduleEntity);
-        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findNextOneSchedule(adminScheduleEntity);
+        then(mockAdminScheduleJpaRepository).should(times(1)).findNextOneSchedule(adminScheduleEntity.getIdx());
+        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findNextOneSchedule(adminScheduleEntity.getIdx());
         then(mockAdminScheduleJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -428,8 +428,8 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleJpaRepository.insertSchedule(adminScheduleEntity);
 
         // when
-        when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).thenReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
@@ -437,12 +437,12 @@ class AdminScheduleJpaRepositoryTest {
         assertThat(scheduleInfo.getModelScheduleTime()).isNotNull();
 
         // verify
-        verify(mockAdminScheduleJpaRepository, times(1)).findOneSchedule(adminScheduleEntity);
-        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findOneSchedule(adminScheduleEntity);
+        verify(mockAdminScheduleJpaRepository, times(1)).findOneSchedule(adminScheduleEntity.getIdx());
+        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
         verifyNoMoreInteractions(mockAdminScheduleJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaRepository);
-        inOrder.verify(mockAdminScheduleJpaRepository).findOneSchedule(adminScheduleEntity);
+        inOrder.verify(mockAdminScheduleJpaRepository).findOneSchedule(adminScheduleEntity.getIdx());
     }
 
     @Test
@@ -452,8 +452,8 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleJpaRepository.insertSchedule(adminScheduleEntity);
 
         // when
-        given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).willReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
@@ -461,8 +461,8 @@ class AdminScheduleJpaRepositoryTest {
         assertThat(scheduleInfo.getModelScheduleTime()).isNotNull();
 
         // verify
-        then(mockAdminScheduleJpaRepository).should(times(1)).findOneSchedule(adminScheduleEntity);
-        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findOneSchedule(adminScheduleEntity);
+        then(mockAdminScheduleJpaRepository).should(times(1)).findOneSchedule(adminScheduleEntity.getIdx());
+        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
         then(mockAdminScheduleJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -485,20 +485,20 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleJpaRepository.updateSchedule(adminScheduleEntity);
 
         // when
-        when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).thenReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
         assertThat(scheduleInfo.getModelSchedule()).isEqualTo("스케줄 수정 테스트");
 
         // verify
-        verify(mockAdminScheduleJpaRepository, times(1)).findOneSchedule(adminScheduleEntity);
-        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findOneSchedule(adminScheduleEntity);
+        verify(mockAdminScheduleJpaRepository, times(1)).findOneSchedule(adminScheduleEntity.getIdx());
+        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
         verifyNoMoreInteractions(mockAdminScheduleJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaRepository);
-        inOrder.verify(mockAdminScheduleJpaRepository).findOneSchedule(adminScheduleEntity);
+        inOrder.verify(mockAdminScheduleJpaRepository).findOneSchedule(adminScheduleEntity.getIdx());
     }
 
     @Test
@@ -520,16 +520,16 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleJpaRepository.updateSchedule(adminScheduleEntity);
 
         // when
-        given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).willReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity);
+        given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx());
 
         // then
         assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
         assertThat(scheduleInfo.getModelSchedule()).isEqualTo("스케줄 수정 테스트");
 
         // verify
-        then(mockAdminScheduleJpaRepository).should(times(1)).findOneSchedule(adminScheduleEntity);
-        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findOneSchedule(adminScheduleEntity);
+        then(mockAdminScheduleJpaRepository).should(times(1)).findOneSchedule(adminScheduleEntity.getIdx());
+        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
         then(mockAdminScheduleJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -541,19 +541,19 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
 
         // when
-        when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).thenReturn(adminScheduleDTO);
+        when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
         Long deleteIdx = adminScheduleJpaRepository.deleteSchedule(adminScheduleEntity.getIdx());
 
         // then
-        assertThat(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        verify(mockAdminScheduleJpaRepository, times(1)).findOneSchedule(adminScheduleEntity);
-        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findOneSchedule(adminScheduleEntity);
+        verify(mockAdminScheduleJpaRepository, times(1)).findOneSchedule(adminScheduleEntity.getIdx());
+        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
         verifyNoMoreInteractions(mockAdminScheduleJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaRepository);
-        inOrder.verify(mockAdminScheduleJpaRepository).findOneSchedule(adminScheduleEntity);
+        inOrder.verify(mockAdminScheduleJpaRepository).findOneSchedule(adminScheduleEntity.getIdx());
     }
 
     @Test
@@ -564,15 +564,15 @@ class AdminScheduleJpaRepositoryTest {
         adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
 
         // when
-        given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity)).willReturn(adminScheduleDTO);
+        given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
         Long deleteIdx = adminScheduleJpaRepository.deleteSchedule(adminScheduleEntity.getIdx());
 
         // then
-        assertThat(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        then(mockAdminScheduleJpaRepository).should(times(1)).findOneSchedule(adminScheduleEntity);
-        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findOneSchedule(adminScheduleEntity);
+        then(mockAdminScheduleJpaRepository).should(times(1)).findOneSchedule(adminScheduleEntity.getIdx());
+        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
         then(mockAdminScheduleJpaRepository).shouldHaveNoMoreInteractions();
     }
 }

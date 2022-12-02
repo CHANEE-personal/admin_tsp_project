@@ -230,12 +230,12 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
         // when
-        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
         // 이전 모델 섭외
-        assertThat(adminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity).getIdx()).isEqualTo(1);
+        assertThat(adminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx()).getIdx()).isEqualTo(1);
         // 다음 모델 섭외
-        assertThat(adminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity).getIdx()).isEqualTo(3);
+        assertThat(adminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx()).getIdx()).isEqualTo(3);
     }
 
     @Test
@@ -245,21 +245,21 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
         // when
-        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
-        when(mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity)).thenReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity);
+        when(mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx())).thenReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx());
 
         // then
         assertThat(negotiationInfo.getIdx()).isEqualTo(1);
 
         // verify
-        verify(mockAdminNegotiationJpaRepository, times(1)).findPrevOneNegotiation(adminNegotiationEntity);
-        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findPrevOneNegotiation(adminNegotiationEntity);
+        verify(mockAdminNegotiationJpaRepository, times(1)).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
+        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNegotiationJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNegotiationJpaRepository);
-        inOrder.verify(mockAdminNegotiationJpaRepository).findPrevOneNegotiation(adminNegotiationEntity);
+        inOrder.verify(mockAdminNegotiationJpaRepository).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
     }
 
     @Test
@@ -269,17 +269,17 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
         // when
-        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
-        given(mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity)).willReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity);
+        given(mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx())).willReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx());
 
         // then
         assertThat(negotiationInfo.getIdx()).isEqualTo(1);
 
         // verify
-        then(mockAdminNegotiationJpaRepository).should(times(1)).findPrevOneNegotiation(adminNegotiationEntity);
-        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findPrevOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).should(times(1)).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
+        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
         then(mockAdminNegotiationJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -290,21 +290,21 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
         // when
-        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
-        when(mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity)).thenReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity);
+        when(mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx())).thenReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx());
 
         // then
         assertThat(negotiationInfo.getIdx()).isEqualTo(3);
 
         // verify
-        verify(mockAdminNegotiationJpaRepository, times(1)).findNextOneNegotiation(adminNegotiationEntity);
-        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findNextOneNegotiation(adminNegotiationEntity);
+        verify(mockAdminNegotiationJpaRepository, times(1)).findNextOneNegotiation(adminNegotiationEntity.getIdx());
+        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findNextOneNegotiation(adminNegotiationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNegotiationJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNegotiationJpaRepository);
-        inOrder.verify(mockAdminNegotiationJpaRepository).findNextOneNegotiation(adminNegotiationEntity);
+        inOrder.verify(mockAdminNegotiationJpaRepository).findNextOneNegotiation(adminNegotiationEntity.getIdx());
     }
 
     @Test
@@ -314,17 +314,17 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
         // when
-        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        adminNegotiationDTO = adminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
-        given(mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity)).willReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity);
+        given(mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx())).willReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx());
 
         // then
         assertThat(negotiationInfo.getIdx()).isEqualTo(3);
 
         // verify
-        then(mockAdminNegotiationJpaRepository).should(times(1)).findNextOneNegotiation(adminNegotiationEntity);
-        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findNextOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).should(times(1)).findNextOneNegotiation(adminNegotiationEntity.getIdx());
+        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findNextOneNegotiation(adminNegotiationEntity.getIdx());
         then(mockAdminNegotiationJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -335,8 +335,8 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationJpaRepository.insertModelNegotiation(adminNegotiationEntity);
 
         // when
-        when(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity)).thenReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        when(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx())).thenReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
         // then
         assertThat(negotiationInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
@@ -344,12 +344,12 @@ class AdminNegotiationJpaRepositoryTest {
         assertThat(negotiationInfo.getModelNegotiationDesc()).isNotNull();
 
         // verify
-        verify(mockAdminNegotiationJpaRepository, times(1)).findOneNegotiation(adminNegotiationEntity);
-        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findOneNegotiation(adminNegotiationEntity);
+        verify(mockAdminNegotiationJpaRepository, times(1)).findOneNegotiation(adminNegotiationEntity.getIdx());
+        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findOneNegotiation(adminNegotiationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNegotiationJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNegotiationJpaRepository);
-        inOrder.verify(mockAdminNegotiationJpaRepository).findOneNegotiation(adminNegotiationEntity);
+        inOrder.verify(mockAdminNegotiationJpaRepository).findOneNegotiation(adminNegotiationEntity.getIdx());
     }
 
     @Test
@@ -359,8 +359,8 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationJpaRepository.insertModelNegotiation(adminNegotiationEntity);
 
         // when
-        given(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity)).willReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        given(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx())).willReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
         // then
         assertThat(negotiationInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
@@ -368,8 +368,8 @@ class AdminNegotiationJpaRepositoryTest {
         assertThat(negotiationInfo.getModelNegotiationDesc()).isNotNull();
 
         // verify
-        then(mockAdminNegotiationJpaRepository).should(times(1)).findOneNegotiation(adminNegotiationEntity);
-        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).should(times(1)).findOneNegotiation(adminNegotiationEntity.getIdx());
+        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findOneNegotiation(adminNegotiationEntity.getIdx());
         then(mockAdminNegotiationJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -396,20 +396,20 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationJpaRepository.updateModelNegotiation(adminNegotiationEntity);
 
         // when
-        when(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity)).thenReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        when(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx())).thenReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
         // then
         assertThat(negotiationInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
         assertThat(negotiationInfo.getModelNegotiationDesc()).isEqualTo("섭외 수정 테스트");
 
         // verify
-        verify(mockAdminNegotiationJpaRepository, times(1)).findOneNegotiation(adminNegotiationEntity);
-        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findOneNegotiation(adminNegotiationEntity);
+        verify(mockAdminNegotiationJpaRepository, times(1)).findOneNegotiation(adminNegotiationEntity.getIdx());
+        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findOneNegotiation(adminNegotiationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNegotiationJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNegotiationJpaRepository);
-        inOrder.verify(mockAdminNegotiationJpaRepository).findOneNegotiation(adminNegotiationEntity);
+        inOrder.verify(mockAdminNegotiationJpaRepository).findOneNegotiation(adminNegotiationEntity.getIdx());
     }
 
     @Test
@@ -435,16 +435,16 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationJpaRepository.updateModelNegotiation(adminNegotiationEntity);
 
         // when
-        given(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity)).willReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity);
+        given(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx())).willReturn(adminNegotiationDTO);
+        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
 
         // then
         assertThat(negotiationInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
         assertThat(negotiationInfo.getModelNegotiationDesc()).isEqualTo("섭외 수정 테스트");
 
         // verify
-        then(mockAdminNegotiationJpaRepository).should(times(1)).findOneNegotiation(adminNegotiationEntity);
-        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).should(times(1)).findOneNegotiation(adminNegotiationEntity.getIdx());
+        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findOneNegotiation(adminNegotiationEntity.getIdx());
         then(mockAdminNegotiationJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -456,19 +456,19 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationDTO = INSTANCE.toDto(adminNegotiationEntity);
 
         // when
-        when(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity)).thenReturn(adminNegotiationDTO);
+        when(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx())).thenReturn(adminNegotiationDTO);
         Long deleteIdx = adminNegotiationJpaRepository.deleteModelNegotiation(adminNegotiationEntity.getIdx());
 
         // then
-        assertThat(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        verify(mockAdminNegotiationJpaRepository, times(1)).findOneNegotiation(adminNegotiationEntity);
-        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findOneNegotiation(adminNegotiationEntity);
+        verify(mockAdminNegotiationJpaRepository, times(1)).findOneNegotiation(adminNegotiationEntity.getIdx());
+        verify(mockAdminNegotiationJpaRepository, atLeastOnce()).findOneNegotiation(adminNegotiationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNegotiationJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNegotiationJpaRepository);
-        inOrder.verify(mockAdminNegotiationJpaRepository).findOneNegotiation(adminNegotiationEntity);
+        inOrder.verify(mockAdminNegotiationJpaRepository).findOneNegotiation(adminNegotiationEntity.getIdx());
     }
 
     @Test
@@ -479,15 +479,15 @@ class AdminNegotiationJpaRepositoryTest {
         adminNegotiationDTO = INSTANCE.toDto(adminNegotiationEntity);
 
         // when
-        given(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity)).willReturn(adminNegotiationDTO);
+        given(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx())).willReturn(adminNegotiationDTO);
         Long deleteIdx = adminNegotiationJpaRepository.deleteModelNegotiation(adminNegotiationEntity.getIdx());
 
         // then
-        assertThat(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        then(mockAdminNegotiationJpaRepository).should(times(1)).findOneNegotiation(adminNegotiationEntity);
-        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findOneNegotiation(adminNegotiationEntity);
+        then(mockAdminNegotiationJpaRepository).should(times(1)).findOneNegotiation(adminNegotiationEntity.getIdx());
+        then(mockAdminNegotiationJpaRepository).should(atLeastOnce()).findOneNegotiation(adminNegotiationEntity.getIdx());
         then(mockAdminNegotiationJpaRepository).shouldHaveNoMoreInteractions();
     }
 }
