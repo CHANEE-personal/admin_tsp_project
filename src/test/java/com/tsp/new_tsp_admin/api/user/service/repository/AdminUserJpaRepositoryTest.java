@@ -70,7 +70,7 @@ class AdminUserJpaRepositoryTest {
         userMap.put("size", 3);
 
         // then
-        assertThat(adminUserJpaRepository.findUsersList(userMap)).isNotEmpty();
+        assertThat(adminUserJpaRepository.findUserList(userMap)).isNotEmpty();
     }
 
     @Test
@@ -92,8 +92,8 @@ class AdminUserJpaRepositoryTest {
         userList.add(adminUserDTO);
 
         // when
-        when(mockAdminUserJpaRepository.findUsersList(userMap)).thenReturn(userList);
-        List<AdminUserDTO> newUserList = mockAdminUserJpaRepository.findUsersList(userMap);
+        when(mockAdminUserJpaRepository.findUserList(userMap)).thenReturn(userList);
+        List<AdminUserDTO> newUserList = mockAdminUserJpaRepository.findUserList(userMap);
 
         // then
         assertThat(newUserList.get(0).getUserId()).isEqualTo(userList.get(0).getUserId());
@@ -102,12 +102,12 @@ class AdminUserJpaRepositoryTest {
         assertThat(newUserList.get(0).getEmail()).isEqualTo(userList.get(0).getEmail());
 
         // verify
-        verify(mockAdminUserJpaRepository, times(1)).findUsersList(userMap);
-        verify(mockAdminUserJpaRepository, atLeastOnce()).findUsersList(userMap);
+        verify(mockAdminUserJpaRepository, times(1)).findUserList(userMap);
+        verify(mockAdminUserJpaRepository, atLeastOnce()).findUserList(userMap);
         verifyNoMoreInteractions(mockAdminUserJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminUserJpaRepository);
-        inOrder.verify(mockAdminUserJpaRepository).findUsersList(userMap);
+        inOrder.verify(mockAdminUserJpaRepository).findUserList(userMap);
     }
 
     @Test
@@ -129,8 +129,8 @@ class AdminUserJpaRepositoryTest {
         userList.add(adminUserDTO);
 
         // when
-        given(mockAdminUserJpaRepository.findUsersList(userMap)).willReturn(userList);
-        List<AdminUserDTO> newUserList = mockAdminUserJpaRepository.findUsersList(userMap);
+        given(mockAdminUserJpaRepository.findUserList(userMap)).willReturn(userList);
+        List<AdminUserDTO> newUserList = mockAdminUserJpaRepository.findUserList(userMap);
 
         // then
         assertThat(newUserList.get(0).getUserId()).isEqualTo(userList.get(0).getUserId());
@@ -139,8 +139,8 @@ class AdminUserJpaRepositoryTest {
         assertThat(newUserList.get(0).getEmail()).isEqualTo(userList.get(0).getEmail());
 
         // verify
-        then(mockAdminUserJpaRepository).should(times(1)).findUsersList(userMap);
-        then(mockAdminUserJpaRepository).should(atLeastOnce()).findUsersList(userMap);
+        then(mockAdminUserJpaRepository).should(times(1)).findUserList(userMap);
+        then(mockAdminUserJpaRepository).should(atLeastOnce()).findUserList(userMap);
         then(mockAdminUserJpaRepository).shouldHaveNoMoreInteractions();
     }
 

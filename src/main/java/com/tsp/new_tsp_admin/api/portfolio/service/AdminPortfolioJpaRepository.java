@@ -49,27 +49,27 @@ public class AdminPortfolioJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findPortfoliosCount
+     * 1. MethodName : findPortfolioCount
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 리스트 갯수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 12.
      * </pre>
      */
-    public Integer findPortfoliosCount(Map<String, Object> portfolioMap) {
+    public Integer findPortfolioCount(Map<String, Object> portfolioMap) {
         return queryFactory.selectFrom(adminPortFolioEntity).where(searchPortfolio(portfolioMap)).fetch().size();
     }
 
     /**
      * <pre>
-     * 1. MethodName : findPortfoliosList
+     * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
      */
-    public List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) {
+    public List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) {
         List<AdminPortFolioEntity> portfolioList = queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .orderBy(adminPortFolioEntity.idx.desc())
@@ -223,11 +223,11 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    public List<AdminCommentDTO> findPortfolioAdminComment(AdminPortFolioEntity existAdminPortfolioEntity) {
+    public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) {
         List<AdminCommentEntity> adminCommentEntity = queryFactory
                 .selectFrom(QAdminCommentEntity.adminCommentEntity)
                 .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("portfolio")
-                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(existAdminPortfolioEntity.getIdx()))
+                        .and(QAdminCommentEntity.adminCommentEntity.idx.eq(idx))
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 

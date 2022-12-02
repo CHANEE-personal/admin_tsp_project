@@ -84,12 +84,12 @@ public class AdminAgencyJpaRepository {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    public AdminAgencyDTO findOneAgency(AdminAgencyEntity existAdminAgencyEntity) {
+    public AdminAgencyDTO findOneAgency(Long idx) {
         AdminAgencyEntity findOneAgency = queryFactory
                 .selectFrom(adminAgencyEntity)
                 .orderBy(adminAgencyEntity.idx.desc())
                 .where(adminAgencyEntity.visible.eq("Y")
-                        .and(adminAgencyEntity.idx.eq(existAdminAgencyEntity.getIdx())))
+                        .and(adminAgencyEntity.idx.eq(idx)))
                 .fetchOne();
 
         return INSTANCE.toDto(findOneAgency);

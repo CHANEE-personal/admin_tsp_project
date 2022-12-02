@@ -49,7 +49,7 @@ class AdminUserJpaServiceTest {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
         userMap.put("size", 3);
-        List<AdminUserDTO> adminUserList = adminUserJpaService.findUsersList(userMap);
+        List<AdminUserDTO> adminUserList = adminUserJpaService.findUserList(userMap);
         // then
         assertThat(adminUserList).isNotEmpty();
     }
@@ -67,8 +67,8 @@ class AdminUserJpaServiceTest {
                 .idx(1L).userId("admin05").password("test1234").name("admin05").visible("Y").build());
 
         // when
-        when(mockAdminUserJpaService.findUsersList(userMap)).thenReturn(returnUserList);
-        List<AdminUserDTO> userList = mockAdminUserJpaService.findUsersList(userMap);
+        when(mockAdminUserJpaService.findUserList(userMap)).thenReturn(returnUserList);
+        List<AdminUserDTO> userList = mockAdminUserJpaService.findUserList(userMap);
 
         // then
         assertAll(
@@ -83,12 +83,12 @@ class AdminUserJpaServiceTest {
         assertThat(userList.get(0).getVisible()).isEqualTo(returnUserList.get(0).getVisible());
 
         // verify
-        verify(mockAdminUserJpaService, times(1)).findUsersList(userMap);
-        verify(mockAdminUserJpaService, atLeastOnce()).findUsersList(userMap);
+        verify(mockAdminUserJpaService, times(1)).findUserList(userMap);
+        verify(mockAdminUserJpaService, atLeastOnce()).findUserList(userMap);
         verifyNoMoreInteractions(mockAdminUserJpaService);
 
         InOrder inOrder = inOrder(mockAdminUserJpaService);
-        inOrder.verify(mockAdminUserJpaService).findUsersList(userMap);
+        inOrder.verify(mockAdminUserJpaService).findUserList(userMap);
     }
 
     @Test
@@ -104,8 +104,8 @@ class AdminUserJpaServiceTest {
                 .idx(1L).userId("admin05").password("test1234").name("admin05").visible("Y").build());
 
         // when
-        given(mockAdminUserJpaService.findUsersList(userMap)).willReturn(returnUserList);
-        List<AdminUserDTO> userList = mockAdminUserJpaService.findUsersList(userMap);
+        given(mockAdminUserJpaService.findUserList(userMap)).willReturn(returnUserList);
+        List<AdminUserDTO> userList = mockAdminUserJpaService.findUserList(userMap);
 
         // then
         assertAll(
@@ -120,7 +120,7 @@ class AdminUserJpaServiceTest {
         assertThat(userList.get(0).getVisible()).isEqualTo(returnUserList.get(0).getVisible());
 
         // verify
-        then(mockAdminUserJpaService).should(times(1)).findUsersList(userMap);
+        then(mockAdminUserJpaService).should(times(1)).findUserList(userMap);
         then(mockAdminUserJpaService).should(atLeastOnce());
         then(mockAdminUserJpaService).shouldHaveNoMoreInteractions();
     }

@@ -24,7 +24,7 @@ import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api/jpa-notice")
+@RequestMapping("/api/notice")
 @Api(tags = "공지사항 관련 API")
 @RequiredArgsConstructor
 public class AdminNoticeJpaController {
@@ -33,7 +33,7 @@ public class AdminNoticeJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : findNoticesList
+     * 1. MethodName : findNoticeList
      * 2. ClassName  : AdminNoticeJpaController.java
      * 3. Comment    : 관리자 공지사항 리스트 조회
      * 4. 작성자       : CHO
@@ -49,14 +49,14 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findNoticesList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findNoticeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         Map<String, Object> noticeMap = new HashMap<>();
 
         Integer noticeCount = this.adminNoticeJpaService.findNoticeCount(searchCommon.searchCommon(page, paramMap));
         List<AdminNoticeDTO> noticeList = new ArrayList<>();
 
         if (noticeCount > 0) {
-            noticeList = this.adminNoticeJpaService.findNoticesList(searchCommon.searchCommon(page, paramMap));
+            noticeList = this.adminNoticeJpaService.findNoticeList(searchCommon.searchCommon(page, paramMap));
         }
 
         // 리스트 수
@@ -90,7 +90,7 @@ public class AdminNoticeJpaController {
     })
     @GetMapping("/{idx}")
     public AdminNoticeDTO findOneNotice(@PathVariable Long idx) throws Exception {
-        return adminNoticeJpaService.findOneNotice(AdminNoticeEntity.builder().idx(idx).build());
+        return adminNoticeJpaService.findOneNotice(idx);
     }
 
     /**
@@ -112,7 +112,7 @@ public class AdminNoticeJpaController {
     })
     @GetMapping("/{idx}/prev")
     public AdminNoticeDTO findPrevOneNotice(@PathVariable Long idx) throws Exception {
-        return adminNoticeJpaService.findPrevOneNotice(AdminNoticeEntity.builder().idx(idx).build());
+        return adminNoticeJpaService.findPrevOneNotice(idx);
     }
 
     /**
@@ -134,7 +134,7 @@ public class AdminNoticeJpaController {
     })
     @GetMapping("/{idx}/next")
     public AdminNoticeDTO findNextOneNotice(@PathVariable Long idx) throws Exception {
-        return adminNoticeJpaService.findNextOneNotice(AdminNoticeEntity.builder().idx(idx).build());
+        return adminNoticeJpaService.findNextOneNotice(idx);
     }
 
     /**

@@ -26,7 +26,7 @@ import static java.lang.Math.ceil;
 @Validated
 @RestController
 @Api(tags = "모델 섭외 관련 API")
-@RequestMapping("/api/jpa-negotiation")
+@RequestMapping("/api/negotiation")
 @RequiredArgsConstructor
 public class AdminNegotiationJpaController {
     private final AdminNegotiationJpaService adminNegotiationJpaService;
@@ -100,7 +100,7 @@ public class AdminNegotiationJpaController {
     })
     @GetMapping("/{idx}")
     public AdminNegotiationDTO findOneNegotiation(@PathVariable Long idx) throws Exception {
-        return this.adminNegotiationJpaService.findOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
+        return this.adminNegotiationJpaService.findOneNegotiation(idx);
     }
 
     /**
@@ -122,7 +122,7 @@ public class AdminNegotiationJpaController {
     })
     @GetMapping("/{idx}/prev")
     public AdminNegotiationDTO findPrevOneNegotiation(@PathVariable Long idx) throws Exception {
-        return this.adminNegotiationJpaService.findPrevOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
+        return this.adminNegotiationJpaService.findPrevOneNegotiation(idx);
     }
 
     /**
@@ -144,7 +144,7 @@ public class AdminNegotiationJpaController {
     })
     @GetMapping("/{idx}/next")
     public AdminNegotiationDTO findNextOneNegotiation(@PathVariable Long idx) throws Exception {
-        return this.adminNegotiationJpaService.findNextOneNegotiation(AdminNegotiationEntity.builder().idx(idx).build());
+        return this.adminNegotiationJpaService.findNextOneNegotiation(idx);
     }
 
     /**

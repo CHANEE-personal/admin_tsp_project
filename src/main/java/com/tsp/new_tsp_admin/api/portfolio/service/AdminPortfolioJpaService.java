@@ -11,25 +11,25 @@ public interface AdminPortfolioJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findPortfoliosCount
+     * 1. MethodName : findPortfolioCount
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 포트폴리오 리스트 수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    Integer findPortfoliosCount(Map<String, Object> portfolioMap) throws Exception;
+    Integer findPortfolioCount(Map<String, Object> portfolioMap) throws Exception;
 
     /**
      * <pre>
-     * 1. MethodName : findPortfoliosList
+     * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    List<AdminPortFolioDTO> findPortfoliosList(Map<String, Object> portfolioMap) throws Exception;
+    List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) throws Exception;
 
     /**
      * <pre>
@@ -106,5 +106,5 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    List<AdminCommentDTO> findPortfolioAdminComment(AdminPortFolioEntity adminPortfolioEntity) throws Exception;
+    List<AdminCommentDTO> findPortfolioAdminComment(Long idx) throws Exception;
 }

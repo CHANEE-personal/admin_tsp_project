@@ -13,25 +13,25 @@ public interface AdminSupportJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findSupportsCount
+     * 1. MethodName : findSupportCount
      * 2. ClassName  : AdminSupportJpaService.java
      * 3. Comment    : 관리자 지원모델 리스트 수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findSupportsCount(Map<String, Object> supportMap) throws Exception;
+    Integer findSupportCount(Map<String, Object> supportMap) throws Exception;
 
     /**
      * <pre>
-     * 1. MethodName : findSupportsList
+     * 1. MethodName : findSupportList
      * 2. ClassName  : AdminSupportJpaService.java
      * 3. Comment    : 관리자 지원모델 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) throws Exception;
+    List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) throws Exception;
 
     /**
      * <pre>
@@ -42,7 +42,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
+    AdminSupportDTO findOneSupportModel(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -163,5 +163,5 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    List<AdminCommentDTO> findSupportAdminComment(AdminSupportEntity adminSupportEntity) throws Exception;
+    List<AdminCommentDTO> findSupportAdminComment(Long idx) throws Exception;
 }

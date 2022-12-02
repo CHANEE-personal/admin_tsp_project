@@ -29,7 +29,7 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 @Validated
 @RestController
 @Api(tags = "지원모델 관련 API")
-@RequestMapping("/api/jpa-support")
+@RequestMapping("/api/support")
 @RequiredArgsConstructor
 public class AdminSupportJpaController {
     private final AdminSupportJpaService adminSupportJpaService;
@@ -37,7 +37,7 @@ public class AdminSupportJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getSupportList
+     * 1. MethodName : findSupportList
      * 2. ClassName  : AdminSupportJpaController.java
      * 3. Comment    : 관리자 지원모델 리스트 조회
      * 4. 작성자       : CHO
@@ -53,15 +53,15 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/lists")
-    public Map<String, Object> getSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         // 페이징 및 검색
         Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
 
-        Integer supportListCount = this.adminSupportJpaService.findSupportsCount(supportMap);
+        Integer supportListCount = this.adminSupportJpaService.findSupportCount(supportMap);
         List<AdminSupportDTO> supportList = new ArrayList<>();
 
         if (supportListCount > 0) {
-            supportList = this.adminSupportJpaService.findSupportsList(supportMap);
+            supportList = this.adminSupportJpaService.findSupportList(supportMap);
         }
 
         // 리스트 수
@@ -293,6 +293,6 @@ public class AdminSupportJpaController {
     })
     @GetMapping("/{idx}/admin-comment")
     public List<AdminCommentDTO> findSupportAdminComment(@PathVariable Long idx) throws Exception {
-        return adminSupportJpaService.findSupportAdminComment(AdminSupportEntity.builder().idx(idx).build());
+        return adminSupportJpaService.findSupportAdminComment(idx);
     }
 }

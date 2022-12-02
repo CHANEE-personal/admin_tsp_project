@@ -77,7 +77,7 @@ class AdminProductionJpaServiceTest {
         productionMap.put("size", 3);
 
         // then
-        assertThat(adminProductionJpaService.findProductionsList(productionMap)).isNotEmpty();
+        assertThat(adminProductionJpaService.findProductionList(productionMap)).isNotEmpty();
     }
 
     @Test
@@ -94,8 +94,8 @@ class AdminProductionJpaServiceTest {
         returnProductionList.add(AdminProductionDTO.builder().idx(2L).title("productionTest").description("productionTest").visible("Y").build());
 
         // when
-        when(mockAdminProductionJpaService.findProductionsList(productionMap)).thenReturn(returnProductionList);
-        List<AdminProductionDTO> productionList = mockAdminProductionJpaService.findProductionsList(productionMap);
+        when(mockAdminProductionJpaService.findProductionList(productionMap)).thenReturn(returnProductionList);
+        List<AdminProductionDTO> productionList = mockAdminProductionJpaService.findProductionList(productionMap);
 
         // then
         assertAll(
@@ -109,12 +109,12 @@ class AdminProductionJpaServiceTest {
         assertThat(productionList.get(0).getVisible()).isEqualTo(returnProductionList.get(0).getVisible());
 
         // verify
-        verify(mockAdminProductionJpaService, times(1)).findProductionsList(productionMap);
-        verify(mockAdminProductionJpaService, atLeastOnce()).findProductionsList(productionMap);
+        verify(mockAdminProductionJpaService, times(1)).findProductionList(productionMap);
+        verify(mockAdminProductionJpaService, atLeastOnce()).findProductionList(productionMap);
         verifyNoMoreInteractions(mockAdminProductionJpaService);
 
         InOrder inOrder = inOrder(mockAdminProductionJpaService);
-        inOrder.verify(mockAdminProductionJpaService).findProductionsList(productionMap);
+        inOrder.verify(mockAdminProductionJpaService).findProductionList(productionMap);
     }
 
     @Test
@@ -131,8 +131,8 @@ class AdminProductionJpaServiceTest {
         returnProductionList.add(AdminProductionDTO.builder().idx(2L).title("productionTest").description("productionTest").visible("Y").build());
 
         // when
-        given(mockAdminProductionJpaService.findProductionsList(productionMap)).willReturn(returnProductionList);
-        List<AdminProductionDTO> productionList = mockAdminProductionJpaService.findProductionsList(productionMap);
+        given(mockAdminProductionJpaService.findProductionList(productionMap)).willReturn(returnProductionList);
+        List<AdminProductionDTO> productionList = mockAdminProductionJpaService.findProductionList(productionMap);
 
         // then
         assertAll(
@@ -146,8 +146,8 @@ class AdminProductionJpaServiceTest {
         assertThat(productionList.get(0).getVisible()).isEqualTo(returnProductionList.get(0).getVisible());
 
         // verify
-        then(mockAdminProductionJpaService).should(times(1)).findProductionsList(productionMap);
-        then(mockAdminProductionJpaService).should(atLeastOnce()).findProductionsList(productionMap);
+        then(mockAdminProductionJpaService).should(times(1)).findProductionList(productionMap);
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findProductionList(productionMap);
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -158,15 +158,15 @@ class AdminProductionJpaServiceTest {
         adminProductionEntity = AdminProductionEntity.builder().idx(119L).build();
 
         // then
-        assertThat(adminProductionJpaService.findOneProduction(adminProductionEntity).getTitle()).isEqualTo("하하");
+        assertThat(adminProductionJpaService.findOneProduction(adminProductionEntity.getIdx()).getTitle()).isEqualTo("하하");
     }
 
     @Test
     @DisplayName("프로덕션상세조회Mockito테스트")
     void 프로덕션상세조회Mockito테스트() throws Exception {
         // when
-        when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
+        when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getIdx()).isEqualTo(adminProductionDTO.getIdx());
@@ -175,20 +175,20 @@ class AdminProductionJpaServiceTest {
         assertThat(productionInfo.getVisible()).isEqualTo(adminProductionDTO.getVisible());
 
         // verify
-        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity);
-        verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity.getIdx());
+        verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity.getIdx());
         verifyNoMoreInteractions(mockAdminProductionJpaService);
 
         InOrder inOrder = inOrder(mockAdminProductionJpaService);
-        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity);
+        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity.getIdx());
     }
 
     @Test
     @DisplayName("프로덕션상세조회BDD테스트")
     void 프로덕션상세조회BDD테스트() throws Exception {
         // when
-        given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
+        given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getIdx()).isEqualTo(adminProductionDTO.getIdx());
@@ -197,8 +197,8 @@ class AdminProductionJpaServiceTest {
         assertThat(productionInfo.getVisible()).isEqualTo(adminProductionDTO.getVisible());
 
         // verify
-        then(mockAdminProductionJpaService).should(times(1)).findOneProduction(adminProductionEntity);
-        then(mockAdminProductionJpaService).should(atLeastOnce()).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(times(1)).findOneProduction(adminProductionEntity.getIdx());
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findOneProduction(adminProductionEntity.getIdx());
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -209,21 +209,21 @@ class AdminProductionJpaServiceTest {
         adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
-        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
+        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
-        when(mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity);
+        when(mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getIdx()).isEqualTo(117);
 
         // verify
-        verify(mockAdminProductionJpaService, times(1)).findPrevOneProduction(adminProductionEntity);
-        verify(mockAdminProductionJpaService, atLeastOnce()).findPrevOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, times(1)).findPrevOneProduction(adminProductionEntity.getIdx());
+        verify(mockAdminProductionJpaService, atLeastOnce()).findPrevOneProduction(adminProductionEntity.getIdx());
         verifyNoMoreInteractions(mockAdminProductionJpaService);
 
         InOrder inOrder = inOrder(mockAdminProductionJpaService);
-        inOrder.verify(mockAdminProductionJpaService).findPrevOneProduction(adminProductionEntity);
+        inOrder.verify(mockAdminProductionJpaService).findPrevOneProduction(adminProductionEntity.getIdx());
     }
 
     @Test
@@ -233,17 +233,17 @@ class AdminProductionJpaServiceTest {
         adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
-        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
+        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
-        given(mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity);
+        given(mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity.getIdx())).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findPrevOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getIdx()).isEqualTo(117);
 
         // verify
-        then(mockAdminProductionJpaService).should(times(1)).findPrevOneProduction(adminProductionEntity);
-        then(mockAdminProductionJpaService).should(atLeastOnce()).findPrevOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(times(1)).findPrevOneProduction(adminProductionEntity.getIdx());
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findPrevOneProduction(adminProductionEntity.getIdx());
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -254,21 +254,21 @@ class AdminProductionJpaServiceTest {
         adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
-        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
+        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
-        when(mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity);
+        when(mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getIdx()).isEqualTo(119);
 
         // verify
-        verify(mockAdminProductionJpaService, times(1)).findNextOneProduction(adminProductionEntity);
-        verify(mockAdminProductionJpaService, atLeastOnce()).findNextOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, times(1)).findNextOneProduction(adminProductionEntity.getIdx());
+        verify(mockAdminProductionJpaService, atLeastOnce()).findNextOneProduction(adminProductionEntity.getIdx());
         verifyNoMoreInteractions(mockAdminProductionJpaService);
 
         InOrder inOrder = inOrder(mockAdminProductionJpaService);
-        inOrder.verify(mockAdminProductionJpaService).findNextOneProduction(adminProductionEntity);
+        inOrder.verify(mockAdminProductionJpaService).findNextOneProduction(adminProductionEntity.getIdx());
     }
 
     @Test
@@ -278,17 +278,17 @@ class AdminProductionJpaServiceTest {
         adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
         // when
-        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity);
+        adminProductionDTO = adminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
-        given(mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity);
+        given(mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity.getIdx())).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findNextOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getIdx()).isEqualTo(119);
 
         // verify
-        then(mockAdminProductionJpaService).should(times(1)).findNextOneProduction(adminProductionEntity);
-        then(mockAdminProductionJpaService).should(atLeastOnce()).findNextOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(times(1)).findNextOneProduction(adminProductionEntity.getIdx());
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findNextOneProduction(adminProductionEntity.getIdx());
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -299,20 +299,20 @@ class AdminProductionJpaServiceTest {
         adminProductionJpaService.insertProduction(adminProductionEntity);
 
         // when
-        when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
+        when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트");
         assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트");
 
         // verify
-        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity);
-        verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity.getIdx());
+        verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity.getIdx());
         verifyNoMoreInteractions(mockAdminProductionJpaService);
 
         InOrder inOrder = inOrder(mockAdminProductionJpaService);
-        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity);
+        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity.getIdx());
     }
 
     @Test
@@ -322,16 +322,16 @@ class AdminProductionJpaServiceTest {
         adminProductionJpaService.insertProduction(adminProductionEntity);
 
         // when
-        given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
+        given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트");
         assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트");
 
         // verify
-        then(mockAdminProductionJpaService).should(times(1)).findOneProduction(adminProductionEntity);
-        then(mockAdminProductionJpaService).should(atLeastOnce()).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(times(1)).findOneProduction(adminProductionEntity.getIdx());
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findOneProduction(adminProductionEntity.getIdx());
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -353,20 +353,20 @@ class AdminProductionJpaServiceTest {
         adminProductionJpaService.updateProduction(adminProductionEntity);
 
         // when
-        when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).thenReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
+        when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트1");
         assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트1");
 
         // verify
-        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity);
-        verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity);
+        verify(mockAdminProductionJpaService, times(1)).findOneProduction(adminProductionEntity.getIdx());
+        verify(mockAdminProductionJpaService, atLeastOnce()).findOneProduction(adminProductionEntity.getIdx());
         verifyNoMoreInteractions(mockAdminProductionJpaService);
 
         InOrder inOrder = inOrder(mockAdminProductionJpaService);
-        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity);
+        inOrder.verify(mockAdminProductionJpaService).findOneProduction(adminProductionEntity.getIdx());
     }
 
     @Test
@@ -387,16 +387,16 @@ class AdminProductionJpaServiceTest {
         adminProductionJpaService.updateProduction(adminProductionEntity);
 
         // when
-        given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity)).willReturn(adminProductionDTO);
-        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity);
+        given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).willReturn(adminProductionDTO);
+        AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
 
         // then
         assertThat(productionInfo.getTitle()).isEqualTo("프로덕션 테스트1");
         assertThat(productionInfo.getDescription()).isEqualTo("프로덕션 테스트1");
 
         // verify
-        then(mockAdminProductionJpaService).should(times(1)).findOneProduction(adminProductionEntity);
-        then(mockAdminProductionJpaService).should(atLeastOnce()).findOneProduction(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(times(1)).findOneProduction(adminProductionEntity.getIdx());
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findOneProduction(adminProductionEntity.getIdx());
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -436,19 +436,19 @@ class AdminProductionJpaServiceTest {
                 .visible("Y")
                 .build());
 
-        when(mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity)).thenReturn(adminCommentList);
-        List<AdminCommentDTO> newAdminCommentList = mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity);
+        when(mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity.getIdx())).thenReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity.getIdx());
 
         assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("production");
         assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminProductionEntity.getIdx());
 
         // verify
-        verify(mockAdminProductionJpaService, times(1)).findProductionAdminComment(adminProductionEntity);
-        verify(mockAdminProductionJpaService, atLeastOnce()).findProductionAdminComment(adminProductionEntity);
+        verify(mockAdminProductionJpaService, times(1)).findProductionAdminComment(adminProductionEntity.getIdx());
+        verify(mockAdminProductionJpaService, atLeastOnce()).findProductionAdminComment(adminProductionEntity.getIdx());
         verifyNoMoreInteractions(mockAdminProductionJpaService);
 
         InOrder inOrder = inOrder(mockAdminProductionJpaService);
-        inOrder.verify(mockAdminProductionJpaService).findProductionAdminComment(adminProductionEntity);
+        inOrder.verify(mockAdminProductionJpaService).findProductionAdminComment(adminProductionEntity.getIdx());
     }
 
     @Test
@@ -477,15 +477,15 @@ class AdminProductionJpaServiceTest {
                 .visible("Y")
                 .build());
 
-        given(mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity)).willReturn(adminCommentList);
-        List<AdminCommentDTO> newAdminCommentList = mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity);
+        given(mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity.getIdx())).willReturn(adminCommentList);
+        List<AdminCommentDTO> newAdminCommentList = mockAdminProductionJpaService.findProductionAdminComment(adminProductionEntity.getIdx());
 
         assertThat(newAdminCommentList.get(0).getCommentType()).isEqualTo("production");
         assertThat(newAdminCommentList.get(0).getCommentTypeIdx()).isEqualTo(adminProductionEntity.getIdx());
 
         // verify
-        then(mockAdminProductionJpaService).should(times(1)).findProductionAdminComment(adminProductionEntity);
-        then(mockAdminProductionJpaService).should(atLeastOnce()).findProductionAdminComment(adminProductionEntity);
+        then(mockAdminProductionJpaService).should(times(1)).findProductionAdminComment(adminProductionEntity.getIdx());
+        then(mockAdminProductionJpaService).should(atLeastOnce()).findProductionAdminComment(adminProductionEntity.getIdx());
         then(mockAdminProductionJpaService).shouldHaveNoMoreInteractions();
     }
 }

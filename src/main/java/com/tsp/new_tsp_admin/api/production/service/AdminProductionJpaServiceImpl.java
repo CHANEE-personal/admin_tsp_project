@@ -24,7 +24,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
 
     /**
      * <pre>
-     * 1. MethodName : findProductionsCount
+     * 1. MethodName : findProductionCount
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 리스트 수 조회
      * 4. 작성자       : CHO
@@ -33,9 +33,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findProductionsCount(Map<String, Object> productionMap) throws TspException {
+    public Integer findProductionCount(Map<String, Object> productionMap) throws TspException {
         try {
-            return adminProductionJpaRepository.findProductionsCount(productionMap);
+            return adminProductionJpaRepository.findProductionCount(productionMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PRODUCTION_LIST, e);
         }
@@ -43,7 +43,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
 
     /**
      * <pre>
-     * 1. MethodName : findProductionsList
+     * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
      * 4. 작성자       : CHO
@@ -53,9 +53,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Cacheable("production")
     @Transactional(readOnly = true)
-    public List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) throws TspException {
+    public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) throws TspException {
         try {
-            return adminProductionJpaRepository.findProductionsList(productionMap);
+            return adminProductionJpaRepository.findProductionList(productionMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PRODUCTION_LIST, e);
         }
@@ -73,9 +73,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Cacheable("production")
     @Transactional(readOnly = true)
-    public AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) throws TspException {
+    public AdminProductionDTO findOneProduction(Long idx) throws TspException {
         try {
-            return adminProductionJpaRepository.findOneProduction(adminProductionEntity);
+            return adminProductionJpaRepository.findOneProduction(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PRODUCTION, e);
         }
@@ -93,9 +93,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Cacheable("production")
     @Transactional(readOnly = true)
-    public AdminProductionDTO findPrevOneProduction(AdminProductionEntity adminProductionEntity) throws TspException {
+    public AdminProductionDTO findPrevOneProduction(Long idx) throws TspException {
         try {
-            return adminProductionJpaRepository.findPrevOneProduction(adminProductionEntity);
+            return adminProductionJpaRepository.findPrevOneProduction(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PRODUCTION, e);
         }
@@ -113,9 +113,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Cacheable("production")
     @Transactional(readOnly = true)
-    public AdminProductionDTO findNextOneProduction(AdminProductionEntity adminProductionEntity) throws TspException {
+    public AdminProductionDTO findNextOneProduction(Long idx) throws TspException {
         try {
-            return adminProductionJpaRepository.findNextOneProduction(adminProductionEntity);
+            return adminProductionJpaRepository.findNextOneProduction(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PRODUCTION, e);
         }
@@ -195,9 +195,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findProductionAdminComment(AdminProductionEntity adminProductionEntity) throws TspException{
+    public List<AdminCommentDTO> findProductionAdminComment(Long idx) throws TspException{
         try {
-            return adminProductionJpaRepository.findProductionAdminComment(adminProductionEntity);
+            return adminProductionJpaRepository.findProductionAdminComment(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMENT_LIST, e);
         }

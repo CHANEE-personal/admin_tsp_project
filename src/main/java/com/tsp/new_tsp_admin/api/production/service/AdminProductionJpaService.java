@@ -13,25 +13,25 @@ public interface AdminProductionJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findProductionsCount
+     * 1. MethodName : findProductionCount
      * 2. ClassName  : AdminProductionJpaService.java
      * 3. Comment    : 관리자 프로덕션 리스트 수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    Integer findProductionsCount(Map<String, Object> productionMap) throws Exception;
+    Integer findProductionCount(Map<String, Object> productionMap) throws Exception;
 
     /**
      * <pre>
-     * 1. MethodName : findProductionsList
+     * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaService.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    List<AdminProductionDTO> findProductionsList(Map<String, Object> productionMap) throws Exception;
+    List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) throws Exception;
 
     /**
      * <pre>
@@ -42,7 +42,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
      */
-    AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) throws Exception;
+    AdminProductionDTO findOneProduction(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -53,7 +53,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 09. 13.
      * </pre>
      */
-    AdminProductionDTO findPrevOneProduction(AdminProductionEntity adminProductionEntity) throws Exception;
+    AdminProductionDTO findPrevOneProduction(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -64,7 +64,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 09. 13.
      * </pre>
      */
-    AdminProductionDTO findNextOneProduction(AdminProductionEntity adminProductionEntity) throws Exception;
+    AdminProductionDTO findNextOneProduction(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -108,5 +108,5 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    List<AdminCommentDTO> findProductionAdminComment(AdminProductionEntity adminProductionEntity) throws Exception;
+    List<AdminCommentDTO> findProductionAdminComment(Long idx) throws Exception;
 }

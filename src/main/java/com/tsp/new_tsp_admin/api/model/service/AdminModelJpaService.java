@@ -14,25 +14,25 @@ public interface AdminModelJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findModelsCount
+     * 1. MethodName : findModelCount
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 리스트 수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findModelsCount(Map<String, Object> modelMap) throws Exception;
+    Integer findModelCount(Map<String, Object> modelMap) throws Exception;
 
     /**
      * <pre>
-     * 1. MethodName : findModelsList
+     * 1. MethodName : findModelList
      * 2. ClassName  : AdminModelJpaService.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws Exception;
+    List<AdminModelDTO> findModelList(Map<String, Object> modelMap) throws Exception;
 
     /**
      * <pre>
@@ -142,7 +142,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    List<AdminCommentDTO> findModelAdminComment(AdminModelEntity adminModelEntity) throws Exception;
+    List<AdminCommentDTO> findModelAdminComment(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -186,5 +186,5 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 09. 03.
      * </pre>
      */
-    List<AdminScheduleDTO> findOneModelSchedule(AdminModelEntity adminModelEntity) throws Exception;
+    List<AdminScheduleDTO> findOneModelSchedule(Long idx) throws Exception;
 }

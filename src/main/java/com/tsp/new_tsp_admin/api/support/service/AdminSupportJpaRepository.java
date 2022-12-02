@@ -49,27 +49,27 @@ public class AdminSupportJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findSupportsCount
+     * 1. MethodName : findSupportCount
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 리스트 갯수 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer findSupportsCount(Map<String, Object> supportMap) {
+    public Integer findSupportCount(Map<String, Object> supportMap) {
         return queryFactory.selectFrom(adminSupportEntity).where(searchSupport(supportMap)).fetch().size();
     }
 
     /**
      * <pre>
-     * 1. MethodName : findSupportsList
+     * 1. MethodName : findSupportList
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public List<AdminSupportDTO> findSupportsList(Map<String, Object> supportMap) {
+    public List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) {
         List<AdminSupportEntity> supportList = queryFactory.selectFrom(adminSupportEntity)
                 .where(searchSupport(supportMap))
                 .orderBy(adminSupportEntity.idx.desc())
@@ -92,10 +92,10 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
+    public AdminSupportDTO findOneSupportModel(Long idx) {
         //모델 상세 조회
         AdminSupportEntity findOneSupportModel = queryFactory.selectFrom(adminSupportEntity)
-                .where(adminSupportEntity.idx.eq(existAdminSupportEntity.getIdx()))
+                .where(adminSupportEntity.idx.eq(idx))
                 .fetchOne();
 
         return INSTANCE.toDto(findOneSupportModel);
@@ -278,11 +278,11 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    public List<AdminCommentDTO> findSupportAdminComment(AdminSupportEntity existAdminSupportEntity) {
+    public List<AdminCommentDTO> findSupportAdminComment(Long idx) {
         List<AdminCommentEntity> adminCommentEntity = queryFactory
                 .selectFrom(QAdminCommentEntity.adminCommentEntity)
                 .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("support")
-                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(existAdminSupportEntity.getIdx()))
+                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(idx))
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 

@@ -10,14 +10,14 @@ public interface AdminUserJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findUsersList
+     * 1. MethodName : findUserList
      * 2. ClassName  : AdminUserJpaService.java
      * 3. Comment    : Admin User 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminUserDTO> findUsersList(Map<String, Object> userMap) throws Exception;
+    List<AdminUserDTO> findUserList(Map<String, Object> userMap) throws Exception;
 
     /**
      * <pre>

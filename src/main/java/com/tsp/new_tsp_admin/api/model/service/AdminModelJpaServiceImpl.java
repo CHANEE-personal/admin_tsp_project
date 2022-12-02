@@ -29,7 +29,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findModelsCount
+     * 1. MethodName : findModelCount
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 리스트 수 조회
      * 4. 작성자       : CHO
@@ -38,9 +38,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findModelsCount(Map<String, Object> modelMap) throws TspException {
+    public Integer findModelCount(Map<String, Object> modelMap) throws TspException {
         try {
-            return adminModelJpaRepository.findModelsCount(modelMap);
+            return adminModelJpaRepository.findModelCount(modelMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_LIST, e);
         }
@@ -58,9 +58,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Cacheable("model")
     @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws TspException {
+    public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) throws TspException {
         try {
-            return adminModelJpaRepository.findModelsList(modelMap);
+            return adminModelJpaRepository.findModelList(modelMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_LIST, e);
         }
@@ -255,9 +255,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findModelAdminComment(AdminModelEntity adminModelEntity) throws TspException {
+    public List<AdminCommentDTO> findModelAdminComment(Long idx) throws TspException {
         try {
-            return adminModelJpaRepository.findModelAdminComment(adminModelEntity);
+            return adminModelJpaRepository.findModelAdminComment(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMENT_LIST, e);
         }
@@ -335,9 +335,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Cacheable("schedule")
     @Transactional(readOnly = true)
-    public List<AdminScheduleDTO> findOneModelSchedule(AdminModelEntity adminModelEntity) throws TspException {
+    public List<AdminScheduleDTO> findOneModelSchedule(Long idx) throws TspException {
         try {
-            return adminModelJpaRepository.findOneModelSchedule(adminModelEntity);
+            return adminModelJpaRepository.findOneModelSchedule(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_MODEL_SCHEDULE_LIST, e);
         }

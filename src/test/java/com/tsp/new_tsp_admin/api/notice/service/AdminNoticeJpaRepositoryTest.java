@@ -82,7 +82,7 @@ class AdminNoticeJpaRepositoryTest {
         noticeMap.put("size", 3);
 
         // then
-        assertThat(adminNoticeJpaRepository.findNoticesList(noticeMap)).isNotEmpty();
+        assertThat(adminNoticeJpaRepository.findNoticeList(noticeMap)).isNotEmpty();
     }
 
     @Test
@@ -93,7 +93,7 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeEntity = AdminNoticeEntity.builder().idx(1L).build();
 
         // when
-        adminNoticeDTO = adminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        adminNoticeDTO = adminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertAll(() -> assertThat(adminNoticeDTO.getIdx()).isEqualTo(1),
@@ -124,8 +124,8 @@ class AdminNoticeJpaRepositoryTest {
                 .description("공지사항 테스트").build());
 
         // when
-        when(mockAdminNoticeJpaRepository.findNoticesList(noticeMap)).thenReturn(noticeList);
-        List<AdminNoticeDTO> newNoticeList = mockAdminNoticeJpaRepository.findNoticesList(noticeMap);
+        when(mockAdminNoticeJpaRepository.findNoticeList(noticeMap)).thenReturn(noticeList);
+        List<AdminNoticeDTO> newNoticeList = mockAdminNoticeJpaRepository.findNoticeList(noticeMap);
 
         // then
         assertThat(newNoticeList.get(0).getIdx()).isEqualTo(noticeList.get(0).getIdx());
@@ -134,12 +134,12 @@ class AdminNoticeJpaRepositoryTest {
         assertThat(newNoticeList.get(0).getVisible()).isEqualTo(noticeList.get(0).getVisible());
 
         // verify
-        verify(mockAdminNoticeJpaRepository, times(1)).findNoticesList(noticeMap);
-        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findNoticesList(noticeMap);
+        verify(mockAdminNoticeJpaRepository, times(1)).findNoticeList(noticeMap);
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findNoticeList(noticeMap);
         verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
-        inOrder.verify(mockAdminNoticeJpaRepository).findNoticesList(noticeMap);
+        inOrder.verify(mockAdminNoticeJpaRepository).findNoticeList(noticeMap);
     }
 
     @Test
@@ -155,8 +155,8 @@ class AdminNoticeJpaRepositoryTest {
                 .description("공지사항 테스트").build());
 
         // when
-        given(mockAdminNoticeJpaRepository.findNoticesList(noticeMap)).willReturn(noticeList);
-        List<AdminNoticeDTO> newNoticeList = mockAdminNoticeJpaRepository.findNoticesList(noticeMap);
+        given(mockAdminNoticeJpaRepository.findNoticeList(noticeMap)).willReturn(noticeList);
+        List<AdminNoticeDTO> newNoticeList = mockAdminNoticeJpaRepository.findNoticeList(noticeMap);
 
         // then
         assertThat(newNoticeList.get(0).getIdx()).isEqualTo(noticeList.get(0).getIdx());
@@ -165,8 +165,8 @@ class AdminNoticeJpaRepositoryTest {
         assertThat(newNoticeList.get(0).getVisible()).isEqualTo(noticeList.get(0).getVisible());
 
         // verify
-        then(mockAdminNoticeJpaRepository).should(times(1)).findNoticesList(noticeMap);
-        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findNoticesList(noticeMap);
+        then(mockAdminNoticeJpaRepository).should(times(1)).findNoticeList(noticeMap);
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findNoticeList(noticeMap);
         then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -184,8 +184,8 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
 
         // when
-        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getIdx()).isEqualTo(1);
@@ -194,12 +194,12 @@ class AdminNoticeJpaRepositoryTest {
         assertThat(noticeInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity);
-        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
-        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity);
+        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity.getIdx());
     }
 
     @Test
@@ -216,8 +216,8 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
 
         // when
-        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getIdx()).isEqualTo(1);
@@ -226,8 +226,8 @@ class AdminNoticeJpaRepositoryTest {
         assertThat(noticeInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity);
-        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -238,12 +238,12 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
-        adminNoticeDTO = adminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        adminNoticeDTO = adminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // 이전 공지사항
-        assertThat(adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity).getIdx()).isEqualTo(1);
+        assertThat(adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity.getIdx()).getIdx()).isEqualTo(1);
         // 다음 공지사항
-        assertThat(adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity).getIdx()).isEqualTo(3);
+        assertThat(adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity.getIdx()).getIdx()).isEqualTo(3);
     }
 
     @Test
@@ -253,21 +253,21 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
-        adminNoticeDTO = adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity);
+        adminNoticeDTO = adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity.getIdx());
 
-        when(mockAdminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity);
+        when(mockAdminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getIdx()).isEqualTo(1);
 
         // verify
-        verify(mockAdminNoticeJpaRepository, times(1)).findPrevOneNotice(adminNoticeEntity);
-        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findPrevOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaRepository, times(1)).findPrevOneNotice(adminNoticeEntity.getIdx());
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findPrevOneNotice(adminNoticeEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
-        inOrder.verify(mockAdminNoticeJpaRepository).findPrevOneNotice(adminNoticeEntity);
+        inOrder.verify(mockAdminNoticeJpaRepository).findPrevOneNotice(adminNoticeEntity.getIdx());
     }
 
     @Test
@@ -277,17 +277,17 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
-        adminNoticeDTO = adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity);
+        adminNoticeDTO = adminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity.getIdx());
 
-        given(mockAdminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity);
+        given(mockAdminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity.getIdx())).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findPrevOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getIdx()).isEqualTo(1);
 
         // verify
-        then(mockAdminNoticeJpaRepository).should(times(1)).findPrevOneNotice(adminNoticeEntity);
-        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findPrevOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).should(times(1)).findPrevOneNotice(adminNoticeEntity.getIdx());
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findPrevOneNotice(adminNoticeEntity.getIdx());
         then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -298,21 +298,21 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
-        adminNoticeDTO = adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity);
+        adminNoticeDTO = adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity.getIdx());
 
-        when(mockAdminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity);
+        when(mockAdminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getIdx()).isEqualTo(3);
 
         // verify
-        verify(mockAdminNoticeJpaRepository, times(1)).findNextOneNotice(adminNoticeEntity);
-        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findNextOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaRepository, times(1)).findNextOneNotice(adminNoticeEntity.getIdx());
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findNextOneNotice(adminNoticeEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
-        inOrder.verify(mockAdminNoticeJpaRepository).findNextOneNotice(adminNoticeEntity);
+        inOrder.verify(mockAdminNoticeJpaRepository).findNextOneNotice(adminNoticeEntity.getIdx());
     }
 
     @Test
@@ -322,17 +322,17 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
         // when
-        adminNoticeDTO = adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity);
+        adminNoticeDTO = adminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity.getIdx());
 
-        given(mockAdminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity);
+        given(mockAdminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity.getIdx())).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findNextOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getIdx()).isEqualTo(3);
 
         // verify
-        then(mockAdminNoticeJpaRepository).should(times(1)).findNextOneNotice(adminNoticeEntity);
-        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findNextOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).should(times(1)).findNextOneNotice(adminNoticeEntity.getIdx());
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findNextOneNotice(adminNoticeEntity.getIdx());
         then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -343,8 +343,8 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeJpaRepository.insertNotice(adminNoticeEntity);
 
         // when
-        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getTitle()).isEqualTo("공지사항 테스트");
@@ -352,12 +352,12 @@ class AdminNoticeJpaRepositoryTest {
         assertThat(noticeInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity);
-        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
-        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity);
+        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity.getIdx());
     }
 
     @Test
@@ -367,8 +367,8 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeJpaRepository.insertNotice(adminNoticeEntity);
 
         // when
-        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getTitle()).isEqualTo("공지사항 테스트");
@@ -376,8 +376,8 @@ class AdminNoticeJpaRepositoryTest {
         assertThat(noticeInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity);
-        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -399,20 +399,20 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeJpaRepository.updateNotice(adminNoticeEntity);
 
         // when
-        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getTitle()).isEqualTo("공지사항 테스트1");
         assertThat(noticeInfo.getDescription()).isEqualTo("공지사항 테스트1");
 
         // verify
-        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity);
-        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
-        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity);
+        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity.getIdx());
     }
 
     @Test
@@ -433,16 +433,16 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeJpaRepository.updateNotice(adminNoticeEntity);
 
         // when
-        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getTitle()).isEqualTo("공지사항 테스트1");
         assertThat(noticeInfo.getDescription()).isEqualTo("공지사항 테스트1");
 
         // verify
-        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity);
-        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -465,19 +465,19 @@ class AdminNoticeJpaRepositoryTest {
         AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
 
         // when
-        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getTopFixed()).isTrue();
 
         // verify
-        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity);
-        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
-        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity);
+        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity.getIdx());
     }
 
     @Test
@@ -499,15 +499,15 @@ class AdminNoticeJpaRepositoryTest {
         AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
 
         // when
-        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
-        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity);
+        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).willReturn(adminNoticeDTO);
+        AdminNoticeDTO noticeInfo = mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx());
 
         // then
         assertThat(noticeInfo.getTopFixed()).isTrue();
 
         // verify
-        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity);
-        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -532,19 +532,19 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
 
         // when
-        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).thenReturn(adminNoticeDTO);
+        when(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
         Long deleteIdx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
 
         // then
-        assertThat(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity);
-        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity);
+        verify(mockAdminNoticeJpaRepository, times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        verify(mockAdminNoticeJpaRepository, atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         verifyNoMoreInteractions(mockAdminNoticeJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaRepository);
-        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity);
+        inOrder.verify(mockAdminNoticeJpaRepository).findOneNotice(adminNoticeEntity.getIdx());
     }
 
     @Test
@@ -555,15 +555,15 @@ class AdminNoticeJpaRepositoryTest {
         adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
 
         // when
-        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity)).willReturn(adminNoticeDTO);
+        given(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx())).willReturn(adminNoticeDTO);
         Long deleteIdx = adminNoticeJpaRepository.deleteNotice(adminNoticeEntity.getIdx());
 
         // then
-        assertThat(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminNoticeJpaRepository.findOneNotice(adminNoticeEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity);
-        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity);
+        then(mockAdminNoticeJpaRepository).should(times(1)).findOneNotice(adminNoticeEntity.getIdx());
+        then(mockAdminNoticeJpaRepository).should(atLeastOnce()).findOneNotice(adminNoticeEntity.getIdx());
         then(mockAdminNoticeJpaRepository).shouldHaveNoMoreInteractions();
     }
 }

@@ -144,7 +144,7 @@ class AdminSupportJpaControllerTest {
 		MultiValueMap<String, String> supportMap = new LinkedMultiValueMap<>();
 		supportMap.add("jpaStartPage", "1");
 		supportMap.add("size", "3");
-		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
+		mockMvc.perform(get("/api/support/lists").params(supportMap)
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -159,7 +159,7 @@ class AdminSupportJpaControllerTest {
 		MultiValueMap<String, String> supportMap = new LinkedMultiValueMap<>();
 		supportMap.add("jpaStartPage", "1");
 		supportMap.add("size", "3");
-		mockMvc.perform(get("/api/jpa-support/lists").params(supportMap)
+		mockMvc.perform(get("/api/support/lists").params(supportMap)
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isForbidden());
@@ -169,7 +169,7 @@ class AdminSupportJpaControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원 모델 상세 조회 테스트")
 	void 지원모델상세조회Api테스트() throws Exception {
-		mockMvc.perform(get("/api/jpa-support/1")
+		mockMvc.perform(get("/api/support/1")
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -193,7 +193,7 @@ class AdminSupportJpaControllerTest {
 				.visible("Y")
 				.build();
 
-		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
+		mockMvc.perform(put("/api/support/{idx}", adminSupportEntity.getIdx())
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
 				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
@@ -242,7 +242,7 @@ class AdminSupportJpaControllerTest {
 				.supportInstagram("https://instagram.com")
 				.build();
 
-		mockMvc.perform(put("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
+		mockMvc.perform(put("/api/support/{idx}", adminSupportEntity.getIdx())
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
 				.contentType(APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(adminSupportEntity)))
@@ -256,7 +256,7 @@ class AdminSupportJpaControllerTest {
 	void 지원모델삭제Api테스트() throws Exception {
 		em.persist(adminSupportEntity);
 
-		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
+		mockMvc.perform(delete("/api/support/{idx}", adminSupportEntity.getIdx())
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -271,7 +271,7 @@ class AdminSupportJpaControllerTest {
 	void 지원모델삭제Api권한테스트() throws Exception {
 		em.persist(adminSupportEntity);
 
-		mockMvc.perform(delete("/api/jpa-support/{idx}", adminSupportEntity.getIdx())
+		mockMvc.perform(delete("/api/support/{idx}", adminSupportEntity.getIdx())
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isForbidden());
@@ -284,7 +284,7 @@ class AdminSupportJpaControllerTest {
 		MultiValueMap<String, String> evaluationMap = new LinkedMultiValueMap<>();
 		evaluationMap.add("jpaStartPage", "1");
 		evaluationMap.add("size", "3");
-		mockMvc.perform(get("/api/jpa-support/evaluation/lists").params(evaluationMap)
+		mockMvc.perform(get("/api/support/evaluation/lists").params(evaluationMap)
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -295,7 +295,7 @@ class AdminSupportJpaControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원 모델 평가 상세 조회 테스트")
 	void 지원모델평가상세조회Api테스트() throws Exception {
-		mockMvc.perform(get("/api/jpa-support/evaluation/1")
+		mockMvc.perform(get("/api/support/evaluation/1")
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -313,7 +313,7 @@ class AdminSupportJpaControllerTest {
 						.evaluateComment("합격")
 						.visible("Y").build();
 
-		mockMvc.perform(post("/api/jpa-support/{idx}/evaluation", adminSupportEntity.getIdx())
+		mockMvc.perform(post("/api/support/{idx}/evaluation", adminSupportEntity.getIdx())
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
 						.contentType(APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(evaluationEntity)))
@@ -357,7 +357,7 @@ class AdminSupportJpaControllerTest {
 						.visible("Y")
 						.build();
 
-		mockMvc.perform(put("/api/jpa-support/{idx}/evaluation", evaluationEntity.getIdx())
+		mockMvc.perform(put("/api/support/{idx}/evaluation", evaluationEntity.getIdx())
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken())
 						.contentType(APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(evaluationEntity)))
@@ -394,7 +394,7 @@ class AdminSupportJpaControllerTest {
 
 		em.persist(evaluationEntity);
 
-		mockMvc.perform(delete("/api/jpa-support/{idx}/evaluation", evaluationEntity.getIdx())
+		mockMvc.perform(delete("/api/support/{idx}/evaluation", evaluationEntity.getIdx())
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -409,7 +409,7 @@ class AdminSupportJpaControllerTest {
 		// 지원모델 등록
 		em.persist(adminSupportEntity);
 
-		mockMvc.perform(put("/api/jpa-support/{idx}/pass", adminSupportEntity.getIdx())
+		mockMvc.perform(put("/api/support/{idx}/pass", adminSupportEntity.getIdx())
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -422,7 +422,7 @@ class AdminSupportJpaControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 지원모델 어드민 코멘트 조회 테스트")
 	void 지원모델어드민코멘트조회Api테스트() throws Exception {
-		mockMvc.perform(get("/api/jpa-support/{idx}/admin-comment", adminSupportEntity.getIdx())
+		mockMvc.perform(get("/api/support/{idx}/admin-comment", adminSupportEntity.getIdx())
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())

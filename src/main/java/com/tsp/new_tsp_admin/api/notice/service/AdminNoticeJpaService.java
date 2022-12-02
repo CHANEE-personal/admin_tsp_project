@@ -20,14 +20,14 @@ public interface AdminNoticeJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findNoticesList
+     * 1. MethodName : findNoticeList
      * 2. ClassName  : AdminNoticeJpaService.java
      * 3. Comment    : 관리자 공지사항 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    List<AdminNoticeDTO> findNoticesList(Map<String, Object> noticeMap) throws Exception;
+    List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) throws Exception;
 
     /**
      * <pre>
@@ -38,7 +38,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    AdminNoticeDTO findOneNotice(AdminNoticeEntity adminNoticeEntity) throws Exception;
+    AdminNoticeDTO findOneNotice(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -49,7 +49,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminNoticeDTO findPrevOneNotice(AdminNoticeEntity adminNoticeEntity) throws Exception;
+    AdminNoticeDTO findPrevOneNotice(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -60,7 +60,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminNoticeDTO findNextOneNotice(AdminNoticeEntity adminNoticeEntity) throws Exception;
+    AdminNoticeDTO findNextOneNotice(Long idx) throws Exception;
 
     /**
      * <pre>

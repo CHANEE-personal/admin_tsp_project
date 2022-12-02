@@ -28,7 +28,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @Validated
 @RestController
 @Api(tags = "모델 소속사 관련 API")
-@RequestMapping("/api/jpa-agency")
+@RequestMapping("/api/agency")
 @RequiredArgsConstructor
 public class AdminAgencyJpaController {
     private final AdminAgencyJpaService adminAgencyJpaService;
@@ -94,7 +94,7 @@ public class AdminAgencyJpaController {
     })
     @GetMapping("/{idx}")
     public AdminAgencyDTO findOneAgency(@PathVariable Long idx) throws Exception {
-        return this.adminAgencyJpaService.findOneAgency(AdminAgencyEntity.builder().idx(idx).build());
+        return this.adminAgencyJpaService.findOneAgency(idx);
     }
 
     /**

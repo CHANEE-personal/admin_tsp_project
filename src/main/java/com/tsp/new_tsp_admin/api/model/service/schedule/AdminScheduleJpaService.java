@@ -39,7 +39,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    AdminScheduleDTO findOneSchedule(AdminScheduleEntity adminScheduleEntity) throws Exception;
+    AdminScheduleDTO findOneSchedule(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -50,7 +50,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 09. 22.
      * </pre>
      */
-    AdminScheduleDTO findPrevOneSchedule(AdminScheduleEntity adminScheduleEntity) throws Exception;
+    AdminScheduleDTO findPrevOneSchedule(Long idx) throws Exception;
 
     /**
      * <pre>
@@ -61,7 +61,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 09. 22.
      * </pre>
      */
-    AdminScheduleDTO findNextOneSchedule(AdminScheduleEntity adminScheduleEntity) throws Exception;
+    AdminScheduleDTO findNextOneSchedule(Long idx) throws Exception;
 
     /**
      * <pre>

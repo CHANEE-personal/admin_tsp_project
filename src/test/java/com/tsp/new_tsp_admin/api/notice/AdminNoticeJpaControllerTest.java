@@ -127,7 +127,7 @@ class AdminNoticeJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공지사항 조회 테스트")
     void 공지사항조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-notice/lists")
+        mockMvc.perform(get("/api/notice/lists")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -146,7 +146,7 @@ class AdminNoticeJpaControllerTest {
         paramMap.add("searchType", "0");
         paramMap.add("searchKeyword", "하하");
 
-        mockMvc.perform(get("/api/jpa-notice/lists").queryParams(paramMap)
+        mockMvc.perform(get("/api/notice/lists").queryParams(paramMap)
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -157,7 +157,7 @@ class AdminNoticeJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공지사항 상세 조회 테스트")
     void 공지사항상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-notice/1")
+        mockMvc.perform(get("/api/notice/1")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -171,7 +171,7 @@ class AdminNoticeJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 이전 공지사항 상세 조회 테스트")
     void 이전공지사항상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-notice/2/prev"))
+        mockMvc.perform(get("/api/notice/2/prev"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
@@ -182,7 +182,7 @@ class AdminNoticeJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 다음 공지사항 상세 조회 테스트")
     void 다음공지사항상세조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-notice/2/next"))
+        mockMvc.perform(get("/api/notice/2/next"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
@@ -193,7 +193,7 @@ class AdminNoticeJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공지사항 등록 테스트")
     void 공지사항등록Api테스트() throws Exception {
-        mockMvc.perform(post("/api/jpa-notice")
+        mockMvc.perform(post("/api/notice")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminNoticeEntity)))
@@ -225,7 +225,7 @@ class AdminNoticeJpaControllerTest {
 
         adminNoticeEntity = AdminNoticeEntity.builder().idx(adminNoticeEntity.getIdx()).title("테스트1").description("테스트1").visible("Y").build();
 
-        mockMvc.perform(put("/api/jpa-notice/{idx}", adminNoticeEntity.getIdx())
+        mockMvc.perform(put("/api/notice/{idx}", adminNoticeEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminNoticeEntity)))
@@ -253,7 +253,7 @@ class AdminNoticeJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공지사항 상단 고정 테스트")
     void 다음공지사항상단고정Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-notice/2/fixed"))
+        mockMvc.perform(get("/api/notice/2/fixed"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
@@ -266,7 +266,7 @@ class AdminNoticeJpaControllerTest {
     void 공지사항삭제Api테스트() throws Exception {
         em.persist(adminNoticeEntity);
 
-        mockMvc.perform(delete("/api/jpa-notice/{idx}", adminNoticeEntity.getIdx())
+        mockMvc.perform(delete("/api/notice/{idx}", adminNoticeEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
