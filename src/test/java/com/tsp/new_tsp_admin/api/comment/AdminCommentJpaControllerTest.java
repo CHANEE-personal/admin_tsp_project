@@ -122,7 +122,7 @@ class AdminCommentJpaControllerTest {
                 .shoes(270)
                 .visible("Y")
                 .status("active")
-                .updater(1L)
+                .updater("1")
                 .updateTime(LocalDateTime.now())
                 .build();
 

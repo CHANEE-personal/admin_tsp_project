@@ -22,10 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 @ApiModel
 public class NewCommonDTO {
     @ApiModelProperty(required = true, value = "등록자", hidden = true)
-    private Long creator;
+    private String creator;
 
     @ApiModelProperty(required = true, value = "수정자", hidden = true)
-    private Long updater;
+    private String updater;
 
     @ApiModelProperty(required = true, value = "등록자 이름", hidden = true)
     private String adminName;

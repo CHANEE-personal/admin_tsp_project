@@ -281,7 +281,7 @@ class AdminScheduleJpaControllerTest {
                 .modelIdx(1L)
                 .modelSchedule("스케줄 수정")
                 .visible("Y")
-                .updater(1L)
+                .updater("1")
                 .updateTime(LocalDateTime.now())
                 .build();
 

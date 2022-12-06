@@ -252,7 +252,7 @@ class AdminAgencyJpaControllerTest {
                 .agencyName("newAgency")
                 .agencyDescription("newAgency")
                 .visible("Y")
-                .updater(1L)
+                .updater("1")
                 .updateTime(LocalDateTime.now())
                 .build();
 
