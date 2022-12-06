@@ -296,7 +296,7 @@ class AdminNegotiationJpaControllerTest {
                 .phone("010-1234-5678")
                 .email("test@gmail.com")
                 .visible("Y")
-                .updater(1L)
+                .updater("1")
                 .updateTime(LocalDateTime.now())
                 .build();
 

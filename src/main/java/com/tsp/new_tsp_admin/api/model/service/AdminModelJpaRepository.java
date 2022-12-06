@@ -256,17 +256,17 @@ public class AdminModelJpaRepository {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    public Long deleteModel(AdminModelEntity existAdminModelEntity) {
-        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
-
-        existAdminModelEntity.setUpdater(1L);
-        existAdminModelEntity.setUpdateTime(LocalDateTime.now());
-
-        return update.set(adminModelEntity.visible, "N")
-                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-                .set(adminModelEntity.updater, 1L)
-                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
-    }
+//    public Long deleteModel(AdminModelEntity existAdminModelEntity) {
+//        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
+//
+//        existAdminModelEntity.setUpdater(1L);
+//        existAdminModelEntity.setUpdateTime(LocalDateTime.now());
+//
+//        return update.set(adminModelEntity.visible, "N")
+//                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
+//                .set(adminModelEntity.updater, 1L)
+//                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
+//    }
 
     /**
      * <pre>

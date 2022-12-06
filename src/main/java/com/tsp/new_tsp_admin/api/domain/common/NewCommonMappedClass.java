@@ -27,12 +27,12 @@ public abstract class NewCommonMappedClass {
     @CreatedBy
     @Column(name = "creator", updatable = false)
     @ApiModelProperty(required = true, value = "등록자")
-    private Long creator;
+    private String creator;
 
     @LastModifiedBy
     @Column(name = "updater")
     @ApiModelProperty(required = true, value = "수정자")
-    private Long updater;
+    private String updater;
 
     @CreationTimestamp
     @Column(name = "create_time", updatable = false)

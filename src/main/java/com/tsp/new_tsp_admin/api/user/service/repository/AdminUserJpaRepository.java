@@ -140,7 +140,7 @@ public class AdminUserJpaRepository {
         JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
         update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
-                .set(adminUserEntity.updater, 1L)
+                .set(adminUserEntity.updater, "1")
                 .set(adminUserEntity.updateTime, LocalDateTime.now())
                 .where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
 
