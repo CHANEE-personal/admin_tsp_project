@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.model.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
@@ -91,7 +89,7 @@ public class AdminModelJpaRepository {
         List<AdminModelEntity> modelList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
-                .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
+                .leftJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
                 .where((searchCategory(modelMap).or(searchModelInfo(modelMap))))
                 .offset(getInt(modelMap.get("jpaStartPage"), 0))
@@ -118,6 +116,7 @@ public class AdminModelJpaRepository {
         AdminModelEntity findOneModel = queryFactory
                 .selectFrom(adminModelEntity)
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
+                .fetchJoin()
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
                 .where(adminModelEntity.idx.eq(idx)

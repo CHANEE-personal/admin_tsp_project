@@ -122,16 +122,16 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newModelCodeJpaDTO;
 
-    @OneToMany(mappedBy = "adminModelEntity")
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY)
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
     @OneToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "agency_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminAgencyEntity adminAgencyEntity;
 
-    @OneToMany(mappedBy = "adminModelEntity")
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY)
     private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adminModelEntity")
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY)
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
 }
