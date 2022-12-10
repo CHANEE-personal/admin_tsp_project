@@ -714,20 +714,6 @@ class AdminModelJpaControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    @DisplayName("Admin 새로운 모델 조회 테스트")
-    void 새로운모델조회Api테스트() throws Exception {
-        LinkedMultiValueMap<String, String> newModelMap = new LinkedMultiValueMap<>();
-        newModelMap.add("jpaStartPage", "1");
-        newModelMap.add("size", "3");
-        mockMvc.perform(get("/api/model/lists/new/{categoryCd}", adminModelEntity.getCategoryCd()).queryParams(newModelMap)
-                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=utf-8"));
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 새로운 모델 설정 테스트")
     void 새로운모델설정Api테스트() throws Exception {
         mockMvc.perform(put("/api/model/{idx}/toggle-new", adminModelEntity.getIdx())

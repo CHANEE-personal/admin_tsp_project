@@ -60,6 +60,10 @@ public class AdminModelJpaRepository {
         }
     }
 
+    private BooleanExpression searchNewModel(Map<String, Object> modelMap) {
+        return adminModelEntity.newYn.eq(getString(modelMap.get("searchNewModel"), "N"));
+    }
+
     /**
      * <pre>
      * 1. MethodName : findModelCount
@@ -71,7 +75,8 @@ public class AdminModelJpaRepository {
      */
     public int findModelCount(Map<String, Object> modelMap) {
         return queryFactory.selectFrom(adminModelEntity)
-                .where(searchCategory(modelMap).or(searchModelInfo(modelMap)))
+                .where((searchCategory(modelMap).or(searchModelInfo(modelMap)))
+                        .and(searchNewModel(modelMap)))
                 .fetch().size();
     }
 
@@ -91,7 +96,9 @@ public class AdminModelJpaRepository {
                 .orderBy(adminModelEntity.idx.desc())
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
-                .where((searchCategory(modelMap).or(searchModelInfo(modelMap))))
+                .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
+                .fetchJoin()
+                .where((searchCategory(modelMap).or(searchModelInfo(modelMap))).and(searchNewModel(modelMap)))
                 .offset(getInt(modelMap.get("jpaStartPage"), 0))
                 .limit(getInt(modelMap.get("size"), 0))
                 .fetch();
@@ -332,49 +339,6 @@ public class AdminModelJpaRepository {
                 .fetch();
 
         return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findNewModelsCount
-     * 2. ClassName  : AdminModelJpaRepository.java
-     * 3. Comment    : 관리자 새로운 모델 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 29.
-     * </pre>
-     */
-    public Integer findNewModelsCount(Map<String, Object> modelMap) {
-        return queryFactory.selectFrom(adminModelEntity)
-                .where((searchCategory(modelMap).or(searchModelInfo(modelMap)))
-                        .and(adminModelEntity.newYn.eq("Y")))
-                .fetch().size();
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findNewModelsList
-     * 2. ClassName  : AdminModelJpaRepository.java
-     * 3. Comment    : 관리자 새로운 모델 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 29.
-     * </pre>
-     */
-    public List<AdminModelDTO> findNewModelsList(Map<String, Object> modelMap) {
-        List<AdminModelEntity> newModelList = queryFactory
-                .selectFrom(adminModelEntity)
-                .orderBy(adminModelEntity.idx.desc())
-                .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
-                .fetchJoin()
-                .where((searchCategory(modelMap).or(searchModelInfo(modelMap)))
-                        .and(adminModelEntity.newYn.eq("Y")))
-                .offset(getInt(modelMap.get("jpaStartPage"), 0))
-                .limit(getInt(modelMap.get("size"), 0))
-                .fetch();
-
-        newModelList.forEach(list -> newModelList.get(newModelList.indexOf(list))
-                .setRnum(getInt(modelMap.get("startPage"), 1) * (getInt(modelMap.get("size"), 1)) - (2 - newModelList.indexOf(list))));
-
-        return INSTANCE.toDtoList(newModelList);
     }
 
     /**
