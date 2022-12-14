@@ -94,7 +94,7 @@ public class AdminModelJpaRepository {
         List<AdminModelEntity> modelList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
-                .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
+                .leftJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
