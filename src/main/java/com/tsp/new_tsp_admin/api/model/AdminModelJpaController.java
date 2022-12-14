@@ -311,49 +311,6 @@ public class AdminModelJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : getNewModelList
-     * 2. ClassName  : AdminModelJpaController.java
-     * 3. Comment    : 관리자 새로운 모델 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 29.
-     * </pre>
-     */
-    @ApiOperation(value = "새로운 모델 조회", notes = "새로운 모델을 조회한다.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "새로운 모델 조회 성공", response = Map.class),
-            @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
-            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
-            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
-    })
-    @GetMapping(value = "/lists/new/{categoryCd}")
-    public Map<String, Object> getNewModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                               @RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
-        // 페이징 및 검색
-        Map<String, Object> newModelMap = searchCommon.searchCommon(page, paramMap);
-        newModelMap.put("categoryCd", categoryCd);
-
-        Integer newModelListCount = this.adminModelJpaService.findNewModelsCount(newModelMap);
-        List<AdminModelDTO> newModelsList = new ArrayList<>();
-
-        if (newModelListCount > 0) {
-            newModelsList = this.adminModelJpaService.findNewModelsList(newModelMap);
-        }
-
-        // 리스트 수
-        newModelMap.put("pageSize", page.getSize());
-        // 전체 페이지 수
-        newModelMap.put("perPageListCnt", ceil((double) newModelListCount / page.getSize()));
-        // 전체 아이템 수
-        newModelMap.put("newModelListTotalCnt", newModelListCount);
-
-        newModelMap.put("newModelList", newModelsList);
-
-        return newModelMap;
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : toggleModelNewYn
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 새로운 모델 설정

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -122,16 +123,16 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newModelCodeJpaDTO;
 
-    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY)
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
     @OneToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "agency_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminAgencyEntity adminAgencyEntity;
 
-    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY)
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY)
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
 }

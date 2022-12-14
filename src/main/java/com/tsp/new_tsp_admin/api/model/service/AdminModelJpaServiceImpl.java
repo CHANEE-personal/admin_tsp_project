@@ -265,45 +265,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findNewModelsCount
-     * 2. ClassName  : AdminModelJpaServiceImpl.java
-     * 3. Comment    : 관리자 새로운 모델 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 29.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Integer findNewModelsCount(Map<String, Object> modelMap) throws TspException {
-        try {
-            return adminModelJpaRepository.findNewModelsCount(modelMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_LIST, e);
-        }
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findNewModelsList
-     * 2. ClassName  : AdminModelJpaServiceImpl.java
-     * 3. Comment    : 관리자 새로운 모델 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 29.
-     * </pre>
-     */
-    @Override
-    @Cacheable("model")
-    @Transactional(readOnly = true)
-    public List<AdminModelDTO> findNewModelsList(Map<String, Object> modelMap) throws TspException {
-        try {
-            return adminModelJpaRepository.findNewModelsList(modelMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_LIST, e);
-        }
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : toggleModelNewYn
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 새로운 모델 설정
