@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.notice.mapper.NoticeMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -55,7 +54,7 @@ class AdminNoticeJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
     }
 
     @BeforeEach
@@ -158,7 +157,7 @@ class AdminNoticeJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
         // when
         when(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
@@ -190,7 +189,7 @@ class AdminNoticeJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
         // when
         given(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity.getIdx())).willReturn(adminNoticeDTO);
@@ -371,7 +370,7 @@ class AdminNoticeJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        AdminNoticeDTO adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
         adminNoticeJpaService.updateNotice(adminNoticeEntity);
 
@@ -405,7 +404,7 @@ class AdminNoticeJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        AdminNoticeDTO adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
         adminNoticeJpaService.updateNotice(adminNoticeEntity);
 
@@ -439,7 +438,7 @@ class AdminNoticeJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        AdminNoticeDTO adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
         // when
         when(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
@@ -473,7 +472,7 @@ class AdminNoticeJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminNoticeDTO adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        AdminNoticeDTO adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
         // when
         given(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity.getIdx())).willReturn(adminNoticeDTO);
@@ -506,7 +505,7 @@ class AdminNoticeJpaServiceTest {
     void 공지사항삭제Mockito테스트() throws Exception {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
-        adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
         // when
         when(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
@@ -529,7 +528,7 @@ class AdminNoticeJpaServiceTest {
     void 공지사항삭제BDD테스트() throws Exception {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
-        adminNoticeDTO = INSTANCE.toDto(adminNoticeEntity);
+        adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
         // when
         when(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);

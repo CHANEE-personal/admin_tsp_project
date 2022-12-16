@@ -7,6 +7,9 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -19,7 +22,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "tsp_notice")
 public class AdminNoticeEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -44,4 +47,25 @@ public class AdminNoticeEntity extends NewCommonMappedClass {
 
     @Column(name = "top_fixed")
     private Boolean topFixed;
+
+    public static AdminNoticeDTO toDto(AdminNoticeEntity entity) {
+        return AdminNoticeDTO.builder().idx(entity.getIdx())
+                .rowNum(entity.getRowNum())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .viewCount(entity.getViewCount())
+                .topFixed(entity.getTopFixed())
+                .visible(entity.getVisible())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
+    public List<AdminNoticeDTO> toDtoList(List<AdminNoticeEntity> entityList) {
+        List<AdminNoticeDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(adminNoticeEntity -> list.add(toDto(adminNoticeEntity)));
+        return list;
+    }
 }
