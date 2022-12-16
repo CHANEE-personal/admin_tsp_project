@@ -4,7 +4,6 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyImageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,8 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import static com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -64,7 +63,7 @@ class AdminAgencyJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -76,7 +75,7 @@ class AdminAgencyJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        commonImageDTO = AgencyImageMapper.INSTANCE.toDto(commonImageEntity);
+        commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
     }
 
     @BeforeEach
@@ -194,7 +193,7 @@ class AdminAgencyJpaRepositoryTest {
                 .agencyName("agency")
                 .agencyDescription("agency")
                 .visible("Y")
-                .agencyImage(AgencyImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .agencyImage(commonImageEntityList.stream().map(CommonImageEntity::toDto).collect(Collectors.toList()))
                 .build();
 
         // when
@@ -234,7 +233,7 @@ class AdminAgencyJpaRepositoryTest {
                 .agencyName("agency")
                 .agencyDescription("agency")
                 .visible("Y")
-                .agencyImage(AgencyImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .agencyImage(commonImageEntityList.stream().map(CommonImageEntity::toDto).collect(Collectors.toList()))
                 .build();
 
         // when
@@ -316,7 +315,7 @@ class AdminAgencyJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminAgencyDTO adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        AdminAgencyDTO adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         adminAgencyJpaRepository.updateAgency(adminAgencyEntity);
 
@@ -350,7 +349,7 @@ class AdminAgencyJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminAgencyDTO adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        AdminAgencyDTO adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         adminAgencyJpaRepository.updateAgency(adminAgencyEntity);
 
@@ -373,7 +372,7 @@ class AdminAgencyJpaRepositoryTest {
     void 소속사삭제Mockito테스트() {
         // given
         em.persist(adminAgencyEntity);
-        adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         // when
         when(mockAdminAgencyJpaRepository.findOneAgency(adminAgencyEntity.getIdx())).thenReturn(adminAgencyDTO);
@@ -396,7 +395,7 @@ class AdminAgencyJpaRepositoryTest {
     void 소속사삭제BDD테스트() {
         // given
         em.persist(adminAgencyEntity);
-        adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         // when
         given(mockAdminAgencyJpaRepository.findOneAgency(adminAgencyEntity.getIdx())).willReturn(adminAgencyDTO);

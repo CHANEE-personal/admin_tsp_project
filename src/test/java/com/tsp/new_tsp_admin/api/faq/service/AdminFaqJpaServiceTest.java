@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.faq.service;
 
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqDTO;
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
-import com.tsp.new_tsp_admin.api.faq.mapper.FaqMapper;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.faq.mapper.FaqMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -55,7 +53,7 @@ class AdminFaqJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminFaqDTO = INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
     }
 
     @BeforeEach
@@ -158,7 +156,7 @@ class AdminFaqJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminFaqDTO = FaqMapper.INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
         when(mockAdminFaqJpaService.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
@@ -190,7 +188,7 @@ class AdminFaqJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminFaqDTO = FaqMapper.INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
         given(mockAdminFaqJpaService.findOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
@@ -371,7 +369,7 @@ class AdminFaqJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminFaqDTO adminFaqDTO = FaqMapper.INSTANCE.toDto(adminFaqEntity);
+        AdminFaqDTO adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         adminFaqJpaService.updateFaq(adminFaqEntity);
 
@@ -405,7 +403,7 @@ class AdminFaqJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminFaqDTO adminFaqDTO = FaqMapper.INSTANCE.toDto(adminFaqEntity);
+        AdminFaqDTO adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         adminFaqJpaService.updateFaq(adminFaqEntity);
 
@@ -441,7 +439,7 @@ class AdminFaqJpaServiceTest {
     void FAQ삭제Mockito테스트() throws Exception {
         // given
         adminFaqJpaService.insertFaq(adminFaqEntity);
-        adminFaqDTO = FaqMapper.INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
         when(mockAdminFaqJpaService.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
@@ -464,7 +462,7 @@ class AdminFaqJpaServiceTest {
     void FAQ삭제BDD테스트() throws Exception {
         // given
         adminFaqJpaService.insertFaq(adminFaqEntity);
-        adminFaqDTO = FaqMapper.INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
         when(mockAdminFaqJpaService.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);

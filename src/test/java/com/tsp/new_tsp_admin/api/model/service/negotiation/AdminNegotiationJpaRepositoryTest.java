@@ -7,8 +7,6 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.model.mapper.negotiation.NegotiationMapper.INSTANCE;
 import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,7 +69,7 @@ class AdminNegotiationJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminAgencyDTO = AgencyMapper.INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         ArrayList<CareerJson> careerList = new ArrayList<>();
         careerList.add(new CareerJson("title","txt"));
@@ -103,7 +100,7 @@ class AdminNegotiationJpaRepositoryTest {
 
         em.persist(adminModelEntity);
 
-        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
 
         adminNegotiationEntity = AdminNegotiationEntity.builder()
                 .modelIdx(adminModelEntity.getIdx())
@@ -116,7 +113,7 @@ class AdminNegotiationJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminNegotiationDTO = INSTANCE.toDto(adminNegotiationEntity);
+        adminNegotiationDTO = AdminNegotiationEntity.toDto(adminNegotiationEntity);
     }
 
     @BeforeEach
@@ -391,7 +388,7 @@ class AdminNegotiationJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminNegotiationDTO adminNegotiationDTO = INSTANCE.toDto(adminNegotiationEntity);
+        AdminNegotiationDTO adminNegotiationDTO = AdminNegotiationEntity.toDto(adminNegotiationEntity);
 
         adminNegotiationJpaRepository.updateModelNegotiation(adminNegotiationEntity);
 
@@ -430,7 +427,7 @@ class AdminNegotiationJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminNegotiationDTO adminNegotiationDTO = INSTANCE.toDto(adminNegotiationEntity);
+        AdminNegotiationDTO adminNegotiationDTO = AdminNegotiationEntity.toDto(adminNegotiationEntity);
 
         adminNegotiationJpaRepository.updateModelNegotiation(adminNegotiationEntity);
 
@@ -453,7 +450,7 @@ class AdminNegotiationJpaRepositoryTest {
     void 모델섭외삭제Mockito테스트() {
         // given
         em.persist(adminNegotiationEntity);
-        adminNegotiationDTO = INSTANCE.toDto(adminNegotiationEntity);
+        adminNegotiationDTO = AdminNegotiationEntity.toDto(adminNegotiationEntity);
 
         // when
         when(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx())).thenReturn(adminNegotiationDTO);
@@ -476,7 +473,7 @@ class AdminNegotiationJpaRepositoryTest {
     void 모델섭외삭제BDD테스트() {
         // given
         em.persist(adminNegotiationEntity);
-        adminNegotiationDTO = INSTANCE.toDto(adminNegotiationEntity);
+        adminNegotiationDTO = AdminNegotiationEntity.toDto(adminNegotiationEntity);
 
         // when
         given(mockAdminNegotiationJpaRepository.findOneNegotiation(adminNegotiationEntity.getIdx())).willReturn(adminNegotiationDTO);

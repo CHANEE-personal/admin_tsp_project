@@ -6,8 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
-import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapper;
-import com.tsp.new_tsp_admin.api.production.mapper.ProductionImageMapperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +29,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
@@ -70,7 +68,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+        adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .imageType("main")
@@ -82,7 +80,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        commonImageDTO = ProductionImageMapperImpl.INSTANCE.toDto(commonImageEntity);
+        commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
     }
 
     @BeforeEach
@@ -212,7 +210,7 @@ class AdminProductionJpaRepositoryTest {
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
-                .productionImage(ProductionImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .productionImage(commonImageEntityList.stream().map(CommonImageEntity::toDto).collect(Collectors.toList()))
                 .build();
 
         // when
@@ -253,7 +251,7 @@ class AdminProductionJpaRepositoryTest {
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
                 .visible("Y")
-                .productionImage(ProductionImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .productionImage(commonImageEntityList.stream().map(CommonImageEntity::toDto).collect(Collectors.toList()))
                 .build();
 
         // when
@@ -458,7 +456,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminProductionDTO adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+        AdminProductionDTO adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
         adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
 
@@ -492,7 +490,7 @@ class AdminProductionJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminProductionDTO adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+        AdminProductionDTO adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
         adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
 
@@ -528,7 +526,7 @@ class AdminProductionJpaRepositoryTest {
     void 프로덕션삭제Mockito테스트() {
         // given
         em.persist(adminProductionEntity);
-        adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+        adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
         // when
         when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);
@@ -551,7 +549,7 @@ class AdminProductionJpaRepositoryTest {
     void 프로덕션삭제BDD테스트() {
         // given
         em.persist(adminProductionEntity);
-        adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+        adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
         // when
         when(mockAdminProductionJpaRepository.findOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);

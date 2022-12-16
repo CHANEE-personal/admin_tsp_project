@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.notice.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeDTO;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.notice.QAdminNoticeEntity.*;
-import static com.tsp.new_tsp_admin.api.notice.mapper.NoticeMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 
@@ -71,9 +72,9 @@ public class AdminNoticeJpaRepository {
                 .fetch();
 
         noticeList.forEach(list -> noticeList.get(noticeList.indexOf(list))
-                .setRnum(getInt(noticeMap.get("startPage"), 1) * (getInt(noticeMap.get("size"), 1)) - (2 - noticeList.indexOf(list))));
+                .setRowNum(getInt(noticeMap.get("startPage"), 1) * (getInt(noticeMap.get("size"), 1)) - (2 - noticeList.indexOf(list))));
 
-        return INSTANCE.toDtoList(noticeList);
+        return noticeList.stream().map(AdminNoticeEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -93,7 +94,8 @@ public class AdminNoticeJpaRepository {
                         .and(adminNoticeEntity.visible.eq("Y")))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneNotice);
+        assert findOneNotice != null;
+        return AdminNoticeEntity.toDto(findOneNotice);
     }
 
     /**
@@ -113,7 +115,7 @@ public class AdminNoticeJpaRepository {
                         .and(adminNoticeEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findPrevOneNotice);
+        return AdminNoticeEntity.toDto(findPrevOneNotice);
     }
 
     /**
@@ -133,7 +135,7 @@ public class AdminNoticeJpaRepository {
                         .and(adminNoticeEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findNextOneNotice);
+        return AdminNoticeEntity.toDto(findNextOneNotice);
     }
 
     /**
@@ -147,7 +149,7 @@ public class AdminNoticeJpaRepository {
      */
     public AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity) {
         em.persist(adminNoticeEntity);
-        return INSTANCE.toDto(adminNoticeEntity);
+        return AdminNoticeEntity.toDto(adminNoticeEntity);
     }
 
     /**
@@ -163,7 +165,7 @@ public class AdminNoticeJpaRepository {
         em.merge(existAdminNoticeEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminNoticeEntity);
+        return AdminNoticeEntity.toDto(existAdminNoticeEntity);
     }
 
     /**
@@ -187,7 +189,7 @@ public class AdminNoticeJpaRepository {
         em.flush();
         em.clear();
 
-        return INSTANCE.toDto(em.find(AdminNoticeEntity.class, idx));
+        return AdminNoticeEntity.toDto(em.find(AdminNoticeEntity.class, idx));
     }
 
     /**

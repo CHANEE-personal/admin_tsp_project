@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.comment;
 
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
@@ -11,6 +12,9 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -25,7 +29,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "tsp_admin_comment")
 public class AdminCommentEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -64,4 +68,24 @@ public class AdminCommentEntity extends NewCommonMappedClass {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminPortFolioEntity adminPortfolioEntity;
+
+    public static AdminCommentDTO toDto(AdminCommentEntity entity) {
+        return AdminCommentDTO.builder().idx(entity.getIdx())
+                .rowNum(entity.getRowNum())
+                .comment(entity.getComment())
+                .commentTypeIdx(entity.getCommentTypeIdx())
+                .commentType(entity.getCommentType())
+                .visible(entity.getVisible())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
+    public List<AdminCommentDTO> toDtoList(List<AdminCommentEntity> entityList) {
+        List<AdminCommentDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(adminCommentEntity -> list.add(toDto(adminCommentEntity)));
+        return list;
+    }
 }

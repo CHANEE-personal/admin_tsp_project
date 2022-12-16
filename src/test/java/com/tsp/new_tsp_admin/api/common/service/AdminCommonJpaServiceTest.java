@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.common.mapper.CommonCodeMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -56,7 +55,7 @@ class AdminCommonJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        commonCodeDTO = INSTANCE.toDto(commonCodeEntity);
+        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
     }
 
     @BeforeEach
@@ -256,7 +255,7 @@ class AdminCommonJpaServiceTest {
 
         adminCommonJpaService.updateCommonCode(commonCodeEntity);
 
-        commonCodeDTO = INSTANCE.toDto(commonCodeEntity);
+        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
 
         // when
         when(mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity)).thenReturn(commonCodeDTO);
@@ -291,7 +290,7 @@ class AdminCommonJpaServiceTest {
 
         adminCommonJpaService.updateCommonCode(commonCodeEntity);
 
-        commonCodeDTO = INSTANCE.toDto(commonCodeEntity);
+        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
 
         // when
         given(mockAdminCommonJpaService.findOneCommonCode(commonCodeEntity)).willReturn(commonCodeDTO);

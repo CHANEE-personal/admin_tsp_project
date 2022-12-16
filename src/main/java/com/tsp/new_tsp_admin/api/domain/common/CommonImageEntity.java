@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
@@ -12,6 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static javax.persistence.FetchType.LAZY;
@@ -88,4 +91,26 @@ public class CommonImageEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminAgencyEntity adminAgencyEntity;
+
+    public static CommonImageDTO toDto(CommonImageEntity entity) {
+        return CommonImageDTO.builder()
+                .idx(entity.getIdx())
+                .typeIdx(entity.getTypeIdx())
+                .typeName(entity.getTypeName())
+                .fileMask(entity.getFileMask())
+                .fileSize(entity.getFileSize())
+                .fileName(entity.getFileName())
+                .fileNum(entity.getFileNum())
+                .filePath(entity.getFilePath())
+                .imageType(entity.getImageType())
+                .visible(entity.getVisible())
+                .regDate(entity.getRegDate())
+                .build();
+    }
+
+    public static List<CommonImageDTO> toDtoList(List<CommonImageEntity> entityList) {
+        List<CommonImageDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(commonImageEntity -> list.add(toDto(commonImageEntity)));
+        return list;
+    }
 }

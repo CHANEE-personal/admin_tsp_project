@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
@@ -18,10 +17,10 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
-import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
@@ -79,9 +78,9 @@ public class AdminProductionJpaRepository {
                 .fetch();
 
         productionList.forEach(list -> productionList.get(productionList.indexOf(list))
-                .setRnum(getInt(productionMap.get("startPage"), 1) * (getInt(productionMap.get("size"), 1)) - (2 - productionList.indexOf(list))));
+                .setRowNum(getInt(productionMap.get("startPage"), 1) * (getInt(productionMap.get("size"), 1)) - (2 - productionList.indexOf(list))));
 
-        return INSTANCE.toDtoList(productionList);
+        return productionList.stream().map(AdminProductionEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -104,7 +103,8 @@ public class AdminProductionJpaRepository {
                         .and(commonImageEntity.typeName.eq("production")))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneProduction);
+        assert findOneProduction != null;
+        return AdminProductionEntity.toDto(findOneProduction);
     }
 
     /**
@@ -125,7 +125,7 @@ public class AdminProductionJpaRepository {
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findPrevOneProduction);
+        return AdminProductionEntity.toDto(findPrevOneProduction);
     }
 
     /**
@@ -146,7 +146,7 @@ public class AdminProductionJpaRepository {
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findNextOneProduction);
+        return AdminProductionEntity.toDto(findNextOneProduction);
     }
 
     /**
@@ -160,7 +160,7 @@ public class AdminProductionJpaRepository {
      */
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         em.persist(adminProductionEntity);
-        return INSTANCE.toDto(adminProductionEntity);
+        return AdminProductionEntity.toDto(adminProductionEntity);
     }
 
     /**
@@ -196,7 +196,7 @@ public class AdminProductionJpaRepository {
         em.merge(existAdminProductionEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminProductionEntity);
+        return AdminProductionEntity.toDto(existAdminProductionEntity);
     }
 
     /**
@@ -232,6 +232,6 @@ public class AdminProductionJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
+        return adminCommentEntity.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
     }
 }

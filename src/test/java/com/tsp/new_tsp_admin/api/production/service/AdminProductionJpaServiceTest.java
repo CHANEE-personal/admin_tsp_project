@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.production.mapper.ProductionMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -59,7 +58,7 @@ class AdminProductionJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+        adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
     }
 
     @BeforeEach
@@ -348,7 +347,7 @@ class AdminProductionJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminProductionDTO adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+        AdminProductionDTO adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
         adminProductionJpaService.updateProduction(adminProductionEntity);
 
@@ -382,7 +381,7 @@ class AdminProductionJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminProductionDTO adminProductionDTO = INSTANCE.toDto(adminProductionEntity);
+        AdminProductionDTO adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
         adminProductionJpaService.updateProduction(adminProductionEntity);
 

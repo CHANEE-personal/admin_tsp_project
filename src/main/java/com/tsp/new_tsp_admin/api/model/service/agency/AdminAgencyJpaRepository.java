@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.adminAgencyEntity;
-import static com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 
@@ -70,9 +70,9 @@ public class AdminAgencyJpaRepository {
                 .fetch();
 
         agencyList.forEach(list -> agencyList.get(agencyList.indexOf(list))
-                .setRnum(getInt(agencyMap.get("startPage"), 1) * (getInt(agencyMap.get("size"), 1)) - (2 - agencyList.indexOf(list))));
+                .setRowNum(getInt(agencyMap.get("startPage"), 1) * (getInt(agencyMap.get("size"), 1)) - (2 - agencyList.indexOf(list))));
 
-        return INSTANCE.toDtoList(agencyList);
+        return agencyList.stream().map(AdminAgencyEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -92,7 +92,8 @@ public class AdminAgencyJpaRepository {
                         .and(adminAgencyEntity.idx.eq(idx)))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneAgency);
+        assert findOneAgency != null;
+        return AdminAgencyEntity.toDto(findOneAgency);
     }
 
     /**
@@ -106,7 +107,7 @@ public class AdminAgencyJpaRepository {
      */
     public AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) {
         em.persist(adminAgencyEntity);
-        return INSTANCE.toDto(adminAgencyEntity);
+        return AdminAgencyEntity.toDto(adminAgencyEntity);
     }
 
     /**
@@ -122,7 +123,7 @@ public class AdminAgencyJpaRepository {
         em.merge(existAdminAgencyEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminAgencyEntity);
+        return AdminAgencyEntity.toDto(existAdminAgencyEntity);
     }
 
     /**

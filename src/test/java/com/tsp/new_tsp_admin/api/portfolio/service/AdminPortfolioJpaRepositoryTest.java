@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
-import com.tsp.new_tsp_admin.api.portfolio.mapper.PortfolioImageMapper;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -70,7 +68,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+        adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
         commonImageEntity = CommonImageEntity.builder()
                 .idx(1L)
@@ -82,7 +80,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .typeName("portfolio")
                 .build();
 
-        commonImageDTO = PortfolioImageMapper.INSTANCE.toDto(commonImageEntity);
+        commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
     }
 
     @BeforeEach
@@ -211,7 +209,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .hashTag("#test")
                 .videoUrl("https://youtube.com")
                 .visible("Y")
-                .portfolioImage(PortfolioImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .portfolioImage(CommonImageEntity.toDtoList(commonImageEntityList))
                 .build();
 
         // when
@@ -250,7 +248,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .hashTag("#test")
                 .videoUrl("https://youtube.com")
                 .visible("Y")
-                .portfolioImage(PortfolioImageMapper.INSTANCE.toDtoList(commonImageEntityList))
+                .portfolioImage(CommonImageEntity.toDtoList(commonImageEntityList))
                 .build();
 
         // when
@@ -498,7 +496,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminPortFolioDTO adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
         adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
 
@@ -537,7 +535,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminPortFolioDTO adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
         adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
 
@@ -575,7 +573,7 @@ class AdminPortfolioJpaRepositoryTest {
     void 포트폴리오삭제Mockito테스트() {
         // given
         em.persist(adminPortFolioEntity);
-        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+        adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
         // when
         when(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
@@ -598,7 +596,7 @@ class AdminPortfolioJpaRepositoryTest {
     void 포트폴리오삭제BDD테스트() {
         // given
         em.persist(adminPortFolioEntity);
-        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+        adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
         // when
         given(mockAdminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);

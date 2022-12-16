@@ -25,7 +25,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "tsp_portfolio")
 public class AdminPortFolioEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -66,4 +66,28 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
 
     @OneToMany(mappedBy = "adminPortfolioEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
+
+    public static AdminPortFolioDTO toDto(AdminPortFolioEntity entity) {
+        return AdminPortFolioDTO.builder()
+                .rowNum(entity.getRowNum())
+                .idx(entity.getIdx())
+                .categoryCd(entity.getCategoryCd())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .hashTag(entity.getHashTag())
+                .videoUrl(entity.getVideoUrl())
+                .viewCount(entity.getViewCount())
+                .visible(entity.getVisible())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
+    public List<AdminPortFolioDTO> toDtoList(List<AdminPortFolioEntity> entityList) {
+        List<AdminPortFolioDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(adminPortFolioEntity -> list.add(toDto(adminPortFolioEntity)));
+        return list;
+    }
 }

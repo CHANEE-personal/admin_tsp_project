@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.comment.service;
 
-import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -26,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.faq.mapper.FaqMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -81,7 +79,7 @@ class AdminCommentJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminCommentDTO = AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
+        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
     }
 
     @BeforeEach
@@ -185,7 +183,7 @@ class AdminCommentJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminCommentDTO = AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
+        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
         when(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
@@ -218,7 +216,7 @@ class AdminCommentJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminCommentDTO = AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
+        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
         given(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity)).willReturn(adminCommentDTO);
@@ -295,7 +293,7 @@ class AdminCommentJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminCommentDTO adminCommentDTO = AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
+        AdminCommentDTO adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         adminCommentJpaService.updateAdminComment(adminCommentEntity);
 
@@ -331,7 +329,7 @@ class AdminCommentJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminCommentDTO adminCommentDTO = AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
+        AdminCommentDTO adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         adminCommentJpaService.updateAdminComment(adminCommentEntity);
 
@@ -368,7 +366,7 @@ class AdminCommentJpaServiceTest {
     void 어드민코멘트삭제Mockito테스트() throws Exception {
         // given
         adminCommentJpaService.insertAdminComment(adminCommentEntity);
-        adminCommentDTO = AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
+        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
         when(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
@@ -391,7 +389,7 @@ class AdminCommentJpaServiceTest {
     void 어드민코멘트삭제BDD테스트() throws Exception {
         // given
         adminCommentJpaService.insertAdminComment(adminCommentEntity);
-        adminCommentDTO = AdminCommentMapper.INSTANCE.toDto(adminCommentEntity);
+        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
         given(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity)).willReturn(adminCommentDTO);

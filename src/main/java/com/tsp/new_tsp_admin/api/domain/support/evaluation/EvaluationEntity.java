@@ -9,6 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.*;
 
@@ -22,7 +25,7 @@ import static javax.persistence.GenerationType.*;
 @Table(name = "tsp_evaluate")
 public class EvaluationEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
@@ -44,4 +47,20 @@ public class EvaluationEntity extends NewCommonMappedClass {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "support_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminSupportEntity adminSupportEntity;
+
+    public static EvaluationDTO toDto(EvaluationEntity entity) {
+        return EvaluationDTO.builder()
+                .rowNum(entity.getRowNum())
+                .idx(entity.getIdx())
+                .supportIdx(entity.getSupportIdx())
+                .evaluateComment(entity.getEvaluateComment())
+                .visible(entity.getVisible())
+                .build();
+    }
+
+    public List<EvaluationDTO> toDtoList(List<EvaluationEntity> entityList) {
+        List<EvaluationDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(evaluationEntity -> list.add(toDto(evaluationEntity)));
+        return list;
+    }
 }

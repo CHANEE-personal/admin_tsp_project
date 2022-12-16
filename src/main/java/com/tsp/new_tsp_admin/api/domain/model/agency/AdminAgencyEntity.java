@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.domain.model.agency;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -26,7 +27,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "tsp_agency")
 public class AdminAgencyEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -54,4 +55,25 @@ public class AdminAgencyEntity extends NewCommonMappedClass {
 
     @OneToOne(mappedBy = "adminAgencyEntity", cascade = ALL, fetch = LAZY)
     private AdminModelEntity adminModelEntity;
+
+    public static AdminAgencyDTO toDto(AdminAgencyEntity entity) {
+        return AdminAgencyDTO.builder()
+                .idx(entity.getIdx())
+                .rowNum(entity.getRowNum())
+                .agencyName(entity.getAgencyName())
+                .agencyDescription(entity.getAgencyDescription())
+                .favoriteCount(entity.getFavoriteCount())
+                .visible(entity.getVisible())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
+    public List<AdminAgencyDTO> toDtoList(List<AdminAgencyEntity> entityList) {
+        List<AdminAgencyDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(adminAgencyEntity -> list.add(toDto(adminAgencyEntity)));
+        return list;
+    }
 }

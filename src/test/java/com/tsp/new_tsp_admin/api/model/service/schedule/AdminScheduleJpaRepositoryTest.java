@@ -7,9 +7,6 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.schedule.ScheduleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +65,7 @@ class AdminScheduleJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminAgencyDTO = AgencyMapper.INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         ArrayList<CareerJson> careerList = new ArrayList<>();
         careerList.add(new CareerJson("title","txt"));
@@ -99,7 +96,7 @@ class AdminScheduleJpaRepositoryTest {
 
         em.persist(adminModelEntity);
 
-        adminModelDTO = ModelMapper.INSTANCE.toDto(adminModelEntity);
+        adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
 
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .modelIdx(adminModelEntity.getIdx())
@@ -108,7 +105,7 @@ class AdminScheduleJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
+        adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
     }
 
     @BeforeEach
@@ -265,7 +262,7 @@ class AdminScheduleJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
+        adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
 
         // when
         when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
@@ -298,7 +295,7 @@ class AdminScheduleJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
+        adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
 
         // when
         given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
@@ -480,7 +477,7 @@ class AdminScheduleJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminScheduleDTO adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
+        AdminScheduleDTO adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
 
         adminScheduleJpaRepository.updateSchedule(adminScheduleEntity);
 
@@ -515,7 +512,7 @@ class AdminScheduleJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminScheduleDTO adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
+        AdminScheduleDTO adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
 
         adminScheduleJpaRepository.updateSchedule(adminScheduleEntity);
 
@@ -538,7 +535,7 @@ class AdminScheduleJpaRepositoryTest {
     void 모델스케줄삭제Mockito테스트() {
         // given
         em.persist(adminScheduleEntity);
-        adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
+        adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
 
         // when
         when(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
@@ -561,7 +558,7 @@ class AdminScheduleJpaRepositoryTest {
     void 모델스케줄삭제BDD테스트() {
         // given
         em.persist(adminScheduleEntity);
-        adminScheduleDTO = ScheduleMapper.INSTANCE.toDto(adminScheduleEntity);
+        adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
 
         // when
         given(mockAdminScheduleJpaRepository.findOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
