@@ -25,7 +25,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "tsp_support")
 public class AdminSupportEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -74,4 +74,26 @@ public class AdminSupportEntity extends NewCommonMappedClass {
     @OneToMany(mappedBy = "adminSupportEntity")
     private List<EvaluationEntity> evaluationEntityList = new ArrayList<>();
 
+    public static AdminSupportDTO toDto(AdminSupportEntity entity) {
+        return AdminSupportDTO.builder()
+                .rowNum(entity.getRowNum())
+                .idx(entity.getIdx())
+                .supportName(entity.getSupportName())
+                .supportHeight(entity.getSupportHeight())
+                .supportSize3(entity.getSupportSize3())
+                .supportInstagram(entity.getSupportInstagram())
+                .supportPhone(entity.getSupportPhone())
+                .supportMessage(entity.getSupportMessage())
+                .supportTime(entity.getSupportTime())
+                .passYn(entity.getPassYn())
+                .passTime(entity.getPassTime())
+                .visible(entity.getVisible())
+                .build();
+    }
+
+    public List<AdminSupportDTO> toDtoList(List<AdminSupportEntity> entityList) {
+        List<AdminSupportDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(adminSupportEntity -> list.add(toDto(adminSupportEntity)));
+        return list;
+    }
 }

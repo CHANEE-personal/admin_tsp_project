@@ -9,7 +9,6 @@ import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
-import com.tsp.new_tsp_admin.api.support.mapper.evaluate.EvaluateMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.adminSupportEntity;
 import static com.tsp.new_tsp_admin.api.domain.support.evaluation.QEvaluationEntity.evaluationEntity;
-import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 
@@ -78,9 +76,9 @@ public class AdminSupportJpaRepository {
                 .fetch();
 
         supportList.forEach(list -> supportList.get(supportList.indexOf(list))
-                .setRnum(getInt(supportMap.get("startPage"), 1) * (getInt(supportMap.get("size"), 1)) - (2 - supportList.indexOf(list))));
+                .setRowNum(getInt(supportMap.get("startPage"), 1) * (getInt(supportMap.get("size"), 1)) - (2 - supportList.indexOf(list))));
 
-        return INSTANCE.toDtoList(supportList);
+        return supportList.stream().map(AdminSupportEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -98,7 +96,8 @@ public class AdminSupportJpaRepository {
                 .where(adminSupportEntity.idx.eq(idx))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneSupportModel);
+        assert findOneSupportModel != null;
+        return AdminSupportEntity.toDto(findOneSupportModel);
     }
 
     /**
@@ -112,7 +111,7 @@ public class AdminSupportJpaRepository {
      */
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         em.persist(adminSupportEntity);
-        return INSTANCE.toDto(adminSupportEntity);
+        return AdminSupportEntity.toDto(adminSupportEntity);
     }
 
     /**
@@ -128,7 +127,7 @@ public class AdminSupportJpaRepository {
         em.merge(existAdminSupportEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminSupportEntity);
+        return AdminSupportEntity.toDto(existAdminSupportEntity);
     }
 
     /**
@@ -178,9 +177,9 @@ public class AdminSupportJpaRepository {
                 .fetch();
 
         evaluationList.forEach(list -> evaluationList.get(evaluationList.indexOf(list))
-                .setRnum(getInt(evaluationMap.get("startPage"), 1) * (getInt(evaluationMap.get("size"), 1)) - (2 - evaluationList.indexOf(list))));
+                .setRowNum(getInt(evaluationMap.get("startPage"), 1) * (getInt(evaluationMap.get("size"), 1)) - (2 - evaluationList.indexOf(list))));
 
-        return EvaluateMapper.INSTANCE.toDtoList(evaluationList);
+        return evaluationList.stream().map(EvaluationEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -198,7 +197,8 @@ public class AdminSupportJpaRepository {
                 .where(evaluationEntity.idx.eq(existEvaluationEntity.getIdx()))
                 .fetchOne();
 
-        return EvaluateMapper.INSTANCE.toDto(findOneEvaluation);
+        assert findOneEvaluation != null;
+        return EvaluationEntity.toDto(findOneEvaluation);
     }
 
     /**
@@ -212,7 +212,7 @@ public class AdminSupportJpaRepository {
      */
     public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) {
         em.persist(evaluationEntity);
-        return EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+        return EvaluationEntity.toDto(evaluationEntity);
     }
 
     /**
@@ -228,7 +228,7 @@ public class AdminSupportJpaRepository {
         em.merge(existEvaluationEntity);
         em.flush();
         em.clear();
-        return EvaluateMapper.INSTANCE.toDto(existEvaluationEntity);
+        return EvaluationEntity.toDto(existEvaluationEntity);
     }
 
     /**
@@ -266,7 +266,7 @@ public class AdminSupportJpaRepository {
         em.flush();
         em.clear();
 
-        return INSTANCE.toDto(em.find(AdminSupportEntity.class, idx));
+        return AdminSupportEntity.toDto(em.find(AdminSupportEntity.class, idx));
     }
 
     /**

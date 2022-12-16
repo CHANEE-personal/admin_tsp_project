@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
-import com.tsp.new_tsp_admin.api.support.mapper.evaluate.EvaluateMapper;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -26,7 +25,6 @@ import javax.transaction.Transactional;
 
 import java.util.*;
 
-import static com.tsp.new_tsp_admin.api.support.mapper.SupportMapper.INSTANCE;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -68,7 +66,7 @@ class AdminSupportJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+        adminSupportDTO = AdminSupportEntity.toDto(adminSupportEntity);
     }
 
     @BeforeEach
@@ -233,7 +231,7 @@ class AdminSupportJpaServiceTest {
                 .build();
 
         adminSupportJpaService.updateSupportModel(adminSupportEntity);
-        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+        adminSupportDTO = AdminSupportEntity.toDto(adminSupportEntity);
 
         // when
         when(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity.getIdx())).thenReturn(adminSupportDTO);
@@ -268,7 +266,7 @@ class AdminSupportJpaServiceTest {
                 .build();
 
         adminSupportJpaService.updateSupportModel(adminSupportEntity);
-        adminSupportDTO = INSTANCE.toDto(adminSupportEntity);
+        adminSupportDTO = AdminSupportEntity.toDto(adminSupportEntity);
 
         // when
         given(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity.getIdx())).willReturn(adminSupportDTO);
@@ -359,7 +357,7 @@ class AdminSupportJpaServiceTest {
                 .idx(1L).supportIdx(adminSupportEntity.getIdx())
                 .evaluateComment("합격").visible("Y").build();
 
-        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+        evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
         when(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
@@ -387,7 +385,7 @@ class AdminSupportJpaServiceTest {
                 .idx(1L).supportIdx(adminSupportEntity.getIdx())
                 .evaluateComment("합격").visible("Y").build();
 
-        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+        evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
         given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
@@ -418,7 +416,7 @@ class AdminSupportJpaServiceTest {
 
         adminSupportJpaService.evaluationSupportModel(evaluationEntity);
 
-        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+        evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
         when(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
@@ -451,7 +449,7 @@ class AdminSupportJpaServiceTest {
 
         adminSupportJpaService.evaluationSupportModel(evaluationEntity);
 
-        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+        evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
         given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
@@ -479,7 +477,7 @@ class AdminSupportJpaServiceTest {
 
         // 지원모델 평가 저장
         adminSupportJpaService.evaluationSupportModel(evaluationEntity);
-        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+        evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
         Long deleteIdx = adminSupportJpaService.deleteEvaluation(evaluationEntity.getIdx());
@@ -508,7 +506,7 @@ class AdminSupportJpaServiceTest {
 
         // 지원모델 평가 저장
         adminSupportJpaService.evaluationSupportModel(evaluationEntity);
-        evaluationDTO = EvaluateMapper.INSTANCE.toDto(evaluationEntity);
+        evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
         Long deleteIdx = adminSupportJpaService.deleteEvaluation(evaluationEntity.getIdx());
