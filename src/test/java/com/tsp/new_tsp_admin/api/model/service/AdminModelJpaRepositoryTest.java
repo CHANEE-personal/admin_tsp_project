@@ -32,6 +32,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -453,7 +454,7 @@ class AdminModelJpaRepositoryTest {
                 .shoes(270)
                 .visible("Y")
                 .modelAgency(AdminAgencyEntity.toDto(adminAgencyEntity))
-                .modelImage(CommonImageEntity.toDtoList(commonImageEntityList))
+                .modelImage(commonImageEntityList.stream().map(CommonImageEntity::toDto).collect(Collectors.toList()))
                 .build();
 
         // when

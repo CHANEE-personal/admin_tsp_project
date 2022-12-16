@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -192,7 +193,7 @@ class AdminAgencyJpaRepositoryTest {
                 .agencyName("agency")
                 .agencyDescription("agency")
                 .visible("Y")
-                .agencyImage(CommonImageEntity.toDtoList(commonImageEntityList))
+                .agencyImage(commonImageEntityList.stream().map(CommonImageEntity::toDto).collect(Collectors.toList()))
                 .build();
 
         // when
@@ -232,7 +233,7 @@ class AdminAgencyJpaRepositoryTest {
                 .agencyName("agency")
                 .agencyDescription("agency")
                 .visible("Y")
-                .agencyImage(CommonImageEntity.toDtoList(commonImageEntityList))
+                .agencyImage(commonImageEntityList.stream().map(CommonImageEntity::toDto).collect(Collectors.toList()))
                 .build();
 
         // when

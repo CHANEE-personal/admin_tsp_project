@@ -22,7 +22,7 @@ import static javax.persistence.GenerationType.*;
 @Table(name = "tsp_production")
 public class AdminProductionEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -47,4 +47,25 @@ public class AdminProductionEntity extends NewCommonMappedClass {
 
     @OneToMany(mappedBy = "adminProductionEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
+
+    public static AdminProductionDTO toDto(AdminProductionEntity entity) {
+        return AdminProductionDTO.builder()
+                .rowNum(entity.getRowNum())
+                .idx(entity.getIdx())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .viewCount(entity.getViewCount())
+                .visible(entity.getVisible())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
+    public List<AdminProductionDTO> toDtoList(List<AdminProductionEntity> entityList) {
+        List<AdminProductionDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(adminProductionEntity -> list.add(toDto(adminProductionEntity)));
+        return list;
+    }
 }
