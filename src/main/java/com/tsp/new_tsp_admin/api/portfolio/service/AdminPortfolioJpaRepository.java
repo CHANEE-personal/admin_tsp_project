@@ -8,6 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
+import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
-import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
@@ -79,9 +79,9 @@ public class AdminPortfolioJpaRepository {
                 .fetch();
 
         portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
-                .setRnum(getInt(portfolioMap.get("startPage"), 1) * (getInt(portfolioMap.get("size"), 1)) - (2 - portfolioList.indexOf(list))));
+                .setRowNum(getInt(portfolioMap.get("startPage"), 1) * (getInt(portfolioMap.get("size"), 1)) - (2 - portfolioList.indexOf(list))));
 
-        return INSTANCE.toDtoList(portfolioList);
+        return portfolioList.stream().map(AdminPortFolioEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -104,7 +104,8 @@ public class AdminPortfolioJpaRepository {
                                 .and(commonImageEntity.typeName.eq("portfolio"))))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOnePortfolio);
+        assert findOnePortfolio != null;
+        return AdminPortFolioEntity.toDto(findOnePortfolio);
     }
 
     /**
@@ -125,7 +126,7 @@ public class AdminPortfolioJpaRepository {
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findPrevOnePortfolio);
+        return AdminPortFolioEntity.toDto(findPrevOnePortfolio);
     }
 
     /**
@@ -146,7 +147,7 @@ public class AdminPortfolioJpaRepository {
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findPrevOnePortfolio);
+        return AdminPortFolioEntity.toDto(findPrevOnePortfolio);
     }
 
     /**
@@ -160,7 +161,7 @@ public class AdminPortfolioJpaRepository {
      */
     public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         em.persist(adminPortfolioEntity);
-        return INSTANCE.toDto(adminPortfolioEntity);
+        return AdminPortFolioEntity.toDto(adminPortfolioEntity);
     }
 
     /**
@@ -195,7 +196,7 @@ public class AdminPortfolioJpaRepository {
         em.merge(existAdminPortfolioEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminPortfolioEntity);
+        return AdminPortFolioEntity.toDto(existAdminPortfolioEntity);
     }
 
     /**

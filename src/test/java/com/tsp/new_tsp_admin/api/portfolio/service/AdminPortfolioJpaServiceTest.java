@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.portfolio.mapper.PortFolioMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -63,7 +62,7 @@ class AdminPortfolioJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+        adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
     }
 
     @BeforeEach
@@ -398,7 +397,7 @@ class AdminPortfolioJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+        adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
         adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
 
@@ -434,7 +433,7 @@ class AdminPortfolioJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminPortFolioDTO = INSTANCE.toDto(adminPortFolioEntity);
+        adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
         adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
 
