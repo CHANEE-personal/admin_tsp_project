@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.domain.model.negotiation;
 
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -12,6 +13,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -26,7 +29,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "tsp_model_negotiation")
 public class AdminNegotiationEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -71,4 +74,31 @@ public class AdminNegotiationEntity extends NewCommonMappedClass {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "model_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminModelEntity adminModelEntity;
+
+    public static AdminNegotiationDTO toDto(AdminNegotiationEntity entity) {
+        if (entity == null) return null;
+
+        return AdminNegotiationDTO.builder()
+                .idx(entity.getIdx())
+                .rowNum(entity.getRowNum())
+                .modelIdx(entity.getModelIdx())
+                .modelKorName(entity.getModelKorName())
+                .modelNegotiationDesc(entity.getModelNegotiationDesc())
+                .modelNegotiationDate(entity.getModelNegotiationDate())
+                .name(entity.getName())
+                .email(entity.getEmail())
+                .phone(entity.getPhone())
+                .visible(entity.getVisible())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
+    public List<AdminNegotiationDTO> toDtoList(List<AdminNegotiationEntity> entityList) {
+        List<AdminNegotiationDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(adminNegotiationEntity -> list.add(toDto(adminNegotiationEntity)));
+        return list;
+    }
 }

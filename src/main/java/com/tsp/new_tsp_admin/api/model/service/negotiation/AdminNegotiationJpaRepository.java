@@ -6,8 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.negotiation.NegotiationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -17,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.negotiation.QAdminNegotiationEntity.*;
@@ -94,9 +93,9 @@ public class AdminNegotiationJpaRepository {
                 .fetch();
 
         modelNegotiationList.forEach(list -> modelNegotiationList.get(modelNegotiationList.indexOf(list))
-                .setRnum(getInt(negotiationMap.get("startPage"), 1) * (getInt(negotiationMap.get("size"), 1)) - (2 - modelNegotiationList.indexOf(list))));
+                .setRowNum(getInt(negotiationMap.get("startPage"), 1) * (getInt(negotiationMap.get("size"), 1)) - (2 - modelNegotiationList.indexOf(list))));
 
-        return ModelMapper.INSTANCE.toDtoList(modelNegotiationList);
+        return modelNegotiationList.stream().map(AdminModelEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -116,7 +115,7 @@ public class AdminNegotiationJpaRepository {
                         .and(adminNegotiationEntity.idx.eq(idx)))
                 .fetchOne();
 
-        return NegotiationMapper.INSTANCE.toDto(findOneNegotiation);
+        return AdminNegotiationEntity.toDto(findOneNegotiation);
     }
 
     /**
@@ -139,7 +138,8 @@ public class AdminNegotiationJpaRepository {
                         .and(adminNegotiationEntity.idx.eq(existAdminNegotiationEntity.getIdx())))
                 .fetchOne();
 
-        return ModelMapper.INSTANCE.toDto(findOneModelNegotiation);
+        assert findOneModelNegotiation != null;
+        return AdminModelEntity.toDto(findOneModelNegotiation);
     }
 
     /**
@@ -160,7 +160,7 @@ public class AdminNegotiationJpaRepository {
                         .and(adminNegotiationEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return NegotiationMapper.INSTANCE.toDto(findPrevOneNegotiation);
+        return AdminNegotiationEntity.toDto(findPrevOneNegotiation);
     }
 
     /**
@@ -181,7 +181,7 @@ public class AdminNegotiationJpaRepository {
                         .and(adminNegotiationEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return NegotiationMapper.INSTANCE.toDto(findNextOneNegotiation);
+        return AdminNegotiationEntity.toDto(findNextOneNegotiation);
     }
 
     /**
@@ -195,7 +195,7 @@ public class AdminNegotiationJpaRepository {
      */
     public AdminNegotiationDTO insertModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
         em.persist(adminNegotiationEntity);
-        return NegotiationMapper.INSTANCE.toDto(adminNegotiationEntity);
+        return AdminNegotiationEntity.toDto(adminNegotiationEntity);
     }
 
     /**
@@ -211,7 +211,7 @@ public class AdminNegotiationJpaRepository {
         em.merge(existAdminNegotiationEntity);
         em.flush();
         em.clear();
-        return NegotiationMapper.INSTANCE.toDto(existAdminNegotiationEntity);
+        return AdminNegotiationEntity.toDto(existAdminNegotiationEntity);
     }
 
     /**

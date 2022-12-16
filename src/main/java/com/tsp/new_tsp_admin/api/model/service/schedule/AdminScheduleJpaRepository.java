@@ -6,7 +6,6 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -16,10 +15,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.adminScheduleEntity;
-import static com.tsp.new_tsp_admin.api.model.mapper.schedule.ScheduleMapper.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static java.time.LocalDate.now;
@@ -93,9 +92,9 @@ public class AdminScheduleJpaRepository {
                 .fetch();
 
         modelScheduleList.forEach(list -> modelScheduleList.get(modelScheduleList.indexOf(list))
-                .setRnum(getInt(scheduleMap.get("startPage"), 1) * (getInt(scheduleMap.get("size"), 1)) - (2 - modelScheduleList.indexOf(list))));
+                .setRowNum(getInt(scheduleMap.get("startPage"), 1) * (getInt(scheduleMap.get("size"), 1)) - (2 - modelScheduleList.indexOf(list))));
 
-        return ModelMapper.INSTANCE.toDtoList(modelScheduleList);
+        return modelScheduleList.stream().map(AdminModelEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -118,7 +117,7 @@ public class AdminScheduleJpaRepository {
                         .and(adminScheduleEntity.idx.eq(existAdminScheduleEntity.getIdx())))
                 .fetchOne();
 
-        return ModelMapper.INSTANCE.toDto(findOneModelSchedule);
+        return AdminModelEntity.toDto(findOneModelSchedule);
     }
 
     /**
@@ -138,7 +137,8 @@ public class AdminScheduleJpaRepository {
                         .and(adminScheduleEntity.idx.eq(idx)))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneSchedule);
+        assert findOneSchedule != null;
+        return AdminScheduleEntity.toDto(findOneSchedule);
     }
 
     /**
@@ -159,7 +159,7 @@ public class AdminScheduleJpaRepository {
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findPrevOneSchedule);
+        return AdminScheduleEntity.toDto(findPrevOneSchedule);
     }
 
     /**
@@ -180,7 +180,7 @@ public class AdminScheduleJpaRepository {
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findNextOneSchedule);
+        return AdminScheduleEntity.toDto(findNextOneSchedule);
     }
 
     /**
@@ -194,7 +194,7 @@ public class AdminScheduleJpaRepository {
      */
     public AdminScheduleDTO insertSchedule(AdminScheduleEntity adminScheduleEntity) {
         em.persist(adminScheduleEntity);
-        return INSTANCE.toDto(adminScheduleEntity);
+        return AdminScheduleEntity.toDto(adminScheduleEntity);
     }
 
     /**
@@ -210,7 +210,7 @@ public class AdminScheduleJpaRepository {
         em.merge(existAdminScheduleEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminScheduleEntity);
+        return AdminScheduleEntity.toDto(existAdminScheduleEntity);
     }
 
     /**

@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.model.mapper.agency.AgencyMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -54,7 +53,7 @@ class AdminAgencyJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
     }
 
     @BeforeEach
@@ -220,7 +219,7 @@ class AdminAgencyJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminAgencyDTO adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        AdminAgencyDTO adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         adminAgencyJpaService.updateAgency(adminAgencyEntity);
 
@@ -254,7 +253,7 @@ class AdminAgencyJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminAgencyDTO adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        AdminAgencyDTO adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         adminAgencyJpaService.updateAgency(adminAgencyEntity);
 
@@ -277,7 +276,7 @@ class AdminAgencyJpaServiceTest {
     void 소속사삭제Mockito테스트() throws Exception {
         // given
         adminAgencyJpaService.insertAgency(adminAgencyEntity);
-        adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         // when
         when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).thenReturn(adminAgencyDTO);
@@ -300,7 +299,7 @@ class AdminAgencyJpaServiceTest {
     void 소속사삭제BDD테스트() throws Exception {
         // given
         adminAgencyJpaService.insertAgency(adminAgencyEntity);
-        adminAgencyDTO = INSTANCE.toDto(adminAgencyEntity);
+        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         // when
         given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).willReturn(adminAgencyDTO);

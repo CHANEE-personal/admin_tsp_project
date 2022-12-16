@@ -12,8 +12,6 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
-import com.tsp.new_tsp_admin.api.model.mapper.ModelImageMapper;
-import com.tsp.new_tsp_admin.api.model.mapper.schedule.ScheduleMapper;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +19,12 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.*;
-import static com.tsp.new_tsp_admin.api.model.mapper.ModelMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.*;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_AGENCY;
 import static java.util.Objects.requireNonNull;
@@ -104,9 +102,9 @@ public class AdminModelJpaRepository {
                 .fetch();
 
         modelList.forEach(list -> modelList.get(modelList.indexOf(list))
-                .setRnum(getInt(modelMap.get("startPage"), 1) * (getInt(modelMap.get("size"), 1)) - (2 - modelList.indexOf(list))));
+                .setRowNum(getInt(modelMap.get("startPage"), 1) * (getInt(modelMap.get("size"), 1)) - (2 - modelList.indexOf(list))));
 
-        return INSTANCE.toDtoList(modelList);
+        return modelList.stream().map(AdminModelEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -131,7 +129,8 @@ public class AdminModelJpaRepository {
                         .and(commonImageEntity.typeName.eq("model")))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneModel);
+        assert findOneModel != null;
+        return AdminModelEntity.toDto(findOneModel);
     }
 
     /**
@@ -153,7 +152,7 @@ public class AdminModelJpaRepository {
                         .and(adminModelEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findPrevOneModel);
+        return AdminModelEntity.toDto(findPrevOneModel);
     }
 
     /**
@@ -175,7 +174,7 @@ public class AdminModelJpaRepository {
                         .and(adminModelEntity.visible.eq("Y")))
                 .fetchFirst();
 
-        return INSTANCE.toDto(findNextOneModel);
+        return AdminModelEntity.toDto(findNextOneModel);
     }
 
     /**
@@ -189,7 +188,7 @@ public class AdminModelJpaRepository {
      */
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         em.persist(adminModelEntity);
-        return INSTANCE.toDto(adminModelEntity);
+        return AdminModelEntity.toDto(adminModelEntity);
     }
 
     /**
@@ -203,7 +202,7 @@ public class AdminModelJpaRepository {
      */
     public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
         em.persist(commonImageEntity);
-        return ModelImageMapper.INSTANCE.toDto(commonImageEntity);
+        return CommonImageEntity.toDto(commonImageEntity);
     }
 
     /**
@@ -250,7 +249,7 @@ public class AdminModelJpaRepository {
         em.merge(existAdminModelEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminModelEntity);
+        return AdminModelEntity.toDto(existAdminModelEntity);
     }
 
     /**
@@ -315,7 +314,7 @@ public class AdminModelJpaRepository {
             em.flush();
             em.clear();
 
-            return INSTANCE.toDto(existAdminModelEntity);
+            return AdminModelEntity.toDto(existAdminModelEntity);
         } else {
             throw new TspException(NOT_FOUND_AGENCY, new Throwable("NOT_FOUND_AGENCY"));
         }
@@ -362,7 +361,7 @@ public class AdminModelJpaRepository {
         em.flush();
         em.clear();
 
-        return INSTANCE.toDto(em.find(AdminModelEntity.class, idx));
+        return AdminModelEntity.toDto(em.find(AdminModelEntity.class, idx));
     }
 
     /**
@@ -382,6 +381,6 @@ public class AdminModelJpaRepository {
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .fetch();
 
-        return ScheduleMapper.INSTANCE.toDtoList(scheduleList);
+        return scheduleList.stream().map(AdminScheduleEntity::toDto).collect(Collectors.toList());
     }
 }

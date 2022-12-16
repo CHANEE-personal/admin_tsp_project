@@ -32,7 +32,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "tsp_model")
 public class AdminModelEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -135,4 +135,40 @@ public class AdminModelEntity extends NewCommonMappedClass {
 
     @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
+
+    public static AdminModelDTO toDto(AdminModelEntity entity) {
+        return AdminModelDTO.builder().idx(entity.getIdx())
+                .rowNum(entity.getRowNum())
+                .categoryCd(entity.getCategoryCd())
+                .modelKorName(entity.getModelKorName())
+                .modelEngName(entity.getModelEngName())
+                .modelDescription(entity.getModelDescription())
+                .visible(entity.getVisible())
+                .height(entity.getHeight())
+                .shoes(entity.getShoes())
+                .size3(entity.getSize3())
+                .categoryAge(entity.getCategoryAge())
+                .modelMainYn(entity.getModelMainYn())
+                .modelFirstName(entity.getModelFirstName())
+                .modelSecondName(entity.getModelSecondName())
+                .modelKorFirstName(entity.getModelKorFirstName())
+                .modelKorSecondName(entity.getModelKorSecondName())
+                .favoriteCount(entity.getFavoriteCount())
+                .viewCount(entity.getViewCount())
+                .agencyIdx(entity.getAgencyIdx())
+                .careerList(entity.getCareerList())
+                .status(entity.getStatus())
+                .newYn(entity.getNewYn())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
+    public List<AdminModelDTO> toDtoList(List<AdminModelEntity> entityList) {
+        List<AdminModelDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(adminModelEntity -> list.add(toDto(adminModelEntity)));
+        return list;
+    }
 }
