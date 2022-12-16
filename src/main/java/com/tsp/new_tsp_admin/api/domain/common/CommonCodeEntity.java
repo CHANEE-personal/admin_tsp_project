@@ -1,9 +1,13 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -17,7 +21,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "tsp_cmm_code")
 public class CommonCodeEntity {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -35,4 +39,20 @@ public class CommonCodeEntity {
 
     @Column(name = "cmm_type")
     private String cmmType;
+
+    public static CommonCodeDTO toDto(CommonCodeEntity entity) {
+        return CommonCodeDTO.builder().idx(entity.getIdx())
+                .rowNum(entity.getRowNum())
+                .categoryCd(entity.getCategoryCd())
+                .categoryNm(entity.getCategoryNm())
+                .cmmType(entity.getCmmType())
+                .visible(entity.getVisible())
+                .build();
+    }
+
+    public List<CommonCodeDTO> toDtoList(List<CommonCodeEntity> entityList) {
+        List<CommonCodeDTO> list = new ArrayList<>(entityList.size());
+        entityList.forEach(commonCodeEntity -> list.add(toDto(commonCodeEntity)));
+        return list;
+    }
 }

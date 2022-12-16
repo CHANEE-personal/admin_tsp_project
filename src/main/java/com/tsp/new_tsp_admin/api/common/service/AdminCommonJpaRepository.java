@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.common.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import static com.tsp.new_tsp_admin.api.common.mapper.CommonCodeMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonCodeEntity.commonCodeEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 
@@ -52,9 +53,9 @@ public class AdminCommonJpaRepository {
                 .fetch();
 
         commonCodeList.forEach(list -> commonCodeList.get(commonCodeList.indexOf(list))
-                .setRnum(getInt(commonMap.get("startPage"), 1) * (getInt(commonMap.get("size"), 1)) - (2 - commonCodeList.indexOf(list))));
+                .setRowNum(getInt(commonMap.get("startPage"), 1) * (getInt(commonMap.get("size"), 1)) - (2 - commonCodeList.indexOf(list))));
 
-        return INSTANCE.toDtoList(commonCodeList);
+        return commonCodeList.stream().map(CommonCodeEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -75,7 +76,8 @@ public class AdminCommonJpaRepository {
                         .and(commonCodeEntity.visible.eq("Y")))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneCommonCode);
+        assert findOneCommonCode != null;
+        return CommonCodeEntity.toDto(findOneCommonCode);
     }
 
     /**
@@ -89,7 +91,7 @@ public class AdminCommonJpaRepository {
      */
     public CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) {
         em.persist(commonCodeEntity);
-        return INSTANCE.toDto(commonCodeEntity);
+        return CommonCodeEntity.toDto(commonCodeEntity);
     }
 
     /**
@@ -105,7 +107,7 @@ public class AdminCommonJpaRepository {
         em.merge(existCommonCodeEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existCommonCodeEntity);
+        return CommonCodeEntity.toDto(existCommonCodeEntity);
     }
 
     /**

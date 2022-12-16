@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.common.service;
 
-import com.tsp.new_tsp_admin.api.common.mapper.CommonCodeMapper;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
@@ -28,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.common.mapper.CommonCodeMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -73,7 +71,7 @@ class AdminCommonJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        commonCodeDTO = INSTANCE.toDto(commonCodeEntity);
+        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
     }
 
     @BeforeEach
@@ -296,7 +294,7 @@ class AdminCommonJpaRepositoryTest {
 
         adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
 
-        commonCodeDTO = CommonCodeMapper.INSTANCE.toDto(commonCodeEntity);
+        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
 
         // when
         when(mockAdminCommonJpaRepository.findOneCommonCode(commonCodeEntity)).thenReturn(commonCodeDTO);
@@ -330,7 +328,7 @@ class AdminCommonJpaRepositoryTest {
 
         adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
 
-        commonCodeDTO = CommonCodeMapper.INSTANCE.toDto(commonCodeEntity);
+        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
 
         // when
         given(mockAdminCommonJpaRepository.findOneCommonCode(commonCodeEntity)).willReturn(commonCodeDTO);
