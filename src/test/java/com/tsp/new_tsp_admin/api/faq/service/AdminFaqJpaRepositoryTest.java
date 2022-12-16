@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.faq.mapper.FaqMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -62,7 +61,7 @@ class AdminFaqJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminFaqDTO = INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
     }
 
     @BeforeEach
@@ -180,7 +179,7 @@ class AdminFaqJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminFaqDTO = INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
         when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
@@ -212,7 +211,7 @@ class AdminFaqJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminFaqDTO = INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
         given(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
@@ -393,7 +392,7 @@ class AdminFaqJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminFaqDTO adminFaqDTO = INSTANCE.toDto(adminFaqEntity);
+        AdminFaqDTO adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         adminFaqJpaRepository.updateFaq(adminFaqEntity);
 
@@ -427,7 +426,7 @@ class AdminFaqJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        AdminFaqDTO adminFaqDTO = INSTANCE.toDto(adminFaqEntity);
+        AdminFaqDTO adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         adminFaqJpaRepository.updateFaq(adminFaqEntity);
 
@@ -463,7 +462,7 @@ class AdminFaqJpaRepositoryTest {
     void FAQ삭제Mockito테스트() {
         // given
         em.persist(adminFaqEntity);
-        adminFaqDTO = INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
         when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
@@ -486,7 +485,7 @@ class AdminFaqJpaRepositoryTest {
     void FAQ삭제BDD테스트() {
         // given
         em.persist(adminFaqEntity);
-        adminFaqDTO = INSTANCE.toDto(adminFaqEntity);
+        adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
         when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);

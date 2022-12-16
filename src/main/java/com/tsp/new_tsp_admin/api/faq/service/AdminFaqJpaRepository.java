@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.faq.QAdminFaqEntity.adminFaqEntity;
-import static com.tsp.new_tsp_admin.api.faq.mapper.FaqMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 
@@ -70,9 +70,9 @@ public class AdminFaqJpaRepository {
                 .fetch();
 
         faqList.forEach(list -> faqList.get(faqList.indexOf(list))
-                .setRnum(getInt(faqMap.get("startPage"), 1) * (getInt(faqMap.get("size"), 1)) - (2 - faqList.indexOf(list))));
+                .setRowNum(getInt(faqMap.get("startPage"), 1) * (getInt(faqMap.get("size"), 1)) - (2 - faqList.indexOf(list))));
 
-        return INSTANCE.toDtoList(faqList);
+        return faqList.stream().map(AdminFaqEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -92,7 +92,8 @@ public class AdminFaqJpaRepository {
                         .and(adminFaqEntity.visible.eq("Y")))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneFaq);
+        assert findOneFaq != null;
+        return AdminFaqEntity.toDto(findOneFaq);
     }
 
     /**
@@ -112,7 +113,7 @@ public class AdminFaqJpaRepository {
                         .and(adminFaqEntity.visible.eq("Y")))
                 .fetchOne();
 
-        return INSTANCE.toDto(findPrevOneFaq);
+        return AdminFaqEntity.toDto(findPrevOneFaq);
     }
 
     /**
@@ -132,7 +133,7 @@ public class AdminFaqJpaRepository {
                         .and(adminFaqEntity.visible.eq("Y")))
                 .fetchOne();
 
-        return INSTANCE.toDto(findNextOneFaq);
+        return AdminFaqEntity.toDto(findNextOneFaq);
     }
 
     /**
@@ -146,7 +147,7 @@ public class AdminFaqJpaRepository {
      */
     public AdminFaqDTO insertFaq(AdminFaqEntity adminFaqEntity) {
         em.persist(adminFaqEntity);
-        return INSTANCE.toDto(adminFaqEntity);
+        return AdminFaqEntity.toDto(adminFaqEntity);
     }
 
     /**
@@ -162,7 +163,7 @@ public class AdminFaqJpaRepository {
         em.merge(existAdminFaqEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminFaqEntity);
+        return AdminFaqEntity.toDto(existAdminFaqEntity);
     }
 
     /**
