@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import static com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity.adminCommentEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
@@ -61,9 +61,9 @@ public class AdminCommentJpaRepository {
                 .fetch();
 
         commentList.forEach(list -> commentList.get(commentList.indexOf(list))
-                .setRnum(getInt(commentMap.get("startPage"), 1) * (getInt(commentMap.get("size"), 1)) - (2 - commentList.indexOf(list))));
+                .setRowNum(getInt(commentMap.get("startPage"), 1) * (getInt(commentMap.get("size"), 1)) - (2 - commentList.indexOf(list))));
 
-        return INSTANCE.toDtoList(commentList);
+        return commentList.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -83,7 +83,7 @@ public class AdminCommentJpaRepository {
                         .and(adminCommentEntity.visible.eq("Y")))
                 .fetchOne();
 
-        return INSTANCE.toDto(findOneAdminComment);
+        return AdminCommentEntity.toDto(findOneAdminComment);
     }
 
     /**
@@ -97,7 +97,7 @@ public class AdminCommentJpaRepository {
      */
     public AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity) {
         em.persist(adminCommentEntity);
-        return INSTANCE.toDto(adminCommentEntity);
+        return AdminCommentEntity.toDto(adminCommentEntity);
     }
 
     /**
@@ -113,7 +113,7 @@ public class AdminCommentJpaRepository {
         em.merge(existAdminCommentEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(existAdminCommentEntity);
+        return AdminCommentEntity.toDto(existAdminCommentEntity);
     }
 
     /**

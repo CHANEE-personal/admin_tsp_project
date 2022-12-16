@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.model.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
@@ -337,7 +336,7 @@ public class AdminModelJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
+        return adminCommentEntity.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
     }
 
     /**

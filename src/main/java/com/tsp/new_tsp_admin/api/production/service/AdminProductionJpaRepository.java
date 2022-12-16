@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
@@ -232,6 +232,6 @@ public class AdminProductionJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
+        return adminCommentEntity.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
     }
 }

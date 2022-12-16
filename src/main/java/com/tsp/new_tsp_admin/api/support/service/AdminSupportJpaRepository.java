@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.support.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tsp.new_tsp_admin.api.comment.mapper.AdminCommentMapper;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
@@ -19,6 +18,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.adminSupportEntity;
 import static com.tsp.new_tsp_admin.api.domain.support.evaluation.QEvaluationEntity.evaluationEntity;
@@ -286,6 +286,6 @@ public class AdminSupportJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminCommentMapper.INSTANCE.toDtoList(adminCommentEntity);
+        return adminCommentEntity.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
     }
 }
