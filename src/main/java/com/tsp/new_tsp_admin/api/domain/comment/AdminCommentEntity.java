@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -70,7 +71,9 @@ public class AdminCommentEntity extends NewCommonMappedClass {
     private AdminPortFolioEntity adminPortfolioEntity;
 
     public static AdminCommentDTO toDto(AdminCommentEntity entity) {
-        return AdminCommentDTO.builder().idx(entity.getIdx())
+        if (entity == null) return null;
+        return AdminCommentDTO.builder()
+                .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
                 .comment(entity.getComment())
                 .commentTypeIdx(entity.getCommentTypeIdx())
@@ -83,9 +86,10 @@ public class AdminCommentEntity extends NewCommonMappedClass {
                 .build();
     }
 
-    public List<AdminCommentDTO> toDtoList(List<AdminCommentEntity> entityList) {
-        List<AdminCommentDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminCommentEntity -> list.add(toDto(adminCommentEntity)));
-        return list;
+    public static List<AdminCommentDTO> toDtoList(List<AdminCommentEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminCommentEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

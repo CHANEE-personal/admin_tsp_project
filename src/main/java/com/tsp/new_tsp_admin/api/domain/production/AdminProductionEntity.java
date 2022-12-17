@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.*;
 
@@ -49,6 +50,7 @@ public class AdminProductionEntity extends NewCommonMappedClass {
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
     public static AdminProductionDTO toDto(AdminProductionEntity entity) {
+        if (entity == null) return null;
         return AdminProductionDTO.builder()
                 .rowNum(entity.getRowNum())
                 .idx(entity.getIdx())
@@ -60,12 +62,14 @@ public class AdminProductionEntity extends NewCommonMappedClass {
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
                 .updateTime(entity.getUpdateTime())
+                .productionImage(CommonImageEntity.toDtoList(entity.getCommonImageEntityList()))
                 .build();
     }
 
-    public List<AdminProductionDTO> toDtoList(List<AdminProductionEntity> entityList) {
-        List<AdminProductionDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminProductionEntity -> list.add(toDto(adminProductionEntity)));
-        return list;
+    public static List<AdminProductionDTO> toDtoList(List<AdminProductionEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminProductionEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

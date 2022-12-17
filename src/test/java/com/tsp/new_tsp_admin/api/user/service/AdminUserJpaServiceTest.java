@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -145,7 +144,7 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        AdminUserDTO adminUserDTO = INSTANCE.toDto(adminUserEntity);
+        AdminUserDTO adminUserDTO = AdminUserEntity.toDto(adminUserEntity);
         // when
         when(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
         AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());

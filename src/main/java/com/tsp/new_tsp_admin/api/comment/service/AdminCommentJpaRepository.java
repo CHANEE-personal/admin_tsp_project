@@ -63,7 +63,7 @@ public class AdminCommentJpaRepository {
         commentList.forEach(list -> commentList.get(commentList.indexOf(list))
                 .setRowNum(getInt(commentMap.get("startPage"), 1) * (getInt(commentMap.get("size"), 1)) - (2 - commentList.indexOf(list))));
 
-        return commentList.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
+        return AdminCommentEntity.toDtoList(commentList);
     }
 
     /**

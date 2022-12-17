@@ -17,7 +17,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -52,7 +50,7 @@ class AdminUserJpaRepositoryTest {
 
     void createUser() {
         adminUserEntity = AdminUserEntity.builder().idx(2L).userId("admin01").build();
-        adminUserDTO = INSTANCE.toDto(adminUserEntity);
+        adminUserDTO = AdminUserEntity.toDto(adminUserEntity);
     }
 
     @BeforeEach

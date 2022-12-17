@@ -78,7 +78,7 @@ public class AdminSupportJpaRepository {
         supportList.forEach(list -> supportList.get(supportList.indexOf(list))
                 .setRowNum(getInt(supportMap.get("startPage"), 1) * (getInt(supportMap.get("size"), 1)) - (2 - supportList.indexOf(list))));
 
-        return supportList.stream().map(AdminSupportEntity::toDto).collect(Collectors.toList());
+        return AdminSupportEntity.toDtoList(supportList);
     }
 
     /**
@@ -179,7 +179,7 @@ public class AdminSupportJpaRepository {
         evaluationList.forEach(list -> evaluationList.get(evaluationList.indexOf(list))
                 .setRowNum(getInt(evaluationMap.get("startPage"), 1) * (getInt(evaluationMap.get("size"), 1)) - (2 - evaluationList.indexOf(list))));
 
-        return evaluationList.stream().map(EvaluationEntity::toDto).collect(Collectors.toList());
+        return EvaluationEntity.toDtoList(evaluationList);
     }
 
     /**
@@ -286,6 +286,6 @@ public class AdminSupportJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return adminCommentEntity.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
+        return AdminCommentEntity.toDtoList(adminCommentEntity);
     }
 }

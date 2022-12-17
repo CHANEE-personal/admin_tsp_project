@@ -50,7 +50,7 @@ public class CommonCodeEntity {
                 .build();
     }
 
-    public List<CommonCodeDTO> toDtoList(List<CommonCodeEntity> entityList) {
+    public static List<CommonCodeDTO> toDtoList(List<CommonCodeEntity> entityList) {
         List<CommonCodeDTO> list = new ArrayList<>(entityList.size());
         entityList.forEach(commonCodeEntity -> list.add(toDto(commonCodeEntity)));
         return list;

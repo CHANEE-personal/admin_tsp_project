@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
@@ -80,7 +79,7 @@ public class AdminProductionJpaRepository {
         productionList.forEach(list -> productionList.get(productionList.indexOf(list))
                 .setRowNum(getInt(productionMap.get("startPage"), 1) * (getInt(productionMap.get("size"), 1)) - (2 - productionList.indexOf(list))));
 
-        return productionList.stream().map(AdminProductionEntity::toDto).collect(Collectors.toList());
+        return AdminProductionEntity.toDtoList(productionList);
     }
 
     /**
@@ -232,6 +231,6 @@ public class AdminProductionJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return adminCommentEntity.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
+        return AdminCommentEntity.toDtoList(adminCommentEntity);
     }
 }

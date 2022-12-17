@@ -7,8 +7,8 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -49,7 +49,9 @@ public class AdminNoticeEntity extends NewCommonMappedClass {
     private Boolean topFixed;
 
     public static AdminNoticeDTO toDto(AdminNoticeEntity entity) {
-        return AdminNoticeDTO.builder().idx(entity.getIdx())
+        if (entity == null) return null;
+        return AdminNoticeDTO.builder()
+                .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
@@ -63,9 +65,10 @@ public class AdminNoticeEntity extends NewCommonMappedClass {
                 .build();
     }
 
-    public List<AdminNoticeDTO> toDtoList(List<AdminNoticeEntity> entityList) {
-        List<AdminNoticeDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminNoticeEntity -> list.add(toDto(adminNoticeEntity)));
-        return list;
+    public static List<AdminNoticeDTO> toDtoList(List<AdminNoticeEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminNoticeEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

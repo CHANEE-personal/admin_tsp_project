@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.adminScheduleEntity;
@@ -94,7 +93,7 @@ public class AdminScheduleJpaRepository {
         modelScheduleList.forEach(list -> modelScheduleList.get(modelScheduleList.indexOf(list))
                 .setRowNum(getInt(scheduleMap.get("startPage"), 1) * (getInt(scheduleMap.get("size"), 1)) - (2 - modelScheduleList.indexOf(list))));
 
-        return modelScheduleList.stream().map(AdminModelEntity::toDto).collect(Collectors.toList());
+        return AdminModelEntity.toDtoList(modelScheduleList);
     }
 
     /**

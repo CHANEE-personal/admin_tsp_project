@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
@@ -13,8 +12,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static javax.persistence.FetchType.LAZY;
@@ -93,6 +92,7 @@ public class CommonImageEntity {
     private AdminAgencyEntity adminAgencyEntity;
 
     public static CommonImageDTO toDto(CommonImageEntity entity) {
+        if (entity == null) return null;
         return CommonImageDTO.builder()
                 .idx(entity.getIdx())
                 .typeIdx(entity.getTypeIdx())
@@ -109,8 +109,9 @@ public class CommonImageEntity {
     }
 
     public static List<CommonImageDTO> toDtoList(List<CommonImageEntity> entityList) {
-        List<CommonImageDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(commonImageEntity -> list.add(toDto(commonImageEntity)));
-        return list;
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(CommonImageEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

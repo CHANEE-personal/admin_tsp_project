@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.notice.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeDTO;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.notice.QAdminNoticeEntity.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
@@ -74,7 +72,7 @@ public class AdminNoticeJpaRepository {
         noticeList.forEach(list -> noticeList.get(noticeList.indexOf(list))
                 .setRowNum(getInt(noticeMap.get("startPage"), 1) * (getInt(noticeMap.get("size"), 1)) - (2 - noticeList.indexOf(list))));
 
-        return noticeList.stream().map(AdminNoticeEntity::toDto).collect(Collectors.toList());
+        return AdminNoticeEntity.toDtoList(noticeList);
     }
 
     /**
