@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -61,7 +62,9 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
     private AdminModelEntity adminModelEntity;
 
     public static AdminScheduleDTO toDto(AdminScheduleEntity entity) {
-        return AdminScheduleDTO.builder().idx(entity.getIdx())
+        if (entity == null) return null;
+        return AdminScheduleDTO.builder()
+                .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
                 .modelIdx(entity.getModelIdx())
                 .modelSchedule(entity.getModelSchedule())
@@ -74,9 +77,10 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
                 .build();
     }
 
-    public List<AdminScheduleDTO> toDtoList(List<AdminScheduleEntity> entityList) {
-        List<AdminScheduleDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminScheduleEntity -> list.add(toDto(adminScheduleEntity)));
-        return list;
+    public static List<AdminScheduleDTO> toDtoList(List<AdminScheduleEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminScheduleEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

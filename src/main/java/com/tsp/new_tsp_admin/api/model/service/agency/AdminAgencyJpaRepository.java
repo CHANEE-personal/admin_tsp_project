@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.adminAgencyEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
@@ -72,7 +71,7 @@ public class AdminAgencyJpaRepository {
         agencyList.forEach(list -> agencyList.get(agencyList.indexOf(list))
                 .setRowNum(getInt(agencyMap.get("startPage"), 1) * (getInt(agencyMap.get("size"), 1)) - (2 - agencyList.indexOf(list))));
 
-        return agencyList.stream().map(AdminAgencyEntity::toDto).collect(Collectors.toList());
+        return AdminAgencyEntity.toDtoList(agencyList);
     }
 
     /**

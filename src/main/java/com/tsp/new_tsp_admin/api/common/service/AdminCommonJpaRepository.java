@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.common.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +54,7 @@ public class AdminCommonJpaRepository {
         commonCodeList.forEach(list -> commonCodeList.get(commonCodeList.indexOf(list))
                 .setRowNum(getInt(commonMap.get("startPage"), 1) * (getInt(commonMap.get("size"), 1)) - (2 - commonCodeList.indexOf(list))));
 
-        return commonCodeList.stream().map(CommonCodeEntity::toDto).collect(Collectors.toList());
+        return CommonCodeEntity.toDtoList(commonCodeList);
     }
 
     /**

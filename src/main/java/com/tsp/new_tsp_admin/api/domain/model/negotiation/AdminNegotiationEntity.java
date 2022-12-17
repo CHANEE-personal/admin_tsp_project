@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -77,7 +78,6 @@ public class AdminNegotiationEntity extends NewCommonMappedClass {
 
     public static AdminNegotiationDTO toDto(AdminNegotiationEntity entity) {
         if (entity == null) return null;
-
         return AdminNegotiationDTO.builder()
                 .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
@@ -96,9 +96,10 @@ public class AdminNegotiationEntity extends NewCommonMappedClass {
                 .build();
     }
 
-    public List<AdminNegotiationDTO> toDtoList(List<AdminNegotiationEntity> entityList) {
-        List<AdminNegotiationDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminNegotiationEntity -> list.add(toDto(adminNegotiationEntity)));
-        return list;
+    public static List<AdminNegotiationDTO> toDtoList(List<AdminNegotiationEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminNegotiationEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

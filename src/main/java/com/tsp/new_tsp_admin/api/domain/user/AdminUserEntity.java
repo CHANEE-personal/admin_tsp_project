@@ -9,6 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.*;
 
@@ -23,7 +26,7 @@ import static javax.persistence.GenerationType.*;
 @Table(name = "tsp_admin")
 public class AdminUserEntity extends NewCommonMappedClass {
     @Transient
-    private Integer rnum;
+    private Integer rowNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -59,4 +62,31 @@ public class AdminUserEntity extends NewCommonMappedClass {
 
     @Enumerated(value = STRING)
     private Role role;
+
+    public static AdminUserDTO toDto(AdminUserEntity entity) {
+        if (entity == null) return null;
+        return AdminUserDTO.builder()
+                .rowNum(entity.getRowNum())
+                .idx(entity.getIdx())
+                .userId(entity.getUserId())
+                .password(entity.getPassword())
+                .name(entity.getName())
+                .email(entity.getEmail())
+                .visible(entity.getVisible())
+                .userToken(entity.getUserToken())
+                .userRefreshToken(entity.getUserRefreshToken())
+                .role(entity.getRole())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
+    public static List<AdminUserDTO> toDtoList(List<AdminUserEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminUserEntity::toDto)
+                .collect(Collectors.toList());
+    }
 }

@@ -61,7 +61,7 @@ public class AdminFaqEntity extends NewCommonMappedClass {
                 .build();
     }
 
-    public List<AdminFaqDTO> toDtoList(List<AdminFaqEntity> entityList) {
+    public static List<AdminFaqDTO> toDtoList(List<AdminFaqEntity> entityList) {
         List<AdminFaqDTO> list = new ArrayList<>(entityList.size());
         entityList.forEach(adminFaqEntity -> list.add(toDto(adminFaqEntity)));
         return list;

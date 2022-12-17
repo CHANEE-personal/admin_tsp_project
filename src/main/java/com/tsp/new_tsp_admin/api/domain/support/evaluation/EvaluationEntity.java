@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.*;
@@ -49,6 +50,7 @@ public class EvaluationEntity extends NewCommonMappedClass {
     private AdminSupportEntity adminSupportEntity;
 
     public static EvaluationDTO toDto(EvaluationEntity entity) {
+        if (entity == null) return null;
         return EvaluationDTO.builder()
                 .rowNum(entity.getRowNum())
                 .idx(entity.getIdx())
@@ -58,9 +60,10 @@ public class EvaluationEntity extends NewCommonMappedClass {
                 .build();
     }
 
-    public List<EvaluationDTO> toDtoList(List<EvaluationEntity> entityList) {
-        List<EvaluationDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(evaluationEntity -> list.add(toDto(evaluationEntity)));
-        return list;
+    public static List<EvaluationDTO> toDtoList(List<EvaluationEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(EvaluationEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

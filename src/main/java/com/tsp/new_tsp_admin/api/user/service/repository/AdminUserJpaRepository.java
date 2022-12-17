@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.api.domain.user.QAdminUserEntity.adminUserEntity;
-import static com.tsp.new_tsp_admin.api.user.mapper.UserMapper.INSTANCE;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtils.nullStrToStr;
 import static java.util.Objects.requireNonNull;
@@ -52,9 +51,9 @@ public class AdminUserJpaRepository {
                 .fetch();
 
         userList.forEach(list -> userList.get(userList.indexOf(list))
-                .setRnum(getInt(userMap.get("startPage"), 1) * (getInt(userMap.get("size"), 1)) - (2 - userList.indexOf(list))));
+                .setRowNum(getInt(userMap.get("startPage"), 1) * (getInt(userMap.get("size"), 1)) - (2 - userList.indexOf(list))));
 
-        return INSTANCE.toDtoList(userList);
+        return AdminUserEntity.toDtoList(userList);
     }
 
     /**
@@ -159,7 +158,7 @@ public class AdminUserJpaRepository {
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
         //회원 등록
         em.persist(adminUserEntity);
-        return INSTANCE.toDto(adminUserEntity);
+        return AdminUserEntity.toDto(adminUserEntity);
     }
 
     /**
@@ -175,7 +174,7 @@ public class AdminUserJpaRepository {
         em.merge(adminUserEntity);
         em.flush();
         em.clear();
-        return INSTANCE.toDto(adminUserEntity);
+        return AdminUserEntity.toDto(adminUserEntity);
     }
 
     /**

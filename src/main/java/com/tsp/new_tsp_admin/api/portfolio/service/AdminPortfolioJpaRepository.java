@@ -8,7 +8,6 @@ import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
-import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
@@ -81,7 +79,7 @@ public class AdminPortfolioJpaRepository {
         portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
                 .setRowNum(getInt(portfolioMap.get("startPage"), 1) * (getInt(portfolioMap.get("size"), 1)) - (2 - portfolioList.indexOf(list))));
 
-        return portfolioList.stream().map(AdminPortFolioEntity::toDto).collect(Collectors.toList());
+        return AdminPortFolioEntity.toDtoList(portfolioList);
     }
 
     /**
@@ -232,6 +230,6 @@ public class AdminPortfolioJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return adminCommentEntity.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
+        return AdminCommentEntity.toDtoList(adminCommentEntity);
     }
 }

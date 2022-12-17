@@ -18,8 +18,8 @@ import javax.validation.constraints.NotEmpty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel
 public class AdminUserDTO extends NewCommonDTO {
-    @ApiModelProperty(required = true, value = "rnum", hidden = true, example = "1")
-    private Integer rnum;
+    @ApiModelProperty(required = true, value = "rowNum;", hidden = true, example = "1")
+    private Integer rowNum;
 
     @ApiModelProperty(required = true, value = "user Seq", hidden = true, example = "1")
     private Long idx;

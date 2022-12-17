@@ -3,7 +3,6 @@ package com.tsp.new_tsp_admin.api.domain.model.agency;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -12,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
@@ -57,6 +57,7 @@ public class AdminAgencyEntity extends NewCommonMappedClass {
     private AdminModelEntity adminModelEntity;
 
     public static AdminAgencyDTO toDto(AdminAgencyEntity entity) {
+        if (entity == null) return null;
         return AdminAgencyDTO.builder()
                 .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
@@ -68,12 +69,14 @@ public class AdminAgencyEntity extends NewCommonMappedClass {
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
                 .updateTime(entity.getUpdateTime())
+                .agencyImage(CommonImageEntity.toDtoList(entity.getCommonImageEntityList()))
                 .build();
     }
 
-    public List<AdminAgencyDTO> toDtoList(List<AdminAgencyEntity> entityList) {
-        List<AdminAgencyDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminAgencyEntity -> list.add(toDto(adminAgencyEntity)));
-        return list;
+    public static List<AdminAgencyDTO> toDtoList(List<AdminAgencyEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminAgencyEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

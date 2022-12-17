@@ -16,6 +16,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.REMOVE;
@@ -137,6 +138,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
 
     public static AdminModelDTO toDto(AdminModelEntity entity) {
+        if (entity == null) return null;
         return AdminModelDTO.builder().idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
                 .categoryCd(entity.getCategoryCd())
@@ -163,12 +165,14 @@ public class AdminModelEntity extends NewCommonMappedClass {
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
                 .updateTime(entity.getUpdateTime())
+                .modelImage(CommonImageEntity.toDtoList(entity.getCommonImageEntityList()))
                 .build();
     }
 
-    public List<AdminModelDTO> toDtoList(List<AdminModelEntity> entityList) {
-        List<AdminModelDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminModelEntity -> list.add(toDto(adminModelEntity)));
-        return list;
+    public static List<AdminModelDTO> toDtoList(List<AdminModelEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminModelEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

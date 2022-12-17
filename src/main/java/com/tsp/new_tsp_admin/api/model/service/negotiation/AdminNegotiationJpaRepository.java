@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.negotiation.QAdminNegotiationEntity.*;
@@ -95,7 +94,7 @@ public class AdminNegotiationJpaRepository {
         modelNegotiationList.forEach(list -> modelNegotiationList.get(modelNegotiationList.indexOf(list))
                 .setRowNum(getInt(negotiationMap.get("startPage"), 1) * (getInt(negotiationMap.get("size"), 1)) - (2 - modelNegotiationList.indexOf(list))));
 
-        return modelNegotiationList.stream().map(AdminModelEntity::toDto).collect(Collectors.toList());
+        return AdminModelEntity.toDtoList(modelNegotiationList);
     }
 
     /**

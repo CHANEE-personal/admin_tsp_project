@@ -11,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -68,6 +69,7 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
     public static AdminPortFolioDTO toDto(AdminPortFolioEntity entity) {
+        if (entity == null) return null;
         return AdminPortFolioDTO.builder()
                 .rowNum(entity.getRowNum())
                 .idx(entity.getIdx())
@@ -82,12 +84,14 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
                 .updateTime(entity.getUpdateTime())
+                .portfolioImage(CommonImageEntity.toDtoList(entity.getCommonImageEntityList()))
                 .build();
     }
 
-    public List<AdminPortFolioDTO> toDtoList(List<AdminPortFolioEntity> entityList) {
-        List<AdminPortFolioDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminPortFolioEntity -> list.add(toDto(adminPortFolioEntity)));
-        return list;
+    public static List<AdminPortFolioDTO> toDtoList(List<AdminPortFolioEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminPortFolioEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

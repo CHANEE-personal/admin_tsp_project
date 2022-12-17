@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
@@ -103,7 +102,7 @@ public class AdminModelJpaRepository {
         modelList.forEach(list -> modelList.get(modelList.indexOf(list))
                 .setRowNum(getInt(modelMap.get("startPage"), 1) * (getInt(modelMap.get("size"), 1)) - (2 - modelList.indexOf(list))));
 
-        return modelList.stream().map(AdminModelEntity::toDto).collect(Collectors.toList());
+        return AdminModelEntity.toDtoList(modelList);
     }
 
     /**
@@ -329,14 +328,14 @@ public class AdminModelJpaRepository {
      * </pre>
      */
     public List<AdminCommentDTO> findModelAdminComment(Long idx) {
-        List<AdminCommentEntity> adminCommentEntity = queryFactory
+        List<AdminCommentEntity> commentEntity = queryFactory
                 .selectFrom(QAdminCommentEntity.adminCommentEntity)
                 .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("model")
                         .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(idx))
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return adminCommentEntity.stream().map(AdminCommentEntity::toDto).collect(Collectors.toList());
+        return AdminCommentEntity.toDtoList(commentEntity);
     }
 
     /**
@@ -380,6 +379,6 @@ public class AdminModelJpaRepository {
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .fetch();
 
-        return scheduleList.stream().map(AdminScheduleEntity::toDto).collect(Collectors.toList());
+        return AdminScheduleEntity.toDtoList(scheduleList);
     }
 }

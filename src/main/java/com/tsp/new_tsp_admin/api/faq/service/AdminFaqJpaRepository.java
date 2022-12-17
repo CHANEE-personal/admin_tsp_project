@@ -72,7 +72,7 @@ public class AdminFaqJpaRepository {
         faqList.forEach(list -> faqList.get(faqList.indexOf(list))
                 .setRowNum(getInt(faqMap.get("startPage"), 1) * (getInt(faqMap.get("size"), 1)) - (2 - faqList.indexOf(list))));
 
-        return faqList.stream().map(AdminFaqEntity::toDto).collect(Collectors.toList());
+        return AdminFaqEntity.toDtoList(faqList);
     }
 
     /**
@@ -113,6 +113,7 @@ public class AdminFaqJpaRepository {
                         .and(adminFaqEntity.visible.eq("Y")))
                 .fetchOne();
 
+        assert findPrevOneFaq != null;
         return AdminFaqEntity.toDto(findPrevOneFaq);
     }
 
@@ -133,6 +134,7 @@ public class AdminFaqJpaRepository {
                         .and(adminFaqEntity.visible.eq("Y")))
                 .fetchOne();
 
+        assert findNextOneFaq != null;
         return AdminFaqEntity.toDto(findNextOneFaq);
     }
 
