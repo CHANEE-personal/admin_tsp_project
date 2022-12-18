@@ -216,7 +216,7 @@ public class AdminModelJpaController {
     })
     @DeleteMapping(value = "/{idx}/images")
     public Long deleteModelImage(@PathVariable Long idx) throws Exception {
-        return this.adminModelJpaService.deleteModelImage(idx);
+        return this.adminModelJpaService.deleteImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.MODEL).build());
     }
 
     /**

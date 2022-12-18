@@ -7,7 +7,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
-import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
+import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -27,7 +27,7 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 @RequiredArgsConstructor
 public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     private final AdminModelJpaRepository adminModelJpaRepository;
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
     private final SaveImage saveImage;
 
     /**
@@ -222,8 +222,12 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    public Long deleteModelImage(Long idx) {
-        return imageRepository.deleteModelImage(idx);
+    public Long deleteImage(CommonImageEntity commonImageEntity) {
+        try {
+            return imageService.deleteImage(commonImageEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_DELETE_IMAGE, e);
+        }
     }
 
     /**

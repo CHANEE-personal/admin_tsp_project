@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
@@ -122,7 +123,7 @@ class AdminModelJpaRepositoryTest {
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
-                .typeName("model")
+                .typeName(EntityType.MODEL)
                 .build();
 
         commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
@@ -755,7 +756,7 @@ class AdminModelJpaRepositoryTest {
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
                 .typeIdx(modelIdx)
-                .typeName("model")
+                .typeName(EntityType.MODEL)
                 .visible("Y")
                 .build();
 

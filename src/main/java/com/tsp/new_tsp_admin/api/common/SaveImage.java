@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.common;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
+import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,14 +24,14 @@ import static com.tsp.new_tsp_admin.api.common.EntityType.PRODUCTION;
 @RequiredArgsConstructor
 public class SaveImage {
     private final EntityManager em;
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
     @Value("${image.uploadPath}")
     private String fileDirPath;
 
     public List<CommonImageDTO> saveFile(List<MultipartFile> multipartFiles, CommonImageEntity commonImageEntity) throws IOException {
-        if (imageRepository.findOneImage(commonImageEntity) != null) {
-            imageRepository.deleteImage(commonImageEntity);
+        if (imageService.findOneImage(commonImageEntity) != null) {
+            imageService.deleteImage(commonImageEntity);
         }
         List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
         int index = 0;

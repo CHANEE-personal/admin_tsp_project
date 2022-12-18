@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.image.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.common.EntityType;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -128,10 +129,11 @@ class ImageRepositoryTest {
                 .build();
 
         imageRepository.insertImage(commonImageEntity);
+        CommonImageDTO commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
 
         // when
-        when(mockImageRepository.findOneImage(commonImageEntity)).thenReturn(commonImageEntity);
-        CommonImageEntity imageEntity = mockImageRepository.findOneImage(commonImageEntity);
+        when(mockImageRepository.findOneImage(commonImageEntity)).thenReturn(commonImageDTO);
+        CommonImageDTO imageEntity = mockImageRepository.findOneImage(commonImageEntity);
 
         // then
         assertThat(imageEntity.getImageType()).isEqualTo("main");
@@ -163,10 +165,11 @@ class ImageRepositoryTest {
                 .build();
 
         imageRepository.insertImage(commonImageEntity);
+        CommonImageDTO commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
 
         // when
-        given(mockImageRepository.findOneImage(commonImageEntity)).willReturn(commonImageEntity);
-        CommonImageEntity imageEntity = mockImageRepository.findOneImage(commonImageEntity);
+        given(mockImageRepository.findOneImage(commonImageEntity)).willReturn(commonImageDTO);
+        CommonImageDTO imageEntity = mockImageRepository.findOneImage(commonImageEntity);
 
         // then
         assertThat(imageEntity.getImageType()).isEqualTo("main");
@@ -195,13 +198,14 @@ class ImageRepositoryTest {
                 .build();
 
         em.persist(commonImageEntity);
+        CommonImageDTO commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
 
         // when
-        when(mockImageRepository.findOneImage(commonImageEntity)).thenReturn(commonImageEntity);
-        CommonImageEntity commonImageEntity1 = imageRepository.deleteImage(commonImageEntity);
+        when(mockImageRepository.findOneImage(commonImageEntity)).thenReturn(commonImageDTO);
+        Long deleteIdx = imageRepository.deleteImage(commonImageEntity);
 
         // then
-        assertThat(mockImageRepository.findOneImage(commonImageEntity).getImageType()).isEqualTo(commonImageEntity1.getImageType());
+        assertThat(commonImageDTO.getIdx()).isEqualTo(deleteIdx);
 
         // verify
         verify(mockImageRepository, times(1)).findOneImage(commonImageEntity);
@@ -228,13 +232,14 @@ class ImageRepositoryTest {
                 .build();
 
         em.persist(commonImageEntity);
+        CommonImageDTO commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
 
         // when
-        given(mockImageRepository.findOneImage(commonImageEntity)).willReturn(commonImageEntity);
-        CommonImageEntity commonImageEntity1 = imageRepository.deleteImage(commonImageEntity);
+        given(mockImageRepository.findOneImage(commonImageEntity)).willReturn(commonImageDTO);
+        Long deleteIdx = imageRepository.deleteImage(commonImageEntity);
 
         // then
-        assertThat(mockImageRepository.findOneImage(commonImageEntity).getImageType()).isEqualTo(commonImageEntity1.getImageType());
+        assertThat(commonImageDTO.getIdx()).isEqualTo(deleteIdx);
 
         // verify
         then(mockImageRepository).should(times(1)).findOneImage(commonImageEntity);

@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.image.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
@@ -41,14 +42,15 @@ public class ImageRepository {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-//    @Transactional(readOnly = true)
-    public CommonImageEntity findOneImage(CommonImageEntity exCommonImageEntity) {
-        return queryFactory
+    public CommonImageDTO findOneImage(CommonImageEntity exCommonImageEntity) {
+        CommonImageEntity oneImage = queryFactory
                 .selectFrom(commonImageEntity)
                 .where(commonImageEntity.idx.eq(exCommonImageEntity.getIdx())
                         .and(commonImageEntity.visible.eq("Y"))
                         .and(commonImageEntity.typeName.eq(exCommonImageEntity.getTypeName())))
                 .fetchOne();
+
+        return CommonImageEntity.toDto(oneImage);
     }
 
     /**
@@ -77,57 +79,33 @@ public class ImageRepository {
      * </pre>
      */
 //    @Transactional
-    @Modifying(clearAutomatically = true)
     public Long insertImage(CommonImageEntity commonImageEntity) {
-        try {
-            em.persist(commonImageEntity);
-            return commonImageEntity.getIdx();
-        } catch (Exception e) {
-            throw new TspException(ERROR_IMAGE, e);
-        }
+        em.persist(commonImageEntity);
+        return commonImageEntity.getIdx();
     }
 
     /**
      * <pre>
      * 1. MethodName : deleteModelImage
      * 2. ClassName  : ImageRepository.java
-     * 3. Comment    : 관리자 모델 이미지 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
-     * </pre>
-     */
-//    @Transactional
-    @Modifying(clearAutomatically = true)
-    public Long deleteModelImage(Long idx) {
-        try {
-            em.remove(em.find(CommonImageEntity.class, idx));
-            em.flush();
-            em.clear();
-
-            return idx;
-        } catch (Exception e) {
-            throw new TspException(ERROR_IMAGE, e);
-        }
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : deleteImage
-     * 2. ClassName  : ImageRepository.java
      * 3. Comment    : 관리자 이미지 삭제
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    public CommonImageEntity deleteImage(CommonImageEntity exCommonImageEntity) {
-        try {
-            em.remove(em.find(CommonImageEntity.class, exCommonImageEntity.getIdx()));
-            em.flush();
-            em.clear();
+//    @Transactional
+    public Long deleteImage(CommonImageEntity exCommonImageEntity) {
+        CommonImageEntity oneCommon = queryFactory
+                .selectFrom(commonImageEntity)
+                .where(commonImageEntity.typeIdx.eq(exCommonImageEntity.getTypeIdx())
+                        .and(commonImageEntity.typeName.eq(exCommonImageEntity.getTypeName())))
+                .fetchOne();
 
-            return exCommonImageEntity;
-        } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_IMAGE, e);
-        }
+        em.remove(oneCommon);
+        em.clear();
+        em.flush();
+
+        assert oneCommon != null;
+        return oneCommon.getTypeIdx();
     }
 }

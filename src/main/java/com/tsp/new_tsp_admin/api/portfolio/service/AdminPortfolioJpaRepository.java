@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
@@ -99,7 +100,7 @@ public class AdminPortfolioJpaRepository {
                 .fetchJoin()
                 .where(adminPortFolioEntity.idx.eq(existAdminPortfolioEntity.getIdx())
                         .and(adminPortFolioEntity.visible.eq("Y")
-                                .and(commonImageEntity.typeName.eq("portfolio"))))
+                                .and(commonImageEntity.typeName.eq(EntityType.PORTFOLIO))))
                 .fetchOne();
 
         assert findOnePortfolio != null;

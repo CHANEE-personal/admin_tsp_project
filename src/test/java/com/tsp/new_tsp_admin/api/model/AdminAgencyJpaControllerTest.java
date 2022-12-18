@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
@@ -313,7 +314,7 @@ class AdminAgencyJpaControllerTest {
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
-                .typeName("agency")
+                .typeName(EntityType.AGENCY)
                 .build();
 
         em.persist(commonImageEntity);

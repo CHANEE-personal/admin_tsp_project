@@ -121,7 +121,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    Long deleteModelImage(Long idx) throws Exception;
+    Long deleteImage(CommonImageEntity commonImageEntity) throws Exception;
 
     /**
      * <pre>

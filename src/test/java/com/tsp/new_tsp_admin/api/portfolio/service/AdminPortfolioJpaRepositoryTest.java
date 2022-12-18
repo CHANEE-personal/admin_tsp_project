@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
@@ -77,7 +78,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
-                .typeName("portfolio")
+                .typeName(EntityType.PORTFOLIO)
                 .build();
 
         commonImageDTO = CommonImageEntity.toDto(commonImageEntity);
@@ -472,7 +473,7 @@ class AdminPortfolioJpaRepositoryTest {
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
                 .typeIdx(portfolioIdx)
-                .typeName("portfolio")
+                .typeName(EntityType.PORTFOLIO)
                 .visible("Y")
                 .build();
 
