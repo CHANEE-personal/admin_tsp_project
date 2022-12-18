@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
@@ -76,7 +77,7 @@ class AdminProductionJpaRepositoryTest {
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
-                .typeName("production")
+                .typeName(EntityType.PRODUCTION)
                 .visible("Y")
                 .build();
 
@@ -436,7 +437,7 @@ class AdminProductionJpaRepositoryTest {
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
                 .typeIdx(productionIdx)
-                .typeName("production")
+                .typeName(EntityType.PRODUCTION)
                 .visible("Y")
                 .build();
 

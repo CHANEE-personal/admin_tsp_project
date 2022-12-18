@@ -1,5 +1,7 @@
 package com.tsp.new_tsp_admin.api.model;
 
+import com.tsp.new_tsp_admin.api.common.EntityType;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
@@ -181,8 +183,8 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
-    public String insertAgencyImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) throws Exception {
-        return this.adminAgencyJpaService.insertAgencyImage(CommonImageEntity.builder().typeName("agency").typeIdx(idx).visible("Y").build(), fileName);
+    public List<CommonImageDTO> insertAgencyImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) throws Exception {
+        return this.adminAgencyJpaService.insertAgencyImage(CommonImageEntity.builder().typeName(EntityType.AGENCY).typeIdx(idx).build(), fileName);
     }
 
     /**
@@ -204,6 +206,6 @@ public class AdminAgencyJpaController {
     })
     @DeleteMapping(value = "/{idx}/images")
     public Long deleteAgencyImage(@PathVariable Long idx) throws Exception {
-        return this.adminAgencyJpaService.deleteAgencyImage(idx);
+        return this.adminAgencyJpaService.deleteAgencyImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.AGENCY).build());
     }
 }

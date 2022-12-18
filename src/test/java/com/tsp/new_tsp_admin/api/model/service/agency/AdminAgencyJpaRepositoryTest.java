@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service.agency;
 
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
@@ -71,7 +72,7 @@ class AdminAgencyJpaRepositoryTest {
                 .fileMask("test.jpg")
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
-                .typeName("agency")
+                .typeName(EntityType.AGENCY)
                 .visible("Y")
                 .build();
 

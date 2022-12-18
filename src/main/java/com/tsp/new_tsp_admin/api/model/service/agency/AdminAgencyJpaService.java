@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service.agency;
 
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
@@ -85,7 +86,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    String insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception;
+    List<CommonImageDTO> insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception;
 
     /**
      * <pre>
@@ -96,5 +97,5 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    Long deleteAgencyImage(Long idx) throws Exception;
+    Long deleteAgencyImage(CommonImageEntity commonImageEntity) throws Exception;
 }

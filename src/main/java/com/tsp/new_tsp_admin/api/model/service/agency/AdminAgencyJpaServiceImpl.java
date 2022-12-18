@@ -1,9 +1,11 @@
 package com.tsp.new_tsp_admin.api.model.service.agency;
 
+import com.tsp.new_tsp_admin.api.common.SaveImage;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
-import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
+import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -23,7 +25,8 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 @RequiredArgsConstructor
 public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     private final AdminAgencyJpaRepository adminAgencyJpaRepository;
-    private final ImageRepository imageRepository;
+    private final SaveImage saveImage;
+    private final ImageService imageService;
 
     /**
      * <pre>
@@ -157,9 +160,9 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    public String insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws TspException {
+    public List<CommonImageDTO> insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws TspException {
         try {
-            return imageRepository.uploadImageFile(commonImageEntity, fileName, "insert");
+            return saveImage.saveFile(fileName, commonImageEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_AGENCY, e);
         }
@@ -175,7 +178,11 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    public Long deleteAgencyImage(Long idx) throws TspException {
-        return imageRepository.deleteModelImage(idx);
+    public Long deleteAgencyImage(CommonImageEntity commonImageEntity) throws TspException {
+        try {
+            return imageService.deleteImage(commonImageEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_DELETE_IMAGE, e);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.production.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
@@ -99,7 +100,7 @@ public class AdminProductionJpaRepository {
                 .fetchJoin()
                 .where(adminProductionEntity.idx.eq(idx)
                         .and(adminProductionEntity.visible.eq("Y"))
-                        .and(commonImageEntity.typeName.eq("production")))
+                        .and(commonImageEntity.typeName.eq(EntityType.PRODUCTION)))
                 .fetchOne();
 
         assert findOneProduction != null;
