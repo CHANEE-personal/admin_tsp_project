@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -109,7 +110,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception;
+    List<CommonImageDTO> insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception;
 
     /**
      * <pre>

@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -26,7 +27,7 @@ public class CommonImageDTO {
     private Long typeIdx;
 
     @ApiModelProperty(value = "분야명", required = true, hidden = true)
-    private String typeName;
+    private EntityType typeName;
 
     @ApiModelProperty(value = "파일 Number", required = true, hidden = true, example = "1")
     private Integer fileNum;

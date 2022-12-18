@@ -1,6 +1,8 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.tsp.new_tsp_admin.api.common.SaveImage;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -26,6 +28,7 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     private final AdminModelJpaRepository adminModelJpaRepository;
     private final ImageRepository imageRepository;
+    private final SaveImage saveImage;
 
     /**
      * <pre>
@@ -201,9 +204,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Modifying(clearAutomatically = true)
     @Transactional
-    public String insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws TspException {
+    public List<CommonImageDTO> insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws TspException {
         try {
-            return imageRepository.uploadImageFile(commonImageEntity, fileName, "insert");
+            return saveImage.saveFile(fileName, commonImageEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_MODEL, e);
         }

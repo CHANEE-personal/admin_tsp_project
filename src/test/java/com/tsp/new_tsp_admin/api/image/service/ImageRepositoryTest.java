@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.image.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +60,7 @@ class ImageRepositoryTest {
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
                 .fileNum(2)
-                .typeName("model")
+                .typeName(EntityType.MODEL)
                 .visible("Y")
                 .build();
 
@@ -92,7 +93,7 @@ class ImageRepositoryTest {
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
                 .fileNum(2)
-                .typeName("model")
+                .typeName(EntityType.MODEL)
                 .visible("Y")
                 .build();
 
@@ -122,7 +123,7 @@ class ImageRepositoryTest {
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
                 .fileNum(2)
-                .typeName("model")
+                .typeName(EntityType.MODEL)
                 .visible("Y")
                 .build();
 
@@ -157,7 +158,7 @@ class ImageRepositoryTest {
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
                 .fileNum(2)
-                .typeName("model")
+                .typeName(EntityType.MODEL)
                 .visible("Y")
                 .build();
 
@@ -189,7 +190,7 @@ class ImageRepositoryTest {
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
                 .fileNum(2)
-                .typeName("model")
+                .typeName(EntityType.MODEL)
                 .visible("Y")
                 .build();
 
@@ -222,7 +223,7 @@ class ImageRepositoryTest {
                 .filePath("/test/test.jpg")
                 .typeIdx(1L)
                 .fileNum(2)
-                .typeName("model")
+                .typeName(EntityType.MODEL)
                 .visible("Y")
                 .build();
 
