@@ -123,7 +123,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델 섭외 리스트 조회 테스트")
-    void 모델섭외리스트조회테스트() throws Exception {
+    void 모델섭외리스트조회테스트() {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
         negotiationMap.put("searchKeyword", "김예영");
@@ -154,7 +154,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델 섭외 Mockito 조회 테스트")
-    void 모델섭외Mockito조회테스트() throws Exception {
+    void 모델섭외Mockito조회테스트() {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
         negotiationMap.put("jpaStartPage", 1);
@@ -189,7 +189,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델 섭외 BDD 조회 테스트")
-    void 모델섭외BDD조회테스트() throws Exception {
+    void 모델섭외BDD조회테스트() {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
         negotiationMap.put("jpaStartPage", 1);
@@ -221,7 +221,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("이전 or 다음 모델 섭외 상세 조회 테스트")
-    void 이전or다음모델섭외상세조회테스트() throws Exception {
+    void 이전or다음모델섭외상세조회테스트() {
         // given
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
@@ -236,7 +236,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("이전 모델 섭외 상세 조회 Mockito 테스트")
-    void 이전모델섭외상세조회Mockito테스트() throws Exception {
+    void 이전모델섭외상세조회Mockito테스트() {
         // given
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
@@ -260,7 +260,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("이전 모델 섭외 상세 조회 BDD 테스트")
-    void 이전모델섭외상세조회BDD테스트() throws Exception {
+    void 이전모델섭외상세조회BDD테스트() {
         // given
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
@@ -281,7 +281,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("다음 모델 섭외 상세 조회 Mockito 테스트")
-    void 다음모델섭외상세조회Mockito테스트() throws Exception {
+    void 다음모델섭외상세조회Mockito테스트() {
         // given
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
@@ -305,7 +305,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("다음 모델 섭외 상세 조회 BDD 테스트")
-    void 다음모델섭외상세조회BDD테스트() throws Exception {
+    void 다음모델섭외상세조회BDD테스트() {
         // given
         adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
 
@@ -326,7 +326,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델섭외등록Mockito테스트")
-    void 모델섭외등록Mockito테스트() throws Exception {
+    void 모델섭외등록Mockito테스트() {
         // given
         adminNegotiationJpaService.insertModelNegotiation(adminNegotiationEntity);
 
@@ -350,7 +350,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델섭외등록BDD테스트")
-    void 모델섭외등록BDD테스트() throws Exception {
+    void 모델섭외등록BDD테스트() {
         // given
         adminNegotiationJpaService.insertModelNegotiation(adminNegotiationEntity);
 
@@ -371,7 +371,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델섭외수정Mockito테스트")
-    void 모델섭외수정Mockito테스트() throws Exception {
+    void 모델섭외수정Mockito테스트() {
         // given
         Long idx = adminNegotiationJpaService.insertModelNegotiation(adminNegotiationEntity).getIdx();
 
@@ -410,7 +410,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델섭외수정BDD테스트")
-    void 모델섭외수정BDD테스트() throws Exception {
+    void 모델섭외수정BDD테스트() {
         // given
         Long idx = adminNegotiationJpaService.insertModelNegotiation(adminNegotiationEntity).getIdx();
 
@@ -446,7 +446,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델섭외삭제Mockito테스트")
-    void 모델섭외삭제Mockito테스트() throws Exception {
+    void 모델섭외삭제Mockito테스트() {
         // given
         em.persist(adminNegotiationEntity);
         adminNegotiationDTO = AdminNegotiationEntity.toDto(adminNegotiationEntity);
@@ -469,7 +469,7 @@ class AdminNegotiationJpaServiceTest {
 
     @Test
     @DisplayName("모델섭외삭제BDD테스트")
-    void 모델섭외삭제BDD테스트() throws Exception {
+    void 모델섭외삭제BDD테스트() {
         // given
         em.persist(adminNegotiationEntity);
         adminNegotiationDTO = AdminNegotiationEntity.toDto(adminNegotiationEntity);

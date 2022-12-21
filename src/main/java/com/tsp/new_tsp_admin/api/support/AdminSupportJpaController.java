@@ -53,7 +53,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/lists")
-    public Map<String, Object> findSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         // 페이징 및 검색
         Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
 
@@ -94,7 +94,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminSupportDTO updateSupportModel(@Valid @RequestBody AdminSupportEntity adminSupportEntity) throws Exception {
+    public AdminSupportDTO updateSupportModel(@Valid @RequestBody AdminSupportEntity adminSupportEntity) {
         return adminSupportJpaService.updateSupportModel(adminSupportEntity);
     }
 
@@ -116,7 +116,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteSupportModel(@PathVariable Long idx) throws Exception {
+    public Long deleteSupportModel(@PathVariable Long idx) {
         return adminSupportJpaService.deleteSupportModel(idx);
     }
 
@@ -138,7 +138,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/evaluation/lists")
-    public Map<String, Object> findEvaluationsList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findEvaluationsList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         // 페이징 및 검색
         Map<String, Object> evaluationMap = searchCommon.searchCommon(page, paramMap);
 
@@ -179,7 +179,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/evaluation/{idx}")
-    public EvaluationDTO findOneEvaluation(@PathVariable Long idx) throws Exception {
+    public EvaluationDTO findOneEvaluation(@PathVariable Long idx) {
         return this.adminSupportJpaService.findOneEvaluation(EvaluationEntity.builder().idx(idx).build());
     }
 
@@ -202,7 +202,7 @@ public class AdminSupportJpaController {
     })
     @PostMapping("/{idx}/evaluation")
     public EvaluationDTO evaluationSupportModel(@Valid @RequestBody EvaluationEntity evaluationEntity,
-                                                @PathVariable("idx") Long idx) throws Exception {
+                                                @PathVariable("idx") Long idx) {
         return adminSupportJpaService.evaluationSupportModel(EvaluationEntity.builder().supportIdx(idx)
                 .evaluateComment(evaluationEntity.getEvaluateComment())
                 .visible("Y").build());
@@ -226,7 +226,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}/evaluation")
-    public EvaluationDTO updateEvaluation(@Valid @RequestBody EvaluationEntity evaluationEntity) throws Exception {
+    public EvaluationDTO updateEvaluation(@Valid @RequestBody EvaluationEntity evaluationEntity) {
         return adminSupportJpaService.updateEvaluation(evaluationEntity);
     }
 
@@ -248,7 +248,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}/evaluation")
-    public Long deleteEvaluation(@PathVariable Long idx) throws Exception {
+    public Long deleteEvaluation(@PathVariable Long idx) {
         return adminSupportJpaService.deleteEvaluation(idx);
     }
 
@@ -270,7 +270,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}/pass")
-    public AdminSupportDTO updatePass(@PathVariable Long idx) throws Exception {
+    public AdminSupportDTO updatePass(@PathVariable Long idx) {
         return adminSupportJpaService.updatePass(idx);
     }
 
@@ -292,7 +292,7 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")
-    public List<AdminCommentDTO> findSupportAdminComment(@PathVariable Long idx) throws Exception {
+    public List<AdminCommentDTO> findSupportAdminComment(@PathVariable Long idx) {
         return adminSupportJpaService.findSupportAdminComment(idx);
     }
 }

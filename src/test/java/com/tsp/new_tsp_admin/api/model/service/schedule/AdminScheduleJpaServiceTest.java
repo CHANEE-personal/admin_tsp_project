@@ -113,7 +113,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델 스케줄 리스트 조회 테스트")
-    void 모델스케줄리스트조회테스트() throws Exception {
+    void 모델스케줄리스트조회테스트() {
         // given
         Map<String, Object> scheduleMap = new HashMap<>();
         scheduleMap.put("searchKeyword", "김예영");
@@ -144,7 +144,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델 스케줄 Mockito 조회 테스트")
-    void 모델스케줄Mockito조회테스트() throws Exception {
+    void 모델스케줄Mockito조회테스트() {
         // given
         Map<String, Object> scheduleMap = new HashMap<>();
         scheduleMap.put("jpaStartPage", 1);
@@ -180,7 +180,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델 스케줄 BDD 조회 테스트")
-    void 모델스케줄BDD조회테스트() throws Exception {
+    void 모델스케줄BDD조회테스트() {
         // given
         Map<String, Object> scheduleMap = new HashMap<>();
         scheduleMap.put("jpaStartPage", 1);
@@ -213,7 +213,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델스케줄상세Mockito조회테스트")
-    void 모델스케줄상세Mockito조회테스트() throws Exception {
+    void 모델스케줄상세Mockito조회테스트() {
         // given
         AdminScheduleEntity adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(1L)
@@ -246,7 +246,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델스케줄상세BDD조회테스트")
-    void 모델스케줄상세BDD조회테스트() throws Exception {
+    void 모델스케줄상세BDD조회테스트() {
         // given
         AdminScheduleEntity adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(1L)
@@ -276,7 +276,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("이전 or 다음 모델 스케줄 상세 조회 테스트")
-    void 이전or다음모델스케줄상세조회테스트() throws Exception {
+    void 이전or다음모델스케줄상세조회테스트() {
         // given
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
@@ -291,7 +291,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("이전 모델 스케줄 상세 조회 Mockito 테스트")
-    void 이전모델스케줄상세조회Mockito테스트() throws Exception {
+    void 이전모델스케줄상세조회Mockito테스트() {
         // given
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
@@ -315,7 +315,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("이전 모델 스케줄 상세 조회 BDD 테스트")
-    void 이전모델스케줄상세조회BDD테스트() throws Exception {
+    void 이전모델스케줄상세조회BDD테스트() {
         // given
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
@@ -336,7 +336,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("다음 모델 스케줄 상세 조회 Mockito 테스트")
-    void 다음모델스케줄상세조회Mockito테스트() throws Exception {
+    void 다음모델스케줄상세조회Mockito테스트() {
         // given
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
@@ -360,7 +360,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("다음 모델 스케줄 상세 조회 BDD 테스트")
-    void 다음모델스케줄상세조회BDD테스트() throws Exception {
+    void 다음모델스케줄상세조회BDD테스트() {
         // given
         adminScheduleEntity = AdminScheduleEntity.builder().idx(2L).build();
 
@@ -381,7 +381,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델스케줄등록Mockito테스트")
-    void 모델스케줄등록Mockito테스트() throws Exception {
+    void 모델스케줄등록Mockito테스트() {
         // given
         adminScheduleJpaService.insertSchedule(adminScheduleEntity);
 
@@ -405,7 +405,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델스케줄등록BDD테스트")
-    void 모델스케줄등록BDD테스트() throws Exception {
+    void 모델스케줄등록BDD테스트() {
         // given
         adminScheduleJpaService.insertSchedule(adminScheduleEntity);
 
@@ -426,7 +426,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델스케줄수정Mockito테스트")
-    void 모델스케줄수정Mockito테스트() throws Exception {
+    void 모델스케줄수정Mockito테스트() {
         // given
         Long idx = adminScheduleJpaService.insertSchedule(adminScheduleEntity).getIdx();
 
@@ -461,7 +461,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델스케줄수정BDD테스트")
-    void 모델스케줄수정BDD테스트() throws Exception {
+    void 모델스케줄수정BDD테스트() {
         // given
         Long idx = adminScheduleJpaService.insertSchedule(adminScheduleEntity).getIdx();
 
@@ -493,7 +493,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델스케줄삭제Mockito테스트")
-    void 모델스케줄삭제Mockito테스트() throws Exception {
+    void 모델스케줄삭제Mockito테스트() {
         // given
         em.persist(adminScheduleEntity);
         adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
@@ -516,7 +516,7 @@ class AdminScheduleJpaServiceTest {
 
     @Test
     @DisplayName("모델스케줄삭제BDD테스트")
-    void 모델스케줄삭제BDD테스트() throws Exception {
+    void 모델스케줄삭제BDD테스트() {
         // given
         em.persist(adminScheduleEntity);
         adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);

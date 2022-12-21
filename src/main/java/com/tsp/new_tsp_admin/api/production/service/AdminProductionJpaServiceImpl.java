@@ -33,7 +33,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findProductionCount(Map<String, Object> productionMap) throws TspException {
+    public Integer findProductionCount(Map<String, Object> productionMap) {
         try {
             return adminProductionJpaRepository.findProductionCount(productionMap);
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Cacheable("production")
     @Transactional(readOnly = true)
-    public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) throws TspException {
+    public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
         try {
             return adminProductionJpaRepository.findProductionList(productionMap);
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Cacheable("production")
     @Transactional(readOnly = true)
-    public AdminProductionDTO findOneProduction(Long idx) throws TspException {
+    public AdminProductionDTO findOneProduction(Long idx) {
         try {
             return adminProductionJpaRepository.findOneProduction(idx);
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Cacheable("production")
     @Transactional(readOnly = true)
-    public AdminProductionDTO findPrevOneProduction(Long idx) throws TspException {
+    public AdminProductionDTO findPrevOneProduction(Long idx) {
         try {
             return adminProductionJpaRepository.findPrevOneProduction(idx);
         } catch (Exception e) {
@@ -113,7 +113,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Cacheable("production")
     @Transactional(readOnly = true)
-    public AdminProductionDTO findNextOneProduction(Long idx) throws TspException {
+    public AdminProductionDTO findNextOneProduction(Long idx) {
         try {
             return adminProductionJpaRepository.findNextOneProduction(idx);
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @CachePut("production")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) throws TspException {
+    public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         try {
             return adminProductionJpaRepository.insertProduction(adminProductionEntity);
         } catch (Exception e) {
@@ -176,7 +176,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @CacheEvict("production")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteProduction(Long idx) throws TspException {
+    public Long deleteProduction(Long idx) {
         try {
             return adminProductionJpaRepository.deleteProductionByEm(idx);
         } catch (Exception e) {

@@ -128,7 +128,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 리스트 조회 테스트")
-    void 모델리스트조회테스트() throws Exception {
+    void 모델리스트조회테스트() {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", 1);
@@ -141,7 +141,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 리스트 조회 Mockito 테스트")
-    void 모델리스트조회Mockito테스트() throws Exception {
+    void 모델리스트조회Mockito테스트() {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", "1");
@@ -204,7 +204,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 리스트 조회 BDD 테스트")
-    void 모델리스트조회BDD테스트() throws Exception {
+    void 모델리스트조회BDD테스트() {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", "1");
@@ -276,7 +276,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 상세 조회 테스트")
-    void 모델상세조회테스트() throws Exception {
+    void 모델상세조회테스트() {
         AdminModelDTO modelInfo = adminModelJpaService.findOneModel(143L);
         // then
         assertThat(modelInfo).isNotNull();
@@ -288,7 +288,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 상세 조회 Mockito 테스트")
-    void 모델상세조회Mockito테스트() throws Exception {
+    void 모델상세조회Mockito테스트() {
         // when
         when(mockAdminModelJpaService.findOneModel(adminModelEntity.getIdx())).thenReturn(adminModelDTO);
         AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(adminModelEntity.getIdx());
@@ -312,7 +312,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 상세 조회 BDD 테스트")
-    void 모델상세조회BDD테스트() throws Exception {
+    void 모델상세조회BDD테스트() {
         // when
         given(mockAdminModelJpaService.findOneModel(adminModelEntity.getIdx())).willReturn(adminModelDTO);
         AdminModelDTO modelInfo = mockAdminModelJpaService.findOneModel(adminModelEntity.getIdx());
@@ -333,7 +333,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("이전 or 다음 모델 상세 조회 테스트")
-    void 이전or다음모델상세조회테스트() throws Exception {
+    void 이전or다음모델상세조회테스트() {
         // given
         adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
 
@@ -348,7 +348,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("이전 모델 상세 조회 Mockito 테스트")
-    void 이전모델상세조회Mockito테스트() throws Exception {
+    void 이전모델상세조회Mockito테스트() {
         // given
         adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
@@ -371,7 +371,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("이전 모델 상세 조회 BDD 테스트")
-    void 이전모델상세조회BDD테스트() throws Exception {
+    void 이전모델상세조회BDD테스트() {
         // given
         adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
@@ -391,7 +391,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("다음 모델 상세 조회 Mockito 테스트")
-    void 다음모델상세조회Mockito테스트() throws Exception {
+    void 다음모델상세조회Mockito테스트() {
         // given
         adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
@@ -414,7 +414,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("다음 모델 상세 조회 BDD 테스트")
-    void 다음모델상세조회BDD테스트() throws Exception {
+    void 다음모델상세조회BDD테스트() {
         // given
         adminModelEntity = AdminModelEntity.builder().idx(145L).categoryCd(2).build();
         // when
@@ -434,7 +434,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 등록 Mockito 테스트")
-    void 모델등록Mockito테스트() throws Exception {
+    void 모델등록Mockito테스트() {
         // given
         adminModelJpaService.insertModel(adminModelEntity);
 
@@ -460,7 +460,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 등록 BDD 테스트")
-    void 모델등록BDD테스트() throws Exception {
+    void 모델등록BDD테스트() {
         // given
         adminModelJpaService.insertModel(adminModelEntity);
 
@@ -509,7 +509,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 수정 Mockito 테스트")
-    void 모델수정Mockito테스트() throws Exception {
+    void 모델수정Mockito테스트() {
         // given
         Long idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
@@ -556,7 +556,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 수정 BDD 테스트")
-    void 모델수정BDD테스트() throws Exception {
+    void 모델수정BDD테스트() {
         // given
         Long idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
@@ -600,7 +600,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 삭제 테스트")
-    void 모델삭제테스트() throws Exception {
+    void 모델삭제테스트() {
         // given
         Long idx = adminModelJpaService.insertModel(adminModelEntity).getIdx();
 
@@ -610,7 +610,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 삭제 Mockito 테스트")
-    void 모델삭제Mockito테스트() throws Exception {
+    void 모델삭제Mockito테스트() {
         // given
         adminModelJpaService.insertModel(adminModelEntity);
         adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
@@ -633,7 +633,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 삭제 BDD 테스트")
-    void 모델삭제BDD테스트() throws Exception {
+    void 모델삭제BDD테스트() {
         // given
         adminModelJpaService.insertModel(adminModelEntity);
         adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
@@ -653,7 +653,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 소속사 수정 Mockito 테스트")
-    void 모델소속사수정Mockito테스트() throws Exception {
+    void 모델소속사수정Mockito테스트() {
         // 소속사 등록
         AdminAgencyDTO newAgencyDTO = adminAgencyJpaService.insertAgency(adminAgencyEntity);
         Long agencyIdx = newAgencyDTO.getIdx();
@@ -728,7 +728,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 소속사 수정 BDD 테스트")
-    void 모델소속사수정BDD테스트() throws Exception {
+    void 모델소속사수정BDD테스트() {
         // 소속사 등록
         AdminAgencyDTO newAgencyDTO = adminAgencyJpaService.insertAgency(adminAgencyEntity);
         Long agencyIdx = newAgencyDTO.getIdx();
@@ -800,7 +800,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 어드민 코멘트 조회 Mockito 테스트")
-    void 모델어드민코멘트조회Mockito테스트() throws Exception {
+    void 모델어드민코멘트조회Mockito테스트() {
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
                 .categoryAge(2)
@@ -856,7 +856,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 어드민 코멘트 조회 BDD 테스트")
-    void 모델어드민코멘트조회BDD테스트() throws Exception {
+    void 모델어드민코멘트조회BDD테스트() {
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
                 .categoryAge(2)
@@ -909,7 +909,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("새로운 모델 설정 Mockito 테스트")
-    void 새로운모델설정Mockito테스트() throws Exception {
+    void 새로운모델설정Mockito테스트() {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(1L)
                 .categoryCd(1)
@@ -952,7 +952,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("새로운 모델 설정 BDD 테스트")
-    void 새로운모델설정BDD테스트() throws Exception {
+    void 새로운모델설정BDD테스트() {
         adminModelEntity = AdminModelEntity.builder()
                 .idx(1L)
                 .categoryCd(1)
@@ -992,7 +992,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 스케줄 Mockito 조회 테스트")
-    void 모델스케줄Mockito조회테스트() throws Exception {
+    void 모델스케줄Mockito조회테스트() {
         // given
         Map<String, Object> scheduleMap = new HashMap<>();
         scheduleMap.put("jpaStartPage", 1);
@@ -1023,7 +1023,7 @@ class AdminModelJpaServiceTest {
 
     @Test
     @DisplayName("모델 스케줄 BDD 조회 테스트")
-    void 모델스케줄BDD조회테스트() throws Exception {
+    void 모델스케줄BDD조회테스트() {
         // given
         Map<String, Object> scheduleMap = new HashMap<>();
         scheduleMap.put("jpaStartPage", 1);

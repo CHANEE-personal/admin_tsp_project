@@ -66,7 +66,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 리스트 조회 테스트")
-    void 공통코드리스트조회테스트() throws Exception {
+    void 공통코드리스트조회테스트() {
         // given
         Map<String, Object> commonMap = new HashMap<>();
         commonMap.put("jpaStartPage", 0);
@@ -78,7 +78,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 리스트 조회 Mockito 테스트")
-    void 공통코드리스트조회Mockito테스트() throws Exception {
+    void 공통코드리스트조회Mockito테스트() {
         Map<String, Object> commonMap = new HashMap<>();
         commonMap.put("jpaStartPage", 1);
         commonMap.put("size", 3);
@@ -107,7 +107,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 리스트 조회 BDD 테스트")
-    void 공통코드리스트조회BDD테스트() throws Exception {
+    void 공통코드리스트조회BDD테스트() {
         Map<String, Object> commonMap = new HashMap<>();
         commonMap.put("jpaStartPage", 1);
         commonMap.put("size", 3);
@@ -133,7 +133,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 상세 조회 Mockito 테스트")
-    void 공통코드상세조회Mockito테스트() throws Exception {
+    void 공통코드상세조회Mockito테스트() {
         // given
         commonCodeEntity = builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
 
@@ -166,7 +166,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 상세 조회 BDD 테스트")
-    void 공통코드상세조회BDD테스트() throws Exception {
+    void 공통코드상세조회BDD테스트() {
         // given
         commonCodeEntity = builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
 
@@ -196,7 +196,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 등록 Mockito 테스트")
-    void 공통코드등록Mockito테스트() throws Exception {
+    void 공통코드등록Mockito테스트() {
         // given
         adminCommonJpaService.insertCommonCode(commonCodeEntity);
 
@@ -220,7 +220,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 등록 BDD 테스트")
-    void 공통코드등록BDD테스트() throws Exception {
+    void 공통코드등록BDD테스트() {
         // given
         adminCommonJpaService.insertCommonCode(commonCodeEntity);
 
@@ -241,7 +241,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 수정 Mockito 테스트")
-    void 공통코드수정Mockito테스트() throws Exception {
+    void 공통코드수정Mockito테스트() {
         // given
         Long idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
 
@@ -276,7 +276,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 수정 BDD 테스트")
-    void 공통코드수정BDD테스트() throws Exception {
+    void 공통코드수정BDD테스트() {
         // given
         Long idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
 
@@ -308,7 +308,7 @@ class AdminCommonJpaServiceTest {
 
     @Test
     @DisplayName("공통코드 삭제 테스트")
-    void 공통코드삭제테스트() throws Exception {
+    void 공통코드삭제테스트() {
         // given
         Long idx = adminCommonJpaService.insertCommonCode(commonCodeEntity).getIdx();
 

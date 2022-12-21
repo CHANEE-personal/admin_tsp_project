@@ -49,7 +49,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findNoticeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findNoticeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> noticeMap = new HashMap<>();
 
         Integer noticeCount = this.adminNoticeJpaService.findNoticeCount(searchCommon.searchCommon(page, paramMap));
@@ -89,7 +89,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminNoticeDTO findOneNotice(@PathVariable Long idx) throws Exception {
+    public AdminNoticeDTO findOneNotice(@PathVariable Long idx) {
         return adminNoticeJpaService.findOneNotice(idx);
     }
 
@@ -111,7 +111,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminNoticeDTO findPrevOneNotice(@PathVariable Long idx) throws Exception {
+    public AdminNoticeDTO findPrevOneNotice(@PathVariable Long idx) {
         return adminNoticeJpaService.findPrevOneNotice(idx);
     }
 
@@ -133,7 +133,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminNoticeDTO findNextOneNotice(@PathVariable Long idx) throws Exception {
+    public AdminNoticeDTO findNextOneNotice(@PathVariable Long idx) {
         return adminNoticeJpaService.findNextOneNotice(idx);
     }
 
@@ -155,7 +155,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public AdminNoticeDTO insertNotice(@Valid @RequestBody AdminNoticeEntity adminNoticeEntity) throws Exception {
+    public AdminNoticeDTO insertNotice(@Valid @RequestBody AdminNoticeEntity adminNoticeEntity) {
         return this.adminNoticeJpaService.insertNotice(adminNoticeEntity);
     }
 
@@ -177,7 +177,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
-    public AdminNoticeDTO updateNotice(@Valid @RequestBody AdminNoticeEntity adminNoticeEntity) throws Exception {
+    public AdminNoticeDTO updateNotice(@Valid @RequestBody AdminNoticeEntity adminNoticeEntity) {
         return adminNoticeJpaService.updateNotice(adminNoticeEntity);
     }
 
@@ -199,7 +199,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}/fixed")
-    public AdminNoticeDTO toggleFixed(@PathVariable Long idx) throws Exception {
+    public AdminNoticeDTO toggleFixed(@PathVariable Long idx) {
         return adminNoticeJpaService.toggleFixed(idx);
     }
 
@@ -221,7 +221,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Long deleteNotice(@PathVariable Long idx) throws Exception {
+    public Long deleteNotice(@PathVariable Long idx) {
         return adminNoticeJpaService.deleteNotice(idx);
     }
 }

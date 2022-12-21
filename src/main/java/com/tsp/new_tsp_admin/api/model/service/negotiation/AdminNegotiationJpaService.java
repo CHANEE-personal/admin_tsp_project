@@ -17,7 +17,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    Integer findNegotiationCount(Map<String, Object> negotiationMap) throws Exception;
+    Integer findNegotiationCount(Map<String, Object> negotiationMap);
 
     /**
      * <pre>
@@ -28,7 +28,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap) throws Exception;
+    List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap);
 
     /**
      * <pre>
@@ -39,7 +39,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    AdminNegotiationDTO findOneNegotiation(Long idx) throws Exception;
+    AdminNegotiationDTO findOneNegotiation(Long idx);
 
     /**
      * <pre>
@@ -50,7 +50,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 21.
      * </pre>
      */
-    AdminNegotiationDTO findPrevOneNegotiation(Long idx) throws Exception;
+    AdminNegotiationDTO findPrevOneNegotiation(Long idx);
 
     /**
      * <pre>
@@ -61,7 +61,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 21.
      * </pre>
      */
-    AdminNegotiationDTO findNextOneNegotiation(Long idx) throws Exception;
+    AdminNegotiationDTO findNextOneNegotiation(Long idx);
 
     /**
      * <pre>
@@ -72,7 +72,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    AdminNegotiationDTO insertModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws Exception;
+    AdminNegotiationDTO insertModelNegotiation(AdminNegotiationEntity adminNegotiationEntity);
 
     /**
      * <pre>
@@ -83,7 +83,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws Exception;
+    AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity adminNegotiationEntity);
 
     /**
      * <pre>
@@ -94,5 +94,5 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    Long deleteModelNegotiation(Long idx) throws Exception;
+    Long deleteModelNegotiation(Long idx);
 }

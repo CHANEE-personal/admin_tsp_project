@@ -17,7 +17,7 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    Integer findAdminCommentCount(Map<String, Object> commentMap) throws Exception;
+    Integer findAdminCommentCount(Map<String, Object> commentMap);
 
     /**
      * <pre>
@@ -28,7 +28,7 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    List<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap) throws Exception;
+    List<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap);
 
     /**
      * <pre>
@@ -39,7 +39,7 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    AdminCommentDTO findOneAdminComment(AdminCommentEntity adminCommentEntity) throws Exception;
+    AdminCommentDTO findOneAdminComment(AdminCommentEntity adminCommentEntity);
 
     /**
      * <pre>
@@ -50,7 +50,7 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity) throws Exception;
+    AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity);
 
     /**
      * <pre>
@@ -61,7 +61,7 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    AdminCommentDTO updateAdminComment(AdminCommentEntity adminCommentEntity) throws Exception;
+    AdminCommentDTO updateAdminComment(AdminCommentEntity adminCommentEntity);
 
     /**
      * <pre>
@@ -72,5 +72,5 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    Long deleteAdminComment(Long idx) throws Exception;
+    Long deleteAdminComment(Long idx);
 }

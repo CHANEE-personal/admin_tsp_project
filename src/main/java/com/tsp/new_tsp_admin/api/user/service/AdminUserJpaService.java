@@ -17,7 +17,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminUserDTO> findUserList(Map<String, Object> userMap) throws Exception;
+    List<AdminUserDTO> findUserList(Map<String, Object> userMap);
 
     /**
      * <pre>
@@ -28,7 +28,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminUserEntity findOneUser(String id) throws Exception;
+    AdminUserEntity findOneUser(String id);
 
     /**
      * <pre>
@@ -39,7 +39,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    String findOneUserByToken(String token) throws Exception;
+    String findOneUserByToken(String token);
 
     /**
      * <pre>
@@ -50,7 +50,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    String adminLogin(AdminUserEntity adminUserEntity) throws Exception;
+    String adminLogin(AdminUserEntity adminUserEntity);
 
     /**
      * <pre>
@@ -61,7 +61,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    void insertToken(AdminUserEntity adminUserEntity) throws Exception;
+    void insertToken(AdminUserEntity adminUserEntity);
 
     /**
      * <pre>
@@ -72,7 +72,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      */
-    AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) throws Exception;
+    AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity);
 
     /**
      * <pre>
@@ -83,7 +83,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      */
-    AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) throws Exception;
+    AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity);
 
     /**
      * <pre>
@@ -94,5 +94,5 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      */
-    Long deleteAdminUser(Long idx) throws Exception;
+    Long deleteAdminUser(Long idx);
 }

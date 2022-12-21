@@ -17,7 +17,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findCommonCodeListCount() throws Exception;
+    Integer findCommonCodeListCount();
 
     /**
      * <pre>
@@ -28,7 +28,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap) throws Exception;
+    List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap);
 
     /**
      * <pre>
@@ -39,7 +39,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    CommonCodeDTO findOneCommonCode(CommonCodeEntity commonCodeEntity) throws Exception;
+    CommonCodeDTO findOneCommonCode(CommonCodeEntity commonCodeEntity);
 
     /**
      * <pre>
@@ -50,7 +50,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) throws Exception;
+    CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity);
 
     /**
      * <pre>
@@ -61,7 +61,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity) throws Exception;
+    CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity);
 
     /**
      * <pre>
@@ -72,5 +72,5 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Long deleteCommonCode(Long idx) throws Exception;
+    Long deleteCommonCode(Long idx);
 }

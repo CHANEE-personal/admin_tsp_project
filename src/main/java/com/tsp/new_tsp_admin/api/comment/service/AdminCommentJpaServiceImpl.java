@@ -32,7 +32,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findAdminCommentCount(Map<String, Object> commentMap) throws Exception {
+    public Integer findAdminCommentCount(Map<String, Object> commentMap) {
         try {
             return adminCommentJpaRepository.findAdminCommentCount(commentMap);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     @Override
     @Cacheable("comment")
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap) throws TspException {
+    public List<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap) {
         try {
             return adminCommentJpaRepository.findAdminCommentList(commentMap);
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     @Override
     @Cacheable("comment")
     @Transactional(readOnly = true)
-    public AdminCommentDTO findOneAdminComment(AdminCommentEntity adminCommentEntity) throws TspException {
+    public AdminCommentDTO findOneAdminComment(AdminCommentEntity adminCommentEntity) {
         try {
             return adminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     @CachePut("comment")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity) throws TspException {
+    public AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity) {
         try {
             return adminCommentJpaRepository.insertAdminComment(adminCommentEntity);
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     @CachePut("comment")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminCommentDTO updateAdminComment(AdminCommentEntity adminCommentEntity) throws TspException {
+    public AdminCommentDTO updateAdminComment(AdminCommentEntity adminCommentEntity) {
         try {
             return adminCommentJpaRepository.updateAdminComment(adminCommentEntity);
         } catch (Exception e) {
@@ -135,7 +135,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     @CacheEvict("comment")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteAdminComment(Long idx) throws TspException {
+    public Long deleteAdminComment(Long idx) {
         try {
             return adminCommentJpaRepository.deleteAdminComment(idx);
         } catch (Exception e) {

@@ -53,7 +53,7 @@ public class AdminScheduleJpaController {
     public Map<String, Object> findScheduleList(@RequestParam(required = false) Map<String, Object> paramMap,
                                                 @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
                                                 @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
-                                                Page page) throws Exception {
+                                                Page page) {
         // 페이징 및 검색
         Map<String, Object> scheduleMap = searchCommon.searchCommon(page, paramMap);
 
@@ -99,7 +99,7 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminScheduleDTO findOneSchedule(@PathVariable Long idx) throws Exception {
+    public AdminScheduleDTO findOneSchedule(@PathVariable Long idx) {
         return this.adminScheduleJpaService.findOneSchedule(idx);
     }
 
@@ -121,7 +121,7 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminScheduleDTO findPrevOneSchedule(@PathVariable Long idx) throws Exception {
+    public AdminScheduleDTO findPrevOneSchedule(@PathVariable Long idx) {
         return this.adminScheduleJpaService.findPrevOneSchedule(idx);
     }
 
@@ -143,7 +143,7 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminScheduleDTO findNextOneSchedule(@PathVariable Long idx) throws Exception {
+    public AdminScheduleDTO findNextOneSchedule(@PathVariable Long idx) {
         return this.adminScheduleJpaService.findNextOneSchedule(idx);
     }
 
@@ -165,7 +165,7 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminScheduleDTO insertSchedule(@Valid @RequestBody AdminScheduleEntity adminScheduleEntity) throws Exception {
+    public AdminScheduleDTO insertSchedule(@Valid @RequestBody AdminScheduleEntity adminScheduleEntity) {
         return this.adminScheduleJpaService.insertSchedule(adminScheduleEntity);
     }
 
@@ -187,7 +187,7 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminScheduleDTO updateSchedule(@Valid @RequestBody AdminScheduleEntity adminScheduleEntity) throws Exception {
+    public AdminScheduleDTO updateSchedule(@Valid @RequestBody AdminScheduleEntity adminScheduleEntity) {
         return adminScheduleJpaService.updateSchedule(adminScheduleEntity);
     }
 
@@ -209,7 +209,7 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteSchedule(@PathVariable Long idx) throws Exception {
+    public Long deleteSchedule(@PathVariable Long idx) {
         return adminScheduleJpaService.deleteSchedule(idx);
     }
 }

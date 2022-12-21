@@ -69,7 +69,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 리스트 조회 테스트")
-    void 프로덕션리스트조회테스트() throws Exception {
+    void 프로덕션리스트조회테스트() {
         // given
         Map<String, Object> productionMap = new HashMap<>();
         productionMap.put("jpaStartPage", 1);
@@ -81,7 +81,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 리스트 조회 Mockito 테스트")
-    void 프로덕션리스트조회Mockito테스트() throws Exception {
+    void 프로덕션리스트조회Mockito테스트() {
         // given
         Map<String, Object> productionMap = new HashMap<>();
         productionMap.put("jpaStartPage", 1);
@@ -118,7 +118,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 리스트 조회 BDD 테스트")
-    void 프로덕션리스트조회BDD테스트() throws Exception {
+    void 프로덕션리스트조회BDD테스트() {
         // given
         Map<String, Object> productionMap = new HashMap<>();
         productionMap.put("jpaStartPage", 1);
@@ -152,7 +152,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 상세 조회 테스트")
-    void 프로덕션상세조회테스트() throws Exception {
+    void 프로덕션상세조회테스트() {
         // given
         adminProductionEntity = AdminProductionEntity.builder().idx(119L).build();
 
@@ -162,7 +162,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션상세조회Mockito테스트")
-    void 프로덕션상세조회Mockito테스트() throws Exception {
+    void 프로덕션상세조회Mockito테스트() {
         // when
         when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
@@ -184,7 +184,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션상세조회BDD테스트")
-    void 프로덕션상세조회BDD테스트() throws Exception {
+    void 프로덕션상세조회BDD테스트() {
         // when
         given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).willReturn(adminProductionDTO);
         AdminProductionDTO productionInfo = mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx());
@@ -203,7 +203,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("이전 프로덕션 상세 조회 Mockito 테스트")
-    void 이전프로덕션상세조회Mockito테스트() throws Exception {
+    void 이전프로덕션상세조회Mockito테스트() {
         // given
         adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
@@ -227,7 +227,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("이전 프로덕션 상세 조회 BDD 테스트")
-    void 이전프로덕션상세조회BDD테스트() throws Exception {
+    void 이전프로덕션상세조회BDD테스트() {
         // given
         adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
@@ -248,7 +248,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("다음 프로덕션 상세 조회 Mockito 테스트")
-    void 다음프로덕션상세조회Mockito테스트() throws Exception {
+    void 다음프로덕션상세조회Mockito테스트() {
         // given
         adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
@@ -272,7 +272,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("다음 프로덕션 상세 조회 BDD 테스트")
-    void 다음프로덕션상세조회BDD테스트() throws Exception {
+    void 다음프로덕션상세조회BDD테스트() {
         // given
         adminProductionEntity = AdminProductionEntity.builder().idx(118L).build();
 
@@ -293,7 +293,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 등록 Mockito 테스트")
-    void 프로덕션등록Mockito테스트() throws Exception {
+    void 프로덕션등록Mockito테스트() {
         // given
         adminProductionJpaService.insertProduction(adminProductionEntity);
 
@@ -316,7 +316,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 등록 BDD 테스트")
-    void 프로덕션등록BDD테스트() throws Exception {
+    void 프로덕션등록BDD테스트() {
         // given
         adminProductionJpaService.insertProduction(adminProductionEntity);
 
@@ -336,7 +336,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 수정 Mockito 테스트")
-    void 프로덕션수정Mockito테스트() throws Exception {
+    void 프로덕션수정Mockito테스트() {
         // given
         Long idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
@@ -370,7 +370,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 수정 BDD 테스트")
-    void 프로덕션수정BDD테스트() throws Exception {
+    void 프로덕션수정BDD테스트() {
         // given
         Long idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
@@ -401,7 +401,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 삭제 테스트")
-    void 프로덕션삭제테스트() throws Exception {
+    void 프로덕션삭제테스트() {
         // given
         Long idx = adminProductionJpaService.insertProduction(adminProductionEntity).getIdx();
 
@@ -411,7 +411,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 어드민 코멘트 조회 Mockito 테스트")
-    void 프로덕션어드민코멘트조회Mockito테스트() throws Exception {
+    void 프로덕션어드민코멘트조회Mockito테스트() {
         adminProductionEntity = AdminProductionEntity.builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")
@@ -452,7 +452,7 @@ class AdminProductionJpaServiceTest {
 
     @Test
     @DisplayName("프로덕션 어드민 코멘트 조회 BDD 테스트")
-    void 프로덕션어드민코멘트조회BDD테스트() throws Exception {
+    void 프로덕션어드민코멘트조회BDD테스트() {
         adminProductionEntity = AdminProductionEntity.builder()
                 .title("프로덕션 테스트")
                 .description("프로덕션 테스트")

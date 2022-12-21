@@ -54,7 +54,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findAgencyList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findAgencyList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         // 페이징 및 검색
         Map<String, Object> agencyMap = searchCommon.searchCommon(page, paramMap);
 
@@ -95,7 +95,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminAgencyDTO findOneAgency(@PathVariable Long idx) throws Exception {
+    public AdminAgencyDTO findOneAgency(@PathVariable Long idx) {
         return this.adminAgencyJpaService.findOneAgency(idx);
     }
 
@@ -117,7 +117,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminAgencyDTO insertAgency(@Valid @RequestBody AdminAgencyEntity adminAgencyEntity) throws Exception {
+    public AdminAgencyDTO insertAgency(@Valid @RequestBody AdminAgencyEntity adminAgencyEntity) {
         return this.adminAgencyJpaService.insertAgency(adminAgencyEntity);
     }
 
@@ -139,7 +139,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminAgencyDTO updateAgency(@Valid @RequestBody AdminAgencyEntity adminAgencyEntity) throws Exception {
+    public AdminAgencyDTO updateAgency(@Valid @RequestBody AdminAgencyEntity adminAgencyEntity) {
         return adminAgencyJpaService.updateAgency(adminAgencyEntity);
     }
 
@@ -161,7 +161,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteAgency(@PathVariable Long idx) throws Exception {
+    public Long deleteAgency(@PathVariable Long idx) {
         return adminAgencyJpaService.deleteAgency(idx);
     }
 
@@ -183,7 +183,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
-    public List<CommonImageDTO> insertAgencyImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) throws Exception {
+    public List<CommonImageDTO> insertAgencyImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) {
         return this.adminAgencyJpaService.insertAgencyImage(CommonImageEntity.builder().typeName(EntityType.AGENCY).typeIdx(idx).build(), fileName);
     }
 
@@ -205,7 +205,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}/images")
-    public Long deleteAgencyImage(@PathVariable Long idx) throws Exception {
+    public Long deleteAgencyImage(@PathVariable Long idx) {
         return this.adminAgencyJpaService.deleteAgencyImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.AGENCY).build());
     }
 }

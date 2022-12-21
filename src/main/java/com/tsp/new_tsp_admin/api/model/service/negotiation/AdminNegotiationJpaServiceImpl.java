@@ -34,7 +34,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findNegotiationCount(Map<String, Object> negotiationMap) throws TspException {
+    public Integer findNegotiationCount(Map<String, Object> negotiationMap) {
         try {
             return adminNegotiationJpaRepository.findNegotiationCount(negotiationMap);
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Cacheable("model")
     @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap) throws TspException {
+    public List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap) {
         try {
             return adminNegotiationJpaRepository.findModelNegotiationList(negotiationMap);
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Cacheable("negotiation")
     @Transactional(readOnly = true)
-    public AdminNegotiationDTO findOneNegotiation(Long idx) throws TspException {
+    public AdminNegotiationDTO findOneNegotiation(Long idx) {
         try {
             return adminNegotiationJpaRepository.findOneNegotiation(idx);
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Cacheable("negotiation")
     @Transactional(readOnly = true)
-    public AdminNegotiationDTO findPrevOneNegotiation(Long idx) throws TspException {
+    public AdminNegotiationDTO findPrevOneNegotiation(Long idx) {
         try {
             return adminNegotiationJpaRepository.findPrevOneNegotiation(idx);
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Cacheable("negotiation")
     @Transactional(readOnly = true)
-    public AdminNegotiationDTO findNextOneNegotiation(Long idx) throws TspException {
+    public AdminNegotiationDTO findNextOneNegotiation(Long idx) {
         try {
             return adminNegotiationJpaRepository.findNextOneNegotiation(idx);
         } catch (Exception e) {
@@ -135,7 +135,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @CachePut("negotiation")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNegotiationDTO insertModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws TspException {
+    public AdminNegotiationDTO insertModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
         try {
             return adminNegotiationJpaRepository.insertModelNegotiation(adminNegotiationEntity);
         } catch (Exception e) {
@@ -156,7 +156,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @CachePut("negotiation")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) throws TspException {
+    public AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
         try {
             return adminNegotiationJpaRepository.updateModelNegotiation(adminNegotiationEntity);
         } catch (Exception e) {
@@ -177,7 +177,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @CacheEvict("negotiation")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteModelNegotiation(Long idx) throws TspException {
+    public Long deleteModelNegotiation(Long idx) {
         try {
             return adminNegotiationJpaRepository.deleteModelNegotiation(idx);
         } catch (Exception e) {

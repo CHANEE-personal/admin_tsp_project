@@ -22,7 +22,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findModelCount(Map<String, Object> modelMap) throws Exception;
+    Integer findModelCount(Map<String, Object> modelMap);
 
     /**
      * <pre>
@@ -33,7 +33,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminModelDTO> findModelList(Map<String, Object> modelMap) throws Exception;
+    List<AdminModelDTO> findModelList(Map<String, Object> modelMap);
 
     /**
      * <pre>
@@ -44,7 +44,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminModelDTO findOneModel(Long idx) throws Exception;
+    AdminModelDTO findOneModel(Long idx);
 
     /**
      * <pre>
@@ -55,7 +55,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 09. 12.
      * </pre>
      */
-    AdminModelDTO findPrevOneModel(AdminModelEntity adminModelEntity) throws Exception;
+    AdminModelDTO findPrevOneModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>
@@ -66,7 +66,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 09. 12.
      * </pre>
      */
-    AdminModelDTO findNextOneModel(AdminModelEntity adminModelEntity) throws Exception;
+    AdminModelDTO findNextOneModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>
@@ -77,7 +77,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    AdminModelDTO insertModel(AdminModelEntity adminModelEntity) throws Exception;
+    AdminModelDTO insertModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>
@@ -88,7 +88,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    AdminModelDTO updateModel(AdminModelEntity adminModelEntity) throws Exception;
+    AdminModelDTO updateModel(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>
@@ -99,7 +99,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    Long deleteModel(Long idx) throws Exception;
+    Long deleteModel(Long idx);
 
     /**
      * <pre>
@@ -110,7 +110,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    List<CommonImageDTO> insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception;
+    List<CommonImageDTO> insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName);
 
     /**
      * <pre>
@@ -121,7 +121,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 07.
      * </pre>
      */
-    Long deleteImage(CommonImageEntity commonImageEntity) throws Exception;
+    Long deleteImage(CommonImageEntity commonImageEntity);
 
     /**
      * <pre>
@@ -132,7 +132,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity) throws Exception;
+    AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity);
 
     /**
      * <pre>
@@ -143,7 +143,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    List<AdminCommentDTO> findModelAdminComment(Long idx) throws Exception;
+    List<AdminCommentDTO> findModelAdminComment(Long idx);
 
     /**
      * <pre>
@@ -154,7 +154,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 08. 29.
      * </pre>
      */
-    AdminModelDTO toggleModelNewYn(Long idx) throws Exception;
+    AdminModelDTO toggleModelNewYn(Long idx);
 
     /**
      * <pre>
@@ -165,5 +165,5 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 09. 03.
      * </pre>
      */
-    List<AdminScheduleDTO> findOneModelSchedule(Long idx) throws Exception;
+    List<AdminScheduleDTO> findOneModelSchedule(Long idx);
 }

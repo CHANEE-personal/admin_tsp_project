@@ -61,7 +61,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping
-    public List<AdminUserDTO> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public List<AdminUserDTO> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         return adminUserJpaService.findUserList(searchCommon.searchCommon(page, paramMap));
     }
 
@@ -187,7 +187,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminUserDTO insertAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) throws Exception {
+    public AdminUserDTO insertAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) {
         return adminUserJpaService.insertAdminUser(adminUserEntity);
     }
 
@@ -209,7 +209,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminUserDTO updateAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) throws Exception {
+    public AdminUserDTO updateAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) {
         return adminUserJpaService.updateAdminUser(adminUserEntity);
     }
 
@@ -231,7 +231,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteAdminUser(@PathVariable Long idx) throws Exception {
+    public Long deleteAdminUser(@PathVariable Long idx) {
         return adminUserJpaService.deleteAdminUser(idx);
     }
 }

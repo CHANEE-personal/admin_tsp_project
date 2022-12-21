@@ -49,7 +49,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findFaqsList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findFaqsList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> faqMap = new HashMap<>();
 
         Integer faqCount = this.adminFaqJpaService.findFaqCount(searchCommon.searchCommon(page, paramMap));
@@ -89,7 +89,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminFaqDTO findOneFaq(@PathVariable Long idx) throws Exception {
+    public AdminFaqDTO findOneFaq(@PathVariable Long idx) {
         return adminFaqJpaService.findOneFaq(AdminFaqEntity.builder().idx(idx).build());
     }
 
@@ -111,7 +111,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminFaqDTO findPrevOneFaq(@PathVariable Long idx) throws Exception {
+    public AdminFaqDTO findPrevOneFaq(@PathVariable Long idx) {
         return adminFaqJpaService.findPrevOneFaq(AdminFaqEntity.builder().idx(idx).build());
     }
 
@@ -133,7 +133,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminFaqDTO findNextOneFaq(@PathVariable Long idx) throws Exception {
+    public AdminFaqDTO findNextOneFaq(@PathVariable Long idx) {
         return adminFaqJpaService.findNextOneFaq(AdminFaqEntity.builder().idx(idx).build());
     }
 
@@ -155,7 +155,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public AdminFaqDTO insertFaq(@Valid @RequestBody AdminFaqEntity adminFaqEntity) throws Exception {
+    public AdminFaqDTO insertFaq(@Valid @RequestBody AdminFaqEntity adminFaqEntity) {
         return this.adminFaqJpaService.insertFaq(adminFaqEntity);
     }
 
@@ -177,7 +177,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
-    public AdminFaqDTO updateFaq(@Valid @RequestBody AdminFaqEntity adminFaqEntity) throws Exception {
+    public AdminFaqDTO updateFaq(@Valid @RequestBody AdminFaqEntity adminFaqEntity) {
         return adminFaqJpaService.updateFaq(adminFaqEntity);
     }
 
@@ -199,7 +199,7 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Long deleteFaq(@PathVariable Long idx) throws Exception {
+    public Long deleteFaq(@PathVariable Long idx) {
         return adminFaqJpaService.deleteFaq(idx);
     }
 }
