@@ -195,7 +195,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) throws TspException{
+    public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) {
         try {
             return adminPortfolioJpaRepository.findPortfolioAdminComment(idx);
         } catch (Exception e) {

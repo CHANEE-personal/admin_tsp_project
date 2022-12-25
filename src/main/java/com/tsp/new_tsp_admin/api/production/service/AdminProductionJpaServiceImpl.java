@@ -195,7 +195,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findProductionAdminComment(Long idx) throws TspException{
+    public List<AdminCommentDTO> findProductionAdminComment(Long idx) {
         try {
             return adminProductionJpaRepository.findProductionAdminComment(idx);
         } catch (Exception e) {
