@@ -64,7 +64,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사 리스트 조회 테스트")
-    void 소속사리스트조회테스트() throws Exception {
+    void 소속사리스트조회테스트() {
         // given
         Map<String, Object> agencyMap = new HashMap<>();
         agencyMap.put("jpaStartPage", 1);
@@ -76,7 +76,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사 리스트 조회 Mockito 테스트")
-    void 소속사리스트조회Mockito테스트() throws Exception {
+    void 소속사리스트조회Mockito테스트() {
         // given
         Map<String, Object> agencyMap = new HashMap<>();
         agencyMap.put("jpaStartPage", 1);
@@ -118,7 +118,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사 리스트 조회 BDD 테스트")
-    void 소속사리스트조회BDD테스트() throws Exception {
+    void 소속사리스트조회BDD테스트() {
         // given
         Map<String, Object> agencyMap = new HashMap<>();
         agencyMap.put("jpaStartPage", 1);
@@ -157,7 +157,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사 상세 조회 테스트")
-    void 소속사상세조회테스트() throws Exception {
+    void 소속사상세조회테스트() {
         // given
         adminAgencyEntity = AdminAgencyEntity.builder().idx(1L).build();
 
@@ -167,7 +167,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사상세조회Mockito테스트")
-    void 소속사상세조회Mockito테스트() throws Exception {
+    void 소속사상세조회Mockito테스트() {
         // when
         when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).thenReturn(adminAgencyDTO);
         AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx());
@@ -189,7 +189,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사상세조회BDD테스트")
-    void 소속사상세조회BDD테스트() throws Exception {
+    void 소속사상세조회BDD테스트() {
         // when
         given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).willReturn(adminAgencyDTO);
         AdminAgencyDTO agencyInfo = mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx());
@@ -208,7 +208,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사 수정 Mockito 테스트")
-    void 소속사수정Mockito테스트() throws Exception {
+    void 소속사수정Mockito테스트() {
         // given
         Long idx = adminAgencyJpaService.insertAgency(adminAgencyEntity).getIdx();
 
@@ -242,7 +242,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사 수정 BDD 테스트")
-    void 소속사수정BDD테스트() throws Exception {
+    void 소속사수정BDD테스트() {
         // given
         Long idx = adminAgencyJpaService.insertAgency(adminAgencyEntity).getIdx();
 
@@ -273,7 +273,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사 삭제 Mockito 테스트")
-    void 소속사삭제Mockito테스트() throws Exception {
+    void 소속사삭제Mockito테스트() {
         // given
         adminAgencyJpaService.insertAgency(adminAgencyEntity);
         adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
@@ -296,7 +296,7 @@ class AdminAgencyJpaServiceTest {
 
     @Test
     @DisplayName("소속사 삭제 BDD 테스트")
-    void 소속사삭제BDD테스트() throws Exception {
+    void 소속사삭제BDD테스트() {
         // given
         adminAgencyJpaService.insertAgency(adminAgencyEntity);
         adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);

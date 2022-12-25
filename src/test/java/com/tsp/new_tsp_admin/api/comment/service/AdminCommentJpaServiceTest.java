@@ -90,7 +90,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민 코멘트 리스트 조회 테스트")
-    void 어드민코멘트리스트조회테스트() throws Exception {
+    void 어드민코멘트리스트조회테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
         commentMap.put("jpaStartPage", 1);
@@ -102,7 +102,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민 코멘트 리스트 조회 Mockito 테스트")
-    void 어드민코멘트리스트조회Mockito테스트() throws Exception {
+    void 어드민코멘트리스트조회Mockito테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
         commentMap.put("jpaStartPage", 1);
@@ -139,7 +139,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민 코멘트 리스트 조회 BDD 테스트")
-    void 어드민코멘트리스트조회BDD테스트() throws Exception {
+    void 어드민코멘트리스트조회BDD테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
         commentMap.put("jpaStartPage", 1);
@@ -173,7 +173,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민코멘트상세Mockito조회테스트")
-    void 어드민코멘트상세Mockito조회테스트() throws Exception {
+    void 어드민코멘트상세Mockito조회테스트() {
         // given
         AdminCommentEntity adminCommentEntity = AdminCommentEntity.builder()
                 .idx(1L)
@@ -206,7 +206,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("FAQ상세BDD조회테스트")
-    void FAQ상세BDD조회테스트() throws Exception {
+    void FAQ상세BDD조회테스트() {
         // given
         AdminCommentEntity adminCommentEntity = AdminCommentEntity.builder()
                 .idx(1L)
@@ -236,7 +236,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민코멘트등록Mockito테스트")
-    void 어드민코멘트등록Mockito테스트() throws Exception {
+    void 어드민코멘트등록Mockito테스트() {
         // given
         adminCommentJpaService.insertAdminComment(adminCommentEntity);
 
@@ -260,7 +260,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("FAQ등록BDD테스트")
-    void FAQ등록BDD테스트() throws Exception {
+    void FAQ등록BDD테스트() {
         // given
         adminCommentJpaService.insertAdminComment(adminCommentEntity);
 
@@ -281,7 +281,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민코멘트수정Mockito테스트")
-    void 어드민코멘트수정Mockito테스트() throws Exception {
+    void 어드민코멘트수정Mockito테스트() {
         // given
         Long idx = adminCommentJpaService.insertAdminComment(adminCommentEntity).getIdx();
 
@@ -317,7 +317,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("FAQ수정BDD테스트")
-    void FAQ수정BDD테스트() throws Exception {
+    void FAQ수정BDD테스트() {
         // given
         Long idx = adminCommentJpaService.insertAdminComment(adminCommentEntity).getIdx();
 
@@ -350,7 +350,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민코멘트삭제테스트")
-    void 어드민코멘트삭제테스트() throws Exception {
+    void 어드민코멘트삭제테스트() {
         // given
         adminCommentJpaService.insertAdminComment(adminCommentEntity);
 
@@ -363,7 +363,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민코멘트삭제Mockito테스트")
-    void 어드민코멘트삭제Mockito테스트() throws Exception {
+    void 어드민코멘트삭제Mockito테스트() {
         // given
         adminCommentJpaService.insertAdminComment(adminCommentEntity);
         adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
@@ -386,7 +386,7 @@ class AdminCommentJpaServiceTest {
 
     @Test
     @DisplayName("어드민코멘트삭제BDD테스트")
-    void 어드민코멘트삭제BDD테스트() throws Exception {
+    void 어드민코멘트삭제BDD테스트() {
         // given
         adminCommentJpaService.insertAdminComment(adminCommentEntity);
         adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);

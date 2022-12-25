@@ -20,7 +20,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findSupportCount(Map<String, Object> supportMap) throws Exception;
+    Integer findSupportCount(Map<String, Object> supportMap);
 
     /**
      * <pre>
@@ -31,7 +31,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) throws Exception;
+    List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap);
 
     /**
      * <pre>
@@ -42,7 +42,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO findOneSupportModel(Long idx) throws Exception;
+    AdminSupportDTO findOneSupportModel(Long idx);
 
     /**
      * <pre>
@@ -53,7 +53,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
+    AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity);
 
     /**
      * <pre>
@@ -64,7 +64,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) throws Exception;
+    AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity);
 
     /**
      * <pre>
@@ -75,7 +75,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Long deleteSupportModel(Long idx) throws Exception;
+    Long deleteSupportModel(Long idx);
 
     /**
      * <pre>
@@ -86,7 +86,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findEvaluationsCount(Map<String, Object> evaluationMap) throws Exception;
+    Integer findEvaluationsCount(Map<String, Object> evaluationMap);
 
     /**
      * <pre>
@@ -97,7 +97,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap) throws Exception;
+    List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap);
 
     /**
      * <pre>
@@ -108,7 +108,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    EvaluationDTO findOneEvaluation(EvaluationEntity evaluationEntity) throws Exception;
+    EvaluationDTO findOneEvaluation(EvaluationEntity evaluationEntity);
 
     /**
      * <pre>
@@ -119,7 +119,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) throws Exception;
+    EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity);
 
     /**
      * <pre>
@@ -130,7 +130,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity) throws Exception;
+    EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity);
 
     /**
      * <pre>
@@ -141,7 +141,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Long deleteEvaluation(Long idx) throws Exception;
+    Long deleteEvaluation(Long idx);
 
     /**
      * <pre>
@@ -152,7 +152,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO updatePass(Long idx) throws Exception;
+    AdminSupportDTO updatePass(Long idx);
 
     /**
      * <pre>
@@ -163,5 +163,5 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    List<AdminCommentDTO> findSupportAdminComment(Long idx) throws Exception;
+    List<AdminCommentDTO> findSupportAdminComment(Long idx);
 }

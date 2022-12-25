@@ -73,7 +73,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 리스트 조회 테스트")
-    void 포트폴리오리스트조회테스트() throws Exception {
+    void 포트폴리오리스트조회테스트() {
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
         portfolioMap.put("jpaStartPage", 1);
@@ -85,7 +85,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 리스트 조회 Mockito 테스트")
-    void 포트폴리오리스트조회Mockito테스트() throws Exception {
+    void 포트폴리오리스트조회Mockito테스트() {
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
         portfolioMap.put("jpaStartPage", 1);
@@ -123,7 +123,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 리스트 조회 BDD 테스트")
-    void 포트폴리오리스트조회BDD테스트() throws Exception {
+    void 포트폴리오리스트조회BDD테스트() {
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
         portfolioMap.put("jpaStartPage", 1);
@@ -159,7 +159,7 @@ class AdminPortfolioJpaServiceTest {
     @Test
     @Disabled
     @DisplayName("포트폴리오 상세 조회 테스트")
-    void 포트폴리오상세조회테스트() throws Exception {
+    void 포트폴리오상세조회테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1L).build();
 
@@ -169,7 +169,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 상세 조회 Mockito 테스트")
-    void 포트폴리오상세조회Mockito테스트() throws Exception {
+    void 포트폴리오상세조회Mockito테스트() {
         // when
         when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
         AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
@@ -193,7 +193,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 상세 조회 BDD 테스트")
-    void 포트폴리오상세조회BDD테스트() throws Exception {
+    void 포트폴리오상세조회BDD테스트() {
         // when
         given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
         AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
@@ -214,7 +214,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("이전 포트폴리오 상세 조회 Mockito 테스트")
-    void 이전포트폴리오상세조회Mockito테스트() throws Exception {
+    void 이전포트폴리오상세조회Mockito테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(2L)
@@ -246,7 +246,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("이전 포트폴리오 상세 조회 BDD 테스트")
-    void 이전포트폴리오상세조회BDD테스트() throws Exception {
+    void 이전포트폴리오상세조회BDD테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(2L)
@@ -275,7 +275,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("다음 포트폴리오 상세 조회 Mockito 테스트")
-    void 다음포트폴리오상세조회Mockito테스트() throws Exception {
+    void 다음포트폴리오상세조회Mockito테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(2L)
@@ -307,7 +307,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("다음 포트폴리오 상세 조회 BDD 테스트")
-    void 다음포트폴리오상세조회BDD테스트() throws Exception {
+    void 다음포트폴리오상세조회BDD테스트() {
         // given
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .idx(2L)
@@ -336,7 +336,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 등록 Mockito 테스트")
-    void 포트폴리오등록Mockito테스트() throws Exception {
+    void 포트폴리오등록Mockito테스트() {
         // given
         adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
 
@@ -361,7 +361,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 등록 BDD 테스트")
-    void 포트폴리오등록BDD테스트() throws Exception {
+    void 포트폴리오등록BDD테스트() {
         // given
         adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
 
@@ -383,7 +383,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 수정 Mockito 테스트")
-    void 포트폴리오수정Mockito테스트() throws Exception {
+    void 포트폴리오수정Mockito테스트() {
         // given
         Long idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
@@ -419,7 +419,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 수정 BDD 테스트")
-    void 포트폴리오수정BDD테스트() throws Exception {
+    void 포트폴리오수정BDD테스트() {
         // given
         Long idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
@@ -452,7 +452,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 삭제 테스트")
-    void 포트폴리오삭제테스트() throws Exception {
+    void 포트폴리오삭제테스트() {
         // given
         Long idx = adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity).getIdx();
 
@@ -462,7 +462,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 어드민 코멘트 조회 Mockito 테스트")
-    void 포트폴리오어드민코멘트조회Mockito테스트() throws Exception {
+    void 포트폴리오어드민코멘트조회Mockito테스트() {
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
@@ -505,7 +505,7 @@ class AdminPortfolioJpaServiceTest {
 
     @Test
     @DisplayName("포트폴리오 어드민 코멘트 조회 BDD 테스트")
-    void 포트폴리오어드민코멘트조회BDD테스트() throws Exception {
+    void 포트폴리오어드민코멘트조회BDD테스트() {
         adminPortFolioEntity = AdminPortFolioEntity.builder()
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")

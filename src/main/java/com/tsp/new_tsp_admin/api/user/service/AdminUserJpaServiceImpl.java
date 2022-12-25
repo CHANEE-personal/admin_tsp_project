@@ -34,7 +34,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @Override
     @Cacheable("user")
     @Transactional(readOnly = true)
-    public List<AdminUserDTO> findUserList(Map<String, Object> userMap) throws TspException {
+    public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
         try {
             return adminUserJpaRepository.findUserList(userMap);
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @Override
     @Cacheable("user")
     @Transactional(readOnly = true)
-    public AdminUserEntity findOneUser(String id) throws TspException {
+    public AdminUserEntity findOneUser(String id) {
         try {
             return adminUserJpaRepository.findOneUser(id);
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public String findOneUserByToken(String token) throws TspException {
+    public String findOneUserByToken(String token) {
         try {
             return adminUserJpaRepository.findOneUserByToken(token);
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public String adminLogin(AdminUserEntity adminUserEntity) throws TspException {
+    public String adminLogin(AdminUserEntity adminUserEntity) {
         try {
             return adminUserJpaRepository.adminLogin(adminUserEntity);
         } catch (Exception e) {
@@ -113,7 +113,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @CachePut("user")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public void insertToken(AdminUserEntity paramUserEntity) throws TspException {
+    public void insertToken(AdminUserEntity paramUserEntity) {
         try {
             AdminUserEntity adminUserEntity = adminUserJpaRepository.findOneUser(paramUserEntity.getUserId());
             adminUserJpaRepository.insertUserTokenByEm(adminUserEntity);
@@ -135,7 +135,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @CachePut("user")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) throws TspException {
+    public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
         try {
             return adminUserJpaRepository.insertAdminUser(adminUserEntity);
         } catch (Exception e) {
@@ -156,7 +156,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @CachePut("user")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) throws TspException {
+    public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
         try {
             return adminUserJpaRepository.updateAdminUser(adminUserEntity);
         } catch (Exception e) {
@@ -177,7 +177,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     @CacheEvict("user")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteAdminUser(Long idx) throws TspException {
+    public Long deleteAdminUser(Long idx) {
         try {
             return adminUserJpaRepository.deleteAdminUser(idx);
         } catch (Exception e) {

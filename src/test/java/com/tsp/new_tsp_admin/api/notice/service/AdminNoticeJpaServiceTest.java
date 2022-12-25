@@ -65,7 +65,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항 리스트 조회 테스트")
-    void 공지사항리스트조회테스트() throws Exception {
+    void 공지사항리스트조회테스트() {
         // given
         Map<String, Object> noticeMap = new HashMap<>();
         noticeMap.put("jpaStartPage", 1);
@@ -77,7 +77,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항 리스트 조회 Mockito 테스트")
-    void 공지사항리스트조회Mockito테스트() throws Exception {
+    void 공지사항리스트조회Mockito테스트() {
         // given
         Map<String, Object> noticeMap = new HashMap<>();
         noticeMap.put("jpaStartPage", 1);
@@ -114,7 +114,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항 리스트 조회 BDD 테스트")
-    void 공지사항리스트조회BDD테스트() throws Exception {
+    void 공지사항리스트조회BDD테스트() {
         // given
         Map<String, Object> noticeMap = new HashMap<>();
         noticeMap.put("jpaStartPage", 1);
@@ -148,7 +148,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항상세Mockito조회테스트")
-    void 공지사항상세Mockito조회테스트() throws Exception {
+    void 공지사항상세Mockito조회테스트() {
         // given
         AdminNoticeEntity adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(1L)
@@ -180,7 +180,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항상세BDD조회테스트")
-    void 공지사항상세BDD조회테스트() throws Exception {
+    void 공지사항상세BDD조회테스트() {
         // given
         AdminNoticeEntity adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(1L)
@@ -209,7 +209,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("이전 or 다음 공지사항 상세 조회 테스트")
-    void 이전or다음공지사항상세조회테스트() throws Exception {
+    void 이전or다음공지사항상세조회테스트() {
         // given
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
@@ -224,7 +224,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("이전 공지사항 상세 조회 Mockito 테스트")
-    void 이전공지사항상세조회Mockito테스트() throws Exception {
+    void 이전공지사항상세조회Mockito테스트() {
         // given
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
@@ -248,7 +248,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("이전 공지사항 상세 조회 BDD 테스트")
-    void 이전공지사항상세조회BDD테스트() throws Exception {
+    void 이전공지사항상세조회BDD테스트() {
         // given
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
@@ -269,7 +269,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("다음 공지사항 상세 조회 Mockito 테스트")
-    void 다음공지사항상세조회Mockito테스트() throws Exception {
+    void 다음공지사항상세조회Mockito테스트() {
         // given
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
@@ -293,7 +293,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("다음 공지사항 상세 조회 BDD 테스트")
-    void 다음공지사항상세조회BDD테스트() throws Exception {
+    void 다음공지사항상세조회BDD테스트() {
         // given
         adminNoticeEntity = AdminNoticeEntity.builder().idx(2L).build();
 
@@ -314,7 +314,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항등록Mockito테스트")
-    void 공지사항등록Mockito테스트() throws Exception {
+    void 공지사항등록Mockito테스트() {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
 
@@ -338,7 +338,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항등록BDD테스트")
-    void 공지사항등록BDD테스트() throws Exception {
+    void 공지사항등록BDD테스트() {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
 
@@ -359,7 +359,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항수정Mockito테스트")
-    void 공지사항수정Mockito테스트() throws Exception {
+    void 공지사항수정Mockito테스트() {
         // given
         Long idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
 
@@ -393,7 +393,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항수정BDD테스트")
-    void 공지사항수정BDD테스트() throws Exception {
+    void 공지사항수정BDD테스트() {
         // given
         Long idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
 
@@ -424,7 +424,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항상단고정Mockito테스트")
-    void 공지사항상단고정Mockito테스트() throws Exception {
+    void 공지사항상단고정Mockito테스트() {
         // given
         Long idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
 
@@ -458,7 +458,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항상단고정BDD테스트")
-    void 공지사항상단고정BDD테스트() throws Exception {
+    void 공지사항상단고정BDD테스트() {
         // given
         Long idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
 
@@ -489,7 +489,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항삭제테스트")
-    void 공지사항삭제테스트() throws Exception {
+    void 공지사항삭제테스트() {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
 
@@ -502,7 +502,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항삭제Mockito테스트")
-    void 공지사항삭제Mockito테스트() throws Exception {
+    void 공지사항삭제Mockito테스트() {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
         adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
@@ -525,7 +525,7 @@ class AdminNoticeJpaServiceTest {
 
     @Test
     @DisplayName("공지사항삭제BDD테스트")
-    void 공지사항삭제BDD테스트() throws Exception {
+    void 공지사항삭제BDD테스트() {
         // given
         adminNoticeJpaService.insertNotice(adminNoticeEntity);
         adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);

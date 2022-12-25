@@ -64,7 +64,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ 리스트 조회 테스트")
-    void FAQ리스트조회테스트() throws Exception {
+    void FAQ리스트조회테스트() {
         // given
         Map<String, Object> faqMap = new HashMap<>();
         faqMap.put("jpaStartPage", 1);
@@ -76,7 +76,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ 리스트 조회 Mockito 테스트")
-    void FAQ리스트조회Mockito테스트() throws Exception {
+    void FAQ리스트조회Mockito테스트() {
         // given
         Map<String, Object> faqMap = new HashMap<>();
         faqMap.put("jpaStartPage", 1);
@@ -113,7 +113,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ 리스트 조회 BDD 테스트")
-    void FAQ리스트조회BDD테스트() throws Exception {
+    void FAQ리스트조회BDD테스트() {
         // given
         Map<String, Object> faqMap = new HashMap<>();
         faqMap.put("jpaStartPage", 1);
@@ -147,7 +147,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ상세Mockito조회테스트")
-    void FAQ상세Mockito조회테스트() throws Exception {
+    void FAQ상세Mockito조회테스트() {
         // given
         AdminFaqEntity adminFaqEntity = AdminFaqEntity.builder()
                 .idx(1L)
@@ -179,7 +179,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ상세BDD조회테스트")
-    void FAQ상세BDD조회테스트() throws Exception {
+    void FAQ상세BDD조회테스트() {
         // given
         AdminFaqEntity adminFaqEntity = AdminFaqEntity.builder()
                 .idx(1L)
@@ -208,7 +208,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("이전 or 다음 FAQ 상세 조회 테스트")
-    void 이전or다음FAQ상세조회테스트() throws Exception {
+    void 이전or다음FAQ상세조회테스트() {
         // given
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
@@ -223,7 +223,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("이전 FAQ 상세 조회 Mockito 테스트")
-    void 이전FAQ상세조회Mockito테스트() throws Exception {
+    void 이전FAQ상세조회Mockito테스트() {
         // given
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
@@ -247,7 +247,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("이전 FAQ 상세 조회 BDD 테스트")
-    void 이전FAQ상세조회BDD테스트() throws Exception {
+    void 이전FAQ상세조회BDD테스트() {
         // given
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
@@ -268,7 +268,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("다음 FAQ 상세 조회 Mockito 테스트")
-    void 다음FAQ상세조회Mockito테스트() throws Exception {
+    void 다음FAQ상세조회Mockito테스트() {
         // given
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
@@ -292,7 +292,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("다음 FAQ 상세 조회 BDD 테스트")
-    void 다음FAQ상세조회BDD테스트() throws Exception {
+    void 다음FAQ상세조회BDD테스트() {
         // given
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
@@ -313,7 +313,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ등록Mockito테스트")
-    void FAQ등록Mockito테스트() throws Exception {
+    void FAQ등록Mockito테스트() {
         // given
         adminFaqJpaService.insertFaq(adminFaqEntity);
 
@@ -337,7 +337,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ등록BDD테스트")
-    void FAQ등록BDD테스트() throws Exception {
+    void FAQ등록BDD테스트() {
         // given
         adminFaqJpaService.insertFaq(adminFaqEntity);
 
@@ -358,7 +358,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ수정Mockito테스트")
-    void FAQ수정Mockito테스트() throws Exception {
+    void FAQ수정Mockito테스트() {
         // given
         Long idx = adminFaqJpaService.insertFaq(adminFaqEntity).getIdx();
 
@@ -392,7 +392,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ수정BDD테스트")
-    void FAQ수정BDD테스트() throws Exception {
+    void FAQ수정BDD테스트() {
         // given
         Long idx = adminFaqJpaService.insertFaq(adminFaqEntity).getIdx();
 
@@ -423,7 +423,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ삭제테스트")
-    void FAQ삭제테스트() throws Exception {
+    void FAQ삭제테스트() {
         // given
         adminFaqJpaService.insertFaq(adminFaqEntity);
 
@@ -436,7 +436,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ삭제Mockito테스트")
-    void FAQ삭제Mockito테스트() throws Exception {
+    void FAQ삭제Mockito테스트() {
         // given
         adminFaqJpaService.insertFaq(adminFaqEntity);
         adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
@@ -459,7 +459,7 @@ class AdminFaqJpaServiceTest {
 
     @Test
     @DisplayName("FAQ삭제BDD테스트")
-    void FAQ삭제BDD테스트() throws Exception {
+    void FAQ삭제BDD테스트() {
         // given
         adminFaqJpaService.insertFaq(adminFaqEntity);
         adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);

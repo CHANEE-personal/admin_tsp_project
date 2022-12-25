@@ -50,7 +50,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> portfolioMap = new HashMap<>();
 
         Integer portfolioCnt = this.adminPortfolioJpaService.findPortfolioCount(searchCommon.searchCommon(page, paramMap));
@@ -90,7 +90,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}")
-    public AdminPortFolioDTO findOnePortfolio(@PathVariable Long idx) throws Exception {
+    public AdminPortFolioDTO findOnePortfolio(@PathVariable Long idx) {
         return this.adminPortfolioJpaService.findOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -112,7 +112,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminPortFolioDTO findPrevOnePortfolio(@PathVariable Long idx) throws Exception {
+    public AdminPortFolioDTO findPrevOnePortfolio(@PathVariable Long idx) {
         return this.adminPortfolioJpaService.findPrevOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -134,7 +134,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminPortFolioDTO findNextOnePortfolio(@PathVariable Long idx) throws Exception {
+    public AdminPortFolioDTO findNextOnePortfolio(@PathVariable Long idx) {
         return this.adminPortfolioJpaService.findNextOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
     }
 
@@ -156,7 +156,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminPortFolioDTO insertPortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
+    public AdminPortFolioDTO insertPortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) {
         return this.adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
     }
 
@@ -178,7 +178,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminPortFolioDTO updatePortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) throws Exception {
+    public AdminPortFolioDTO updatePortfolio(@Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) {
         return adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
     }
 
@@ -200,7 +200,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deletePortfolio(@PathVariable Long idx) throws Exception {
+    public Long deletePortfolio(@PathVariable Long idx) {
         return adminPortfolioJpaService.deletePortfolio(idx);
     }
 
@@ -222,7 +222,7 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")
-    public List<AdminCommentDTO> findPortfolioAdminComment(@PathVariable Long idx) throws Exception {
+    public List<AdminCommentDTO> findPortfolioAdminComment(@PathVariable Long idx) {
         return adminPortfolioJpaService.findPortfolioAdminComment(idx);
     }
 }

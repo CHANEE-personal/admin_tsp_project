@@ -172,7 +172,7 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    public Long insertPortfolioImage(CommonImageEntity commonImageEntity) throws TspException {
+    public Long insertPortfolioImage(CommonImageEntity commonImageEntity) {
         try {
             em.persist(commonImageEntity);
 

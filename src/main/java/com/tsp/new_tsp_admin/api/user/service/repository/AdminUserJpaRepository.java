@@ -135,7 +135,7 @@ public class AdminUserJpaRepository {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      */
-    public Long insertUserToken(AdminUserEntity existAdminUserEntity) throws TspException {
+    public Long insertUserToken(AdminUserEntity existAdminUserEntity) {
         JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
         update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())

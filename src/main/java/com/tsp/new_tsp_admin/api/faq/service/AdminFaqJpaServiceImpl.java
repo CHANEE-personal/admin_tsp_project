@@ -32,7 +32,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findFaqCount(Map<String, Object> faqMap) throws TspException {
+    public Integer findFaqCount(Map<String, Object> faqMap) {
         try {
             return adminFaqJpaRepository.findFaqCount(faqMap);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @Override
     @Cacheable("faq")
     @Transactional(readOnly = true)
-    public List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap) throws TspException {
+    public List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap) {
         try {
             return adminFaqJpaRepository.findFaqsList(faqMap);
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @Override
     @Cacheable("faq")
     @Transactional(readOnly = true)
-    public AdminFaqDTO findOneFaq(AdminFaqEntity adminFaqEntity) throws TspException {
+    public AdminFaqDTO findOneFaq(AdminFaqEntity adminFaqEntity) {
         try {
             return adminFaqJpaRepository.findOneFaq(adminFaqEntity);
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @Override
     @Cacheable("faq")
     @Transactional(readOnly = true)
-    public AdminFaqDTO findPrevOneFaq(AdminFaqEntity adminFaqEntity) throws TspException {
+    public AdminFaqDTO findPrevOneFaq(AdminFaqEntity adminFaqEntity) {
         try {
             return adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @Override
     @Cacheable("faq")
     @Transactional(readOnly = true)
-    public AdminFaqDTO findNextOneFaq(AdminFaqEntity adminFaqEntity) throws TspException {
+    public AdminFaqDTO findNextOneFaq(AdminFaqEntity adminFaqEntity) {
         try {
             return adminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
         } catch (Exception e) {
@@ -133,7 +133,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @CachePut("faq")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminFaqDTO insertFaq(AdminFaqEntity adminFaqEntity) throws TspException {
+    public AdminFaqDTO insertFaq(AdminFaqEntity adminFaqEntity) {
         try {
             return adminFaqJpaRepository.insertFaq(adminFaqEntity);
         } catch (Exception e) {
@@ -154,7 +154,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @CachePut("faq")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity) throws TspException {
+    public AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity) {
         try {
             return adminFaqJpaRepository.updateFaq(adminFaqEntity);
         } catch (Exception e) {
@@ -175,7 +175,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
     @CacheEvict("faq")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteFaq(Long idx) throws TspException {
+    public Long deleteFaq(Long idx) {
         try {
             return adminFaqJpaRepository.deleteFaq(idx);
         } catch (Exception e) {

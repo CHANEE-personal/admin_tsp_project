@@ -77,7 +77,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 리스트 조회 테스트")
-    void 지원모델리스트조회테스트() throws Exception {
+    void 지원모델리스트조회테스트() {
         // given
         Map<String, Object> supportMap = new HashMap<>();
         supportMap.put("jpaStartPage", 1);
@@ -89,7 +89,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 리스트 조회 Mockito 테스트")
-    void 지원모델리스트조회Mockito테스트() throws Exception {
+    void 지원모델리스트조회Mockito테스트() {
         // given
         Map<String, Object> supportMap = new HashMap<>();
         supportMap.put("jpaStartPage", 1);
@@ -127,7 +127,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 리스트 조회 BDD 테스트")
-    void 지원모델리스트조회BDD테스트() throws Exception {
+    void 지원모델리스트조회BDD테스트() {
         // given
         Map<String, Object> supportMap = new HashMap<>();
         supportMap.put("jpaStartPage", 1);
@@ -163,7 +163,7 @@ class AdminSupportJpaServiceTest {
     @Test
     @Disabled
     @DisplayName("지원모델 상세 조회 테스트")
-    void 지원모델상세조회테스트() throws Exception {
+    void 지원모델상세조회테스트() {
         // given
         adminSupportEntity = AdminSupportEntity.builder().idx(1L).build();
 
@@ -176,7 +176,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 상세 조회 Mockito 테스트")
-    void 지원모델상세조회Mockito테스트() throws Exception {
+    void 지원모델상세조회Mockito테스트() {
         // when
         when(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity.getIdx())).thenReturn(adminSupportDTO);
         AdminSupportDTO supportInfo = mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity.getIdx());
@@ -198,7 +198,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 상세 조회 BDD 테스트")
-    void 지원모델상세조회BDD테스트() throws Exception {
+    void 지원모델상세조회BDD테스트() {
         // when
         given(mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity.getIdx())).willReturn(adminSupportDTO);
         AdminSupportDTO supportInfo = mockAdminSupportJpaService.findOneSupportModel(adminSupportEntity.getIdx());
@@ -217,7 +217,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 수정 Mockito 테스트")
-    void 지원모델수정Mockito테스트() throws Exception {
+    void 지원모델수정Mockito테스트() {
         // given
         adminSupportEntity = AdminSupportEntity.builder()
                 .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
@@ -252,7 +252,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 수정 BDD 테스트")
-    void 지원모델수정BDD테스트() throws Exception {
+    void 지원모델수정BDD테스트() {
         // given
         adminSupportEntity = AdminSupportEntity.builder()
                 .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
@@ -284,7 +284,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 삭제 테스트")
-    void 지원모델삭제테스트() throws Exception {
+    void 지원모델삭제테스트() {
         // given
         Long idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
@@ -294,7 +294,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 평가 리스트 조회 Mockito 테스트")
-    void 지원모델평가리스트조회Mockito테스트() throws Exception {
+    void 지원모델평가리스트조회Mockito테스트() {
         // given
         Map<String, Object> evaluationMap = new HashMap<>();
         evaluationMap.put("jpaStartPage", 1);
@@ -324,7 +324,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 평가 리스트 조회 BDD 테스트")
-    void 지원모델평가리스트조회BDD테스트() throws Exception {
+    void 지원모델평가리스트조회BDD테스트() {
         // given
         Map<String, Object> evaluationMap = new HashMap<>();
         evaluationMap.put("jpaStartPage", 1);
@@ -351,7 +351,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 평가 상세 조회 Mockito 테스트")
-    void 지원모델평가상세조회Mockito테스트() throws Exception {
+    void 지원모델평가상세조회Mockito테스트() {
         // given
         evaluationEntity = EvaluationEntity.builder()
                 .idx(1L).supportIdx(adminSupportEntity.getIdx())
@@ -379,7 +379,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 평가 상세 조회 BDD 테스트")
-    void 지원모델평가상세조회BDD테스트() throws Exception {
+    void 지원모델평가상세조회BDD테스트() {
         // given
         evaluationEntity = EvaluationEntity.builder()
                 .idx(1L).supportIdx(adminSupportEntity.getIdx())
@@ -404,7 +404,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 평가 Mockito 테스트")
-    void 지원모델평가Mockito테스트() throws Exception {
+    void 지원모델평가Mockito테스트() {
         // given
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
@@ -437,7 +437,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 평가 BDD 테스트")
-    void 지원모델평가BDD테스트() throws Exception {
+    void 지원모델평가BDD테스트() {
         // given
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
@@ -467,7 +467,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 평가 삭제 Mockito 테스트")
-    void 지원모델평가삭제Mockito테스트() throws Exception {
+    void 지원모델평가삭제Mockito테스트() {
         // given
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
@@ -496,7 +496,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 평가 삭제 BDD 테스트")
-    void 지원모델평가삭제BDD테스트() throws Exception {
+    void 지원모델평가삭제BDD테스트() {
         // given
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
@@ -522,7 +522,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 합격 Mockito 테스트")
-    void 지원모델합격Mockito테스트() throws Exception {
+    void 지원모델합격Mockito테스트() {
         // given
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
@@ -547,7 +547,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원 모델 합격 BDD 테스트")
-    void 지원모델합격BDD테스트() throws Exception {
+    void 지원모델합격BDD테스트() {
         // given
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
@@ -569,7 +569,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 어드민 코멘트 조회 Mockito 테스트")
-    void 지원모델어드민코멘트조회Mockito테스트() throws Exception {
+    void 지원모델어드민코멘트조회Mockito테스트() {
         adminSupportEntity = AdminSupportEntity.builder()
                 .supportName("조찬희")
                 .supportHeight(170)
@@ -614,7 +614,7 @@ class AdminSupportJpaServiceTest {
 
     @Test
     @DisplayName("지원모델 어드민 코멘트 조회 BDD 테스트")
-    void 지원모델어드민코멘트조회BDD테스트() throws Exception {
+    void 지원모델어드민코멘트조회BDD테스트() {
         adminSupportEntity = AdminSupportEntity.builder()
                 .supportName("조찬희")
                 .supportHeight(170)

@@ -49,7 +49,7 @@ public class AdminCommentJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findAdminCommentList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findAdminCommentList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> commentMap = new HashMap<>();
 
         Integer commentCount = this.adminCommentJpaService.findAdminCommentCount(searchCommon.searchCommon(page, paramMap));
@@ -89,7 +89,7 @@ public class AdminCommentJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminCommentDTO findOneAdminComment(@PathVariable Long idx) throws Exception {
+    public AdminCommentDTO findOneAdminComment(@PathVariable Long idx) {
         return adminCommentJpaService.findOneAdminComment(AdminCommentEntity.builder().idx(idx).build());
     }
 
@@ -111,7 +111,7 @@ public class AdminCommentJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public AdminCommentDTO insertAdminComment(@Valid @RequestBody AdminCommentEntity adminCommentEntity) throws Exception {
+    public AdminCommentDTO insertAdminComment(@Valid @RequestBody AdminCommentEntity adminCommentEntity) {
         return this.adminCommentJpaService.insertAdminComment(adminCommentEntity);
     }
 
@@ -133,7 +133,7 @@ public class AdminCommentJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
-    public AdminCommentDTO updateAdminComment(@Valid @RequestBody AdminCommentEntity adminCommentEntity) throws Exception {
+    public AdminCommentDTO updateAdminComment(@Valid @RequestBody AdminCommentEntity adminCommentEntity) {
         return adminCommentJpaService.updateAdminComment(adminCommentEntity);
     }
 
@@ -155,7 +155,7 @@ public class AdminCommentJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Long deleteAdminComment(@PathVariable Long idx) throws Exception {
+    public Long deleteAdminComment(@PathVariable Long idx) {
         return adminCommentJpaService.deleteAdminComment(idx);
     }
 }

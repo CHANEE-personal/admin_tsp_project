@@ -39,7 +39,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findAgencyCount(Map<String, Object> agencyMap) throws TspException {
+    public Integer findAgencyCount(Map<String, Object> agencyMap) {
         try {
             return adminAgencyJpaRepository.findAgencyCount(agencyMap);
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @Override
     @Cacheable("agency")
     @Transactional(readOnly = true)
-    public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) throws TspException {
+    public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) {
         try {
             return adminAgencyJpaRepository.findAgencyList(agencyMap);
         } catch (Exception e) {
@@ -79,7 +79,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @Override
     @Cacheable("agency")
     @Transactional(readOnly = true)
-    public AdminAgencyDTO findOneAgency(Long idx) throws TspException {
+    public AdminAgencyDTO findOneAgency(Long idx) {
         try {
             return adminAgencyJpaRepository.findOneAgency(idx);
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @CachePut("agency")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) throws TspException {
+    public AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) {
         try {
             return adminAgencyJpaRepository.insertAgency(adminAgencyEntity);
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @CachePut("agency")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) throws TspException {
+    public AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) {
         try {
             return adminAgencyJpaRepository.updateAgency(adminAgencyEntity);
         } catch (Exception e) {
@@ -142,7 +142,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @CacheEvict("agency")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteAgency(Long idx) throws TspException {
+    public Long deleteAgency(Long idx) {
         try {
             return adminAgencyJpaRepository.deleteAgency(idx);
         } catch (Exception e) {
@@ -160,7 +160,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    public List<CommonImageDTO> insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws TspException {
+    public List<CommonImageDTO> insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {
         try {
             return saveImage.saveFile(fileName, commonImageEntity);
         } catch (Exception e) {
@@ -178,7 +178,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    public Long deleteAgencyImage(CommonImageEntity commonImageEntity) throws TspException {
+    public Long deleteAgencyImage(CommonImageEntity commonImageEntity) {
         try {
             return imageService.deleteImage(commonImageEntity);
         } catch (Exception e) {

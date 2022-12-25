@@ -18,7 +18,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    Integer findPortfolioCount(Map<String, Object> portfolioMap) throws Exception;
+    Integer findPortfolioCount(Map<String, Object> portfolioMap);
 
     /**
      * <pre>
@@ -29,7 +29,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) throws Exception;
+    List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap);
 
     /**
      * <pre>
@@ -40,7 +40,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      */
-    AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
+    AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
     /**
      * <pre>
@@ -51,7 +51,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 09. 14.
      * </pre>
      */
-    AdminPortFolioDTO findPrevOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
+    AdminPortFolioDTO findPrevOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
     /**
      * <pre>
@@ -62,7 +62,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 09. 14.
      * </pre>
      */
-    AdminPortFolioDTO findNextOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
+    AdminPortFolioDTO findNextOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
     /**
      * <pre>
@@ -73,7 +73,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      */
-    AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
+    AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
     /**
      * <pre>
@@ -84,7 +84,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      */
-    AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception;
+    AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity);
 
     /**
      * <pre>
@@ -95,7 +95,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    Long deletePortfolio(Long idx) throws Exception;
+    Long deletePortfolio(Long idx);
 
     /**
      * <pre>
@@ -106,5 +106,5 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    List<AdminCommentDTO> findPortfolioAdminComment(Long idx) throws Exception;
+    List<AdminCommentDTO> findPortfolioAdminComment(Long idx);
 }

@@ -17,7 +17,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    Integer findScheduleCount(Map<String, Object> scheduleMap) throws Exception;
+    Integer findScheduleCount(Map<String, Object> scheduleMap);
 
     /**
      * <pre>
@@ -28,7 +28,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) throws Exception;
+    List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap);
 
     /**
      * <pre>
@@ -39,7 +39,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    AdminScheduleDTO findOneSchedule(Long idx) throws Exception;
+    AdminScheduleDTO findOneSchedule(Long idx);
 
     /**
      * <pre>
@@ -50,7 +50,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 09. 22.
      * </pre>
      */
-    AdminScheduleDTO findPrevOneSchedule(Long idx) throws Exception;
+    AdminScheduleDTO findPrevOneSchedule(Long idx);
 
     /**
      * <pre>
@@ -61,7 +61,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 09. 22.
      * </pre>
      */
-    AdminScheduleDTO findNextOneSchedule(Long idx) throws Exception;
+    AdminScheduleDTO findNextOneSchedule(Long idx);
 
     /**
      * <pre>
@@ -72,7 +72,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    AdminScheduleDTO insertSchedule(AdminScheduleEntity adminScheduleEntity) throws Exception;
+    AdminScheduleDTO insertSchedule(AdminScheduleEntity adminScheduleEntity);
 
     /**
      * <pre>
@@ -83,7 +83,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    AdminScheduleDTO updateSchedule(AdminScheduleEntity adminScheduleEntity) throws Exception;
+    AdminScheduleDTO updateSchedule(AdminScheduleEntity adminScheduleEntity);
 
     /**
      * <pre>
@@ -94,5 +94,5 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    Long deleteSchedule(Long idx) throws Exception;
+    Long deleteSchedule(Long idx);
 }

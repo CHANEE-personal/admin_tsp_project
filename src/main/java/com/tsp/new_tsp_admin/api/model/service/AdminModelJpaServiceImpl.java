@@ -41,7 +41,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findModelCount(Map<String, Object> modelMap) throws TspException {
+    public Integer findModelCount(Map<String, Object> modelMap) {
         try {
             return adminModelJpaRepository.findModelCount(modelMap);
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Cacheable("model")
     @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) throws TspException {
+    public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) {
         try {
             return adminModelJpaRepository.findModelList(modelMap);
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Cacheable("model")
     @Transactional(readOnly = true)
-    public AdminModelDTO findOneModel(Long idx) throws TspException {
+    public AdminModelDTO findOneModel(Long idx) {
         try {
             return adminModelJpaRepository.findOneModel(idx);
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Cacheable("model")
     @Transactional(readOnly = true)
-    public AdminModelDTO findPrevOneModel(AdminModelEntity adminModelEntity) throws TspException {
+    public AdminModelDTO findPrevOneModel(AdminModelEntity adminModelEntity) {
         try {
             return adminModelJpaRepository.findPrevOneModel(adminModelEntity);
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Cacheable("model")
     @Transactional(readOnly = true)
-    public AdminModelDTO findNextOneModel(AdminModelEntity adminModelEntity) throws TspException {
+    public AdminModelDTO findNextOneModel(AdminModelEntity adminModelEntity) {
         try {
             return adminModelJpaRepository.findNextOneModel(adminModelEntity);
         } catch (Exception e) {
@@ -142,7 +142,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @CachePut("model")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) throws TspException {
+    public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         try {
             return adminModelJpaRepository.insertModel(adminModelEntity);
         } catch (Exception e) {
@@ -163,7 +163,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @CachePut("model")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) throws TspException {
+    public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
         try {
             return adminModelJpaRepository.updateModelByEm(adminModelEntity);
         } catch (Exception e) {
@@ -184,7 +184,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @CacheEvict("model")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteModel(Long idx) throws TspException {
+    public Long deleteModel(Long idx) {
         try {
             return adminModelJpaRepository.deleteModelByEm(idx);
         } catch (Exception e) {
@@ -204,7 +204,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Modifying(clearAutomatically = true)
     @Transactional
-    public List<CommonImageDTO> insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws TspException {
+    public List<CommonImageDTO> insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {
         try {
             return saveImage.saveFile(fileName, commonImageEntity);
         } catch (Exception e) {
@@ -262,7 +262,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findModelAdminComment(Long idx) throws TspException {
+    public List<AdminCommentDTO> findModelAdminComment(Long idx) {
         try {
             return adminModelJpaRepository.findModelAdminComment(idx);
         } catch (Exception e) {
@@ -283,7 +283,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @CachePut("model")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminModelDTO toggleModelNewYn(Long idx) throws TspException {
+    public AdminModelDTO toggleModelNewYn(Long idx) {
         try {
             return adminModelJpaRepository.toggleModelNewYn(idx);
         } catch (Exception e) {
@@ -303,7 +303,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Cacheable("schedule")
     @Transactional(readOnly = true)
-    public List<AdminScheduleDTO> findOneModelSchedule(Long idx) throws TspException {
+    public List<AdminScheduleDTO> findOneModelSchedule(Long idx) {
         try {
             return adminModelJpaRepository.findOneModelSchedule(idx);
         } catch (Exception e) {

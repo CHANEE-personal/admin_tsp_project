@@ -51,7 +51,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> commonCodeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> commonCodeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         // 페이징 및 검색
         Map<String, Object> commonMap = searchCommon.searchCommon(page, paramMap);
 
@@ -92,7 +92,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public CommonCodeDTO commonCodeInfo(@PathVariable Long idx) throws Exception {
+    public CommonCodeDTO commonCodeInfo(@PathVariable Long idx) {
         return this.adminCommonJpaService.findOneCommonCode(builder().idx(idx).build());
     }
 
@@ -114,7 +114,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public CommonCodeDTO insertCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) throws Exception {
+    public CommonCodeDTO insertCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) {
         return this.adminCommonJpaService.insertCommonCode(commonCodeEntity);
     }
 
@@ -136,7 +136,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public CommonCodeDTO updateCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) throws Exception {
+    public CommonCodeDTO updateCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) {
         return adminCommonJpaService.updateCommonCode(commonCodeEntity);
     }
 
@@ -158,7 +158,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteCommonCode(@PathVariable Long idx) throws Exception {
+    public Long deleteCommonCode(@PathVariable Long idx) {
         return adminCommonJpaService.deleteCommonCode(idx);
     }
 }

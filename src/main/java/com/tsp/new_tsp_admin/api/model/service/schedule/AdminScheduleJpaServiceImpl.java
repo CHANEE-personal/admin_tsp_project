@@ -33,7 +33,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findScheduleCount(Map<String, Object> scheduleMap) throws TspException {
+    public Integer findScheduleCount(Map<String, Object> scheduleMap) {
         try {
             return adminScheduleJpaRepository.findScheduleCount(scheduleMap);
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Cacheable("model")
     @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) throws TspException {
+    public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) {
         try {
             return adminScheduleJpaRepository.findModelScheduleList(scheduleMap);
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Cacheable("schedule")
     @Transactional(readOnly = true)
-    public AdminScheduleDTO findOneSchedule(Long idx) throws TspException {
+    public AdminScheduleDTO findOneSchedule(Long idx) {
         try {
             return adminScheduleJpaRepository.findOneSchedule(idx);
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Cacheable("schedule")
     @Transactional(readOnly = true)
-    public AdminScheduleDTO findPrevOneSchedule(Long idx) throws TspException {
+    public AdminScheduleDTO findPrevOneSchedule(Long idx) {
         try {
             return adminScheduleJpaRepository.findPrevOneSchedule(idx);
         } catch (Exception e) {
@@ -113,7 +113,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Cacheable("schedule")
     @Transactional(readOnly = true)
-    public AdminScheduleDTO findNextOneSchedule(Long idx) throws TspException {
+    public AdminScheduleDTO findNextOneSchedule(Long idx) {
         try {
             return adminScheduleJpaRepository.findNextOneSchedule(idx);
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @CachePut("schedule")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminScheduleDTO insertSchedule(AdminScheduleEntity adminScheduleEntity) throws TspException {
+    public AdminScheduleDTO insertSchedule(AdminScheduleEntity adminScheduleEntity) {
         try {
             return adminScheduleJpaRepository.insertSchedule(adminScheduleEntity);
         } catch (Exception e) {
@@ -155,7 +155,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @CachePut("schedule")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminScheduleDTO updateSchedule(AdminScheduleEntity adminScheduleEntity) throws TspException {
+    public AdminScheduleDTO updateSchedule(AdminScheduleEntity adminScheduleEntity) {
         try {
             return adminScheduleJpaRepository.updateSchedule(adminScheduleEntity);
         } catch (Exception e) {
@@ -176,7 +176,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @CacheEvict("schedule")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteSchedule(Long idx) throws TspException {
+    public Long deleteSchedule(Long idx) {
         try {
             return adminScheduleJpaRepository.deleteSchedule(idx);
         } catch (Exception e) {

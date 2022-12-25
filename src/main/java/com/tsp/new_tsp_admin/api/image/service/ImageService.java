@@ -17,7 +17,7 @@ public class ImageService {
     private final ImageRepository imageRepository;
 
     @Transactional(readOnly = true)
-    public CommonImageDTO findOneImage(CommonImageEntity commonImageEntity) throws TspException {
+    public CommonImageDTO findOneImage(CommonImageEntity commonImageEntity) {
         try {
             return imageRepository.findOneImage(commonImageEntity);
         } catch (Exception e) {

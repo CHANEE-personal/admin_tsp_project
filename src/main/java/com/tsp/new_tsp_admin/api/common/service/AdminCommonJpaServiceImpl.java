@@ -31,7 +31,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      * </pre>
      */
     @Override
-    public Integer findCommonCodeListCount() throws TspException {
+    public Integer findCommonCodeListCount() {
         try {
             return adminCommonJpaRepository.findCommonCodeListCount();
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap) throws TspException {
+    public List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap) {
         try {
             return adminCommonJpaRepository.findCommonCodeList(commonMap);
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public CommonCodeDTO findOneCommonCode(CommonCodeEntity commonCodeEntity) throws TspException {
+    public CommonCodeDTO findOneCommonCode(CommonCodeEntity commonCodeEntity) {
         try {
             return adminCommonJpaRepository.findOneCommonCode(commonCodeEntity);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @CachePut("common")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) throws TspException {
+    public CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) {
         try {
             return adminCommonJpaRepository.insertCommonCode(commonCodeEntity);
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @CachePut("common")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity) throws TspException {
+    public CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity) {
         try {
             return adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @CacheEvict("common")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteCommonCode(Long idx) throws TspException {
+    public Long deleteCommonCode(Long idx) {
         try {
             return adminCommonJpaRepository.deleteCommonCode(idx);
         } catch (Exception e) {

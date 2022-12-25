@@ -20,7 +20,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    Integer findProductionCount(Map<String, Object> productionMap) throws Exception;
+    Integer findProductionCount(Map<String, Object> productionMap);
 
     /**
      * <pre>
@@ -31,7 +31,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) throws Exception;
+    List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap);
 
     /**
      * <pre>
@@ -42,7 +42,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 15.
      * </pre>
      */
-    AdminProductionDTO findOneProduction(Long idx) throws Exception;
+    AdminProductionDTO findOneProduction(Long idx);
 
     /**
      * <pre>
@@ -53,7 +53,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 09. 13.
      * </pre>
      */
-    AdminProductionDTO findPrevOneProduction(Long idx) throws Exception;
+    AdminProductionDTO findPrevOneProduction(Long idx);
 
     /**
      * <pre>
@@ -64,7 +64,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 09. 13.
      * </pre>
      */
-    AdminProductionDTO findNextOneProduction(Long idx) throws Exception;
+    AdminProductionDTO findNextOneProduction(Long idx);
 
     /**
      * <pre>
@@ -75,7 +75,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
      */
-    AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) throws Exception;
+    AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity);
 
     /**
      * <pre>
@@ -86,7 +86,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
      */
-    AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity) throws Exception;
+    AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity);
 
     /**
      * <pre>
@@ -97,7 +97,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 17.
      * </pre>
      */
-    Long deleteProduction(Long idx) throws Exception;
+    Long deleteProduction(Long idx);
 
     /**
      * <pre>
@@ -108,5 +108,5 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 08. 26.
      * </pre>
      */
-    List<AdminCommentDTO> findProductionAdminComment(Long idx) throws Exception;
+    List<AdminCommentDTO> findProductionAdminComment(Long idx);
 }

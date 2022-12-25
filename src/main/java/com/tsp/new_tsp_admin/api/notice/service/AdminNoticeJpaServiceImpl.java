@@ -32,7 +32,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findNoticeCount(Map<String, Object> noticeMap) throws TspException {
+    public Integer findNoticeCount(Map<String, Object> noticeMap) {
         try {
             return adminNoticeJpaRepository.findNoticeCount(noticeMap);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) throws TspException {
+    public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) {
         try {
             return adminNoticeJpaRepository.findNoticeList(noticeMap);
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public AdminNoticeDTO findOneNotice(Long idx) throws TspException {
+    public AdminNoticeDTO findOneNotice(Long idx) {
         try {
             return adminNoticeJpaRepository.findOneNotice(idx);
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public AdminNoticeDTO findPrevOneNotice(Long idx) throws TspException {
+    public AdminNoticeDTO findPrevOneNotice(Long idx) {
         try {
             return adminNoticeJpaRepository.findPrevOneNotice(idx);
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @Override
     @Cacheable("notice")
     @Transactional(readOnly = true)
-    public AdminNoticeDTO findNextOneNotice(Long idx) throws TspException {
+    public AdminNoticeDTO findNextOneNotice(Long idx) {
         try {
             return adminNoticeJpaRepository.findNextOneNotice(idx);
         } catch (Exception e) {
@@ -133,7 +133,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CachePut("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
+    public AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity) {
         try {
             return adminNoticeJpaRepository.insertNotice(adminNoticeEntity);
         } catch (Exception e) {
@@ -154,7 +154,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CachePut("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity) throws TspException {
+    public AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity) {
         try {
             return adminNoticeJpaRepository.updateNotice(adminNoticeEntity);
         } catch (Exception e) {
@@ -175,7 +175,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CachePut("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNoticeDTO toggleFixed(Long idx) throws TspException {
+    public AdminNoticeDTO toggleFixed(Long idx) {
         try {
             return adminNoticeJpaRepository.toggleFixed(idx);
         } catch (Exception e) {
@@ -196,7 +196,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
     @CacheEvict("notice")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteNotice(Long idx) throws TspException {
+    public Long deleteNotice(Long idx) {
         try {
             return adminNoticeJpaRepository.deleteNotice(idx);
         } catch (Exception e) {

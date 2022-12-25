@@ -35,7 +35,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findSupportCount(Map<String, Object> supportMap) throws TspException {
+    public Integer findSupportCount(Map<String, Object> supportMap) {
         try {
             return adminSupportJpaRepository.findSupportCount(supportMap);
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @Cacheable("support")
     @Transactional(readOnly = true)
-    public List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) throws TspException {
+    public List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) {
         try {
             return adminSupportJpaRepository.findSupportList(supportMap);
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @Cacheable("support")
     @Transactional(readOnly = true)
-    public AdminSupportDTO findOneSupportModel(Long idx) throws TspException {
+    public AdminSupportDTO findOneSupportModel(Long idx) {
         try {
             return adminSupportJpaRepository.findOneSupportModel(idx);
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @CachePut("support")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) throws TspException {
+    public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         try {
             return adminSupportJpaRepository.insertSupportModel(adminSupportEntity);
         } catch (Exception e) {
@@ -108,7 +108,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @CachePut("support")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) throws TspException {
+    public AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) {
         try {
             return adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
         } catch (Exception e) {
@@ -129,7 +129,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @CacheEvict("support")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteSupportModel(Long idx) throws TspException {
+    public Long deleteSupportModel(Long idx) {
         try {
             return adminSupportJpaRepository.deleteSupportModel(idx);
         } catch (Exception e) {
@@ -148,7 +148,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findEvaluationsCount(Map<String, Object> evaluationMap) throws TspException {
+    public Integer findEvaluationsCount(Map<String, Object> evaluationMap) {
         try {
             return adminSupportJpaRepository.findEvaluationsCount();
         } catch (Exception e) {
@@ -168,7 +168,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @Cacheable("evaluation")
     @Transactional(readOnly = true)
-    public List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap) throws TspException {
+    public List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap) {
         try {
             return adminSupportJpaRepository.findEvaluationsList(evaluationMap);
         } catch (Exception e) {
@@ -188,7 +188,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @Cacheable("evaluation")
     @Transactional(readOnly = true)
-    public EvaluationDTO findOneEvaluation(EvaluationEntity evaluationEntity) throws TspException {
+    public EvaluationDTO findOneEvaluation(EvaluationEntity evaluationEntity) {
         try {
             return adminSupportJpaRepository.findOneEvaluation(evaluationEntity);
         } catch (Exception e) {
@@ -208,7 +208,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @CachePut("evaluation")
     @Transactional
-    public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) throws TspException {
+    public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) {
         try {
             return adminSupportJpaRepository.evaluationSupportModel(evaluationEntity);
         } catch (Exception e) {
@@ -228,7 +228,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @CachePut("evaluation")
     @Transactional
-    public EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity) throws TspException {
+    public EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity) {
         try {
             return adminSupportJpaRepository.updateEvaluation(evaluationEntity);
         } catch (Exception e) {
@@ -249,7 +249,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @CacheEvict("evaluation")
     @Modifying(clearAutomatically = true)
     @Transactional
-    public Long deleteEvaluation(Long idx) throws TspException {
+    public Long deleteEvaluation(Long idx) {
         try {
             return adminSupportJpaRepository.deleteEvaluation(idx);
         } catch (Exception e) {
@@ -269,7 +269,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @CachePut("support")
     @Transactional
-    public AdminSupportDTO updatePass(Long idx) throws TspException {
+    public AdminSupportDTO updatePass(Long idx) {
         try {
             return adminSupportJpaRepository.updatePass(idx);
         } catch (Exception e) {
@@ -287,7 +287,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    public List<AdminCommentDTO> findSupportAdminComment(Long idx) throws TspException {
+    public List<AdminCommentDTO> findSupportAdminComment(Long idx) {
         try {
             return adminSupportJpaRepository.findSupportAdminComment(idx);
         } catch (Exception e) {

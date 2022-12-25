@@ -43,7 +43,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 회원 리스트 조회 테스트")
-    void 관리자회원리스트조회테스트() throws Exception {
+    void 관리자회원리스트조회테스트() {
         // given
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
@@ -55,7 +55,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 회원 리스트 조회 Mockito 테스트")
-    void 관리자회원리스트조회Mockito테스트() throws Exception {
+    void 관리자회원리스트조회Mockito테스트() {
         // given
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
@@ -92,7 +92,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 회원 리스트 조회 BDD 테스트")
-    void 관리자회원리스트조회BDD테스트() throws Exception {
+    void 관리자회원리스트조회BDD테스트() {
         // given
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
@@ -126,7 +126,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 회원 상세 조회 테스트")
-    void 관리자회원상세조회테스트() throws Exception {
+    void 관리자회원상세조회테스트() {
         // given
         AdminUserEntity adminUserEntity = adminUserJpaService.findOneUser("admin01");
         // then
@@ -135,7 +135,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 회원 상세 조회 Mockito 테스트")
-    void 관리자회원상세조회Mockito테스트() throws Exception {
+    void 관리자회원상세조회Mockito테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin03")
@@ -166,7 +166,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 회원 상세 조회 BDD 테스트")
-    void 관리자회원상세조회BDD테스트() throws Exception {
+    void 관리자회원상세조회BDD테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin03")
@@ -193,7 +193,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("Token을 이용한 관리자 조회 테스트")
-    void 토큰을이용한관리자조회테스트() throws Exception {
+    void 토큰을이용한관리자조회테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin01")
@@ -209,7 +209,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 로그인 처리 테스트")
-    void 관리자로그인처리테스트() throws Exception {
+    void 관리자로그인처리테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin03")
@@ -222,7 +222,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 토큰 저장 테스트")
-    void 관리자토큰저장테스트() throws Exception {
+    void 관리자토큰저장테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("admin03")
@@ -237,7 +237,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 회원가입 Mockito 테스트")
-    void 관리자회원가입Mockito테스트() throws Exception {
+    void 관리자회원가입Mockito테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
@@ -269,7 +269,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 회원가입 BDD 테스트")
-    void 관리자회원가입BDD테스트() throws Exception {
+    void 관리자회원가입BDD테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
@@ -298,7 +298,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 수정 Mockito 테스트")
-    void 관리자수정Mockito테스트() throws Exception {
+    void 관리자수정Mockito테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
@@ -341,7 +341,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 수정 BDD 테스트")
-    void 관리자수정BDD테스트() throws Exception {
+    void 관리자수정BDD테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")
@@ -381,7 +381,7 @@ class AdminUserJpaServiceTest {
 
     @Test
     @DisplayName("관리자 탈퇴 테스트")
-    void 관리자탈퇴테스트() throws Exception {
+    void 관리자탈퇴테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
                 .userId("test")

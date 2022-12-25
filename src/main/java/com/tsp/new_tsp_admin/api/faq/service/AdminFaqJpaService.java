@@ -16,7 +16,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    Integer findFaqCount(Map<String, Object> faqMap) throws Exception;
+    Integer findFaqCount(Map<String, Object> faqMap);
 
     /**
      * <pre>
@@ -27,7 +27,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap) throws Exception;
+    List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap);
 
     /**
      * <pre>
@@ -38,7 +38,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    AdminFaqDTO findOneFaq(AdminFaqEntity adminFaqEntity) throws Exception;
+    AdminFaqDTO findOneFaq(AdminFaqEntity adminFaqEntity);
 
     /**
      * <pre>
@@ -49,7 +49,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminFaqDTO findPrevOneFaq(AdminFaqEntity adminFaqEntity) throws Exception;
+    AdminFaqDTO findPrevOneFaq(AdminFaqEntity adminFaqEntity);
 
     /**
      * <pre>
@@ -60,7 +60,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminFaqDTO findNextOneFaq(AdminFaqEntity adminFaqEntity) throws Exception;
+    AdminFaqDTO findNextOneFaq(AdminFaqEntity adminFaqEntity);
 
     /**
      * <pre>
@@ -71,7 +71,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    AdminFaqDTO insertFaq(AdminFaqEntity adminFaqEntity) throws Exception;
+    AdminFaqDTO insertFaq(AdminFaqEntity adminFaqEntity);
 
     /**
      * <pre>
@@ -82,7 +82,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity) throws Exception;
+    AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity);
 
     /**
      * <pre>
@@ -93,5 +93,5 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    Long deleteFaq(Long idx) throws Exception;
+    Long deleteFaq(Long idx);
 }

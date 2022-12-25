@@ -51,7 +51,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+    public Map<String, Object> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> productionMap = new HashMap<>();
 
         Integer productionCnt = this.adminProductionJpaService.findProductionCount(searchCommon.searchCommon(page, paramMap));
@@ -91,7 +91,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminProductionDTO findOneProduction(@PathVariable Long idx) throws Exception {
+    public AdminProductionDTO findOneProduction(@PathVariable Long idx) {
         return adminProductionJpaService.findOneProduction(idx);
     }
 
@@ -113,7 +113,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminProductionDTO findPrevOneProduction(@PathVariable Long idx) throws Exception {
+    public AdminProductionDTO findPrevOneProduction(@PathVariable Long idx) {
         return this.adminProductionJpaService.findPrevOneProduction(idx);
     }
 
@@ -135,7 +135,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminProductionDTO findNextOneProduction(@PathVariable Long idx) throws Exception {
+    public AdminProductionDTO findNextOneProduction(@PathVariable Long idx) {
         return this.adminProductionJpaService.findNextOneProduction(idx);
     }
 
@@ -157,7 +157,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public AdminProductionDTO insertProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) throws Exception {
+    public AdminProductionDTO insertProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
         return this.adminProductionJpaService.insertProduction(adminProductionEntity);
     }
 
@@ -179,7 +179,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
-    public AdminProductionDTO updateProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) throws Exception {
+    public AdminProductionDTO updateProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
         return adminProductionJpaService.updateProduction(adminProductionEntity);
     }
 
@@ -201,7 +201,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Long deleteProduction(@PathVariable Long idx) throws Exception {
+    public Long deleteProduction(@PathVariable Long idx) {
         return adminProductionJpaService.deleteProduction(idx);
     }
 
@@ -223,7 +223,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")
-    public List<AdminCommentDTO> findProductionAdminComment(@PathVariable Long idx) throws Exception {
+    public List<AdminCommentDTO> findProductionAdminComment(@PathVariable Long idx) {
         return adminProductionJpaService.findProductionAdminComment(idx);
     }
 }

@@ -20,7 +20,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    Integer findAgencyCount(Map<String, Object> agencyMap) throws Exception;
+    Integer findAgencyCount(Map<String, Object> agencyMap);
 
     /**
      * <pre>
@@ -31,7 +31,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) throws Exception;
+    List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap);
 
     /**
      * <pre>
@@ -42,7 +42,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    AdminAgencyDTO findOneAgency(Long idx) throws Exception;
+    AdminAgencyDTO findOneAgency(Long idx);
 
     /**
      * <pre>
@@ -53,7 +53,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) throws Exception;
+    AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity);
 
     /**
      * <pre>
@@ -64,7 +64,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) throws Exception;
+    AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity);
 
     /**
      * <pre>
@@ -75,7 +75,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    Long deleteAgency(Long idx) throws Exception;
+    Long deleteAgency(Long idx);
 
     /**
      * <pre>
@@ -86,7 +86,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    List<CommonImageDTO> insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) throws Exception;
+    List<CommonImageDTO> insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName);
 
     /**
      * <pre>
@@ -97,5 +97,5 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    Long deleteAgencyImage(CommonImageEntity commonImageEntity) throws Exception;
+    Long deleteAgencyImage(CommonImageEntity commonImageEntity);
 }

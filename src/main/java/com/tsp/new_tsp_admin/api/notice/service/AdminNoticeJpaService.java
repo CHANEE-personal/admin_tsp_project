@@ -16,7 +16,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    Integer findNoticeCount(Map<String, Object> noticeMap) throws Exception;
+    Integer findNoticeCount(Map<String, Object> noticeMap);
 
     /**
      * <pre>
@@ -27,7 +27,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) throws Exception;
+    List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap);
 
     /**
      * <pre>
@@ -38,7 +38,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    AdminNoticeDTO findOneNotice(Long idx) throws Exception;
+    AdminNoticeDTO findOneNotice(Long idx);
 
     /**
      * <pre>
@@ -49,7 +49,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminNoticeDTO findPrevOneNotice(Long idx) throws Exception;
+    AdminNoticeDTO findPrevOneNotice(Long idx);
 
     /**
      * <pre>
@@ -60,7 +60,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminNoticeDTO findNextOneNotice(Long idx) throws Exception;
+    AdminNoticeDTO findNextOneNotice(Long idx);
 
     /**
      * <pre>
@@ -71,7 +71,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity) throws Exception;
+    AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity);
 
     /**
      * <pre>
@@ -82,7 +82,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity) throws Exception;
+    AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity);
 
     /**
      * <pre>
@@ -93,7 +93,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 09. 23.
      * </pre>
      */
-    AdminNoticeDTO toggleFixed(Long idx) throws Exception;
+    AdminNoticeDTO toggleFixed(Long idx);
 
     /**
      * <pre>
@@ -104,5 +104,5 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    Long deleteNotice(Long idx) throws Exception;
+    Long deleteNotice(Long idx);
 }
