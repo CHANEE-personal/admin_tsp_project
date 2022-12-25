@@ -32,7 +32,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findAdminCommentCount(Map<String, Object> commentMap) {
+    public int findAdminCommentCount(Map<String, Object> commentMap) {
         try {
             return adminCommentJpaRepository.findAdminCommentCount(commentMap);
         } catch (Exception e) {
@@ -45,12 +45,12 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      * 1. MethodName : findAdminCommentList
      * 2. ClassName  : AdminCommentJpaServiceImpl.java
      * 3. Comment    : 관리자 코멘트 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     @Override
-    @Cacheable("comment")
+    @Cacheable(value = "comment", key = "#commentMap")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap) {
         try {
@@ -70,11 +70,11 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("comment")
+    @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
-    public AdminCommentDTO findOneAdminComment(AdminCommentEntity adminCommentEntity) {
+    public AdminCommentDTO findOneAdminComment(Long idx) {
         try {
-            return adminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
+            return adminCommentJpaRepository.findOneAdminComment(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMENT, e);
         }
@@ -111,7 +111,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      * </pre>
      */
     @Override
-    @CachePut("comment")
+    @CachePut(value = "comment", key = "#adminCommentEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminCommentDTO updateAdminComment(AdminCommentEntity adminCommentEntity) {
@@ -132,7 +132,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("comment")
+    @CacheEvict(value = "comment", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteAdminComment(Long idx) {

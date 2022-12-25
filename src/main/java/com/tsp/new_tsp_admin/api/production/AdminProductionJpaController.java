@@ -54,7 +54,7 @@ public class AdminProductionJpaController {
     public Map<String, Object> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> productionMap = new HashMap<>();
 
-        Integer productionCnt = this.adminProductionJpaService.findProductionCount(searchCommon.searchCommon(page, paramMap));
+        int productionCnt = this.adminProductionJpaService.findProductionCount(searchCommon.searchCommon(page, paramMap));
         List<AdminProductionDTO> productionList = new ArrayList<>();
 
         if (productionCnt > 0) {

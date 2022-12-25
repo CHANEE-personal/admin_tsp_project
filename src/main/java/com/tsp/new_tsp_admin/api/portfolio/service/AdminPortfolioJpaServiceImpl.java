@@ -33,7 +33,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findPortfolioCount(Map<String, Object> portfolioMap) {
+    public int findPortfolioCount(Map<String, Object> portfolioMap) {
         try {
             return adminPortfolioJpaRepository.findPortfolioCount(portfolioMap);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("portfolio")
+    @Cacheable(value = "portfolio", key = "#portfolioMap")
     @Transactional(readOnly = true)
     public List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) {
         try {
@@ -71,11 +71,11 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("portfolio")
+    @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
-    public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO findOnePortfolio(Long idx) {
         try {
-            return adminPortfolioJpaRepository.findOnePortfolio(adminPortFolioEntity);
+            return adminPortfolioJpaRepository.findOnePortfolio(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PORTFOLIO, e);
         }
@@ -91,11 +91,11 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("portfolio")
+    @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
-    public AdminPortFolioDTO findPrevOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO findPrevOnePortfolio(Long idx) {
         try {
-            return adminPortfolioJpaRepository.findPrevOnePortfolio(adminPortFolioEntity);
+            return adminPortfolioJpaRepository.findPrevOnePortfolio(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PORTFOLIO, e);
         }
@@ -111,11 +111,11 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("portfolio")
+    @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
-    public AdminPortFolioDTO findNextOnePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO findNextOnePortfolio(Long idx) {
         try {
-            return adminPortfolioJpaRepository.findNextOnePortfolio(adminPortFolioEntity);
+            return adminPortfolioJpaRepository.findNextOnePortfolio(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_PORTFOLIO, e);
         }
@@ -152,7 +152,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @CachePut("portfolio")
+    @CachePut(value = "portfolio", key = "#adminPortFolioEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
@@ -173,7 +173,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("portfolio")
+    @CacheEvict(value = "portfolio", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deletePortfolio(Long idx) {
@@ -194,6 +194,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
+    @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) {
         try {

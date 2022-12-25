@@ -32,7 +32,7 @@ public class AdminCommonJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public Integer findCommonCodeListCount() {
+    public Integer findCommonCodeListCount(Map<String, Object> commonMap) {
         return queryFactory.selectFrom(commonCodeEntity).fetch().size();
     }
 
@@ -66,12 +66,12 @@ public class AdminCommonJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public CommonCodeDTO findOneCommonCode(CommonCodeEntity existCommonCode) {
+    public CommonCodeDTO findOneCommonCode(Long idx) {
         //모델 상세 조회
         CommonCodeEntity findOneCommonCode = queryFactory
                 .selectFrom(commonCodeEntity)
                 .orderBy(commonCodeEntity.idx.desc())
-                .where(commonCodeEntity.idx.eq(existCommonCode.getIdx())
+                .where(commonCodeEntity.idx.eq(idx)
                         .and(commonCodeEntity.visible.eq("Y")))
                 .fetchOne();
 

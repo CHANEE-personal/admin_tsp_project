@@ -17,7 +17,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    Integer findNegotiationCount(Map<String, Object> negotiationMap);
+    int findNegotiationCount(Map<String, Object> negotiationMap);
 
     /**
      * <pre>

@@ -62,7 +62,7 @@ public class AdminScheduleJpaRepository {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    public Integer findScheduleCount(Map<String, Object> scheduleMap) {
+    public int findScheduleCount(Map<String, Object> scheduleMap) {
         return queryFactory.selectFrom(adminScheduleEntity)
                 .where(searchModelSchedule(scheduleMap))
                 .fetch().size();

@@ -34,7 +34,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findNegotiationCount(Map<String, Object> negotiationMap) {
+    public int findNegotiationCount(Map<String, Object> negotiationMap) {
         try {
             return adminNegotiationJpaRepository.findNegotiationCount(negotiationMap);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @Cacheable("model")
+    @Cacheable(value = "model", key = "#negotiationMap")
     @Transactional(readOnly = true)
     public List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap) {
         try {
@@ -72,7 +72,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @Cacheable("negotiation")
+    @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findOneNegotiation(Long idx) {
         try {
@@ -92,7 +92,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @Cacheable("negotiation")
+    @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findPrevOneNegotiation(Long idx) {
         try {
@@ -112,7 +112,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @Cacheable("negotiation")
+    @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findNextOneNegotiation(Long idx) {
         try {
@@ -153,7 +153,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @CachePut("negotiation")
+    @CachePut(value = "negotiation", key = "#adminNegotiationEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
@@ -174,7 +174,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @CacheEvict("negotiation")
+    @CacheEvict(value = "negotiation", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteModelNegotiation(Long idx) {

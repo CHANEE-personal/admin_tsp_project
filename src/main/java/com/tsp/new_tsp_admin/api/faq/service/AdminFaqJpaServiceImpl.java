@@ -32,7 +32,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findFaqCount(Map<String, Object> faqMap) {
+    public int findFaqCount(Map<String, Object> faqMap) {
         try {
             return adminFaqJpaRepository.findFaqCount(faqMap);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findFaqsList
+     * 1. MethodName : findFaqList
      * 2. ClassName  : AdminFaqJpaServiceImpl.java
      * 3. Comment    : 관리자 FAQ 리스트 조회
      * 4. 작성자       : CHO
@@ -50,11 +50,11 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("faq")
+    @Cacheable(value = "faq", key = "#faqMap")
     @Transactional(readOnly = true)
-    public List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap) {
+    public List<AdminFaqDTO> findFaqList(Map<String, Object> faqMap) {
         try {
-            return adminFaqJpaRepository.findFaqsList(faqMap);
+            return adminFaqJpaRepository.findFaqList(faqMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_FAQ_LIST, e);
         }
@@ -70,11 +70,11 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("faq")
+    @Cacheable(value = "faq", key = "#idx")
     @Transactional(readOnly = true)
-    public AdminFaqDTO findOneFaq(AdminFaqEntity adminFaqEntity) {
+    public AdminFaqDTO findOneFaq(Long idx) {
         try {
-            return adminFaqJpaRepository.findOneFaq(adminFaqEntity);
+            return adminFaqJpaRepository.findOneFaq(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_FAQ, e);
         }
@@ -90,11 +90,11 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("faq")
+    @Cacheable(value = "faq", key = "#idx")
     @Transactional(readOnly = true)
-    public AdminFaqDTO findPrevOneFaq(AdminFaqEntity adminFaqEntity) {
+    public AdminFaqDTO findPrevOneFaq(Long idx) {
         try {
-            return adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+            return adminFaqJpaRepository.findPrevOneFaq(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_FAQ, e);
         }
@@ -110,11 +110,11 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("faq")
+    @Cacheable(value = "faq", key = "#idx")
     @Transactional(readOnly = true)
-    public AdminFaqDTO findNextOneFaq(AdminFaqEntity adminFaqEntity) {
+    public AdminFaqDTO findNextOneFaq(Long idx) {
         try {
-            return adminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+            return adminFaqJpaRepository.findNextOneFaq(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_FAQ, e);
         }
@@ -151,7 +151,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * </pre>
      */
     @Override
-    @CachePut("faq")
+    @CachePut(value = "faq", key = "#adminFaqEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity) {
@@ -172,7 +172,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("faq")
+    @CacheEvict(value = "faq", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteFaq(Long idx) {

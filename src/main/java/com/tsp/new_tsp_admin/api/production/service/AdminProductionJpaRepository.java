@@ -55,7 +55,7 @@ public class AdminProductionJpaRepository {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    public Integer findProductionCount(Map<String, Object> productionMap) {
+    public int findProductionCount(Map<String, Object> productionMap) {
         return queryFactory.selectFrom(adminProductionEntity).where(searchProduction(productionMap)).fetch().size();
     }
 

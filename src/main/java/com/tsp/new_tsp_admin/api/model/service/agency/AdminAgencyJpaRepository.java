@@ -46,7 +46,7 @@ public class AdminAgencyJpaRepository {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    public Integer findAgencyCount(Map<String, Object> agencyMap) {
+    public int findAgencyCount(Map<String, Object> agencyMap) {
         return queryFactory.selectFrom(adminAgencyEntity).where(searchAgency(agencyMap)).fetch().size();
     }
 

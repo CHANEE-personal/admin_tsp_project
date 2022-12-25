@@ -164,15 +164,15 @@ class AdminPortfolioJpaServiceTest {
         adminPortFolioEntity = AdminPortFolioEntity.builder().idx(1L).build();
 
         // then
-        assertThat(adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity).getTitle()).isNotEmpty();
+        assertThat(adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx()).getTitle()).isNotEmpty();
     }
 
     @Test
     @DisplayName("포트폴리오 상세 조회 Mockito 테스트")
     void 포트폴리오상세조회Mockito테스트() {
         // when
-        when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx())).thenReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getIdx()).isEqualTo(adminPortFolioDTO.getIdx());
@@ -183,20 +183,20 @@ class AdminPortfolioJpaServiceTest {
         assertThat(portfolioInfo.getVisible()).isEqualTo(adminPortFolioDTO.getVisible());
 
         // verify
-        verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity);
-        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity.getIdx());
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity.getIdx());
         verifyNoMoreInteractions(mockAdminPortfolioJpaService);
 
         InOrder inOrder = inOrder(mockAdminPortfolioJpaService);
-        inOrder.verify(mockAdminPortfolioJpaService).findOnePortfolio(adminPortFolioEntity);
+        inOrder.verify(mockAdminPortfolioJpaService).findOnePortfolio(adminPortFolioEntity.getIdx());
     }
 
     @Test
     @DisplayName("포트폴리오 상세 조회 BDD 테스트")
     void 포트폴리오상세조회BDD테스트() {
         // when
-        given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx())).willReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getIdx()).isEqualTo(adminPortFolioDTO.getIdx());
@@ -207,8 +207,8 @@ class AdminPortfolioJpaServiceTest {
         assertThat(portfolioInfo.getVisible()).isEqualTo(adminPortFolioDTO.getVisible());
 
         // verify
-        then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity);
-        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity.getIdx());
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity.getIdx());
         then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -227,21 +227,21 @@ class AdminPortfolioJpaServiceTest {
                 .build();
 
         // when
-        adminPortFolioDTO = adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        adminPortFolioDTO = adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
-        when(mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity);
+        when(mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity.getIdx())).thenReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getIdx()).isEqualTo(1);
 
         // verify
-        verify(mockAdminPortfolioJpaService, times(1)).findPrevOnePortfolio(adminPortFolioEntity);
-        verify(mockAdminPortfolioJpaService, atLeastOnce()).findPrevOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, times(1)).findPrevOnePortfolio(adminPortFolioEntity.getIdx());
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findPrevOnePortfolio(adminPortFolioEntity.getIdx());
         verifyNoMoreInteractions(mockAdminPortfolioJpaService);
 
         InOrder inOrder = inOrder(mockAdminPortfolioJpaService);
-        inOrder.verify(mockAdminPortfolioJpaService).findPrevOnePortfolio(adminPortFolioEntity);
+        inOrder.verify(mockAdminPortfolioJpaService).findPrevOnePortfolio(adminPortFolioEntity.getIdx());
     }
 
     @Test
@@ -259,17 +259,17 @@ class AdminPortfolioJpaServiceTest {
                 .build();
 
         // when
-        adminPortFolioDTO = adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        adminPortFolioDTO = adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
-        given(mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity);
+        given(mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity.getIdx())).willReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getIdx()).isEqualTo(1);
 
         // verify
-        then(mockAdminPortfolioJpaService).should(times(1)).findPrevOnePortfolio(adminPortFolioEntity);
-        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findPrevOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(times(1)).findPrevOnePortfolio(adminPortFolioEntity.getIdx());
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findPrevOnePortfolio(adminPortFolioEntity.getIdx());
         then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -288,21 +288,21 @@ class AdminPortfolioJpaServiceTest {
                 .build();
 
         // when
-        adminPortFolioDTO = adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        adminPortFolioDTO = adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
-        when(mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity);
+        when(mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity.getIdx())).thenReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getIdx()).isEqualTo(3);
 
         // verify
-        verify(mockAdminPortfolioJpaService, times(1)).findNextOnePortfolio(adminPortFolioEntity);
-        verify(mockAdminPortfolioJpaService, atLeastOnce()).findNextOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, times(1)).findNextOnePortfolio(adminPortFolioEntity.getIdx());
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findNextOnePortfolio(adminPortFolioEntity.getIdx());
         verifyNoMoreInteractions(mockAdminPortfolioJpaService);
 
         InOrder inOrder = inOrder(mockAdminPortfolioJpaService);
-        inOrder.verify(mockAdminPortfolioJpaService).findNextOnePortfolio(adminPortFolioEntity);
+        inOrder.verify(mockAdminPortfolioJpaService).findNextOnePortfolio(adminPortFolioEntity.getIdx());
     }
 
     @Test
@@ -320,17 +320,17 @@ class AdminPortfolioJpaServiceTest {
                 .build();
 
         // when
-        adminPortFolioDTO = adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        adminPortFolioDTO = adminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
-        given(mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity);
+        given(mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity.getIdx())).willReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findPrevOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getIdx()).isEqualTo(3);
 
         // verify
-        then(mockAdminPortfolioJpaService).should(times(1)).findNextOnePortfolio(adminPortFolioEntity);
-        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findNextOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(times(1)).findNextOnePortfolio(adminPortFolioEntity.getIdx());
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findNextOnePortfolio(adminPortFolioEntity.getIdx());
         then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -341,8 +341,8 @@ class AdminPortfolioJpaServiceTest {
         adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
 
         // when
-        when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx())).thenReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getTitle()).isEqualTo("포트폴리오 테스트");
@@ -351,12 +351,12 @@ class AdminPortfolioJpaServiceTest {
         assertThat(portfolioInfo.getVideoUrl()).isEqualTo("https://youtube.com");
 
         // verify
-        verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity);
-        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity.getIdx());
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity.getIdx());
         verifyNoMoreInteractions(mockAdminPortfolioJpaService);
 
         InOrder inOrder = inOrder(mockAdminPortfolioJpaService);
-        inOrder.verify(mockAdminPortfolioJpaService).findOnePortfolio(adminPortFolioEntity);
+        inOrder.verify(mockAdminPortfolioJpaService).findOnePortfolio(adminPortFolioEntity.getIdx());
     }
 
     @Test
@@ -366,8 +366,8 @@ class AdminPortfolioJpaServiceTest {
         adminPortfolioJpaService.insertPortfolio(adminPortFolioEntity);
 
         // when
-        given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx())).willReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getTitle()).isEqualTo("포트폴리오 테스트");
@@ -376,8 +376,8 @@ class AdminPortfolioJpaServiceTest {
         assertThat(portfolioInfo.getVideoUrl()).isEqualTo("https://youtube.com");
 
         // verify
-        then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity);
-        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity.getIdx());
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity.getIdx());
         then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -402,19 +402,19 @@ class AdminPortfolioJpaServiceTest {
         adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
 
         // when
-        when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).thenReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx())).thenReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getTitle()).isEqualTo("포트폴리오 테스트1");
 
         // verify
-        verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity);
-        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        verify(mockAdminPortfolioJpaService, times(1)).findOnePortfolio(adminPortFolioEntity.getIdx());
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findOnePortfolio(adminPortFolioEntity.getIdx());
         verifyNoMoreInteractions(mockAdminPortfolioJpaService);
 
         InOrder inOrder = inOrder(mockAdminPortfolioJpaService);
-        inOrder.verify(mockAdminPortfolioJpaService).findOnePortfolio(adminPortFolioEntity);
+        inOrder.verify(mockAdminPortfolioJpaService).findOnePortfolio(adminPortFolioEntity.getIdx());
     }
 
     @Test
@@ -438,15 +438,15 @@ class AdminPortfolioJpaServiceTest {
         adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
 
         // when
-        given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity)).willReturn(adminPortFolioDTO);
-        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity);
+        given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx())).willReturn(adminPortFolioDTO);
+        AdminPortFolioDTO portfolioInfo = mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx());
 
         // then
         assertThat(portfolioInfo.getTitle()).isEqualTo("포트폴리오 테스트1");
 
         // verify
-        then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity);
-        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity);
+        then(mockAdminPortfolioJpaService).should(times(1)).findOnePortfolio(adminPortFolioEntity.getIdx());
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findOnePortfolio(adminPortFolioEntity.getIdx());
         then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
 

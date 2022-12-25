@@ -52,11 +52,11 @@ public class AdminFaqJpaController {
     public Map<String, Object> findFaqsList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> faqMap = new HashMap<>();
 
-        Integer faqCount = this.adminFaqJpaService.findFaqCount(searchCommon.searchCommon(page, paramMap));
+        int faqCount = this.adminFaqJpaService.findFaqCount(searchCommon.searchCommon(page, paramMap));
         List<AdminFaqDTO> faqList = new ArrayList<>();
 
         if (faqCount > 0) {
-            faqList = this.adminFaqJpaService.findFaqsList(searchCommon.searchCommon(page, paramMap));
+            faqList = this.adminFaqJpaService.findFaqList(searchCommon.searchCommon(page, paramMap));
         }
 
         // 리스트 수
@@ -90,7 +90,7 @@ public class AdminFaqJpaController {
     })
     @GetMapping("/{idx}")
     public AdminFaqDTO findOneFaq(@PathVariable Long idx) {
-        return adminFaqJpaService.findOneFaq(AdminFaqEntity.builder().idx(idx).build());
+        return adminFaqJpaService.findOneFaq(idx);
     }
 
     /**
@@ -112,7 +112,7 @@ public class AdminFaqJpaController {
     })
     @GetMapping("/{idx}/prev")
     public AdminFaqDTO findPrevOneFaq(@PathVariable Long idx) {
-        return adminFaqJpaService.findPrevOneFaq(AdminFaqEntity.builder().idx(idx).build());
+        return adminFaqJpaService.findPrevOneFaq(idx);
     }
 
     /**
@@ -134,7 +134,7 @@ public class AdminFaqJpaController {
     })
     @GetMapping("/{idx}/next")
     public AdminFaqDTO findNextOneFaq(@PathVariable Long idx) {
-        return adminFaqJpaService.findNextOneFaq(AdminFaqEntity.builder().idx(idx).build());
+        return adminFaqJpaService.findNextOneFaq(idx);
     }
 
     /**

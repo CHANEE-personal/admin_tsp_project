@@ -302,8 +302,8 @@ class AdminSupportJpaRepositoryTest {
                 .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
 
         // when
-        when(mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap)).thenReturn(evaluationList);
-        List<EvaluationDTO> evaluationInfo = mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap);
+        when(mockAdminSupportJpaRepository.findEvaluationList(evaluationMap)).thenReturn(evaluationList);
+        List<EvaluationDTO> evaluationInfo = mockAdminSupportJpaRepository.findEvaluationList(evaluationMap);
 
         // then
         assertThat(evaluationInfo.get(0).getIdx()).isEqualTo(evaluationInfo.get(0).getIdx());
@@ -311,12 +311,12 @@ class AdminSupportJpaRepositoryTest {
         assertThat(evaluationInfo.get(0).getEvaluateComment()).isEqualTo(evaluationInfo.get(0).getEvaluateComment());
 
         // verify
-        verify(mockAdminSupportJpaRepository, times(1)).findEvaluationsList(evaluationMap);
-        verify(mockAdminSupportJpaRepository, atLeastOnce()).findEvaluationsList(evaluationMap);
+        verify(mockAdminSupportJpaRepository, times(1)).findEvaluationList(evaluationMap);
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findEvaluationList(evaluationMap);
         verifyNoMoreInteractions(mockAdminSupportJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
-        inOrder.verify(mockAdminSupportJpaRepository).findEvaluationsList(evaluationMap);
+        inOrder.verify(mockAdminSupportJpaRepository).findEvaluationList(evaluationMap);
     }
 
     @Test
@@ -332,8 +332,8 @@ class AdminSupportJpaRepositoryTest {
                 .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
 
         // when
-        given(mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap)).willReturn(evaluationList);
-        List<EvaluationDTO> evaluationInfo = mockAdminSupportJpaRepository.findEvaluationsList(evaluationMap);
+        given(mockAdminSupportJpaRepository.findEvaluationList(evaluationMap)).willReturn(evaluationList);
+        List<EvaluationDTO> evaluationInfo = mockAdminSupportJpaRepository.findEvaluationList(evaluationMap);
 
         // then
         assertThat(evaluationInfo.get(0).getIdx()).isEqualTo(evaluationInfo.get(0).getIdx());
@@ -341,8 +341,8 @@ class AdminSupportJpaRepositoryTest {
         assertThat(evaluationInfo.get(0).getEvaluateComment()).isEqualTo(evaluationInfo.get(0).getEvaluateComment());
 
         // verify
-        then(mockAdminSupportJpaRepository).should(times(1)).findEvaluationsList(evaluationMap);
-        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findEvaluationsList(evaluationMap);
+        then(mockAdminSupportJpaRepository).should(times(1)).findEvaluationList(evaluationMap);
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findEvaluationList(evaluationMap);
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -357,8 +357,8 @@ class AdminSupportJpaRepositoryTest {
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
-        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
-        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx())).thenReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(evaluationInfo.getIdx()).isEqualTo(1);
@@ -366,12 +366,12 @@ class AdminSupportJpaRepositoryTest {
         assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
-        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
-        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity.getIdx());
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminSupportJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
-        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity.getIdx());
     }
 
     @Test
@@ -385,8 +385,8 @@ class AdminSupportJpaRepositoryTest {
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
-        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
-        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx())).willReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(evaluationInfo.getIdx()).isEqualTo(1);
@@ -394,8 +394,8 @@ class AdminSupportJpaRepositoryTest {
         assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
-        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
-        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity.getIdx());
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity.getIdx());
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -416,20 +416,20 @@ class AdminSupportJpaRepositoryTest {
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
-        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
-        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx())).thenReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(evaluationInfo.getSupportIdx()).isEqualTo(supportIdx);
         assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
-        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
-        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity.getIdx());
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminSupportJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
-        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity.getIdx());
     }
 
     @Test
@@ -449,16 +449,16 @@ class AdminSupportJpaRepositoryTest {
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
-        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
-        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx())).willReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(evaluationInfo.getSupportIdx()).isEqualTo(supportIdx);
         assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
-        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
-        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity.getIdx());
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity.getIdx());
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -490,20 +490,20 @@ class AdminSupportJpaRepositoryTest {
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
-        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
-        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx())).thenReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(evaluationInfo.getSupportIdx()).isEqualTo(adminSupportEntity.getIdx());
         assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
-        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
-        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity.getIdx());
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminSupportJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
-        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity.getIdx());
     }
 
     @Test
@@ -534,16 +534,16 @@ class AdminSupportJpaRepositoryTest {
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         // when
-        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
-        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity);
+        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx())).willReturn(evaluationDTO);
+        EvaluationDTO evaluationInfo = mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx());
 
         // then
         assertThat(evaluationInfo.getSupportIdx()).isEqualTo(adminSupportEntity.getIdx());
         assertThat(evaluationInfo.getEvaluateComment()).isEqualTo("합격");
 
         // verify
-        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
-        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity.getIdx());
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity.getIdx());
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -561,19 +561,19 @@ class AdminSupportJpaRepositoryTest {
         em.persist(evaluationEntity);
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
-        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).thenReturn(evaluationDTO);
+        when(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx())).thenReturn(evaluationDTO);
         Long deleteIdx = adminSupportJpaRepository.deleteEvaluation(evaluationEntity.getIdx());
 
         // then
-        assertThat(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity);
-        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity);
+        verify(mockAdminSupportJpaRepository, times(1)).findOneEvaluation(evaluationEntity.getIdx());
+        verify(mockAdminSupportJpaRepository, atLeastOnce()).findOneEvaluation(evaluationEntity.getIdx());
         verifyNoMoreInteractions(mockAdminSupportJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminSupportJpaRepository);
-        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity);
+        inOrder.verify(mockAdminSupportJpaRepository).findOneEvaluation(evaluationEntity.getIdx());
     }
 
     @Test
@@ -590,15 +590,15 @@ class AdminSupportJpaRepositoryTest {
         em.persist(evaluationEntity);
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
-        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity)).willReturn(evaluationDTO);
+        given(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx())).willReturn(evaluationDTO);
         Long deleteIdx = adminSupportJpaRepository.deleteEvaluation(evaluationEntity.getIdx());
 
         // then
-        assertThat(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminSupportJpaRepository.findOneEvaluation(evaluationEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity);
-        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity);
+        then(mockAdminSupportJpaRepository).should(times(1)).findOneEvaluation(evaluationEntity.getIdx());
+        then(mockAdminSupportJpaRepository).should(atLeastOnce()).findOneEvaluation(evaluationEntity.getIdx());
         then(mockAdminSupportJpaRepository).shouldHaveNoMoreInteractions();
     }
 

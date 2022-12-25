@@ -39,7 +39,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findAgencyCount(Map<String, Object> agencyMap) {
+    public int findAgencyCount(Map<String, Object> agencyMap) {
         try {
             return adminAgencyJpaRepository.findAgencyCount(agencyMap);
         } catch (Exception e) {
@@ -51,13 +51,13 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * <pre>
      * 1. MethodName : findAgencyList
      * 2. ClassName  : AdminAgencyJpaServiceImpl.java
-     * 3. Comment    : 관리자 소속사 리스트 수 조회
+     * 3. Comment    : 관리자 소속사 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
     @Override
-    @Cacheable("agency")
+    @Cacheable(value = "agency", key = "#agencyMap")
     @Transactional(readOnly = true)
     public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) {
         try {
@@ -77,7 +77,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("agency")
+    @Cacheable(value = "agency", key = "#idx")
     @Transactional(readOnly = true)
     public AdminAgencyDTO findOneAgency(Long idx) {
         try {
@@ -118,7 +118,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    @CachePut("agency")
+    @CachePut(value = "agency", key = "#adminAgencyEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) {
@@ -139,7 +139,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("agency")
+    @CacheEvict(value = "agency", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteAgency(Long idx) {

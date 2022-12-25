@@ -20,7 +20,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일       : 2022. 08. 14.
      * </pre>
      */
-    Integer findAgencyCount(Map<String, Object> agencyMap);
+    int findAgencyCount(Map<String, Object> agencyMap);
 
     /**
      * <pre>

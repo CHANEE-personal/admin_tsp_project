@@ -17,7 +17,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    Integer findScheduleCount(Map<String, Object> scheduleMap);
+    int findScheduleCount(Map<String, Object> scheduleMap);
 
     /**
      * <pre>

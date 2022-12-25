@@ -20,7 +20,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findSupportCount(Map<String, Object> supportMap);
+    int findSupportCount(Map<String, Object> supportMap);
 
     /**
      * <pre>
@@ -79,25 +79,25 @@ public interface AdminSupportJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findEvaluationsCount
+     * 1. MethodName : findEvaluationCount
      * 2. ClassName  : AdminSupportJpaService.java
      * 3. Comment    : 관리자 지원모델 평가 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    Integer findEvaluationsCount(Map<String, Object> evaluationMap);
+    int findEvaluationCount(Map<String, Object> evaluationMap);
 
     /**
      * <pre>
-     * 1. MethodName : findEvaluationsList
+     * 1. MethodName : findEvaluationList
      * 2. ClassName  : AdminSupportJpaService.java
      * 3. Comment    : 관리자 지원모델 평가 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap);
+    List<EvaluationDTO> findEvaluationList(Map<String, Object> evaluationMap);
 
     /**
      * <pre>
@@ -108,7 +108,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    EvaluationDTO findOneEvaluation(EvaluationEntity evaluationEntity);
+    EvaluationDTO findOneEvaluation(Long idx);
 
     /**
      * <pre>

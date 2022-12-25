@@ -57,7 +57,7 @@ public class AdminSupportJpaController {
         // 페이징 및 검색
         Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
 
-        Integer supportListCount = this.adminSupportJpaService.findSupportCount(supportMap);
+        int supportListCount = this.adminSupportJpaService.findSupportCount(supportMap);
         List<AdminSupportDTO> supportList = new ArrayList<>();
 
         if (supportListCount > 0) {
@@ -142,11 +142,11 @@ public class AdminSupportJpaController {
         // 페이징 및 검색
         Map<String, Object> evaluationMap = searchCommon.searchCommon(page, paramMap);
 
-        Integer evaluationCount = this.adminSupportJpaService.findEvaluationsCount(evaluationMap);
+        Integer evaluationCount = this.adminSupportJpaService.findEvaluationCount(evaluationMap);
         List<EvaluationDTO> evaluationsList = new ArrayList<>();
 
         if (evaluationCount > 0) {
-            evaluationsList = this.adminSupportJpaService.findEvaluationsList(evaluationMap);
+            evaluationsList = this.adminSupportJpaService.findEvaluationList(evaluationMap);
         }
 
         // 리스트 수
@@ -180,7 +180,7 @@ public class AdminSupportJpaController {
     })
     @GetMapping("/evaluation/{idx}")
     public EvaluationDTO findOneEvaluation(@PathVariable Long idx) {
-        return this.adminSupportJpaService.findOneEvaluation(EvaluationEntity.builder().idx(idx).build());
+        return this.adminSupportJpaService.findOneEvaluation(idx);
     }
 
     /**

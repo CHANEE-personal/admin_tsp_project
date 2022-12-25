@@ -18,7 +18,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    Integer findPortfolioCount(Map<String, Object> portfolioMap);
+    int findPortfolioCount(Map<String, Object> portfolioMap);
 
     /**
      * <pre>
@@ -40,7 +40,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      */
-    AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO findOnePortfolio(Long idx);
 
     /**
      * <pre>
@@ -51,7 +51,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 09. 14.
      * </pre>
      */
-    AdminPortFolioDTO findPrevOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO findPrevOnePortfolio(Long idx);
 
     /**
      * <pre>
@@ -62,7 +62,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 09. 14.
      * </pre>
      */
-    AdminPortFolioDTO findNextOnePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO findNextOnePortfolio(Long idx);
 
     /**
      * <pre>

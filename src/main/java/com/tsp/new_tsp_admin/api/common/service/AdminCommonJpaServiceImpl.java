@@ -6,6 +6,7 @@ import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +32,10 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      * </pre>
      */
     @Override
-    public Integer findCommonCodeListCount() {
+    @Transactional(readOnly = true)
+    public int findCommonCodeListCount(Map<String, Object> commonMap) {
         try {
-            return adminCommonJpaRepository.findCommonCodeListCount();
+            return adminCommonJpaRepository.findCommonCodeListCount(commonMap);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMON_LIST, e);
         }
@@ -49,6 +51,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      * </pre>
      */
     @Override
+    @Cacheable(value = "common", key = "#commonMap")
     @Transactional(readOnly = true)
     public List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap) {
         try {
@@ -68,10 +71,11 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      * </pre>
      */
     @Override
+    @Cacheable(value = "common", key = "#idx")
     @Transactional(readOnly = true)
-    public CommonCodeDTO findOneCommonCode(CommonCodeEntity commonCodeEntity) {
+    public CommonCodeDTO findOneCommonCode(Long idx) {
         try {
-            return adminCommonJpaRepository.findOneCommonCode(commonCodeEntity);
+            return adminCommonJpaRepository.findOneCommonCode(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMON, e);
         }
@@ -108,7 +112,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      * </pre>
      */
     @Override
-    @CachePut("common")
+    @CachePut(value = "common", key = "#commonCodeEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity) {
@@ -129,7 +133,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("common")
+    @CacheEvict(value = "common", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteCommonCode(Long idx) {

@@ -41,7 +41,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findModelCount(Map<String, Object> modelMap) {
+    public int findModelCount(Map<String, Object> modelMap) {
         try {
             return adminModelJpaRepository.findModelCount(modelMap);
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("model")
+    @Cacheable(value = "model", key = "#modelMap")
     @Transactional(readOnly = true)
     public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) {
         try {
@@ -79,7 +79,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("model")
+    @Cacheable(value = "model", key = "#idx")
     @Transactional(readOnly = true)
     public AdminModelDTO findOneModel(Long idx) {
         try {
@@ -99,7 +99,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("model")
+    @Cacheable(value = "model", key = "#adminModelEntity.idx")
     @Transactional(readOnly = true)
     public AdminModelDTO findPrevOneModel(AdminModelEntity adminModelEntity) {
         try {
@@ -119,7 +119,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("model")
+    @Cacheable(value = "model", key = "#adminModelEntity.idx")
     @Transactional(readOnly = true)
     public AdminModelDTO findNextOneModel(AdminModelEntity adminModelEntity) {
         try {
@@ -160,7 +160,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut("model")
+    @CachePut(value = "model", key = "#adminModelEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
@@ -181,7 +181,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("model")
+    @CacheEvict(value = "model", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteModel(Long idx) {
@@ -240,7 +240,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut("model")
+    @CachePut(value = "model", key = "#adminModelEntity.agencyIdx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity) {
@@ -261,6 +261,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
+    @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findModelAdminComment(Long idx) {
         try {
@@ -280,7 +281,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut("model")
+    @CachePut(value = "model", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO toggleModelNewYn(Long idx) {
@@ -301,7 +302,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("schedule")
+    @Cacheable(value = "schedule", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminScheduleDTO> findOneModelSchedule(Long idx) {
         try {

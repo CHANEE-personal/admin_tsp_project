@@ -115,7 +115,7 @@ class AdminCommentJpaRepositoryTest {
                 .idx(1L).build();
 
         // when
-        adminCommentDTO = adminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
+        adminCommentDTO = adminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx());
     }
 
     @Test
@@ -192,8 +192,8 @@ class AdminCommentJpaRepositoryTest {
         adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
-        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
+        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
+        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(commentInfo.getIdx()).isEqualTo(1);
@@ -202,12 +202,12 @@ class AdminCommentJpaRepositoryTest {
         assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
 
         // verify
-        verify(mockAdminCommentJpaRepository, times(1)).findOneAdminComment(adminCommentEntity);
-        verify(mockAdminCommentJpaRepository, atLeastOnce()).findOneAdminComment(adminCommentEntity);
+        verify(mockAdminCommentJpaRepository, times(1)).findOneAdminComment(adminCommentEntity.getIdx());
+        verify(mockAdminCommentJpaRepository, atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
         verifyNoMoreInteractions(mockAdminCommentJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminCommentJpaRepository);
-        inOrder.verify(mockAdminCommentJpaRepository).findOneAdminComment(adminCommentEntity);
+        inOrder.verify(mockAdminCommentJpaRepository).findOneAdminComment(adminCommentEntity.getIdx());
     }
 
     @Test
@@ -224,8 +224,8 @@ class AdminCommentJpaRepositoryTest {
         adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
-        given(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).willReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
+        given(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx())).willReturn(adminCommentDTO);
+        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(commentInfo.getIdx()).isEqualTo(1);
@@ -234,8 +234,8 @@ class AdminCommentJpaRepositoryTest {
         assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
 
         // verify
-        then(mockAdminCommentJpaRepository).should(times(1)).findOneAdminComment(adminCommentEntity);
-        then(mockAdminCommentJpaRepository).should(atLeastOnce()).findOneAdminComment(adminCommentEntity);
+        then(mockAdminCommentJpaRepository).should(times(1)).findOneAdminComment(adminCommentEntity.getIdx());
+        then(mockAdminCommentJpaRepository).should(atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
         then(mockAdminCommentJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -246,8 +246,8 @@ class AdminCommentJpaRepositoryTest {
         adminCommentJpaRepository.insertAdminComment(adminCommentEntity);
 
         // when
-        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
+        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
+        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트");
@@ -255,12 +255,12 @@ class AdminCommentJpaRepositoryTest {
         assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
 
         // verify
-        verify(mockAdminCommentJpaRepository, times(1)).findOneAdminComment(adminCommentEntity);
-        verify(mockAdminCommentJpaRepository, atLeastOnce()).findOneAdminComment(adminCommentEntity);
+        verify(mockAdminCommentJpaRepository, times(1)).findOneAdminComment(adminCommentEntity.getIdx());
+        verify(mockAdminCommentJpaRepository, atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
         verifyNoMoreInteractions(mockAdminCommentJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminCommentJpaRepository);
-        inOrder.verify(mockAdminCommentJpaRepository).findOneAdminComment(adminCommentEntity);
+        inOrder.verify(mockAdminCommentJpaRepository).findOneAdminComment(adminCommentEntity.getIdx());
     }
 
     @Test
@@ -270,8 +270,8 @@ class AdminCommentJpaRepositoryTest {
         adminCommentJpaRepository.insertAdminComment(adminCommentEntity);
 
         // when
-        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
+        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
+        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트");
@@ -279,8 +279,8 @@ class AdminCommentJpaRepositoryTest {
         assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
 
         // verify
-        then(mockAdminCommentJpaRepository).should(times(1)).findOneAdminComment(adminCommentEntity);
-        then(mockAdminCommentJpaRepository).should(atLeastOnce()).findOneAdminComment(adminCommentEntity);
+        then(mockAdminCommentJpaRepository).should(times(1)).findOneAdminComment(adminCommentEntity.getIdx());
+        then(mockAdminCommentJpaRepository).should(atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
         then(mockAdminCommentJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -303,19 +303,19 @@ class AdminCommentJpaRepositoryTest {
         adminCommentJpaRepository.updateAdminComment(adminCommentEntity);
 
         // when
-        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
+        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
+        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트1");
 
         // verify
-        verify(mockAdminCommentJpaRepository, times(1)).findOneAdminComment(adminCommentEntity);
-        verify(mockAdminCommentJpaRepository, atLeastOnce()).findOneAdminComment(adminCommentEntity);
+        verify(mockAdminCommentJpaRepository, times(1)).findOneAdminComment(adminCommentEntity.getIdx());
+        verify(mockAdminCommentJpaRepository, atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
         verifyNoMoreInteractions(mockAdminCommentJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminCommentJpaRepository);
-        inOrder.verify(mockAdminCommentJpaRepository).findOneAdminComment(adminCommentEntity);
+        inOrder.verify(mockAdminCommentJpaRepository).findOneAdminComment(adminCommentEntity.getIdx());
     }
 
     @Test
@@ -337,15 +337,15 @@ class AdminCommentJpaRepositoryTest {
         adminCommentJpaRepository.updateAdminComment(adminCommentEntity);
 
         // when
-        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity);
+        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
+        AdminCommentDTO commentInfo = mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx());
 
         // then
         assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트1");
 
         // verify
-        then(mockAdminCommentJpaRepository).should(times(1)).findOneAdminComment(adminCommentEntity);
-        then(mockAdminCommentJpaRepository).should(atLeastOnce()).findOneAdminComment(adminCommentEntity);
+        then(mockAdminCommentJpaRepository).should(times(1)).findOneAdminComment(adminCommentEntity.getIdx());
+        then(mockAdminCommentJpaRepository).should(atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
         then(mockAdminCommentJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -370,19 +370,19 @@ class AdminCommentJpaRepositoryTest {
         adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
-        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).thenReturn(adminCommentDTO);
+        when(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
         Long deleteIdx = adminCommentJpaRepository.deleteAdminComment(adminCommentEntity.getIdx());
 
         // then
-        assertThat(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        verify(mockAdminCommentJpaRepository, times(1)).findOneAdminComment(adminCommentEntity);
-        verify(mockAdminCommentJpaRepository, atLeastOnce()).findOneAdminComment(adminCommentEntity);
+        verify(mockAdminCommentJpaRepository, times(1)).findOneAdminComment(adminCommentEntity.getIdx());
+        verify(mockAdminCommentJpaRepository, atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
         verifyNoMoreInteractions(mockAdminCommentJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminCommentJpaRepository);
-        inOrder.verify(mockAdminCommentJpaRepository).findOneAdminComment(adminCommentEntity);
+        inOrder.verify(mockAdminCommentJpaRepository).findOneAdminComment(adminCommentEntity.getIdx());
     }
 
     @Test
@@ -393,15 +393,15 @@ class AdminCommentJpaRepositoryTest {
         adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
-        given(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity)).willReturn(adminCommentDTO);
+        given(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx())).willReturn(adminCommentDTO);
         Long deleteIdx = adminCommentJpaRepository.deleteAdminComment(adminCommentEntity.getIdx());
 
         // then
-        assertThat(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminCommentJpaRepository.findOneAdminComment(adminCommentEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        then(mockAdminCommentJpaRepository).should(times(1)).findOneAdminComment(adminCommentEntity);
-        then(mockAdminCommentJpaRepository).should(atLeastOnce()).findOneAdminComment(adminCommentEntity);
+        then(mockAdminCommentJpaRepository).should(times(1)).findOneAdminComment(adminCommentEntity.getIdx());
+        then(mockAdminCommentJpaRepository).should(atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
         then(mockAdminCommentJpaRepository).shouldHaveNoMoreInteractions();
     }
 }
