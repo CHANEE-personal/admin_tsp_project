@@ -17,7 +17,6 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.adminSupportEntity;
 import static com.tsp.new_tsp_admin.api.domain.support.evaluation.QEvaluationEntity.evaluationEntity;
@@ -161,14 +160,14 @@ public class AdminSupportJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findEvaluationsList
+     * 1. MethodName : findEvaluationList
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 평가내용 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public List<EvaluationDTO> findEvaluationsList(Map<String, Object> evaluationMap) {
+    public List<EvaluationDTO> findEvaluationList(Map<String, Object> evaluationMap) {
         List<EvaluationEntity> evaluationList = queryFactory.selectFrom(evaluationEntity)
                 .where(evaluationEntity.visible.eq("Y"))
                 .orderBy(adminSupportEntity.idx.desc())
@@ -191,10 +190,10 @@ public class AdminSupportJpaRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public EvaluationDTO findOneEvaluation(EvaluationEntity existEvaluationEntity) {
+    public EvaluationDTO findOneEvaluation(Long idx) {
         //모델 상세 조회
         EvaluationEntity findOneEvaluation = queryFactory.selectFrom(evaluationEntity)
-                .where(evaluationEntity.idx.eq(existEvaluationEntity.getIdx()))
+                .where(evaluationEntity.idx.eq(idx))
                 .fetchOne();
 
         assert findOneEvaluation != null;

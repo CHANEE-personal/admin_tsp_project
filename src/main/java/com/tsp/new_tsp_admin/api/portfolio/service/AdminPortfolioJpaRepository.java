@@ -55,7 +55,7 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 12.
      * </pre>
      */
-    public Integer findPortfolioCount(Map<String, Object> portfolioMap) {
+    public int findPortfolioCount(Map<String, Object> portfolioMap) {
         return queryFactory.selectFrom(adminPortFolioEntity).where(searchPortfolio(portfolioMap)).fetch().size();
     }
 
@@ -92,13 +92,13 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 05. 13.
      * </pre>
      */
-    public AdminPortFolioDTO findOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+    public AdminPortFolioDTO findOnePortfolio(Long idx) {
         // 포트폴리오 상세 조회
         AdminPortFolioEntity findOnePortfolio = queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .leftJoin(adminPortFolioEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
-                .where(adminPortFolioEntity.idx.eq(existAdminPortfolioEntity.getIdx())
+                .where(adminPortFolioEntity.idx.eq(idx)
                         .and(adminPortFolioEntity.visible.eq("Y")
                                 .and(commonImageEntity.typeName.eq(EntityType.PORTFOLIO))))
                 .fetchOne();
@@ -116,12 +116,12 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 09. 14.
      * </pre>
      */
-    public AdminPortFolioDTO findPrevOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+    public AdminPortFolioDTO findPrevOnePortfolio(Long idx) {
         // 이전 포트폴리오 조회
         AdminPortFolioEntity findPrevOnePortfolio = queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .orderBy(adminPortFolioEntity.idx.desc())
-                .where(adminPortFolioEntity.idx.lt(existAdminPortfolioEntity.getIdx())
+                .where(adminPortFolioEntity.idx.lt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 
@@ -137,12 +137,12 @@ public class AdminPortfolioJpaRepository {
      * 5. 작성일       : 2022. 09. 14.
      * </pre>
      */
-    public AdminPortFolioDTO findNextOnePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
+    public AdminPortFolioDTO findNextOnePortfolio(Long idx) {
         // 다음 포트폴리오 조회
         AdminPortFolioEntity findPrevOnePortfolio = queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .orderBy(adminPortFolioEntity.idx.desc())
-                .where(adminPortFolioEntity.idx.gt(existAdminPortfolioEntity.getIdx())
+                .where(adminPortFolioEntity.idx.gt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
                 .fetchFirst();
 

@@ -90,7 +90,7 @@ public class AdminCommentJpaController {
     })
     @GetMapping("/{idx}")
     public AdminCommentDTO findOneAdminComment(@PathVariable Long idx) {
-        return adminCommentJpaService.findOneAdminComment(AdminCommentEntity.builder().idx(idx).build());
+        return adminCommentJpaService.findOneAdminComment(idx);
     }
 
     /**

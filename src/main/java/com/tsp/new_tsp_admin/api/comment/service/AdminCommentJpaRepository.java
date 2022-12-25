@@ -37,7 +37,7 @@ public class AdminCommentJpaRepository {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    public Integer findAdminCommentCount(Map<String, Object> commentMap) {
+    public int findAdminCommentCount(Map<String, Object> commentMap) {
         return queryFactory.selectFrom(adminCommentEntity).where(searchComment(commentMap)).fetch().size();
     }
 
@@ -74,11 +74,11 @@ public class AdminCommentJpaRepository {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    public AdminCommentDTO findOneAdminComment(AdminCommentEntity existAdminCommentEntity) {
+    public AdminCommentDTO findOneAdminComment(Long idx) {
         AdminCommentEntity findOneAdminComment = queryFactory
                 .selectFrom(adminCommentEntity)
                 .orderBy(adminCommentEntity.idx.desc())
-                .where(adminCommentEntity.idx.eq(existAdminCommentEntity.getIdx())
+                .where(adminCommentEntity.idx.eq(idx)
                         .and(adminCommentEntity.visible.eq("Y")))
                 .fetchOne();
 

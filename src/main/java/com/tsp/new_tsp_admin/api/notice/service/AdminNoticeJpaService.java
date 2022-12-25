@@ -16,7 +16,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    Integer findNoticeCount(Map<String, Object> noticeMap);
+    int findNoticeCount(Map<String, Object> noticeMap);
 
     /**
      * <pre>

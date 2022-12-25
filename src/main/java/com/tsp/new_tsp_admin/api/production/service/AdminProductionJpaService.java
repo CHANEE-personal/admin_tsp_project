@@ -20,7 +20,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 09.
      * </pre>
      */
-    Integer findProductionCount(Map<String, Object> productionMap);
+    int findProductionCount(Map<String, Object> productionMap);
 
     /**
      * <pre>

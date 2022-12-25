@@ -53,14 +53,14 @@ public class AdminFaqJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findFaqsList
+     * 1. MethodName : findFaqList
      * 2. ClassName  : AdminFaqJpaRepository.java
      * 3. Comment    : 관리자 FAQ 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 18.
      * </pre>
      */
-    public List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap) {
+    public List<AdminFaqDTO> findFaqList(Map<String, Object> faqMap) {
         List<AdminFaqEntity> faqList = queryFactory
                 .selectFrom(adminFaqEntity)
                 .orderBy(adminFaqEntity.idx.desc())
@@ -84,11 +84,11 @@ public class AdminFaqJpaRepository {
      * 5. 작성일       : 2022. 08. 18.
      * </pre>
      */
-    public AdminFaqDTO findOneFaq(AdminFaqEntity existAdminFaqEntity) {
+    public AdminFaqDTO findOneFaq(Long idx) {
         AdminFaqEntity findOneFaq = queryFactory
                 .selectFrom(adminFaqEntity)
                 .orderBy(adminFaqEntity.idx.desc())
-                .where(adminFaqEntity.idx.eq(existAdminFaqEntity.getIdx())
+                .where(adminFaqEntity.idx.eq(idx)
                         .and(adminFaqEntity.visible.eq("Y")))
                 .fetchOne();
 
@@ -105,11 +105,11 @@ public class AdminFaqJpaRepository {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    public AdminFaqDTO findPrevOneFaq(AdminFaqEntity existAdminFaqEntity) {
+    public AdminFaqDTO findPrevOneFaq(Long idx) {
         AdminFaqEntity findPrevOneFaq = queryFactory
                 .selectFrom(adminFaqEntity)
                 .orderBy(adminFaqEntity.idx.desc())
-                .where(adminFaqEntity.idx.lt(existAdminFaqEntity.getIdx())
+                .where(adminFaqEntity.idx.lt(idx)
                         .and(adminFaqEntity.visible.eq("Y")))
                 .fetchOne();
 
@@ -126,11 +126,11 @@ public class AdminFaqJpaRepository {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    public AdminFaqDTO findNextOneFaq(AdminFaqEntity existAdminFaqEntity) {
+    public AdminFaqDTO findNextOneFaq(Long idx) {
         AdminFaqEntity findNextOneFaq = queryFactory
                 .selectFrom(adminFaqEntity)
                 .orderBy(adminFaqEntity.idx.desc())
-                .where(adminFaqEntity.idx.gt(existAdminFaqEntity.getIdx())
+                .where(adminFaqEntity.idx.gt(idx)
                         .and(adminFaqEntity.visible.eq("Y")))
                 .fetchOne();
 

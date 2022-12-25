@@ -32,7 +32,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findNoticeCount(Map<String, Object> noticeMap) {
+    public int findNoticeCount(Map<String, Object> noticeMap) {
         try {
             return adminNoticeJpaRepository.findNoticeCount(noticeMap);
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("notice")
+    @Cacheable(value = "notice", key = "#noticeMap")
     @Transactional(readOnly = true)
     public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) {
         try {
@@ -70,7 +70,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("notice")
+    @Cacheable(value = "notice", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNoticeDTO findOneNotice(Long idx) {
         try {
@@ -90,7 +90,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("notice")
+    @Cacheable(value = "notice", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNoticeDTO findPrevOneNotice(Long idx) {
         try {
@@ -110,7 +110,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("notice")
+    @Cacheable(value = "notice", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNoticeDTO findNextOneNotice(Long idx) {
         try {
@@ -151,7 +151,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * </pre>
      */
     @Override
-    @CachePut("notice")
+    @CachePut(value = "notice", key = "#adminNoticeEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity) {
@@ -172,7 +172,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * </pre>
      */
     @Override
-    @CachePut("notice")
+    @CachePut(value = "notice", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminNoticeDTO toggleFixed(Long idx) {
@@ -193,7 +193,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("notice")
+    @CacheEvict(value = "notice", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteNotice(Long idx) {

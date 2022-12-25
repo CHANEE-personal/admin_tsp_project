@@ -17,7 +17,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findCommonCodeListCount();
+    int findCommonCodeListCount(Map<String, Object> commonMap);
 
     /**
      * <pre>
@@ -39,7 +39,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    CommonCodeDTO findOneCommonCode(CommonCodeEntity commonCodeEntity);
+    CommonCodeDTO findOneCommonCode(Long idx);
 
     /**
      * <pre>

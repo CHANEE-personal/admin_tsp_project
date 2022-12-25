@@ -80,7 +80,7 @@ class AdminFaqJpaRepositoryTest {
         faqMap.put("size", 3);
 
         // then
-        assertThat(adminFaqJpaRepository.findFaqsList(faqMap)).isNotEmpty();
+        assertThat(adminFaqJpaRepository.findFaqList(faqMap)).isNotEmpty();
     }
 
     @Test
@@ -91,7 +91,7 @@ class AdminFaqJpaRepositoryTest {
         adminFaqEntity = AdminFaqEntity.builder().idx(1L).build();
 
         // when
-        adminFaqDTO = adminFaqJpaRepository.findOneFaq(adminFaqEntity);
+        adminFaqDTO = adminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertAll(() -> assertThat(adminFaqDTO.getIdx()).isEqualTo(1),
@@ -122,8 +122,8 @@ class AdminFaqJpaRepositoryTest {
                 .description("FAQ 테스트").build());
 
         // when
-        when(mockAdminFaqJpaRepository.findFaqsList(faqMap)).thenReturn(faqList);
-        List<AdminFaqDTO> newFaqList = mockAdminFaqJpaRepository.findFaqsList(faqMap);
+        when(mockAdminFaqJpaRepository.findFaqList(faqMap)).thenReturn(faqList);
+        List<AdminFaqDTO> newFaqList = mockAdminFaqJpaRepository.findFaqList(faqMap);
 
         // then
         assertThat(newFaqList.get(0).getIdx()).isEqualTo(faqList.get(0).getIdx());
@@ -132,12 +132,12 @@ class AdminFaqJpaRepositoryTest {
         assertThat(newFaqList.get(0).getVisible()).isEqualTo(faqList.get(0).getVisible());
 
         // verify
-        verify(mockAdminFaqJpaRepository, times(1)).findFaqsList(faqMap);
-        verify(mockAdminFaqJpaRepository, atLeastOnce()).findFaqsList(faqMap);
+        verify(mockAdminFaqJpaRepository, times(1)).findFaqList(faqMap);
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findFaqList(faqMap);
         verifyNoMoreInteractions(mockAdminFaqJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
-        inOrder.verify(mockAdminFaqJpaRepository).findFaqsList(faqMap);
+        inOrder.verify(mockAdminFaqJpaRepository).findFaqList(faqMap);
     }
 
     @Test
@@ -153,8 +153,8 @@ class AdminFaqJpaRepositoryTest {
                 .description("FAQ 테스트").build());
 
         // when
-        given(mockAdminFaqJpaRepository.findFaqsList(faqMap)).willReturn(faqList);
-        List<AdminFaqDTO> newNoticeList = mockAdminFaqJpaRepository.findFaqsList(faqMap);
+        given(mockAdminFaqJpaRepository.findFaqList(faqMap)).willReturn(faqList);
+        List<AdminFaqDTO> newNoticeList = mockAdminFaqJpaRepository.findFaqList(faqMap);
 
         // then
         assertThat(newNoticeList.get(0).getIdx()).isEqualTo(faqList.get(0).getIdx());
@@ -163,8 +163,8 @@ class AdminFaqJpaRepositoryTest {
         assertThat(newNoticeList.get(0).getVisible()).isEqualTo(faqList.get(0).getVisible());
 
         // verify
-        then(mockAdminFaqJpaRepository).should(times(1)).findFaqsList(faqMap);
-        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findFaqsList(faqMap);
+        then(mockAdminFaqJpaRepository).should(times(1)).findFaqList(faqMap);
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findFaqList(faqMap);
         then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -182,8 +182,8 @@ class AdminFaqJpaRepositoryTest {
         adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
-        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity);
+        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getIdx()).isEqualTo(1);
@@ -192,12 +192,12 @@ class AdminFaqJpaRepositoryTest {
         assertThat(faqInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity);
-        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity.getIdx());
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity.getIdx());
         verifyNoMoreInteractions(mockAdminFaqJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
-        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity);
+        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity.getIdx());
     }
 
     @Test
@@ -214,8 +214,8 @@ class AdminFaqJpaRepositoryTest {
         adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
-        given(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity);
+        given(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx())).willReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getIdx()).isEqualTo(1);
@@ -224,8 +224,8 @@ class AdminFaqJpaRepositoryTest {
         assertThat(faqInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        then(mockAdminFaqJpaRepository).should(times(1)).findOneFaq(adminFaqEntity);
-        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).should(times(1)).findOneFaq(adminFaqEntity.getIdx());
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findOneFaq(adminFaqEntity.getIdx());
         then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -236,12 +236,12 @@ class AdminFaqJpaRepositoryTest {
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
-        adminFaqDTO = adminFaqJpaRepository.findOneFaq(adminFaqEntity);
+        adminFaqDTO = adminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx());
 
         // 이전 FAQ
-        assertThat(adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity).getIdx()).isEqualTo(1);
+        assertThat(adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity.getIdx()).getIdx()).isEqualTo(1);
         // 다음 FAQ
-        assertThat(adminFaqJpaRepository.findNextOneFaq(adminFaqEntity).getIdx()).isEqualTo(3);
+        assertThat(adminFaqJpaRepository.findNextOneFaq(adminFaqEntity.getIdx()).getIdx()).isEqualTo(3);
     }
 
     @Test
@@ -251,21 +251,21 @@ class AdminFaqJpaRepositoryTest {
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
-        adminFaqDTO = adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+        adminFaqDTO = adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity.getIdx());
 
-        when(mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+        when(mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getIdx()).isEqualTo(1);
 
         // verify
-        verify(mockAdminFaqJpaRepository, times(1)).findPrevOneFaq(adminFaqEntity);
-        verify(mockAdminFaqJpaRepository, atLeastOnce()).findPrevOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, times(1)).findPrevOneFaq(adminFaqEntity.getIdx());
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findPrevOneFaq(adminFaqEntity.getIdx());
         verifyNoMoreInteractions(mockAdminFaqJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
-        inOrder.verify(mockAdminFaqJpaRepository).findPrevOneFaq(adminFaqEntity);
+        inOrder.verify(mockAdminFaqJpaRepository).findPrevOneFaq(adminFaqEntity.getIdx());
     }
 
     @Test
@@ -275,17 +275,17 @@ class AdminFaqJpaRepositoryTest {
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
-        adminFaqDTO = adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+        adminFaqDTO = adminFaqJpaRepository.findPrevOneFaq(adminFaqEntity.getIdx());
 
-        given(mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity);
+        given(mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity.getIdx())).willReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findPrevOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getIdx()).isEqualTo(1);
 
         // verify
-        then(mockAdminFaqJpaRepository).should(times(1)).findPrevOneFaq(adminFaqEntity);
-        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findPrevOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).should(times(1)).findPrevOneFaq(adminFaqEntity.getIdx());
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findPrevOneFaq(adminFaqEntity.getIdx());
         then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -296,21 +296,21 @@ class AdminFaqJpaRepositoryTest {
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
-        adminFaqDTO = adminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+        adminFaqDTO = adminFaqJpaRepository.findNextOneFaq(adminFaqEntity.getIdx());
 
-        when(mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+        when(mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getIdx()).isEqualTo(1);
 
         // verify
-        verify(mockAdminFaqJpaRepository, times(1)).findNextOneFaq(adminFaqEntity);
-        verify(mockAdminFaqJpaRepository, atLeastOnce()).findNextOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, times(1)).findNextOneFaq(adminFaqEntity.getIdx());
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findNextOneFaq(adminFaqEntity.getIdx());
         verifyNoMoreInteractions(mockAdminFaqJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
-        inOrder.verify(mockAdminFaqJpaRepository).findNextOneFaq(adminFaqEntity);
+        inOrder.verify(mockAdminFaqJpaRepository).findNextOneFaq(adminFaqEntity.getIdx());
     }
 
     @Test
@@ -320,17 +320,17 @@ class AdminFaqJpaRepositoryTest {
         adminFaqEntity = AdminFaqEntity.builder().idx(2L).build();
 
         // when
-        adminFaqDTO = adminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+        adminFaqDTO = adminFaqJpaRepository.findNextOneFaq(adminFaqEntity.getIdx());
 
-        given(mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity);
+        given(mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity.getIdx())).willReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findNextOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getIdx()).isEqualTo(1);
 
         // verify
-        then(mockAdminFaqJpaRepository).should(times(1)).findNextOneFaq(adminFaqEntity);
-        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findNextOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).should(times(1)).findNextOneFaq(adminFaqEntity.getIdx());
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findNextOneFaq(adminFaqEntity.getIdx());
         then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -341,8 +341,8 @@ class AdminFaqJpaRepositoryTest {
         adminFaqJpaRepository.insertFaq(adminFaqEntity);
 
         // when
-        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity);
+        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getTitle()).isEqualTo("FAQ 테스트");
@@ -350,12 +350,12 @@ class AdminFaqJpaRepositoryTest {
         assertThat(faqInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity);
-        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity.getIdx());
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity.getIdx());
         verifyNoMoreInteractions(mockAdminFaqJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
-        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity);
+        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity.getIdx());
     }
 
     @Test
@@ -365,8 +365,8 @@ class AdminFaqJpaRepositoryTest {
         adminFaqJpaRepository.insertFaq(adminFaqEntity);
 
         // when
-        given(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).willReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity);
+        given(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx())).willReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getTitle()).isEqualTo("FAQ 테스트");
@@ -374,8 +374,8 @@ class AdminFaqJpaRepositoryTest {
         assertThat(faqInfo.getVisible()).isEqualTo("Y");
 
         // verify
-        then(mockAdminFaqJpaRepository).should(times(1)).findOneFaq(adminFaqEntity);
-        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).should(times(1)).findOneFaq(adminFaqEntity.getIdx());
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findOneFaq(adminFaqEntity.getIdx());
         then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -397,20 +397,20 @@ class AdminFaqJpaRepositoryTest {
         adminFaqJpaRepository.updateFaq(adminFaqEntity);
 
         // when
-        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity);
+        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getTitle()).isEqualTo("FAQ 테스트1");
         assertThat(faqInfo.getDescription()).isEqualTo("FAQ 테스트1");
 
         // verify
-        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity);
-        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity.getIdx());
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity.getIdx());
         verifyNoMoreInteractions(mockAdminFaqJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
-        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity);
+        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity.getIdx());
     }
 
     @Test
@@ -431,16 +431,16 @@ class AdminFaqJpaRepositoryTest {
         adminFaqJpaRepository.updateFaq(adminFaqEntity);
 
         // when
-        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
-        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity);
+        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
+        AdminFaqDTO faqInfo = mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx());
 
         // then
         assertThat(faqInfo.getTitle()).isEqualTo("FAQ 테스트1");
         assertThat(faqInfo.getDescription()).isEqualTo("FAQ 테스트1");
 
         // verify
-        then(mockAdminFaqJpaRepository).should(times(1)).findOneFaq(adminFaqEntity);
-        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).should(times(1)).findOneFaq(adminFaqEntity.getIdx());
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findOneFaq(adminFaqEntity.getIdx());
         then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -465,19 +465,19 @@ class AdminFaqJpaRepositoryTest {
         adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
-        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
+        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
         Long deleteIdx = adminFaqJpaRepository.deleteFaq(adminFaqEntity.getIdx());
 
         // then
-        assertThat(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity);
-        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity);
+        verify(mockAdminFaqJpaRepository, times(1)).findOneFaq(adminFaqEntity.getIdx());
+        verify(mockAdminFaqJpaRepository, atLeastOnce()).findOneFaq(adminFaqEntity.getIdx());
         verifyNoMoreInteractions(mockAdminFaqJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaRepository);
-        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity);
+        inOrder.verify(mockAdminFaqJpaRepository).findOneFaq(adminFaqEntity.getIdx());
     }
 
     @Test
@@ -488,15 +488,15 @@ class AdminFaqJpaRepositoryTest {
         adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
         // when
-        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity)).thenReturn(adminFaqDTO);
+        when(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
         Long deleteIdx = adminFaqJpaRepository.deleteFaq(adminFaqEntity.getIdx());
 
         // then
-        assertThat(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity).getIdx()).isEqualTo(deleteIdx);
+        assertThat(mockAdminFaqJpaRepository.findOneFaq(adminFaqEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
 
         // verify
-        then(mockAdminFaqJpaRepository).should(times(1)).findOneFaq(adminFaqEntity);
-        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findOneFaq(adminFaqEntity);
+        then(mockAdminFaqJpaRepository).should(times(1)).findOneFaq(adminFaqEntity.getIdx());
+        then(mockAdminFaqJpaRepository).should(atLeastOnce()).findOneFaq(adminFaqEntity.getIdx());
         then(mockAdminFaqJpaRepository).shouldHaveNoMoreInteractions();
     }
 }

@@ -53,7 +53,7 @@ public class AdminPortfolioJpaController {
     public Map<String, Object> findPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> portfolioMap = new HashMap<>();
 
-        Integer portfolioCnt = this.adminPortfolioJpaService.findPortfolioCount(searchCommon.searchCommon(page, paramMap));
+        int portfolioCnt = this.adminPortfolioJpaService.findPortfolioCount(searchCommon.searchCommon(page, paramMap));
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
 
         if (portfolioCnt > 0) {
@@ -91,7 +91,7 @@ public class AdminPortfolioJpaController {
     })
     @GetMapping(value = "/{idx}")
     public AdminPortFolioDTO findOnePortfolio(@PathVariable Long idx) {
-        return this.adminPortfolioJpaService.findOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
+        return this.adminPortfolioJpaService.findOnePortfolio(idx);
     }
 
     /**
@@ -113,7 +113,7 @@ public class AdminPortfolioJpaController {
     })
     @GetMapping("/{idx}/prev")
     public AdminPortFolioDTO findPrevOnePortfolio(@PathVariable Long idx) {
-        return this.adminPortfolioJpaService.findPrevOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
+        return this.adminPortfolioJpaService.findPrevOnePortfolio(idx);
     }
 
     /**
@@ -135,7 +135,7 @@ public class AdminPortfolioJpaController {
     })
     @GetMapping("/{idx}/next")
     public AdminPortFolioDTO findNextOnePortfolio(@PathVariable Long idx) {
-        return this.adminPortfolioJpaService.findNextOnePortfolio(AdminPortFolioEntity.builder().idx(idx).build());
+        return this.adminPortfolioJpaService.findNextOnePortfolio(idx);
     }
 
     /**

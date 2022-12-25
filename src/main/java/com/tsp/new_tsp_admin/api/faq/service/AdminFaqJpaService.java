@@ -16,18 +16,18 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    Integer findFaqCount(Map<String, Object> faqMap);
+    int findFaqCount(Map<String, Object> faqMap);
 
     /**
      * <pre>
-     * 1. MethodName : findFaqsList
+     * 1. MethodName : findFaqList
      * 2. ClassName  : AdminFaqJpaService.java
      * 3. Comment    : 관리자 FAQ 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    List<AdminFaqDTO> findFaqsList(Map<String, Object> faqMap);
+    List<AdminFaqDTO> findFaqList(Map<String, Object> faqMap);
 
     /**
      * <pre>
@@ -38,7 +38,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    AdminFaqDTO findOneFaq(AdminFaqEntity adminFaqEntity);
+    AdminFaqDTO findOneFaq(Long idx);
 
     /**
      * <pre>
@@ -49,7 +49,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminFaqDTO findPrevOneFaq(AdminFaqEntity adminFaqEntity);
+    AdminFaqDTO findPrevOneFaq(Long idx);
 
     /**
      * <pre>
@@ -60,7 +60,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 09. 18.
      * </pre>
      */
-    AdminFaqDTO findNextOneFaq(AdminFaqEntity adminFaqEntity);
+    AdminFaqDTO findNextOneFaq(Long idx);
 
     /**
      * <pre>

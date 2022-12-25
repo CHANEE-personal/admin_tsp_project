@@ -33,7 +33,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findProductionCount(Map<String, Object> productionMap) {
+    public int findProductionCount(Map<String, Object> productionMap) {
         try {
             return adminProductionJpaRepository.findProductionCount(productionMap);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable("production")
+    @Cacheable(value = "production", key = "#productionMap")
     @Transactional(readOnly = true)
     public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
         try {
@@ -71,7 +71,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable("production")
+    @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findOneProduction(Long idx) {
         try {
@@ -91,7 +91,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable("production")
+    @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findPrevOneProduction(Long idx) {
         try {
@@ -111,7 +111,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable("production")
+    @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findNextOneProduction(Long idx) {
         try {
@@ -152,7 +152,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @CachePut("production")
+    @CachePut(value = "production", key = "#adminProductionEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity) {
@@ -173,7 +173,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @CacheEvict("production")
+    @CacheEvict(value = "production", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteProduction(Long idx) {
@@ -194,6 +194,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
+    @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findProductionAdminComment(Long idx) {
         try {

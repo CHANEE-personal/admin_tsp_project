@@ -17,7 +17,7 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    Integer findAdminCommentCount(Map<String, Object> commentMap);
+    int findAdminCommentCount(Map<String, Object> commentMap);
 
     /**
      * <pre>
@@ -39,7 +39,7 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    AdminCommentDTO findOneAdminComment(AdminCommentEntity adminCommentEntity);
+    AdminCommentDTO findOneAdminComment(Long idx);
 
     /**
      * <pre>

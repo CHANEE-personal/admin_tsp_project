@@ -32,7 +32,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("user")
+    @Cacheable(value = "user", key = "#userMap")
     @Transactional(readOnly = true)
     public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
         try {
@@ -52,7 +52,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("user")
+    @Cacheable(value = "user", key = "#id")
     @Transactional(readOnly = true)
     public AdminUserEntity findOneUser(String id) {
         try {
@@ -153,7 +153,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * </pre>
      */
     @Override
-    @CachePut("user")
+    @CachePut(value = "user", key = "#adminUserEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
@@ -174,7 +174,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("user")
+    @CacheEvict(value = "user", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteAdminUser(Long idx) {
