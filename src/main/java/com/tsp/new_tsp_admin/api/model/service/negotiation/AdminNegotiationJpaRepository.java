@@ -63,7 +63,7 @@ public class AdminNegotiationJpaRepository {
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    public Integer findNegotiationCount(Map<String, Object> negotiationMap) {
+    public int findNegotiationCount(Map<String, Object> negotiationMap) {
         return queryFactory.selectFrom(adminNegotiationEntity)
                 .where(searchNegotiation(negotiationMap))
                 .fetch().size();

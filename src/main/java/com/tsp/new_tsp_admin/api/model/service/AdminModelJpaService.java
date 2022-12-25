@@ -22,7 +22,7 @@ public interface AdminModelJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    Integer findModelCount(Map<String, Object> modelMap);
+    int findModelCount(Map<String, Object> modelMap);
 
     /**
      * <pre>

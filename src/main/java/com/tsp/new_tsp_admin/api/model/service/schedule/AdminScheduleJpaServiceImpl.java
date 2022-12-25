@@ -33,7 +33,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Integer findScheduleCount(Map<String, Object> scheduleMap) {
+    public int findScheduleCount(Map<String, Object> scheduleMap) {
         try {
             return adminScheduleJpaRepository.findScheduleCount(scheduleMap);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("model")
+    @Cacheable(value = "model", key = "#scheduleMap")
     @Transactional(readOnly = true)
     public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) {
         try {
@@ -71,7 +71,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("schedule")
+    @Cacheable(value = "schedule", key = "#idx")
     @Transactional(readOnly = true)
     public AdminScheduleDTO findOneSchedule(Long idx) {
         try {
@@ -91,7 +91,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("schedule")
+    @Cacheable(value = "schedule", key = "#idx")
     @Transactional(readOnly = true)
     public AdminScheduleDTO findPrevOneSchedule(Long idx) {
         try {
@@ -111,7 +111,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * </pre>
      */
     @Override
-    @Cacheable("schedule")
+    @Cacheable(value = "schedule", key = "#idx")
     @Transactional(readOnly = true)
     public AdminScheduleDTO findNextOneSchedule(Long idx) {
         try {
@@ -152,7 +152,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * </pre>
      */
     @Override
-    @CachePut("schedule")
+    @CachePut(value = "schedule", key = "#adminScheduleEntity.idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public AdminScheduleDTO updateSchedule(AdminScheduleEntity adminScheduleEntity) {
@@ -173,7 +173,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict("schedule")
+    @CacheEvict(value = "schedule", key = "#idx")
     @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteSchedule(Long idx) {
