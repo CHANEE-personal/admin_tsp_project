@@ -52,7 +52,7 @@ public class AdminNoticeJpaController {
     public Map<String, Object> findNoticeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> noticeMap = new HashMap<>();
 
-        Integer noticeCount = this.adminNoticeJpaService.findNoticeCount(searchCommon.searchCommon(page, paramMap));
+        int noticeCount = this.adminNoticeJpaService.findNoticeCount(searchCommon.searchCommon(page, paramMap));
         List<AdminNoticeDTO> noticeList = new ArrayList<>();
 
         if (noticeCount > 0) {

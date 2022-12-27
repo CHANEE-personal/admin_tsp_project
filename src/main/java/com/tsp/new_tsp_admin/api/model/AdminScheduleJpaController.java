@@ -62,7 +62,7 @@ public class AdminScheduleJpaController {
             scheduleMap.put("searchEndTime", searchEndTime);
         }
 
-        Integer scheduleListCount = this.adminScheduleJpaService.findScheduleCount(scheduleMap);
+        int scheduleListCount = this.adminScheduleJpaService.findScheduleCount(scheduleMap);
         List<AdminModelDTO> scheduleList = new ArrayList<>();
 
         if (scheduleListCount > 0) {

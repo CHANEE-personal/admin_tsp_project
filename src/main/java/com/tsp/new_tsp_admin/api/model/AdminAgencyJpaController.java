@@ -58,7 +58,7 @@ public class AdminAgencyJpaController {
         // 페이징 및 검색
         Map<String, Object> agencyMap = searchCommon.searchCommon(page, paramMap);
 
-        Integer agencyListCount = this.adminAgencyJpaService.findAgencyCount(agencyMap);
+        int agencyListCount = this.adminAgencyJpaService.findAgencyCount(agencyMap);
         List<AdminAgencyDTO> agencyList = new ArrayList<>();
 
         if (agencyListCount > 0) {

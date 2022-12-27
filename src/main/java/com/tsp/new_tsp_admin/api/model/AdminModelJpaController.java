@@ -47,8 +47,8 @@ public class AdminModelJpaController {
      * 1. MethodName : findModelList
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @ApiOperation(value = "모델 조회", notes = "모델을 조회한다.")
@@ -66,7 +66,7 @@ public class AdminModelJpaController {
         Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
         modelMap.put("categoryCd", categoryCd);
 
-        Integer modelListCount = this.adminModelJpaService.findModelCount(modelMap);
+        int modelListCount = this.adminModelJpaService.findModelCount(modelMap);
         List<AdminModelDTO> modelList = new ArrayList<>();
 
         if (modelListCount > 0) {
@@ -90,8 +90,8 @@ public class AdminModelJpaController {
      * 1. MethodName : findOneModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 상세
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
@@ -112,8 +112,8 @@ public class AdminModelJpaController {
      * 1. MethodName : findPrevOneModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 이전 모델 상세
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 12.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 12.
      * </pre>
      */
     @ApiOperation(value = "이전 모델 상세 조회", notes = "이전 모델을 상세 조회한다.")
@@ -126,7 +126,7 @@ public class AdminModelJpaController {
     })
     @GetMapping("/{categoryCd}/{idx}/prev")
     public AdminModelDTO findPrevOneModel(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                      @PathVariable Long idx) {
+                                          @PathVariable Long idx) {
         return this.adminModelJpaService.findPrevOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
     }
 
@@ -135,8 +135,8 @@ public class AdminModelJpaController {
      * 1. MethodName : findNextOneModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 다음 모델 상세
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 12.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 12.
      * </pre>
      */
     @ApiOperation(value = "다음 모델 상세 조회", notes = "다음 모델을 상세 조회한다.")
@@ -158,8 +158,8 @@ public class AdminModelJpaController {
      * 1. MethodName : insertModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 draft 상태로 저장
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
     @ApiOperation(value = "모델 저장", notes = "모델을 저장한다.")
@@ -180,8 +180,8 @@ public class AdminModelJpaController {
      * 1. MethodName : insertModelImage
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 Image 저장
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
     @ApiOperation(value = "모델 이미지 저장", notes = "모델 이미지를 저장한다.")
@@ -202,8 +202,8 @@ public class AdminModelJpaController {
      * 1. MethodName : deleteModelImage
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 Image 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
     @ApiOperation(value = "모델 이미지 삭제", notes = "모델 이미지를 삭제한다.")
@@ -224,8 +224,8 @@ public class AdminModelJpaController {
      * 1. MethodName : updateModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
     @ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
@@ -249,8 +249,8 @@ public class AdminModelJpaController {
      * 1. MethodName : deleteModel
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 17.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
     @ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
@@ -271,8 +271,8 @@ public class AdminModelJpaController {
      * 1. MethodName : updateModelAgency
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 소속사 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @ApiOperation(value = "모델 소속사 수정", notes = "모델 소속사를 수정한다.")
@@ -293,8 +293,8 @@ public class AdminModelJpaController {
      * 1. MethodName : findModelAdminComment
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
     @ApiOperation(value = "모델 어드민 코멘트 조회", notes = "모델 어드민 코멘트를 조회한다.")
@@ -315,8 +315,8 @@ public class AdminModelJpaController {
      * 1. MethodName : toggleModelNewYn
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 새로운 모델 설정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 29.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 29.
      * </pre>
      */
     @ApiOperation(value = "새로운 모델 설정", notes = "새로운 모델을 설정한다.")
@@ -337,8 +337,8 @@ public class AdminModelJpaController {
      * 1. MethodName : findOneModelSchedule
      * 2. ClassName  : AdminModelJpaController.java
      * 3. Comment    : 관리자 모델 스케줄 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 03.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 03.
      * </pre>
      */
     @ApiOperation(value = "모델 스케줄 조회", notes = "모델 스케줄을 조회한다.")
