@@ -26,18 +26,14 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      * 1. MethodName : findAdminCommentCount
      * 2. ClassName  : AdminCommentJpaServiceImpl.java
      * 3. Comment    : 관리자 코멘트 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findAdminCommentCount(Map<String, Object> commentMap) {
-        try {
-            return adminCommentJpaRepository.findAdminCommentCount(commentMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
-        }
+        return adminCommentJpaRepository.findAdminCommentCount(commentMap);
     }
 
     /**
@@ -53,11 +49,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     @Cacheable(value = "comment", key = "#commentMap")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap) {
-        try {
-            return adminCommentJpaRepository.findAdminCommentList(commentMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
-        }
+        return adminCommentJpaRepository.findAdminCommentList(commentMap);
     }
 
     /**
@@ -73,11 +65,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
     public AdminCommentDTO findOneAdminComment(Long idx) {
-        try {
-            return adminCommentJpaRepository.findOneAdminComment(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_COMMENT, e);
-        }
+        return adminCommentJpaRepository.findOneAdminComment(idx);
     }
 
     /**

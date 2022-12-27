@@ -40,11 +40,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @Override
     @Transactional(readOnly = true)
     public int findAgencyCount(Map<String, Object> agencyMap) {
-        try {
-            return adminAgencyJpaRepository.findAgencyCount(agencyMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_AGENCY_LIST, e);
-        }
+        return adminAgencyJpaRepository.findAgencyCount(agencyMap);
     }
 
     /**
@@ -60,11 +56,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @Cacheable(value = "agency", key = "#agencyMap")
     @Transactional(readOnly = true)
     public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) {
-        try {
-            return adminAgencyJpaRepository.findAgencyList(agencyMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_AGENCY_LIST, e);
-        }
+        return adminAgencyJpaRepository.findAgencyList(agencyMap);
     }
 
     /**
@@ -80,11 +72,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     @Cacheable(value = "agency", key = "#idx")
     @Transactional(readOnly = true)
     public AdminAgencyDTO findOneAgency(Long idx) {
-        try {
-            return adminAgencyJpaRepository.findOneAgency(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_AGENCY, e);
-        }
+        return adminAgencyJpaRepository.findOneAgency(idx);
     }
 
     /**

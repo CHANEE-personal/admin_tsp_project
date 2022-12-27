@@ -15,12 +15,17 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.user.QAdminUserEntity.adminUserEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtils.nullStrToStr;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -38,8 +43,8 @@ public class AdminUserJpaRepository {
      * 1. MethodName : findUserList
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 유저 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
@@ -50,10 +55,7 @@ public class AdminUserJpaRepository {
                 .limit(getInt(userMap.get("size"), 0))
                 .fetch();
 
-        userList.forEach(list -> userList.get(userList.indexOf(list))
-                .setRowNum(getInt(userMap.get("startPage"), 1) * (getInt(userMap.get("size"), 1)) - (2 - userList.indexOf(list))));
-
-        return AdminUserEntity.toDtoList(userList);
+        return userList != null ? toDtoList(userList) : emptyList();
     }
 
     /**
@@ -61,12 +63,15 @@ public class AdminUserJpaRepository {
      * 1. MethodName : findOneUser
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 유저 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     public AdminUserEntity findOneUser(String id) {
-        return queryFactory.selectFrom(adminUserEntity).where(adminUserEntity.userId.eq(id)).fetchOne();
+        return Optional.ofNullable(queryFactory
+                .selectFrom(adminUserEntity)
+                .where(adminUserEntity.userId.eq(id))
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_USER, new Throwable()));
     }
 
     /**
@@ -74,8 +79,8 @@ public class AdminUserJpaRepository {
      * 1. MethodName : findOneUserByToken
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 토큰을 이용한 유저 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     public String findOneUserByToken(String token) {
@@ -89,8 +94,8 @@ public class AdminUserJpaRepository {
      * 1. MethodName : adminLogin
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 로그인 처리
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public String adminLogin(AdminUserEntity existAdminUserEntity) {
@@ -114,15 +119,14 @@ public class AdminUserJpaRepository {
      * 1. MethodName : insertUserTokenByEm
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 회원 로그인 후 토큰 등록 By EntityManager
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public Long insertUserTokenByEm(AdminUserEntity adminUserEntity) {
         em.merge(adminUserEntity);
         em.flush();
         em.clear();
-
         return adminUserEntity.getIdx();
     }
 
@@ -131,8 +135,8 @@ public class AdminUserJpaRepository {
      * 1. MethodName : insertUserToken
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 회원 로그인 후 토큰 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     public Long insertUserToken(AdminUserEntity existAdminUserEntity) {
@@ -151,8 +155,8 @@ public class AdminUserJpaRepository {
      * 1. MethodName : insertAdminUser
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 회원가입 처리
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
@@ -166,8 +170,8 @@ public class AdminUserJpaRepository {
      * 1. MethodName : updateAdminUser
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 회원 수정 처리
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
@@ -182,8 +186,8 @@ public class AdminUserJpaRepository {
      * 1. MethodName : deleteAdminUser
      * 2. ClassName  : AdminUserJpaRepository.java
      * 3. Comment    : 관리자 회원 탈퇴
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     public Long deleteAdminUser(Long idx) {

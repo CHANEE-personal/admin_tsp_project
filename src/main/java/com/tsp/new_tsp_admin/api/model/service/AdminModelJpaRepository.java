@@ -20,13 +20,16 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.*;
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_AGENCY;
-import static java.util.Objects.requireNonNull;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,20 +48,23 @@ public class AdminModelJpaRepository {
         String searchType = getString(modelMap.get("searchType"), "");
         String searchKeyword = getString(modelMap.get("searchKeyword"), "");
 
-        if ("0".equals(searchType)) {
-            return adminModelEntity.modelKorName.contains(searchKeyword)
-                    .or(adminModelEntity.modelEngName.contains(searchKeyword)
-                    .or(adminModelEntity.modelDescription.contains(searchKeyword)));
-        } else if ("1".equals(searchType)) {
-            return adminModelEntity.modelKorName.contains(searchKeyword)
-                    .or(adminModelEntity.modelEngName.contains(searchKeyword));
+        if (!Objects.equals(searchKeyword, "")) {
+            return "0".equals(searchType) ?
+                    adminModelEntity.modelKorName.contains(searchKeyword)
+                            .or(adminModelEntity.modelEngName.contains(searchKeyword)
+                                    .or(adminModelEntity.modelDescription.contains(searchKeyword))) :
+                    "1".equals(searchType) ?
+                            adminModelEntity.modelKorName.contains(searchKeyword)
+                                    .or(adminModelEntity.modelEngName.contains(searchKeyword)) :
+                            adminModelEntity.modelDescription.contains(searchKeyword);
         } else {
-            return adminModelEntity.modelDescription.contains(searchKeyword);
+            return null;
         }
     }
 
     private BooleanExpression searchNewModel(Map<String, Object> modelMap) {
-        return adminModelEntity.newYn.eq(getString(modelMap.get("searchNewModel"), "N"));
+        String newYn = getString(modelMap.get("newYn"), "");
+        return !Objects.equals(newYn, "") ? adminModelEntity.newYn.eq(newYn) : null;
     }
 
     /**
@@ -66,14 +72,14 @@ public class AdminModelJpaRepository {
      * 1. MethodName : findModelCount
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public int findModelCount(Map<String, Object> modelMap) {
         return queryFactory.selectFrom(adminModelEntity)
-                .where((searchCategory(modelMap).or(searchModelInfo(modelMap)))
-                        .and(searchNewModel(modelMap)))
+                .where(searchCategory(modelMap), searchModelInfo(modelMap),
+                        searchNewModel(modelMap))
                 .fetch().size();
     }
 
@@ -83,27 +89,21 @@ public class AdminModelJpaRepository {
      * 1. MethodName : findModelList
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) {
         List<AdminModelEntity> modelList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
-                .leftJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
-                .fetchJoin()
-                .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
-                .fetchJoin()
+                .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .where((searchCategory(modelMap).or(searchModelInfo(modelMap))).and(searchNewModel(modelMap)))
                 .offset(getInt(modelMap.get("jpaStartPage"), 0))
                 .limit(getInt(modelMap.get("size"), 0))
                 .fetch();
 
-        modelList.forEach(list -> modelList.get(modelList.indexOf(list))
-                .setRowNum(getInt(modelMap.get("startPage"), 1) * (getInt(modelMap.get("size"), 1)) - (2 - modelList.indexOf(list))));
-
-        return AdminModelEntity.toDtoList(modelList);
+        return modelList != null ? toDtoList(modelList) : emptyList();
     }
 
     /**
@@ -111,13 +111,13 @@ public class AdminModelJpaRepository {
      * 1. MethodName : findOneModel
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public AdminModelDTO findOneModel(Long idx) {
         //모델 상세 조회
-        AdminModelEntity findOneModel = queryFactory
+        AdminModelEntity findOneModel = Optional.ofNullable(queryFactory
                 .selectFrom(adminModelEntity)
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .fetchJoin()
@@ -126,10 +126,9 @@ public class AdminModelJpaRepository {
                 .where(adminModelEntity.idx.eq(idx)
                         .and(adminModelEntity.visible.eq("Y"))
                         .and(commonImageEntity.typeName.eq(EntityType.MODEL)))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL, new Throwable()));
 
-        assert findOneModel != null;
-        return AdminModelEntity.toDto(findOneModel);
+        return toDto(findOneModel);
     }
 
     /**
@@ -137,21 +136,21 @@ public class AdminModelJpaRepository {
      * 1. MethodName : findPrevOneModel
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 이전 모델 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 12.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 12.
      * </pre>
      */
     public AdminModelDTO findPrevOneModel(AdminModelEntity existAdminModelEntity) {
         // 이전 모델 조회
-        AdminModelEntity findPrevOneModel = queryFactory
+        AdminModelEntity findPrevOneModel = Optional.ofNullable(queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
                 .where(adminModelEntity.idx.lt(existAdminModelEntity.getIdx())
                         .and(adminModelEntity.categoryCd.eq(existAdminModelEntity.getCategoryCd()))
                         .and(adminModelEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL, new Throwable()));
 
-        return AdminModelEntity.toDto(findPrevOneModel);
+        return toDto(findPrevOneModel);
     }
 
     /**
@@ -159,21 +158,21 @@ public class AdminModelJpaRepository {
      * 1. MethodName : findNextOneModel
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 다음 모델 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 12.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 12.
      * </pre>
      */
     public AdminModelDTO findNextOneModel(AdminModelEntity existAdminModelEntity) {
         // 다음 모델 조회
-        AdminModelEntity findNextOneModel = queryFactory
+        AdminModelEntity findNextOneModel = Optional.ofNullable(queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.asc())
                 .where(adminModelEntity.idx.gt(existAdminModelEntity.getIdx())
                         .and(adminModelEntity.categoryCd.eq(existAdminModelEntity.getCategoryCd()))
                         .and(adminModelEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL, new Throwable()));
 
-        return AdminModelEntity.toDto(findNextOneModel);
+        return toDto(findNextOneModel);
     }
 
     /**
@@ -181,13 +180,13 @@ public class AdminModelJpaRepository {
      * 1. MethodName : insertModel
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         em.persist(adminModelEntity);
-        return AdminModelEntity.toDto(adminModelEntity);
+        return toDto(adminModelEntity);
     }
 
     /**
@@ -195,8 +194,8 @@ public class AdminModelJpaRepository {
      * 1. MethodName : insertModelImage
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 이미지 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
     public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
@@ -240,15 +239,15 @@ public class AdminModelJpaRepository {
      * 1. MethodName : updateModelByEm
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 수정 by entityManager
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
     public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) {
         em.merge(existAdminModelEntity);
         em.flush();
         em.clear();
-        return AdminModelEntity.toDto(existAdminModelEntity);
+        return toDto(existAdminModelEntity);
     }
 
     /**
@@ -256,8 +255,8 @@ public class AdminModelJpaRepository {
      * 1. MethodName : deleteModel
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 삭제 by queryDsl
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 17.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
 //    public Long deleteModel(AdminModelEntity existAdminModelEntity) {
@@ -277,8 +276,8 @@ public class AdminModelJpaRepository {
      * 1. MethodName : deleteModel
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 삭제 by entityManager
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 17.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
     public Long deleteModelByEm(Long idx) {
@@ -293,30 +292,21 @@ public class AdminModelJpaRepository {
      * 1. MethodName : updateModelAgency
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 소속사 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     public AdminModelDTO updateModelAgency(AdminModelEntity existAdminModelEntity) {
-        // 소속사 존재 여부 체크
-        Long agencyIdx = requireNonNull(queryFactory
-                .selectFrom(adminAgencyEntity)
-                .where(adminAgencyEntity.idx.eq(existAdminModelEntity.getAgencyIdx())).fetchOne()).getIdx();
+        queryFactory
+                .update(adminModelEntity)
+                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx()))
+                .set(adminModelEntity.adminAgencyEntity.idx, existAdminModelEntity.getAgencyIdx())
+                .execute();
 
-        if (agencyIdx != null) {
-            queryFactory
-                    .update(adminModelEntity)
-                    .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx()))
-                    .set(adminModelEntity.adminAgencyEntity.idx, agencyIdx)
-                    .execute();
+        em.flush();
+        em.clear();
 
-            em.flush();
-            em.clear();
-
-            return AdminModelEntity.toDto(existAdminModelEntity);
-        } else {
-            throw new TspException(NOT_FOUND_AGENCY, new Throwable("NOT_FOUND_AGENCY"));
-        }
+        return toDto(existAdminModelEntity);
     }
 
     /**
@@ -324,8 +314,8 @@ public class AdminModelJpaRepository {
      * 1. MethodName : findModelAdminComment
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
     public List<AdminCommentDTO> findModelAdminComment(Long idx) {
@@ -336,7 +326,7 @@ public class AdminModelJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminCommentEntity.toDtoList(commentEntity);
+        return commentEntity != null ? toDtoList(commentEntity) : emptyList();
     }
 
     /**
@@ -344,12 +334,13 @@ public class AdminModelJpaRepository {
      * 1. MethodName : toggleModelNewYn
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 새로운 모델 설정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 29.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 29.
      * </pre>
      */
     public AdminModelDTO toggleModelNewYn(Long idx) {
-        String newYn = Objects.equals(em.find(AdminModelEntity.class, idx).getNewYn(), "Y") ? "N" : "Y";
+        AdminModelEntity oneModel = em.find(AdminModelEntity.class, idx);
+        String newYn = Objects.equals(oneModel.getNewYn(), "Y") ? "N" : "Y";
 
         queryFactory
                 .update(adminModelEntity)
@@ -360,7 +351,7 @@ public class AdminModelJpaRepository {
         em.flush();
         em.clear();
 
-        return AdminModelEntity.toDto(em.find(AdminModelEntity.class, idx));
+        return toDto(oneModel);
     }
 
     /**
@@ -380,6 +371,6 @@ public class AdminModelJpaRepository {
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminScheduleEntity.toDtoList(scheduleList);
+        return scheduleList != null ? AdminScheduleEntity.toDtoList(scheduleList) : emptyList();
     }
 }

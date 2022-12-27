@@ -15,15 +15,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
+import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,13 +39,15 @@ public class AdminPortfolioJpaRepository {
         String searchType = getString(portfolioMap.get("searchType"), "");
         String searchKeyword = getString(portfolioMap.get("searchKeyword"), "");
 
-        if ("0".equals(searchType)) {
-            return adminPortFolioEntity.title.contains(searchKeyword)
-                    .or(adminPortFolioEntity.description.contains(searchKeyword));
-        } else if ("1".equals(searchType)) {
-            return adminPortFolioEntity.title.contains(searchKeyword);
+        if (!Objects.equals(searchKeyword, "")) {
+            return "0".equals(searchType) ?
+                    adminPortFolioEntity.title.contains(searchKeyword)
+                            .or(adminPortFolioEntity.description.contains(searchKeyword)) :
+                    "1".equals(searchType) ?
+                            adminPortFolioEntity.title.contains(searchKeyword) :
+                            adminPortFolioEntity.description.contains(searchKeyword);
         } else {
-            return adminPortFolioEntity.description.contains(searchKeyword);
+            return null;
         }
     }
 
@@ -51,8 +56,8 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : findPortfolioCount
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 12.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 12.
      * </pre>
      */
     public int findPortfolioCount(Map<String, Object> portfolioMap) {
@@ -64,8 +69,8 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 13.
      * </pre>
      */
     public List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) {
@@ -77,10 +82,7 @@ public class AdminPortfolioJpaRepository {
                 .limit(getInt(portfolioMap.get("size"), 0))
                 .fetch();
 
-        portfolioList.forEach(list -> portfolioList.get(portfolioList.indexOf(list))
-                .setRowNum(getInt(portfolioMap.get("startPage"), 1) * (getInt(portfolioMap.get("size"), 1)) - (2 - portfolioList.indexOf(list))));
-
-        return AdminPortFolioEntity.toDtoList(portfolioList);
+        return portfolioList != null ? toDtoList(portfolioList) : emptyList();
     }
 
     /**
@@ -88,23 +90,22 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : findOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 13.
      * </pre>
      */
     public AdminPortFolioDTO findOnePortfolio(Long idx) {
         // 포트폴리오 상세 조회
-        AdminPortFolioEntity findOnePortfolio = queryFactory
+        AdminPortFolioEntity findOnePortfolio = Optional.ofNullable(queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .leftJoin(adminPortFolioEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
                 .where(adminPortFolioEntity.idx.eq(idx)
                         .and(adminPortFolioEntity.visible.eq("Y")
                                 .and(commonImageEntity.typeName.eq(EntityType.PORTFOLIO))))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO, new Throwable()));
 
-        assert findOnePortfolio != null;
-        return AdminPortFolioEntity.toDto(findOnePortfolio);
+        return toDto(findOnePortfolio);
     }
 
     /**
@@ -112,20 +113,20 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : findPrevOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 이전 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 14.
      * </pre>
      */
     public AdminPortFolioDTO findPrevOnePortfolio(Long idx) {
         // 이전 포트폴리오 조회
-        AdminPortFolioEntity findPrevOnePortfolio = queryFactory
+        AdminPortFolioEntity findPrevOnePortfolio = Optional.ofNullable(queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .orderBy(adminPortFolioEntity.idx.desc())
                 .where(adminPortFolioEntity.idx.lt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO, new Throwable()));
 
-        return AdminPortFolioEntity.toDto(findPrevOnePortfolio);
+        return toDto(findPrevOnePortfolio);
     }
 
     /**
@@ -133,20 +134,20 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : findNextOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 다음 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 14.
      * </pre>
      */
     public AdminPortFolioDTO findNextOnePortfolio(Long idx) {
         // 다음 포트폴리오 조회
-        AdminPortFolioEntity findPrevOnePortfolio = queryFactory
+        AdminPortFolioEntity findPrevOnePortfolio = Optional.ofNullable(queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .orderBy(adminPortFolioEntity.idx.desc())
                 .where(adminPortFolioEntity.idx.gt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO, new Throwable()));
 
-        return AdminPortFolioEntity.toDto(findPrevOnePortfolio);
+        return toDto(findPrevOnePortfolio);
     }
 
     /**
@@ -154,13 +155,13 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : insertPortfolio
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 13.
      * </pre>
      */
     public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortfolioEntity) {
         em.persist(adminPortfolioEntity);
-        return AdminPortFolioEntity.toDto(adminPortfolioEntity);
+        return toDto(adminPortfolioEntity);
     }
 
     /**
@@ -168,18 +169,13 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : insertPortfolioImage
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 이미지 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 14.
      * </pre>
      */
     public Long insertPortfolioImage(CommonImageEntity commonImageEntity) {
-        try {
-            em.persist(commonImageEntity);
-
-            return commonImageEntity.getIdx();
-        } catch (Exception e) {
-            throw new TspException(ERROR_PORTFOLIO, e);
-        }
+        em.persist(commonImageEntity);
+        return commonImageEntity.getIdx();
     }
 
     /**
@@ -187,15 +183,15 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : updatePortfolio
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 13.
      * </pre>
      */
     public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
         em.merge(existAdminPortfolioEntity);
         em.flush();
         em.clear();
-        return AdminPortFolioEntity.toDto(existAdminPortfolioEntity);
+        return toDto(existAdminPortfolioEntity);
     }
 
     /**
@@ -203,8 +199,8 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : deletePortfolio
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 14.
      * </pre>
      */
     public Long deletePortfolio(Long idx) {
@@ -219,8 +215,8 @@ public class AdminPortfolioJpaRepository {
      * 1. MethodName : findPortfolioAdminComment
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
     public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) {
@@ -231,6 +227,6 @@ public class AdminPortfolioJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminCommentEntity.toDtoList(adminCommentEntity);
+        return adminCommentEntity != null ? toDtoList(adminCommentEntity) : emptyList();
     }
 }

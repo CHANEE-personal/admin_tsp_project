@@ -62,7 +62,7 @@ public class AdminNegotiationJpaController {
             negotiationMap.put("searchEndTime", searchEndTime);
         }
 
-        Integer negotiationCount = this.adminNegotiationJpaService.findNegotiationCount(negotiationMap);
+        int negotiationCount = this.adminNegotiationJpaService.findNegotiationCount(negotiationMap);
         List<AdminModelDTO> negotiationList = new ArrayList<>();
 
         if (negotiationCount > 0) {

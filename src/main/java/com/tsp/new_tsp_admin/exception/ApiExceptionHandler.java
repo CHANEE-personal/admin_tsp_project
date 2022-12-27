@@ -6,12 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
-import org.springframework.context.NoSuchMessageException;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,14 +18,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionHandler.Error.create;
-import static java.util.Arrays.stream;
 import static java.util.Locale.KOREA;
-import static java.util.Objects.*;
 import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
@@ -48,7 +42,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         }
     }
 
-    @ExceptionHandler(value = {TspException.class})
+    @ExceptionHandler(value = TspException.class)
     public ResponseEntity<Error> exception(TspException tspException) {
         return new ResponseEntity<>(create(tspException.getBaseExceptionType()), OK);
     }
@@ -59,8 +53,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * 1. MethodName : handleConstraintViolation
      * 2. ClassName  : ApiExceptionHandler.java
      * 3. Comment    : Parameter Validation Check
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 01. 15.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 01. 15.
      * </pre>
      */
     @ExceptionHandler(value = ConstraintViolationException.class)
@@ -73,8 +67,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * 1. MethodName : handleMethodArgumentNotValid
      * 2. ClassName  : ApiExceptionHandler.java
      * 3. Comment    : Entity or DTO Validation Check
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 01. 15.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 01. 15.
      * </pre>
      */
     @Override
@@ -82,24 +76,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             MethodArgumentNotValidException ex, HttpHeaders headers,
             HttpStatus status, WebRequest request) {
 
-        List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
-        for (ObjectError error : allErrors) {
-            String message = stream(requireNonNull(error.getCodes()))
-                    .map(c -> {
-                        Object[] arguments = error.getArguments();
-                        Locale locale = LocaleContextHolder.getLocale();
-                        try {
-                            return messageSource.getMessage(c, arguments, locale);
-                        } catch (NoSuchMessageException e) {
-                            return null;
-                        }
-                    }).filter(Objects::nonNull)
-                    .findFirst()
-                    // 코드를 찾지 못할 경우 기본 메시지 사용.
-                    .orElse(error.getDefaultMessage());
+        ApiExceptionType errorCode = ApiExceptionType.NOT_NULL;
+        BindingResult bindingResult = ex.getBindingResult();
 
-            log.error("error messages: {}", message);
+        StringBuilder builder = new StringBuilder();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            builder.append("[");
+            builder.append(fieldError.getField());
+            builder.append("](은)는 ");
+            builder.append(fieldError.getDefaultMessage());
         }
-        return super.handleMethodArgumentNotValid(ex, headers, status, request);
+        builder.deleteCharAt(builder.length() - 1);
+
+        final Error response = new Error(errorCode.getErrorCode(), errorCode.getHttpStatus(), builder.toString());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getHttpStatus()));
     }
 }

@@ -52,7 +52,7 @@ public class AdminCommentJpaController {
     public Map<String, Object> findAdminCommentList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> commentMap = new HashMap<>();
 
-        Integer commentCount = this.adminCommentJpaService.findAdminCommentCount(searchCommon.searchCommon(page, paramMap));
+        int commentCount = this.adminCommentJpaService.findAdminCommentCount(searchCommon.searchCommon(page, paramMap));
         List<AdminCommentDTO> commentList = new ArrayList<>();
 
         if (commentCount > 0) {

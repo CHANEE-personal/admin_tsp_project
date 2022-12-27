@@ -55,7 +55,7 @@ public class AdminCommonJpaController {
         // 페이징 및 검색
         Map<String, Object> commonMap = searchCommon.searchCommon(page, paramMap);
 
-        Integer commonCodeListCount = this.adminCommonJpaService.findCommonCodeListCount(commonMap);
+        int commonCodeListCount = this.adminCommonJpaService.findCommonCodeListCount(commonMap);
         List<CommonCodeDTO> commonCodeList = new ArrayList<>();
 
         if (commonCodeListCount > 0) {

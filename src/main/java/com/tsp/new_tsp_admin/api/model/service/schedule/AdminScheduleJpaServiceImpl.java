@@ -27,18 +27,14 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * 1. MethodName : findScheduleCount
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 스케줄 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 31.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findScheduleCount(Map<String, Object> scheduleMap) {
-        try {
-            return adminScheduleJpaRepository.findScheduleCount(scheduleMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_SCHEDULE_LIST, e);
-        }
+        return adminScheduleJpaRepository.findScheduleCount(scheduleMap);
     }
 
     /**
@@ -46,19 +42,15 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * 1. MethodName : findScheduleList
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 스케줄 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 31.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
     @Override
     @Cacheable(value = "model", key = "#scheduleMap")
     @Transactional(readOnly = true)
     public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) {
-        try {
-            return adminScheduleJpaRepository.findModelScheduleList(scheduleMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_SCHEDULE_LIST, e);
-        }
+        return adminScheduleJpaRepository.findModelScheduleList(scheduleMap);
     }
 
     /**
@@ -66,19 +58,15 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * 1. MethodName : findOneSchedule
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 스케줄 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 31.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
     @Override
     @Cacheable(value = "schedule", key = "#idx")
     @Transactional(readOnly = true)
     public AdminScheduleDTO findOneSchedule(Long idx) {
-        try {
-            return adminScheduleJpaRepository.findOneSchedule(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_SCHEDULE, e);
-        }
+        return adminScheduleJpaRepository.findOneSchedule(idx);
     }
 
     /**
@@ -86,19 +74,15 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * 1. MethodName : findPrevOneSchedule
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 이전 스케줄 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 22.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 22.
      * </pre>
      */
     @Override
     @Cacheable(value = "schedule", key = "#idx")
     @Transactional(readOnly = true)
     public AdminScheduleDTO findPrevOneSchedule(Long idx) {
-        try {
-            return adminScheduleJpaRepository.findPrevOneSchedule(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_SCHEDULE, e);
-        }
+        return adminScheduleJpaRepository.findPrevOneSchedule(idx);
     }
 
     /**
@@ -106,19 +90,15 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * 1. MethodName : findNextOneSchedule
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 다음 스케줄 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 22.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 22.
      * </pre>
      */
     @Override
     @Cacheable(value = "schedule", key = "#idx")
     @Transactional(readOnly = true)
     public AdminScheduleDTO findNextOneSchedule(Long idx) {
-        try {
-            return adminScheduleJpaRepository.findNextOneSchedule(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_SCHEDULE, e);
-        }
+        return adminScheduleJpaRepository.findNextOneSchedule(idx);
     }
 
     /**
@@ -126,8 +106,8 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * 1. MethodName : insertSchedule
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 스케줄 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 31.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
     @Override
@@ -147,8 +127,8 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * 1. MethodName : updateSchedule
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 스케줄 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 31.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
     @Override
@@ -168,8 +148,8 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      * 1. MethodName : deleteSchedule
      * 2. ClassName  : AdminScheduleJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 스케줄 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 31.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
     @Override
