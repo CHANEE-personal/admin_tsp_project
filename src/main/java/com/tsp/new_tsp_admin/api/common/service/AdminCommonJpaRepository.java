@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.common.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -10,10 +11,13 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+import static com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonCodeEntity.commonCodeEntity;
-import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_COMMON;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,11 +32,11 @@ public class AdminCommonJpaRepository {
      * 1. MethodName : findCommonCodeListCount
      * 2. ClassName  : AdminCommonJpaRepository.java
      * 3. Comment    : 관리자 공통 코드 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    public Integer findCommonCodeListCount(Map<String, Object> commonMap) {
+    public int findCommonCodeListCount(Map<String, Object> commonMap) {
         return queryFactory.selectFrom(commonCodeEntity).fetch().size();
     }
 
@@ -42,8 +46,8 @@ public class AdminCommonJpaRepository {
      * 1. MethodName : findCommonCodeList
      * 2. ClassName  : AdminCommonJpaRepository.java
      * 3. Comment    : 관리자 공통 코드 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap) {
@@ -51,10 +55,7 @@ public class AdminCommonJpaRepository {
                 .selectFrom(commonCodeEntity)
                 .fetch();
 
-        commonCodeList.forEach(list -> commonCodeList.get(commonCodeList.indexOf(list))
-                .setRowNum(getInt(commonMap.get("startPage"), 1) * (getInt(commonMap.get("size"), 1)) - (2 - commonCodeList.indexOf(list))));
-
-        return CommonCodeEntity.toDtoList(commonCodeList);
+        return commonCodeList != null ? toDtoList(commonCodeList) : emptyList();
     }
 
     /**
@@ -62,21 +63,20 @@ public class AdminCommonJpaRepository {
      * 1. MethodName : findOneCommonCode
      * 2. ClassName  : AdminCommonJpaRepository.java
      * 3. Comment    : 관리자 공통 코드 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public CommonCodeDTO findOneCommonCode(Long idx) {
         //모델 상세 조회
-        CommonCodeEntity findOneCommonCode = queryFactory
+        CommonCodeEntity findOneCommonCode = Optional.ofNullable(queryFactory
                 .selectFrom(commonCodeEntity)
                 .orderBy(commonCodeEntity.idx.desc())
                 .where(commonCodeEntity.idx.eq(idx)
                         .and(commonCodeEntity.visible.eq("Y")))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_COMMON, new Throwable()));
 
-        assert findOneCommonCode != null;
-        return CommonCodeEntity.toDto(findOneCommonCode);
+        return toDto(findOneCommonCode);
     }
 
     /**
@@ -84,13 +84,13 @@ public class AdminCommonJpaRepository {
      * 1. MethodName : insertCommonCode
      * 2. ClassName  : AdminCommonJpaRepository.java
      * 3. Comment    : 관리자 공통 코드 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) {
         em.persist(commonCodeEntity);
-        return CommonCodeEntity.toDto(commonCodeEntity);
+        return toDto(commonCodeEntity);
     }
 
     /**
@@ -98,15 +98,15 @@ public class AdminCommonJpaRepository {
      * 1. MethodName : updateCommonCode
      * 2. ClassName  : AdminCommonJpaRepository.java
      * 3. Comment    : 관리자 공통 코드 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public CommonCodeDTO updateCommonCode(CommonCodeEntity existCommonCodeEntity) {
         em.merge(existCommonCodeEntity);
         em.flush();
         em.clear();
-        return CommonCodeEntity.toDto(existCommonCodeEntity);
+        return toDto(existCommonCodeEntity);
     }
 
     /**
@@ -114,8 +114,8 @@ public class AdminCommonJpaRepository {
      * 1. MethodName : deleteCommonCode
      * 2. ClassName  : AdminCommonJpaRepository.java
      * 3. Comment    : 관리자 공통 코드 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public Long deleteCommonCode(Long idx) {

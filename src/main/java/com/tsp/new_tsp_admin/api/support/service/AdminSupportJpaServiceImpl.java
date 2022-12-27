@@ -29,18 +29,14 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : findSupportCount
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findSupportCount(Map<String, Object> supportMap) {
-        try {
-            return adminSupportJpaRepository.findSupportCount(supportMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
-        }
+        return adminSupportJpaRepository.findSupportCount(supportMap);
     }
 
     /**
@@ -48,19 +44,15 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : findSupportList
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
     @Cacheable(value = "support", key = "#supportMap")
     @Transactional(readOnly = true)
     public List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) {
-        try {
-            return adminSupportJpaRepository.findSupportList(supportMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
-        }
+        return adminSupportJpaRepository.findSupportList(supportMap);
     }
 
     /**
@@ -68,19 +60,15 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : findOneSupportModel
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
     @Cacheable(value = "support", key = "#idx")
     @Transactional(readOnly = true)
     public AdminSupportDTO findOneSupportModel(Long idx) {
-        try {
-            return adminSupportJpaRepository.findOneSupportModel(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_SUPPORT, e);
-        }
+        return adminSupportJpaRepository.findOneSupportModel(idx);
     }
 
     @Override
@@ -100,8 +88,8 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : updateSupportModel
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -121,8 +109,8 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : deleteSupportModel
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -142,38 +130,30 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : findEvaluationCount
      * 2. ClassName  : AdminSupportJpaService.java
      * 3. Comment    : 관리자 지원모델 평가 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findEvaluationCount(Map<String, Object> evaluationMap) {
-        try {
-            return adminSupportJpaRepository.findEvaluationsCount();
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_EVALUATION_LIST, e);
-        }
+        return adminSupportJpaRepository.findEvaluationCount();
     }
 
     /**
      * <pre>
-     * 1. MethodName : findEvaluationsList
+     * 1. MethodName : findEvaluationList
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 평가 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
     @Cacheable(value = "evaluation", key = "#evaluationMap")
     @Transactional(readOnly = true)
     public List<EvaluationDTO> findEvaluationList(Map<String, Object> evaluationMap) {
-        try {
-            return adminSupportJpaRepository.findEvaluationList(evaluationMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_EVALUATION_LIST, e);
-        }
+        return adminSupportJpaRepository.findEvaluationList(evaluationMap);
     }
 
     /**
@@ -181,19 +161,15 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : findOneEvaluation
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 평가 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
     @Cacheable(value = "evaluation", key = "#idx")
     @Transactional(readOnly = true)
     public EvaluationDTO findOneEvaluation(Long idx) {
-        try {
-            return adminSupportJpaRepository.findOneEvaluation(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_EVALUATION, e);
-        }
+        return adminSupportJpaRepository.findOneEvaluation(idx);
     }
 
     /**
@@ -201,8 +177,8 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : evaluationSupportModel
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 평가 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -221,8 +197,8 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : updateEvaluation
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 평가 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -241,8 +217,8 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : deleteEvaluation
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 평가 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -262,8 +238,8 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : updatePass
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 합격 처리
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -282,17 +258,13 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * 1. MethodName : findSupportAdminComment
      * 2. ClassName  : AdminSupportJpaServiceImpl.java
      * 3. Comment    : 관리자 지원모델 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
     @Override
     @Cacheable(value = "comment", key = "#idx")
     public List<AdminCommentDTO> findSupportAdminComment(Long idx) {
-        try {
-            return adminSupportJpaRepository.findSupportAdminComment(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
-        }
+        return adminSupportJpaRepository.findSupportAdminComment(idx);
     }
 }

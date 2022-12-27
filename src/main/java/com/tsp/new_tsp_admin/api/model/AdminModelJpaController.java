@@ -284,9 +284,8 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}/agency")
-    public AdminModelDTO updateModelAgency(@Valid @RequestBody AdminModelEntity adminModelEntity,
-                                           @PathVariable Long idx) {
-        return adminModelJpaService.updateModelAgency(AdminModelEntity.builder().idx(idx).agencyIdx(adminModelEntity.getAgencyIdx()).build());
+    public AdminModelDTO updateModelAgency(@PathVariable Long idx, @RequestParam Long agencyIdx) {
+        return adminModelJpaService.updateModelAgency(AdminModelEntity.builder().idx(idx).agencyIdx(agencyIdx).build());
     }
 
     /**

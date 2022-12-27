@@ -26,18 +26,14 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * 1. MethodName : findFaqCount
      * 2. ClassName  : AdminFaqJpaServiceImpl.java
      * 3. Comment    : 관리자 FAQ 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 22.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findFaqCount(Map<String, Object> faqMap) {
-        try {
-            return adminFaqJpaRepository.findFaqCount(faqMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_FAQ_LIST, e);
-        }
+        return adminFaqJpaRepository.findFaqCount(faqMap);
     }
 
     /**
@@ -45,19 +41,15 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * 1. MethodName : findFaqList
      * 2. ClassName  : AdminFaqJpaServiceImpl.java
      * 3. Comment    : 관리자 FAQ 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 22.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
     @Override
     @Cacheable(value = "faq", key = "#faqMap")
     @Transactional(readOnly = true)
     public List<AdminFaqDTO> findFaqList(Map<String, Object> faqMap) {
-        try {
-            return adminFaqJpaRepository.findFaqList(faqMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_FAQ_LIST, e);
-        }
+        return adminFaqJpaRepository.findFaqList(faqMap);
     }
 
     /**
@@ -65,19 +57,15 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * 1. MethodName : findOneFaq
      * 2. ClassName  : AdminFaqJpaServiceImpl.java
      * 3. Comment    : 관리자 FAQ 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 22.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
     @Override
     @Cacheable(value = "faq", key = "#idx")
     @Transactional(readOnly = true)
     public AdminFaqDTO findOneFaq(Long idx) {
-        try {
-            return adminFaqJpaRepository.findOneFaq(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_FAQ, e);
-        }
+        return adminFaqJpaRepository.findOneFaq(idx);
     }
 
     /**
@@ -85,19 +73,15 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * 1. MethodName : findPrevOneFaq
      * 2. ClassName  : AdminFaqJpaServiceImpl.java
      * 3. Comment    : 관리자 이전 FAQ 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
     @Override
     @Cacheable(value = "faq", key = "#idx")
     @Transactional(readOnly = true)
     public AdminFaqDTO findPrevOneFaq(Long idx) {
-        try {
-            return adminFaqJpaRepository.findPrevOneFaq(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_FAQ, e);
-        }
+        return adminFaqJpaRepository.findPrevOneFaq(idx);
     }
 
     /**
@@ -105,19 +89,15 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * 1. MethodName : findNextOneFaq
      * 2. ClassName  : AdminFaqJpaServiceImpl.java
      * 3. Comment    : 관리자 다음 FAQ 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
     @Override
     @Cacheable(value = "faq", key = "#idx")
     @Transactional(readOnly = true)
     public AdminFaqDTO findNextOneFaq(Long idx) {
-        try {
-            return adminFaqJpaRepository.findNextOneFaq(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_FAQ, e);
-        }
+        return adminFaqJpaRepository.findNextOneFaq(idx);
     }
 
     /**
@@ -125,8 +105,8 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * 1. MethodName : insertFaq
      * 2. ClassName  : AdminFaqServiceImpl.java
      * 3. Comment    : 관리자 FAQ 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 22.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
     @Override
@@ -146,8 +126,8 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * 1. MethodName : updateFaq
      * 2. ClassName  : AdminFaqServiceImpl.java
      * 3. Comment    : 관리자 FAQ 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 22.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
     @Override
@@ -167,8 +147,8 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      * 1. MethodName : deleteFaq
      * 2. ClassName  : AdminFaqServiceImpl.java
      * 3. Comment    : 관리자 FAQ 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 22.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
     @Override

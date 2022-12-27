@@ -6,6 +6,7 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
+import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -13,16 +14,20 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
+import static com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity.toDto;
 import static com.tsp.new_tsp_admin.api.domain.model.negotiation.QAdminNegotiationEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.adminScheduleEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL_NEGOTIATION;
 import static java.time.LocalDate.now;
 import static java.time.LocalDateTime.of;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,25 +38,16 @@ public class AdminNegotiationJpaRepository {
 
     private BooleanExpression searchNegotiation(Map<String, Object> negotiationMap) {
         String searchKeyword = getString(negotiationMap.get("searchKeyword"), "");
-        LocalDateTime searchStartTime = (LocalDateTime) negotiationMap.get("searchStartTime");
-        LocalDateTime searchEndTime = (LocalDateTime) negotiationMap.get("searchEndTime");
+        LocalDateTime searchStartTime = negotiationMap.get("searchStartTime") != null ? (LocalDateTime) negotiationMap.get("searchStartTime") : now().minusDays(now().getDayOfMonth() - 1).atStartOfDay();
+        LocalDateTime searchEndTime = negotiationMap.get("searchEndTime") != null ? (LocalDateTime) negotiationMap.get("searchStartTime") : of(now().minusDays(now().getDayOfMonth()).plusMonths(1), LocalTime.of(23, 59, 59));
 
-        if (searchStartTime != null && searchEndTime != null) {
-            searchStartTime = (LocalDateTime) negotiationMap.get("searchStartTime");
-            searchEndTime = (LocalDateTime) negotiationMap.get("searchEndTime");
-        } else {
-            searchStartTime = now().minusDays(now().getDayOfMonth()-1).atStartOfDay();
-            searchEndTime = of(now().minusDays(now().getDayOfMonth()).plusMonths(1), LocalTime.of(23,59,59));
-        }
 
-        if (!"".equals(searchKeyword)) {
-            return adminModelEntity.modelKorName.contains(searchKeyword)
+        return !Objects.equals(searchKeyword, "") ?
+                adminModelEntity.modelKorName.contains(searchKeyword)
                     .or(adminModelEntity.modelEngName.contains(searchKeyword)
                             .or(adminModelEntity.modelDescription.contains(searchKeyword)))
-                    .or(adminNegotiationEntity.modelNegotiationDesc.contains(searchKeyword));
-        } else {
-            return adminNegotiationEntity.modelNegotiationDate.between(searchStartTime, searchEndTime);
-        }
+                    .or(adminNegotiationEntity.modelNegotiationDesc.contains(searchKeyword)) :
+                adminNegotiationEntity.modelNegotiationDate.between(searchStartTime, searchEndTime);
     }
 
     /**
@@ -59,8 +55,8 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : findModelNegotiationCount
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 모델 섭외 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     public int findNegotiationCount(Map<String, Object> negotiationMap) {
@@ -74,8 +70,8 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : findModelNegotiationList
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 모델 섭외 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     public List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap) {
@@ -91,10 +87,7 @@ public class AdminNegotiationJpaRepository {
                 .limit(getInt(negotiationMap.get("size"), 0))
                 .fetch();
 
-        modelNegotiationList.forEach(list -> modelNegotiationList.get(modelNegotiationList.indexOf(list))
-                .setRowNum(getInt(negotiationMap.get("startPage"), 1) * (getInt(negotiationMap.get("size"), 1)) - (2 - modelNegotiationList.indexOf(list))));
-
-        return AdminModelEntity.toDtoList(modelNegotiationList);
+        return modelNegotiationList != null ? toDtoList(modelNegotiationList) : emptyList();
     }
 
     /**
@@ -102,19 +95,19 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : findOneNegotiation
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 모델 섭외 상세 조회
-     * 4. 작성자       : CHO
+     * 4. 작성자      : CHO
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
     public AdminNegotiationDTO findOneNegotiation(Long idx) {
-        AdminNegotiationEntity findOneNegotiation = queryFactory
+        AdminNegotiationEntity findOneNegotiation = Optional.ofNullable(queryFactory
                 .selectFrom(adminNegotiationEntity)
                 .orderBy(adminNegotiationEntity.idx.desc())
                 .where(adminNegotiationEntity.visible.eq("Y")
                         .and(adminNegotiationEntity.idx.eq(idx)))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL_NEGOTIATION, new Throwable()));
 
-        return AdminNegotiationEntity.toDto(findOneNegotiation);
+        return toDto(findOneNegotiation);
     }
 
     /**
@@ -122,12 +115,12 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : findOneModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 모델 섭외 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     public AdminModelDTO findOneModelNegotiation(AdminNegotiationEntity existAdminNegotiationEntity) {
-        AdminModelEntity findOneModelNegotiation = queryFactory
+        AdminModelEntity findOneModelNegotiation = Optional.ofNullable(queryFactory
                 .selectFrom(adminModelEntity)
                 .leftJoin(adminModelEntity.negotiationList, adminNegotiationEntity)
                 .fetchJoin()
@@ -135,10 +128,9 @@ public class AdminNegotiationJpaRepository {
                         .and(adminNegotiationEntity.visible.eq("Y"))
                         .and(adminModelEntity.idx.eq(existAdminNegotiationEntity.getModelIdx()))
                         .and(adminNegotiationEntity.idx.eq(existAdminNegotiationEntity.getIdx())))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL_NEGOTIATION, new Throwable()));
 
-        assert findOneModelNegotiation != null;
-        return AdminModelEntity.toDto(findOneModelNegotiation);
+        return toDto(findOneModelNegotiation);
     }
 
     /**
@@ -146,20 +138,20 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : findPrevOneNegotiation
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 이전 모델 섭외 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 21.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 21.
      * </pre>
      */
     public AdminNegotiationDTO findPrevOneNegotiation(Long idx) {
         // 이전 모델 섭외 조회
-        AdminNegotiationEntity findPrevOneNegotiation = queryFactory
+        AdminNegotiationEntity findPrevOneNegotiation = Optional.ofNullable(queryFactory
                 .selectFrom(adminNegotiationEntity)
                 .orderBy(adminNegotiationEntity.idx.desc())
                 .where(adminNegotiationEntity.idx.lt(idx)
                         .and(adminNegotiationEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL_NEGOTIATION, new Throwable()));
 
-        return AdminNegotiationEntity.toDto(findPrevOneNegotiation);
+        return toDto(findPrevOneNegotiation);
     }
 
     /**
@@ -167,20 +159,20 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : findNextOneNegotiation
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 다음 모델 섭외 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 21.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 21.
      * </pre>
      */
     public AdminNegotiationDTO findNextOneNegotiation(Long idx) {
         // 다음 모델 섭외 조회
-        AdminNegotiationEntity findNextOneNegotiation = queryFactory
+        AdminNegotiationEntity findNextOneNegotiation = Optional.ofNullable(queryFactory
                 .selectFrom(adminNegotiationEntity)
                 .orderBy(adminNegotiationEntity.idx.asc())
                 .where(adminNegotiationEntity.idx.gt(idx)
                         .and(adminNegotiationEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL_NEGOTIATION, new Throwable()));
 
-        return AdminNegotiationEntity.toDto(findNextOneNegotiation);
+        return toDto(findNextOneNegotiation);
     }
 
     /**
@@ -188,13 +180,13 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : insertModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 모델 섭외 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     public AdminNegotiationDTO insertModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
         em.persist(adminNegotiationEntity);
-        return AdminNegotiationEntity.toDto(adminNegotiationEntity);
+        return toDto(adminNegotiationEntity);
     }
 
     /**
@@ -202,15 +194,15 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : updateModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 모델 섭외 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     public AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity existAdminNegotiationEntity) {
         em.merge(existAdminNegotiationEntity);
         em.flush();
         em.clear();
-        return AdminNegotiationEntity.toDto(existAdminNegotiationEntity);
+        return toDto(existAdminNegotiationEntity);
     }
 
     /**
@@ -218,8 +210,8 @@ public class AdminNegotiationJpaRepository {
      * 1. MethodName : deleteModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 모델 섭외 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     public Long deleteModelNegotiation(Long idx) {

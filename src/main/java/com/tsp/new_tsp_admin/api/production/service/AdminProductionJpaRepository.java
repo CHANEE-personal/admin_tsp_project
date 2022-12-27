@@ -16,14 +16,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
+import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,13 +39,15 @@ public class AdminProductionJpaRepository {
         String searchType = getString(productionMap.get("searchType"), "");
         String searchKeyword = getString(productionMap.get("searchKeyword"), "");
 
-        if ("0".equals(searchType)) {
-            return adminProductionEntity.title.contains(searchKeyword)
-                    .or(adminProductionEntity.description.contains(searchKeyword));
-        } else if ("1".equals(searchType)) {
-            return adminProductionEntity.title.contains(searchKeyword);
+        if (!Objects.equals(searchKeyword, "")) {
+            return "0".equals(searchType) ?
+                    adminProductionEntity.title.contains(searchKeyword)
+                            .or(adminProductionEntity.description.contains(searchKeyword)) :
+                    "1".equals(searchType) ?
+                            adminProductionEntity.title.contains(searchKeyword) :
+                            adminProductionEntity.description.contains(searchKeyword);
         } else {
-            return adminProductionEntity.description.contains(searchKeyword);
+            return null;
         }
     }
 
@@ -51,8 +56,8 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : findProductionCount
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     public int findProductionCount(Map<String, Object> productionMap) {
@@ -64,8 +69,8 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
@@ -77,10 +82,7 @@ public class AdminProductionJpaRepository {
                 .limit(getInt(productionMap.get("size"), 0))
                 .fetch();
 
-        productionList.forEach(list -> productionList.get(productionList.indexOf(list))
-                .setRowNum(getInt(productionMap.get("startPage"), 1) * (getInt(productionMap.get("size"), 1)) - (2 - productionList.indexOf(list))));
-
-        return AdminProductionEntity.toDtoList(productionList);
+        return productionList != null ? toDtoList(productionList) : emptyList();
     }
 
     /**
@@ -88,12 +90,12 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : findOneProduction
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     public AdminProductionDTO findOneProduction(Long idx) {
-        AdminProductionEntity findOneProduction = queryFactory
+        AdminProductionEntity findOneProduction = Optional.ofNullable(queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.desc())
                 .leftJoin(adminProductionEntity.commonImageEntityList, commonImageEntity)
@@ -101,10 +103,9 @@ public class AdminProductionJpaRepository {
                 .where(adminProductionEntity.idx.eq(idx)
                         .and(adminProductionEntity.visible.eq("Y"))
                         .and(commonImageEntity.typeName.eq(EntityType.PRODUCTION)))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION, new Throwable()));
 
-        assert findOneProduction != null;
-        return AdminProductionEntity.toDto(findOneProduction);
+        return toDto(findOneProduction);
     }
 
     /**
@@ -112,20 +113,20 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : findPrevOneProduction
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 이전 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
     public AdminProductionDTO findPrevOneProduction(Long idx) {
         // 이전 프로덕션 조회
-        AdminProductionEntity findPrevOneProduction = queryFactory
+        AdminProductionEntity findPrevOneProduction = Optional.ofNullable(queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.desc())
                 .where(adminProductionEntity.idx.lt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION, new Throwable()));
 
-        return AdminProductionEntity.toDto(findPrevOneProduction);
+        return toDto(findPrevOneProduction);
     }
 
     /**
@@ -133,20 +134,20 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : findNextOneProduction
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 다음 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
     public AdminProductionDTO findNextOneProduction(Long idx) {
         // 다음 프로덕션 조회
-        AdminProductionEntity findNextOneProduction = queryFactory
+        AdminProductionEntity findNextOneProduction = Optional.ofNullable(queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.asc())
                 .where(adminProductionEntity.idx.gt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION, new Throwable()));
 
-        return AdminProductionEntity.toDto(findNextOneProduction);
+        return toDto(findNextOneProduction);
     }
 
     /**
@@ -154,13 +155,13 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : insertProduction
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         em.persist(adminProductionEntity);
-        return AdminProductionEntity.toDto(adminProductionEntity);
+        return toDto(adminProductionEntity);
     }
 
     /**
@@ -168,19 +169,14 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : insertProductionImage
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 이미지 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 14.
      * </pre>
      */
     @Modifying(clearAutomatically = true)
     public Long insertProductionImage(CommonImageEntity commonImageEntity) {
-        try {
-            em.persist(commonImageEntity);
-
-            return commonImageEntity.getIdx();
-        } catch (Exception e) {
-            throw new TspException(ERROR_PRODUCTION, e);
-        }
+        em.persist(commonImageEntity);
+        return commonImageEntity.getIdx();
     }
 
     /**
@@ -188,15 +184,15 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : updateProductionByEm
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 수정 by entityManager
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     public AdminProductionDTO updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
         em.merge(existAdminProductionEntity);
         em.flush();
         em.clear();
-        return AdminProductionEntity.toDto(existAdminProductionEntity);
+        return toDto(existAdminProductionEntity);
     }
 
     /**
@@ -204,8 +200,8 @@ public class AdminProductionJpaRepository {
      * 1. MethodName : deleteProductionByEm
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 삭제 by entityManager
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     public Long deleteProductionByEm(Long idx) {
@@ -232,6 +228,6 @@ public class AdminProductionJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminCommentEntity.toDtoList(adminCommentEntity);
+        return adminCommentEntity != null ? toDtoList(adminCommentEntity) : emptyList();
     }
 }

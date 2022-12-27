@@ -4,17 +4,22 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.faq.QAdminFaqEntity.adminFaqEntity;
+import static com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.adminAgencyEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_AGENCY;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,13 +32,15 @@ public class AdminAgencyJpaRepository {
         String searchType = getString(agencyMap.get("searchType"), "");
         String searchKeyword = getString(agencyMap.get("searchKeyword"), "");
 
-        if ("0".equals(searchType)) {
-            return adminAgencyEntity.agencyName.contains(searchKeyword)
-                    .or(adminAgencyEntity.agencyDescription.contains(searchKeyword));
-        } else if ("1".equals(searchType)) {
-            return adminAgencyEntity.agencyName.contains(searchKeyword);
+        if (!Objects.equals(searchKeyword, "")) {
+            return "0".equals(searchType) ?
+                    adminAgencyEntity.agencyName.contains(searchKeyword)
+                            .or(adminAgencyEntity.agencyDescription.contains(searchKeyword)) :
+                    "1".equals(searchType) ?
+                            adminAgencyEntity.agencyName.contains(searchKeyword) :
+                            adminAgencyEntity.agencyDescription.contains(searchKeyword);
         } else {
-            return adminAgencyEntity.agencyDescription.contains(searchKeyword);
+            return null;
         }
     }
 
@@ -42,8 +49,8 @@ public class AdminAgencyJpaRepository {
      * 1. MethodName : findAgencyCount
      * 2. ClassName  : AdminAgencyJpaRepository.java
      * 3. Comment    : 관리자 모델 소속사 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     public int findAgencyCount(Map<String, Object> agencyMap) {
@@ -68,10 +75,7 @@ public class AdminAgencyJpaRepository {
                 .limit(getInt(agencyMap.get("size"), 0))
                 .fetch();
 
-        agencyList.forEach(list -> agencyList.get(agencyList.indexOf(list))
-                .setRowNum(getInt(agencyMap.get("startPage"), 1) * (getInt(agencyMap.get("size"), 1)) - (2 - agencyList.indexOf(list))));
-
-        return AdminAgencyEntity.toDtoList(agencyList);
+        return agencyList != null ? toDtoList(agencyList) : emptyList();
     }
 
     /**
@@ -79,20 +83,19 @@ public class AdminAgencyJpaRepository {
      * 1. MethodName : findOneAgency
      * 2. ClassName  : AdminAgencyJpaRepository.java
      * 3. Comment    : 관리자 모델 소속사 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     public AdminAgencyDTO findOneAgency(Long idx) {
-        AdminAgencyEntity findOneAgency = queryFactory
+        AdminAgencyEntity findOneAgency = Optional.ofNullable(queryFactory
                 .selectFrom(adminAgencyEntity)
                 .orderBy(adminAgencyEntity.idx.desc())
                 .where(adminAgencyEntity.visible.eq("Y")
                         .and(adminAgencyEntity.idx.eq(idx)))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_AGENCY, new Throwable()));
 
-        assert findOneAgency != null;
-        return AdminAgencyEntity.toDto(findOneAgency);
+        return toDto(findOneAgency);
     }
 
     /**
@@ -100,13 +103,13 @@ public class AdminAgencyJpaRepository {
      * 1. MethodName : insertAgency
      * 2. ClassName  : AdminAgencyRepository.java
      * 3. Comment    : 관리자 모델 소속사 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     public AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) {
         em.persist(adminAgencyEntity);
-        return AdminAgencyEntity.toDto(adminAgencyEntity);
+        return toDto(adminAgencyEntity);
     }
 
     /**
@@ -114,15 +117,15 @@ public class AdminAgencyJpaRepository {
      * 1. MethodName : updateAgency
      * 2. ClassName  : AdminAgencyRepository.java
      * 3. Comment    : 관리자 모델 소속사 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     public AdminAgencyDTO updateAgency(AdminAgencyEntity existAdminAgencyEntity) {
         em.merge(existAdminAgencyEntity);
         em.flush();
         em.clear();
-        return AdminAgencyEntity.toDto(existAdminAgencyEntity);
+        return toDto(existAdminAgencyEntity);
     }
 
     /**
@@ -130,8 +133,8 @@ public class AdminAgencyJpaRepository {
      * 1. MethodName : deleteAgency
      * 2. ClassName  : AdminAgencyRepository.java
      * 3. Comment    : 관리자 모델 소속사 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     public Long deleteAgency(Long idx) {

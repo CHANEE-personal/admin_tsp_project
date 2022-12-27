@@ -4,17 +4,21 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeDTO;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity;
+import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.notice.QAdminNoticeEntity.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_NOTICE;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,13 +32,15 @@ public class AdminNoticeJpaRepository {
         String searchType = getString(noticeMap.get("searchType"), "");
         String searchKeyword = getString(noticeMap.get("searchKeyword"), "");
 
-        if ("0".equals(searchType)) {
-            return adminNoticeEntity.title.contains(searchKeyword)
-                    .or(adminNoticeEntity.description.contains(searchKeyword));
-        } else if ("1".equals(searchType)) {
-            return adminNoticeEntity.title.contains(searchKeyword);
+        if (!Objects.equals(searchKeyword, "")) {
+            return "0".equals(searchType) ?
+                    adminNoticeEntity.title.contains(searchKeyword)
+                            .or(adminNoticeEntity.description.contains(searchKeyword)) :
+                    "1".equals(searchType) ?
+                            adminNoticeEntity.title.contains(searchKeyword) :
+                            adminNoticeEntity.description.contains(searchKeyword);
         } else {
-            return adminNoticeEntity.description.contains(searchKeyword);
+            return null;
         }
     }
 
@@ -43,8 +49,8 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : findNoticeCount
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     public int findNoticeCount(Map<String, Object> noticeMap) {
@@ -56,8 +62,8 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : findNoticeList
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) {
@@ -69,10 +75,7 @@ public class AdminNoticeJpaRepository {
                 .limit(getInt(noticeMap.get("size"), 0))
                 .fetch();
 
-        noticeList.forEach(list -> noticeList.get(noticeList.indexOf(list))
-                .setRowNum(getInt(noticeMap.get("startPage"), 1) * (getInt(noticeMap.get("size"), 1)) - (2 - noticeList.indexOf(list))));
-
-        return AdminNoticeEntity.toDtoList(noticeList);
+        return noticeList != null ? toDtoList(noticeList) : emptyList();
     }
 
     /**
@@ -80,20 +83,19 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : findOneNotice
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     AdminNoticeDTO findOneNotice(Long idx) {
-        AdminNoticeEntity findOneNotice = queryFactory
+        AdminNoticeEntity findOneNotice = Optional.ofNullable(queryFactory
                 .selectFrom(adminNoticeEntity)
                 .orderBy(adminNoticeEntity.idx.desc())
                 .where(adminNoticeEntity.idx.eq(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE, new Throwable()));
 
-        assert findOneNotice != null;
-        return AdminNoticeEntity.toDto(findOneNotice);
+        return toDto(findOneNotice);
     }
 
     /**
@@ -101,19 +103,19 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : findPrevOneNotice
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 이전 공지사항 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
     AdminNoticeDTO findPrevOneNotice(Long idx) {
-        AdminNoticeEntity findPrevOneNotice = queryFactory
+        AdminNoticeEntity findPrevOneNotice = Optional.ofNullable(queryFactory
                 .selectFrom(adminNoticeEntity)
                 .orderBy(adminNoticeEntity.idx.desc())
                 .where(adminNoticeEntity.idx.lt(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE, new Throwable()));
 
-        return AdminNoticeEntity.toDto(findPrevOneNotice);
+        return toDto(findPrevOneNotice);
     }
 
     /**
@@ -121,19 +123,19 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : findNextOneNotice
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 이전 공지사항 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
     AdminNoticeDTO findNextOneNotice(Long idx) {
-        AdminNoticeEntity findNextOneNotice = queryFactory
+        AdminNoticeEntity findNextOneNotice = Optional.ofNullable(queryFactory
                 .selectFrom(adminNoticeEntity)
                 .orderBy(adminNoticeEntity.idx.desc())
                 .where(adminNoticeEntity.idx.gt(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
-                .fetchFirst();
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE, new Throwable()));
 
-        return AdminNoticeEntity.toDto(findNextOneNotice);
+        return toDto(findNextOneNotice);
     }
 
     /**
@@ -141,13 +143,13 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : insertNotice
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     public AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity) {
         em.persist(adminNoticeEntity);
-        return AdminNoticeEntity.toDto(adminNoticeEntity);
+        return toDto(adminNoticeEntity);
     }
 
     /**
@@ -155,15 +157,15 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : updateNotice
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     public AdminNoticeDTO updateNotice(AdminNoticeEntity existAdminNoticeEntity) {
         em.merge(existAdminNoticeEntity);
         em.flush();
         em.clear();
-        return AdminNoticeEntity.toDto(existAdminNoticeEntity);
+        return toDto(existAdminNoticeEntity);
     }
 
     /**
@@ -171,12 +173,13 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : toggleFixed
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 상단 고정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 23.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 23.
      * </pre>
      */
     public AdminNoticeDTO toggleFixed(Long idx) {
-        Boolean fixed = !em.find(AdminNoticeEntity.class, idx).getTopFixed();
+        AdminNoticeEntity oneNotice = em.find(AdminNoticeEntity.class, idx);
+        Boolean fixed = !oneNotice.getTopFixed();
 
         queryFactory
                 .update(adminNoticeEntity)
@@ -187,7 +190,7 @@ public class AdminNoticeJpaRepository {
         em.flush();
         em.clear();
 
-        return AdminNoticeEntity.toDto(em.find(AdminNoticeEntity.class, idx));
+        return toDto(oneNotice);
     }
 
     /**
@@ -195,8 +198,8 @@ public class AdminNoticeJpaRepository {
      * 1. MethodName : deleteNotice
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     public Long deleteNotice(Long idx) {

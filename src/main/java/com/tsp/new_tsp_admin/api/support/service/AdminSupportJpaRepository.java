@@ -9,19 +9,26 @@ import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
+import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.support.QAdminSupportEntity.adminSupportEntity;
+import static com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.support.evaluation.QEvaluationEntity.evaluationEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_EVALUATION;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_SUPPORT;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,13 +41,15 @@ public class AdminSupportJpaRepository {
         String searchType = getString(supportMap.get("searchType"), "");
         String searchKeyword = getString(supportMap.get("searchKeyword"), "");
 
-        if ("0".equals(searchType)) {
-            return adminSupportEntity.supportName.contains(searchKeyword)
-                    .or(adminSupportEntity.supportMessage.contains(searchKeyword));
-        } else if ("1".equals(searchType)) {
-            return adminSupportEntity.supportName.contains(searchKeyword);
+        if (!Objects.equals(searchKeyword, "")) {
+            return "0".equals(searchType) ?
+                    adminSupportEntity.supportName.contains(searchKeyword)
+                            .or(adminSupportEntity.supportMessage.contains(searchKeyword)) :
+                    "1".equals(searchType) ?
+                            adminSupportEntity.supportName.contains(searchKeyword) :
+                            adminSupportEntity.supportMessage.contains(searchKeyword);
         } else {
-            return adminSupportEntity.supportMessage.contains(searchKeyword);
+            return null;
         }
     }
 
@@ -49,11 +58,11 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : findSupportCount
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    public Integer findSupportCount(Map<String, Object> supportMap) {
+    public int findSupportCount(Map<String, Object> supportMap) {
         return queryFactory.selectFrom(adminSupportEntity).where(searchSupport(supportMap)).fetch().size();
     }
 
@@ -62,8 +71,8 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : findSupportList
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) {
@@ -74,10 +83,7 @@ public class AdminSupportJpaRepository {
                 .limit(getInt(supportMap.get("size"), 0))
                 .fetch();
 
-        supportList.forEach(list -> supportList.get(supportList.indexOf(list))
-                .setRowNum(getInt(supportMap.get("startPage"), 1) * (getInt(supportMap.get("size"), 1)) - (2 - supportList.indexOf(list))));
-
-        return AdminSupportEntity.toDtoList(supportList);
+        return supportList != null ? toDtoList(supportList) : emptyList();
     }
 
     /**
@@ -85,18 +91,18 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : findOneSupportModel
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public AdminSupportDTO findOneSupportModel(Long idx) {
         //모델 상세 조회
-        AdminSupportEntity findOneSupportModel = queryFactory.selectFrom(adminSupportEntity)
+        AdminSupportEntity findOneSupportModel = Optional.ofNullable(queryFactory
+                .selectFrom(adminSupportEntity)
                 .where(adminSupportEntity.idx.eq(idx))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_SUPPORT, new Throwable()));
 
-        assert findOneSupportModel != null;
-        return AdminSupportEntity.toDto(findOneSupportModel);
+        return toDto(findOneSupportModel);
     }
 
     /**
@@ -104,13 +110,13 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : insertSupportModel
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         em.persist(adminSupportEntity);
-        return AdminSupportEntity.toDto(adminSupportEntity);
+        return toDto(adminSupportEntity);
     }
 
     /**
@@ -118,15 +124,15 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : updateSupportModel
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public AdminSupportDTO updateSupportModel(AdminSupportEntity existAdminSupportEntity) {
         em.merge(existAdminSupportEntity);
         em.flush();
         em.clear();
-        return AdminSupportEntity.toDto(existAdminSupportEntity);
+        return toDto(existAdminSupportEntity);
     }
 
     /**
@@ -134,8 +140,8 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : deleteSupportModel
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public Long deleteSupportModel(Long idx) {
@@ -147,14 +153,14 @@ public class AdminSupportJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findEvaluationsCount
+     * 1. MethodName : findEvaluationCount
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 평가 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    public Integer findEvaluationsCount() {
+    public int findEvaluationCount() {
         return queryFactory.selectFrom(evaluationEntity).fetch().size();
     }
 
@@ -175,10 +181,7 @@ public class AdminSupportJpaRepository {
                 .limit(getInt(evaluationMap.get("size"), 0))
                 .fetch();
 
-        evaluationList.forEach(list -> evaluationList.get(evaluationList.indexOf(list))
-                .setRowNum(getInt(evaluationMap.get("startPage"), 1) * (getInt(evaluationMap.get("size"), 1)) - (2 - evaluationList.indexOf(list))));
-
-        return EvaluationEntity.toDtoList(evaluationList);
+        return evaluationList != null ? toDtoList(evaluationList) : emptyList();
     }
 
     /**
@@ -186,18 +189,18 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : findOneEvaluation
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 평가내용 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public EvaluationDTO findOneEvaluation(Long idx) {
         //모델 상세 조회
-        EvaluationEntity findOneEvaluation = queryFactory.selectFrom(evaluationEntity)
+        EvaluationEntity findOneEvaluation = Optional.ofNullable(queryFactory
+                .selectFrom(evaluationEntity)
                 .where(evaluationEntity.idx.eq(idx))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_EVALUATION, new Throwable()));
 
-        assert findOneEvaluation != null;
-        return EvaluationEntity.toDto(findOneEvaluation);
+        return toDto(findOneEvaluation);
     }
 
     /**
@@ -205,13 +208,13 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : evaluationSupportModel
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 평가내용 작성
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) {
         em.persist(evaluationEntity);
-        return EvaluationEntity.toDto(evaluationEntity);
+        return toDto(evaluationEntity);
     }
 
     /**
@@ -219,15 +222,15 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : updateEvaluation
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 평가내용 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public EvaluationDTO updateEvaluation(EvaluationEntity existEvaluationEntity) {
         em.merge(existEvaluationEntity);
         em.flush();
         em.clear();
-        return EvaluationEntity.toDto(existEvaluationEntity);
+        return toDto(existEvaluationEntity);
     }
 
     /**
@@ -235,8 +238,8 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : deleteEvaluation
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 평가내용 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public Long deleteEvaluation(Long idx) {
@@ -251,8 +254,8 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : updatePass
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 합격 처리
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public AdminSupportDTO updatePass(Long idx) {
@@ -265,7 +268,7 @@ public class AdminSupportJpaRepository {
         em.flush();
         em.clear();
 
-        return AdminSupportEntity.toDto(em.find(AdminSupportEntity.class, idx));
+        return toDto(em.find(AdminSupportEntity.class, idx));
     }
 
     /**
@@ -273,8 +276,8 @@ public class AdminSupportJpaRepository {
      * 1. MethodName : findSupportAdminComment
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
     public List<AdminCommentDTO> findSupportAdminComment(Long idx) {
@@ -285,6 +288,6 @@ public class AdminSupportJpaRepository {
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 
-        return AdminCommentEntity.toDtoList(adminCommentEntity);
+        return adminCommentEntity != null ? AdminCommentEntity.toDtoList(adminCommentEntity) : emptyList();
     }
 }

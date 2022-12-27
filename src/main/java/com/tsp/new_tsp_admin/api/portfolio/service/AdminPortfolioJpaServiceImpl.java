@@ -27,18 +27,14 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : findPortfoliosCount
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 14.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findPortfolioCount(Map<String, Object> portfolioMap) {
-        try {
-            return adminPortfolioJpaRepository.findPortfolioCount(portfolioMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
-        }
+        return adminPortfolioJpaRepository.findPortfolioCount(portfolioMap);
     }
 
     /**
@@ -46,19 +42,15 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 14.
      * </pre>
      */
     @Override
     @Cacheable(value = "portfolio", key = "#portfolioMap")
     @Transactional(readOnly = true)
     public List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) {
-        try {
-            return adminPortfolioJpaRepository.findPortfolioList(portfolioMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
-        }
+        return adminPortfolioJpaRepository.findPortfolioList(portfolioMap);
     }
 
     /**
@@ -66,19 +58,15 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : findOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
     @Override
     @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
     public AdminPortFolioDTO findOnePortfolio(Long idx) {
-        try {
-            return adminPortfolioJpaRepository.findOnePortfolio(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PORTFOLIO, e);
-        }
+        return adminPortfolioJpaRepository.findOnePortfolio(idx);
     }
 
     /**
@@ -86,19 +74,15 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : findPrevOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 이전 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 14.
      * </pre>
      */
     @Override
     @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
     public AdminPortFolioDTO findPrevOnePortfolio(Long idx) {
-        try {
-            return adminPortfolioJpaRepository.findPrevOnePortfolio(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PORTFOLIO, e);
-        }
+        return adminPortfolioJpaRepository.findPrevOnePortfolio(idx);
     }
 
     /**
@@ -106,19 +90,15 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : findNextOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 다음 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 14.
      * </pre>
      */
     @Override
     @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
     public AdminPortFolioDTO findNextOnePortfolio(Long idx) {
-        try {
-            return adminPortfolioJpaRepository.findNextOnePortfolio(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PORTFOLIO, e);
-        }
+        return adminPortfolioJpaRepository.findNextOnePortfolio(idx);
     }
 
     /**
@@ -126,8 +106,8 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : insertPortfolio
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
     @Override
@@ -147,8 +127,8 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : updatePortfolio
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
     @Override
@@ -168,8 +148,8 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : deletePortfolio
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
     @Override
@@ -189,18 +169,14 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * 1. MethodName : findPortfolioAdminComment
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
     @Override
     @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) {
-        try {
-            return adminPortfolioJpaRepository.findPortfolioAdminComment(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
-        }
+        return adminPortfolioJpaRepository.findPortfolioAdminComment(idx);
     }
 }

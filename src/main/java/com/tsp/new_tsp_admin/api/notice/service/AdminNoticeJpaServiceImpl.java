@@ -26,18 +26,14 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : findNoticeCount
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findNoticeCount(Map<String, Object> noticeMap) {
-        try {
-            return adminNoticeJpaRepository.findNoticeCount(noticeMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_NOTICE_LIST, e);
-        }
+        return adminNoticeJpaRepository.findNoticeCount(noticeMap);
     }
 
     /**
@@ -45,19 +41,15 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : findNoticeList
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     @Override
     @Cacheable(value = "notice", key = "#noticeMap")
     @Transactional(readOnly = true)
     public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) {
-        try {
-            return adminNoticeJpaRepository.findNoticeList(noticeMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_NOTICE_LIST, e);
-        }
+        return adminNoticeJpaRepository.findNoticeList(noticeMap);
     }
 
     /**
@@ -65,19 +57,15 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : findOneNotice
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     @Override
     @Cacheable(value = "notice", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNoticeDTO findOneNotice(Long idx) {
-        try {
-            return adminNoticeJpaRepository.findOneNotice(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_NOTICE, e);
-        }
+        return adminNoticeJpaRepository.findOneNotice(idx);
     }
 
     /**
@@ -85,19 +73,15 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : findPrevOneNotice
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 이전 공지사항 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
     @Override
     @Cacheable(value = "notice", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNoticeDTO findPrevOneNotice(Long idx) {
-        try {
-            return adminNoticeJpaRepository.findPrevOneNotice(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_NOTICE, e);
-        }
+        return adminNoticeJpaRepository.findPrevOneNotice(idx);
     }
 
     /**
@@ -105,19 +89,15 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : findNextOneNotice
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 다음 공지사항 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
     @Override
     @Cacheable(value = "notice", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNoticeDTO findNextOneNotice(Long idx) {
-        try {
-            return adminNoticeJpaRepository.findNextOneNotice(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_NOTICE, e);
-        }
+        return adminNoticeJpaRepository.findNextOneNotice(idx);
     }
 
     /**
@@ -125,8 +105,8 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : insertNotice
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     @Override
@@ -146,8 +126,8 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : updateNotice
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     @Override
@@ -167,8 +147,8 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : toggleFixed
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 상단 고정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 23.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 23.
      * </pre>
      */
     @Override
@@ -188,8 +168,8 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      * 1. MethodName : deleteNotice
      * 2. ClassName  : AdminNoticeServiceImpl.java
      * 3. Comment    : 관리자 공지사항 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
     @Override

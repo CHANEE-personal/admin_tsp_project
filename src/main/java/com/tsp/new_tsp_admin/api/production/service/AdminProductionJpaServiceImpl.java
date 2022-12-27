@@ -27,18 +27,14 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : findProductionCount
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findProductionCount(Map<String, Object> productionMap) {
-        try {
-            return adminProductionJpaRepository.findProductionCount(productionMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PRODUCTION_LIST, e);
-        }
+        return adminProductionJpaRepository.findProductionCount(productionMap);
     }
 
     /**
@@ -46,19 +42,15 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     @Override
     @Cacheable(value = "production", key = "#productionMap")
     @Transactional(readOnly = true)
     public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
-        try {
-            return adminProductionJpaRepository.findProductionList(productionMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PRODUCTION_LIST, e);
-        }
+        return adminProductionJpaRepository.findProductionList(productionMap);
     }
 
     /**
@@ -66,19 +58,15 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : findOneProduction
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 15.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 15.
      * </pre>
      */
     @Override
     @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findOneProduction(Long idx) {
-        try {
-            return adminProductionJpaRepository.findOneProduction(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PRODUCTION, e);
-        }
+        return adminProductionJpaRepository.findOneProduction(idx);
     }
 
     /**
@@ -86,19 +74,15 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : findPrevOneProduction
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 이전 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
     @Override
     @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findPrevOneProduction(Long idx) {
-        try {
-            return adminProductionJpaRepository.findPrevOneProduction(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PRODUCTION, e);
-        }
+        return adminProductionJpaRepository.findPrevOneProduction(idx);
     }
 
     /**
@@ -106,19 +90,15 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : findPrevOneProduction
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 다음 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
     @Override
     @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findNextOneProduction(Long idx) {
-        try {
-            return adminProductionJpaRepository.findNextOneProduction(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_PRODUCTION, e);
-        }
+        return adminProductionJpaRepository.findNextOneProduction(idx);
     }
 
     /**
@@ -126,8 +106,8 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : insertProduction
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 16.
      * </pre>
      */
     @Override
@@ -147,8 +127,8 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : updateProduction
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 16.
      * </pre>
      */
     @Override
@@ -168,8 +148,8 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : deleteProduction
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 17.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
     @Override
@@ -189,8 +169,8 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * 1. MethodName : findProductionAdminComment
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
     @Override

@@ -142,7 +142,7 @@ public class AdminSupportJpaController {
         // 페이징 및 검색
         Map<String, Object> evaluationMap = searchCommon.searchCommon(page, paramMap);
 
-        Integer evaluationCount = this.adminSupportJpaService.findEvaluationCount(evaluationMap);
+        int evaluationCount = this.adminSupportJpaService.findEvaluationCount(evaluationMap);
         List<EvaluationDTO> evaluationsList = new ArrayList<>();
 
         if (evaluationCount > 0) {

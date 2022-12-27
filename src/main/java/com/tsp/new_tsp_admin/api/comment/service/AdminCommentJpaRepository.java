@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
+import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -11,10 +12,15 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity.adminCommentEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_COMMENT;
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,8 +39,8 @@ public class AdminCommentJpaRepository {
      * 1. MethodName : findAdminCommentCount
      * 2. ClassName  : AdminCommentJpaRepository.java
      * 3. Comment    : 관리자 어드민 코멘트 리스트 갯수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     public int findAdminCommentCount(Map<String, Object> commentMap) {
@@ -46,8 +52,8 @@ public class AdminCommentJpaRepository {
      * 1. MethodName : findAdminCommentList
      * 2. ClassName  : AdminCommentJpaRepository.java
      * 3. Comment    : 관리자 어드민 코멘트 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     public List<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap) {
@@ -59,10 +65,7 @@ public class AdminCommentJpaRepository {
                 .limit(getInt(commentMap.get("size"), 0))
                 .fetch();
 
-        commentList.forEach(list -> commentList.get(commentList.indexOf(list))
-                .setRowNum(getInt(commentMap.get("startPage"), 1) * (getInt(commentMap.get("size"), 1)) - (2 - commentList.indexOf(list))));
-
-        return AdminCommentEntity.toDtoList(commentList);
+        return commentList != null ? toDtoList(commentList) : emptyList();
     }
 
     /**
@@ -70,19 +73,19 @@ public class AdminCommentJpaRepository {
      * 1. MethodName : findOneAdminComment
      * 2. ClassName  : AdminCommentJpaRepository.java
      * 3. Comment    : 관리자 어드민 코멘트 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     public AdminCommentDTO findOneAdminComment(Long idx) {
-        AdminCommentEntity findOneAdminComment = queryFactory
+        AdminCommentEntity findOneAdminComment = Optional.ofNullable(queryFactory
                 .selectFrom(adminCommentEntity)
                 .orderBy(adminCommentEntity.idx.desc())
                 .where(adminCommentEntity.idx.eq(idx)
                         .and(adminCommentEntity.visible.eq("Y")))
-                .fetchOne();
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_COMMENT, new Throwable()));
 
-        return AdminCommentEntity.toDto(findOneAdminComment);
+        return toDto(findOneAdminComment);
     }
 
     /**
@@ -90,13 +93,13 @@ public class AdminCommentJpaRepository {
      * 1. MethodName : insertAdminComment
      * 2. ClassName  : AdminCommentJpaRepository.java
      * 3. Comment    : 관리자 어드민 코멘트 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     public AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity) {
         em.persist(adminCommentEntity);
-        return AdminCommentEntity.toDto(adminCommentEntity);
+        return toDto(adminCommentEntity);
     }
 
     /**
@@ -104,15 +107,15 @@ public class AdminCommentJpaRepository {
      * 1. MethodName : updateAdminComment
      * 2. ClassName  : AdminCommentJpaRepository.java
      * 3. Comment    : 관리자 어드민 코멘트 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     public AdminCommentDTO updateAdminComment(AdminCommentEntity existAdminCommentEntity) {
         em.merge(existAdminCommentEntity);
         em.flush();
         em.clear();
-        return AdminCommentEntity.toDto(existAdminCommentEntity);
+        return toDto(existAdminCommentEntity);
     }
 
     /**
@@ -120,8 +123,8 @@ public class AdminCommentJpaRepository {
      * 1. MethodName : deleteAdminComment
      * 2. ClassName  : AdminCommentJpaRepository.java
      * 3. Comment    : 관리자 어드민 코멘트 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     public Long deleteAdminComment(Long idx) {

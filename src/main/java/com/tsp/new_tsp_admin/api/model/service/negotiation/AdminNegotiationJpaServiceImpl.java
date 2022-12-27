@@ -28,18 +28,14 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * 1. MethodName : findNegotiationCount
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findNegotiationCount(Map<String, Object> negotiationMap) {
-        try {
-            return adminNegotiationJpaRepository.findNegotiationCount(negotiationMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_NEGOTIATION_LIST, e);
-        }
+        return adminNegotiationJpaRepository.findNegotiationCount(negotiationMap);
     }
 
     /**
@@ -47,19 +43,15 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * 1. MethodName : findModelNegotiationList
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     @Override
     @Cacheable(value = "model", key = "#negotiationMap")
     @Transactional(readOnly = true)
     public List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap) {
-        try {
-            return adminNegotiationJpaRepository.findModelNegotiationList(negotiationMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_NEGOTIATION_LIST, e);
-        }
+        return adminNegotiationJpaRepository.findModelNegotiationList(negotiationMap);
     }
 
     /**
@@ -67,19 +59,15 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * 1. MethodName : findOneNegotiation
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     @Override
     @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findOneNegotiation(Long idx) {
-        try {
-            return adminNegotiationJpaRepository.findOneNegotiation(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_NEGOTIATION, e);
-        }
+        return adminNegotiationJpaRepository.findOneNegotiation(idx);
     }
 
     /**
@@ -87,19 +75,15 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * 1. MethodName : findPrevOneNegotiation
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 이전 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 21.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 21.
      * </pre>
      */
     @Override
     @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findPrevOneNegotiation(Long idx) {
-        try {
-            return adminNegotiationJpaRepository.findPrevOneNegotiation(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_NEGOTIATION, e);
-        }
+        return adminNegotiationJpaRepository.findPrevOneNegotiation(idx);
     }
 
     /**
@@ -107,19 +91,15 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * 1. MethodName : findNextOneNegotiation
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 다음 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 21.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 21.
      * </pre>
      */
     @Override
     @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findNextOneNegotiation(Long idx) {
-        try {
-            return adminNegotiationJpaRepository.findNextOneNegotiation(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_MODEL_NEGOTIATION, e);
-        }
+        return adminNegotiationJpaRepository.findNextOneNegotiation(idx);
     }
 
     /**
@@ -127,8 +107,8 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * 1. MethodName : insertModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     @Override
@@ -148,8 +128,8 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * 1. MethodName : updateModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     @Override
@@ -169,8 +149,8 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * 1. MethodName : deleteModelNegotiation
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
     @Override

@@ -27,19 +27,15 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 1. MethodName : findUsersList
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 유저 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
     @Cacheable(value = "user", key = "#userMap")
     @Transactional(readOnly = true)
     public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
-        try {
-            return adminUserJpaRepository.findUserList(userMap);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER_LIST, e);
-        }
+        return adminUserJpaRepository.findUserList(userMap);
     }
 
     /**
@@ -47,19 +43,15 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 1. MethodName : findOneUser
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 유저 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
     @Cacheable(value = "user", key = "#id")
     @Transactional(readOnly = true)
     public AdminUserEntity findOneUser(String id) {
-        try {
-            return adminUserJpaRepository.findOneUser(id);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER, e);
-        }
+        return adminUserJpaRepository.findOneUser(id);
     }
 
     /**
@@ -67,8 +59,8 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 1. MethodName : findOneUserByToken
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 토큰을 이용한 유저 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -86,8 +78,8 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 1. MethodName : adminLogin
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 로그인 처리
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -105,8 +97,8 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 1. MethodName : insertToken
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 토큰 저장
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @Override
@@ -127,8 +119,8 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 1. MethodName : insertAdminUser
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 회원가입
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     @Override
@@ -148,8 +140,8 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 1. MethodName : updateAdminUser
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 회원 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     @Override
@@ -169,8 +161,8 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * 1. MethodName : deleteAdminUser
      * 2. ClassName  : AdminUserJpaServiceImpl.java
      * 3. Comment    : 관리자 회원 탈퇴
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     @Override
