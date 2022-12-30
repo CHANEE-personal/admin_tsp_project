@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.domain.faq;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -48,6 +50,7 @@ public class AdminFaqEntity extends NewCommonMappedClass {
     private String visible;
 
     public static AdminFaqDTO toDto(AdminFaqEntity entity) {
+        if (entity == null) return null;
         return AdminFaqDTO.builder().idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
                 .title(entity.getTitle())
@@ -62,8 +65,9 @@ public class AdminFaqEntity extends NewCommonMappedClass {
     }
 
     public static List<AdminFaqDTO> toDtoList(List<AdminFaqEntity> entityList) {
-        List<AdminFaqDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(adminFaqEntity -> list.add(toDto(adminFaqEntity)));
-        return list;
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminFaqEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

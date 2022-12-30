@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.*;
@@ -39,9 +40,11 @@ public class NewCodeEntity extends NewCommonMappedClass {
     @Column(name = "cmm_type")
     private String cmmType;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "newModelCodeJpaDTO", cascade = MERGE, fetch = LAZY)
     private List<AdminModelEntity> adminModelEntityList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "newPortFolioJpaDTO", cascade = MERGE, fetch = LAZY)
     private List<AdminPortFolioEntity> adminPortFolioEntityList = new ArrayList<>();
 

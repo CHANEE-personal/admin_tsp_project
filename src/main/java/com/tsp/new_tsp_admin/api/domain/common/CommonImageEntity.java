@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
@@ -76,18 +77,22 @@ public class CommonImageEntity {
     @ApiModelProperty(value = "등록일자", hidden = true)
     private LocalDateTime regDate;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminModelEntity adminModelEntity;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminProductionEntity adminProductionEntity;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminPortFolioEntity adminPortfolioEntity;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminAgencyEntity adminAgencyEntity;

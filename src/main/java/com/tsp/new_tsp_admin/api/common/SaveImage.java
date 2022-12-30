@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.common;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
-import com.tsp.new_tsp_admin.api.image.service.ImageRepository;
 import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

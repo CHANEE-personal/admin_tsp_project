@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.support;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
 import lombok.*;
@@ -72,6 +73,7 @@ public class AdminSupportEntity extends NewCommonMappedClass {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime passTime;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "adminSupportEntity")
     private List<EvaluationEntity> evaluationEntityList = new ArrayList<>();
 

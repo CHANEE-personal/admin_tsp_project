@@ -1,5 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
@@ -122,24 +124,35 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @NotEmpty(message = "새로운 모델 선택은 필수입니다.")
     private String newYn;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newModelCodeJpaDTO;
 
+    @JsonIgnore
     @BatchSize(size = 5)
     @Where(clause = "type_name = 'model'")
     @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "agency_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminAgencyEntity adminAgencyEntity;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
+
+    @JsonIgnore
+    @BatchSize(size = 5)
+    @Where(clause = "comment_type = 'model'")
+    @OneToMany(mappedBy = "adminModelEntity")
+    private List<AdminCommentEntity> commentList = new ArrayList<>();
 
     public static AdminModelDTO toDto(AdminModelEntity entity) {
         if (entity == null) return null;

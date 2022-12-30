@@ -1,10 +1,14 @@
 package com.tsp.new_tsp_admin.api.domain.portfolio;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -61,12 +65,22 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
     @NotEmpty(message = "포트폴리오 노출 여부 선택은 필수입니다.")
     private String visible;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newPortFolioJpaDTO;
 
+    @JsonIgnore
+    @BatchSize(size = 5)
+    @Where(clause = "type_name = 'portfolio'")
     @OneToMany(mappedBy = "adminPortfolioEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
+
+    @JsonIgnore
+    @BatchSize(size = 5)
+    @Where(clause = "comment_type = 'portfolio'")
+    @OneToMany(mappedBy = "adminPortfolioEntity")
+    private List<AdminCommentEntity> commentList = new ArrayList<>();
 
     public static AdminPortFolioDTO toDto(AdminPortFolioEntity entity) {
         if (entity == null) return null;
