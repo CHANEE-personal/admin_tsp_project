@@ -1,13 +1,10 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
-import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
