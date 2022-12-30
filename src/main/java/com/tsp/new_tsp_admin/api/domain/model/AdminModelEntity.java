@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
@@ -146,6 +147,12 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @JsonIgnore
     @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
+
+    @JsonIgnore
+    @BatchSize(size = 5)
+    @Where(clause = "comment_type = 'model'")
+    @OneToMany(mappedBy = "adminModelEntity")
+    private List<AdminCommentEntity> commentList = new ArrayList<>();
 
     public static AdminModelDTO toDto(AdminModelEntity entity) {
         if (entity == null) return null;

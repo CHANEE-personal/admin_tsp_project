@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.comment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
@@ -14,7 +13,6 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

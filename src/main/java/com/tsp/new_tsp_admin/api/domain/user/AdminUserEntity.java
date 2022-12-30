@@ -1,14 +1,19 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +67,12 @@ public class AdminUserEntity extends NewCommonMappedClass {
 
     @Enumerated(value = STRING)
     private Role role;
+
+    @JsonIgnore
+    @BatchSize(size = 5)
+    @Where(clause = "comment_type = 'user'")
+    @OneToMany(mappedBy = "adminUserEntity")
+    private List<AdminCommentEntity> commentList = new ArrayList<>();
 
     public static AdminUserDTO toDto(AdminUserEntity entity) {
         if (entity == null) return null;

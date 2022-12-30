@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.production;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
@@ -54,6 +55,12 @@ public class AdminProductionEntity extends NewCommonMappedClass {
     @Where(clause = "type_name = 'production'")
     @OneToMany(mappedBy = "adminProductionEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
+
+    @JsonIgnore
+    @BatchSize(size = 5)
+    @Where(clause = "comment_type = 'production'")
+    @OneToMany(mappedBy = "adminProductionEntity")
+    private List<AdminCommentEntity> commentList = new ArrayList<>();
 
     public static AdminProductionDTO toDto(AdminProductionEntity entity) {
         if (entity == null) return null;
