@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -54,18 +55,22 @@ public class AdminCommentEntity extends NewCommonMappedClass {
     @NotEmpty(message = "FAQ 노출 여부 선택은 필수입니다.")
     private String visible;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminUserEntity adminUserEntity;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminModelEntity adminModelEntity;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminProductionEntity adminProductionEntity;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminPortFolioEntity adminPortfolioEntity;

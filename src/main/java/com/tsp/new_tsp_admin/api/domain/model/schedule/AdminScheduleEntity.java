@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.model.schedule;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -57,6 +58,7 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
     @NotEmpty(message = "모델 스케줄 노출 여부 선택은 필수입니다.")
     private String visible;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "model_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminModelEntity adminModelEntity;

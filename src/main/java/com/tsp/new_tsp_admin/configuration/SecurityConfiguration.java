@@ -99,16 +99,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 로그인 인증 관련
-        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-        // JWT 토큰 유효성 관련
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        // 그 외
-        http.csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and().headers().frameOptions().sameOrigin()
-                .and().sessionManagement().sessionCreationPolicy(STATELESS)
-                .and().authorizeRequests().antMatchers("/api/jpa-user/**").permitAll()
-                .anyRequest().authenticated();
+//        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        // JWT 토큰 유효성 관련
+//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        // 그 외
+//        http.csrf().disable()
+//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                .and().headers().frameOptions().sameOrigin()
+//                .and().sessionManagement().sessionCreationPolicy(STATELESS)
+//                .and().authorizeRequests().antMatchers("/api/jpa-user/**").permitAll()
+//                .anyRequest().authenticated();
     }
 
     @Bean

@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.common;
 
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
+import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -41,6 +43,7 @@ public class CommonCodeEntity {
     private String cmmType;
 
     public static CommonCodeDTO toDto(CommonCodeEntity entity) {
+        if (entity == null) return null;
         return CommonCodeDTO.builder().idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
                 .categoryCd(entity.getCategoryCd())
@@ -51,8 +54,9 @@ public class CommonCodeEntity {
     }
 
     public static List<CommonCodeDTO> toDtoList(List<CommonCodeEntity> entityList) {
-        List<CommonCodeDTO> list = new ArrayList<>(entityList.size());
-        entityList.forEach(commonCodeEntity -> list.add(toDto(commonCodeEntity)));
-        return list;
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(CommonCodeEntity::toDto)
+                .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.domain.model.agency;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
@@ -50,9 +51,11 @@ public class AdminAgencyEntity extends NewCommonMappedClass {
     @NotEmpty(message = "소속사 노출 여부 선택은 필수입니다.")
     private String visible;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "adminAgencyEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToOne(mappedBy = "adminAgencyEntity", cascade = ALL, fetch = LAZY)
     private AdminModelEntity adminModelEntity;
 
