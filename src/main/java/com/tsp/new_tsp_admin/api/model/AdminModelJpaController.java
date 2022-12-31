@@ -10,25 +10,25 @@ import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
 import com.tsp.new_tsp_admin.common.Page;
 import com.tsp.new_tsp_admin.common.SearchCommon;
-import com.tsp.new_tsp_admin.exception.TspException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL;
 import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
@@ -60,8 +60,8 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists/{categoryCd}")
-    public Map<String, Object> findModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                            @RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+                                                             @RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         // 페이징 및 검색
         Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
         modelMap.put("categoryCd", categoryCd);
@@ -82,7 +82,7 @@ public class AdminModelJpaController {
 
         modelMap.put("modelList", modelList);
 
-        return modelMap;
+        return ResponseEntity.ok().body(modelMap);
     }
 
     /**
@@ -96,15 +96,15 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 상세조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "모델 상세조회 성공", response = AdminModelDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminModelDTO findOneModel(@PathVariable Long idx) {
-        return this.adminModelJpaService.findOneModel(idx);
+    public ResponseEntity<AdminModelDTO> findOneModel(@PathVariable Long idx) {
+        return ResponseEntity.ok(adminModelJpaService.findOneModel(idx));
     }
 
     /**
@@ -118,16 +118,16 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "이전 모델 상세 조회", notes = "이전 모델을 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "이전 모델 상세조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "이전 모델 상세조회 성공", response = AdminModelDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{categoryCd}/{idx}/prev")
-    public AdminModelDTO findPrevOneModel(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                          @PathVariable Long idx) {
-        return this.adminModelJpaService.findPrevOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
+    public ResponseEntity<AdminModelDTO> findPrevOneModel(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+                                                          @PathVariable Long idx) {
+        return ResponseEntity.ok(adminModelJpaService.findPrevOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build()));
     }
 
     /**
@@ -141,16 +141,16 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "다음 모델 상세 조회", notes = "다음 모델을 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "다음 모델 상세조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "다음 모델 상세조회 성공", response = AdminModelDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{categoryCd}/{idx}/next")
-    public AdminModelDTO findNextOneModel(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                          @PathVariable Long idx) {
-        return this.adminModelJpaService.findNextOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build());
+    public ResponseEntity<AdminModelDTO> findNextOneModel(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+                                                          @PathVariable Long idx) {
+        return ResponseEntity.ok(adminModelJpaService.findNextOneModel(AdminModelEntity.builder().idx(idx).categoryCd(categoryCd).build()));
     }
 
     /**
@@ -164,15 +164,15 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 저장", notes = "모델을 저장한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 등록성공", response = Map.class),
+            @ApiResponse(code = 201, message = "모델 등록성공", response = AdminModelDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminModelDTO insertModel(@Valid @RequestBody AdminModelEntity adminModelEntity) {
-        return this.adminModelJpaService.insertModel(adminModelEntity);
+    public ResponseEntity<AdminModelDTO> insertModel(@Valid @RequestBody AdminModelEntity adminModelEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminModelJpaService.insertModel(adminModelEntity));
     }
 
     /**
@@ -186,15 +186,15 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 이미지 저장", notes = "모델 이미지를 저장한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 이미지 등록성공", response = Map.class),
+            @ApiResponse(code = 201, message = "모델 이미지 등록성공", response = List.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
-    public List<CommonImageDTO> insertModelImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) {
-        return this.adminModelJpaService.insertModelImage(CommonImageEntity.builder().typeName(EntityType.MODEL).typeIdx(idx).build(), fileName);
+    public ResponseEntity<List<CommonImageDTO>> insertModelImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) {
+        return ResponseEntity.created(URI.create("")).body(adminModelJpaService.insertModelImage(CommonImageEntity.builder().typeName(EntityType.MODEL).typeIdx(idx).build(), fileName));
     }
 
     /**
@@ -208,15 +208,19 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 이미지 삭제", notes = "모델 이미지를 삭제한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 이미지 삭제성공", response = Map.class),
+            @ApiResponse(code = 204, message = "모델 이미지 삭제성공", response = Long.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}/images")
-    public Long deleteModelImage(@PathVariable Long idx) {
-        return this.adminModelJpaService.deleteImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.MODEL).build());
+    public ResponseEntity<Long> deleteModelImage(@PathVariable Long idx) {
+        if (adminModelJpaService.findOneModel(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        adminModelJpaService.deleteImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.MODEL).build());
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -230,18 +234,18 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 수정성공", response = Map.class),
+            @ApiResponse(code = 200, message = "모델 수정성공", response = AdminModelDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminModelDTO updateModel(@PathVariable Long idx, @Valid @RequestBody AdminModelEntity adminModelEntity) {
+    public ResponseEntity<AdminModelDTO> updateModel(@PathVariable Long idx, @Valid @RequestBody AdminModelEntity adminModelEntity) {
         if (adminModelJpaService.findOneModel(idx) == null) {
-            throw new TspException(NOT_FOUND_MODEL, new Throwable());
+            return ResponseEntity.notFound().build();
         }
-        return adminModelJpaService.updateModel(adminModelEntity);
+        return ResponseEntity.ok(adminModelJpaService.updateModel(adminModelEntity));
     }
 
     /**
@@ -255,15 +259,19 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 삭제성공", response = Map.class),
+            @ApiResponse(code = 204, message = "모델 삭제성공", response = Long.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteModel(@PathVariable Long idx) {
-        return adminModelJpaService.deleteModel(idx);
+    public ResponseEntity<Long> deleteModel(@PathVariable Long idx) {
+        if (adminModelJpaService.findOneModel(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        adminModelJpaService.deleteModel(idx);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -277,15 +285,18 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 소속사 수정", notes = "모델 소속사를 수정한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 소속사 수정성공", response = Map.class),
+            @ApiResponse(code = 200, message = "모델 소속사 수정성공", response = AdminModelDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}/agency")
-    public AdminModelDTO updateModelAgency(@PathVariable Long idx, @RequestParam Long agencyIdx) {
-        return adminModelJpaService.updateModelAgency(AdminModelEntity.builder().idx(idx).agencyIdx(agencyIdx).build());
+    public ResponseEntity<AdminModelDTO> updateModelAgency(@PathVariable Long idx, @RequestParam Long agencyIdx) {
+        if (adminModelJpaService.findOneModel(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminModelJpaService.updateModelAgency(AdminModelEntity.builder().idx(idx).agencyIdx(agencyIdx).build()));
     }
 
     /**
@@ -299,15 +310,18 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 어드민 코멘트 조회", notes = "모델 어드민 코멘트를 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 어드민 코멘트 조회성공", response = Map.class),
+            @ApiResponse(code = 200, message = "모델 어드민 코멘트 조회성공", response = List.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")
-    public List<AdminCommentDTO> findModelAdminComment(@PathVariable Long idx) {
-        return adminModelJpaService.findModelAdminComment(idx);
+    public ResponseEntity<List<AdminCommentDTO>> findModelAdminComment(@PathVariable Long idx) {
+        if (adminModelJpaService.findOneModel(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminModelJpaService.findModelAdminComment(idx));
     }
 
     /**
@@ -321,15 +335,18 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "새로운 모델 설정", notes = "새로운 모델을 설정한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "새로운 모델 설정 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "새로운 모델 설정 성공", response = AdminModelDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}/toggle-new")
-    public AdminModelDTO toggleModelNewYn(@PathVariable Long idx) {
-        return adminModelJpaService.toggleModelNewYn(idx);
+    public ResponseEntity<AdminModelDTO> toggleModelNewYn(@PathVariable Long idx) {
+        if (adminModelJpaService.findOneModel(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminModelJpaService.toggleModelNewYn(idx));
     }
 
     /**
@@ -343,14 +360,17 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 스케줄 조회", notes = "모델 스케줄을 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 스케줄 조회성공", response = Map.class),
+            @ApiResponse(code = 200, message = "모델 스케줄 조회성공", response = List.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}/schedule")
-    public List<AdminScheduleDTO> findOneModelSchedule(@PathVariable Long idx) {
-        return adminModelJpaService.findOneModelSchedule(idx);
+    public ResponseEntity<List<AdminScheduleDTO>> findOneModelSchedule(@PathVariable Long idx) {
+        if (adminModelJpaService.findOneModel(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminModelJpaService.findOneModelSchedule(idx));
     }
 }

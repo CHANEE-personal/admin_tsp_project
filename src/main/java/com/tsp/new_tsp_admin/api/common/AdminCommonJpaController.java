@@ -10,11 +10,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> commonCodeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> commonCodeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         // 페이징 및 검색
         Map<String, Object> commonMap = searchCommon.searchCommon(page, paramMap);
 
@@ -71,7 +73,7 @@ public class AdminCommonJpaController {
 
         commonMap.put("commonCodeList", commonCodeList);
 
-        return commonMap;
+        return ResponseEntity.ok().body(commonMap);
     }
 
     /**
@@ -79,21 +81,21 @@ public class AdminCommonJpaController {
      * 1. MethodName : commonCodeInfo
      * 2. ClassName  : AdminCommonJpaController.java
      * 3. Comment    : 관리자 공통 코드 상세
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @ApiOperation(value = "공통코드 상세 조회", notes = "공통코드를 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "공통코드 상세 조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "공통코드 상세 조회 성공", response = CommonCodeDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public CommonCodeDTO commonCodeInfo(@PathVariable Long idx) {
-        return this.adminCommonJpaService.findOneCommonCode(idx);
+    public ResponseEntity<CommonCodeDTO> commonCodeInfo(@PathVariable Long idx) {
+        return ResponseEntity.ok(adminCommonJpaService.findOneCommonCode(idx));
     }
 
     /**
@@ -101,21 +103,21 @@ public class AdminCommonJpaController {
      * 1. MethodName : insertCommonCode
      * 2. ClassName  : AdminCommonJpaController.java
      * 3. Comment    : 관리자 공통 코드 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @ApiOperation(value = "공통코드 저장", notes = "공통코드를 저장한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "공통코드 등록성공", response = Map.class),
+            @ApiResponse(code = 201, message = "공통코드 등록성공", response = CommonCodeDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public CommonCodeDTO insertCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) {
-        return this.adminCommonJpaService.insertCommonCode(commonCodeEntity);
+    public ResponseEntity<CommonCodeDTO> insertCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminCommonJpaService.insertCommonCode(commonCodeEntity));
     }
 
     /**
@@ -123,21 +125,24 @@ public class AdminCommonJpaController {
      * 1. MethodName : updateCommonCode
      * 2. ClassName  : AdminCommonJpaController.java
      * 3. Comment    : 관리자 공통 코드 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @ApiOperation(value = "공통코드 수정", notes = "공통코드를 수정한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "공통코드 수정성공", response = Map.class),
+            @ApiResponse(code = 200, message = "공통코드 수정성공", response = CommonCodeDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public CommonCodeDTO updateCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) {
-        return adminCommonJpaService.updateCommonCode(commonCodeEntity);
+    public ResponseEntity<CommonCodeDTO> updateCommonCode(@PathVariable Long idx, @Valid @RequestBody CommonCodeEntity commonCodeEntity) {
+        if (adminCommonJpaService.findOneCommonCode(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminCommonJpaService.updateCommonCode(commonCodeEntity));
     }
 
     /**
@@ -145,20 +150,24 @@ public class AdminCommonJpaController {
      * 1. MethodName : deleteCommonCode
      * 2. ClassName  : AdminCommonJpaController.java
      * 3. Comment    : 관리자 공통코드 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @ApiOperation(value = "공통코드 삭제", notes = "공통코드를 삭제한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "공통코드 삭제성공", response = Map.class),
+            @ApiResponse(code = 204, message = "공통코드 삭제성공", response = Long.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteCommonCode(@PathVariable Long idx) {
-        return adminCommonJpaService.deleteCommonCode(idx);
+    public ResponseEntity<Long> deleteCommonCode(@PathVariable Long idx) {
+        if (adminCommonJpaService.findOneCommonCode(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        adminCommonJpaService.deleteCommonCode(idx);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -146,7 +146,6 @@ class AdminCommentJpaControllerTest {
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
-                .alwaysExpect(status().isOk())
                 .alwaysDo(print())
                 .build();
 
@@ -222,7 +221,7 @@ class AdminCommentJpaControllerTest {
                                 fieldWithPath("commentTypeIdx").type(NUMBER).description("코멘트 타입 IDX"),
                                 fieldWithPath("visible").type(STRING).description("코멘트 노출 여부")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.comment").value("코멘트 테스트"))
                 .andExpect(jsonPath("$.commentType").value("model"))
@@ -273,7 +272,7 @@ class AdminCommentJpaControllerTest {
         mockMvc.perform(delete("/api/jpa-comment/{idx}", adminCommentEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminCommentEntity.getIdx())));
     }

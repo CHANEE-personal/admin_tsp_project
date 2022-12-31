@@ -116,7 +116,6 @@ class AdminNoticeJpaControllerTest {
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
-                .alwaysExpect(status().isOk())
                 .alwaysDo(print())
                 .build();
 
@@ -211,7 +210,7 @@ class AdminNoticeJpaControllerTest {
                                 fieldWithPath("description").type(STRING).description("상세"),
                                 fieldWithPath("visible").type(STRING).description("노출 여부")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.title").value("공지사항 테스트"))
                 .andExpect(jsonPath("$.description").value("공지사항 테스트"));
@@ -269,7 +268,7 @@ class AdminNoticeJpaControllerTest {
         mockMvc.perform(delete("/api/notice/{idx}", adminNoticeEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminNoticeEntity.getIdx())));
     }

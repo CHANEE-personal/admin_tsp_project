@@ -120,7 +120,6 @@ class AdminPortfolioJpaControllerTest {
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
-                .alwaysExpect(status().isOk())
                 .alwaysDo(print())
                 .build();
 
@@ -246,7 +245,7 @@ class AdminPortfolioJpaControllerTest {
                                 fieldWithPath("hashTag").type(STRING).description("hashTag"),
                                 fieldWithPath("videoUrl").type(STRING).description("videoUrl")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.title").value("포트폴리오 테스트"))
@@ -349,7 +348,7 @@ class AdminPortfolioJpaControllerTest {
         mockMvc.perform(delete("/api/portfolio/{idx}", adminPortFolioEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminPortFolioEntity.getIdx())));
     }

@@ -213,7 +213,7 @@ class AdminFaqJpaControllerTest {
                                 fieldWithPath("description").type(STRING).description("상세"),
                                 fieldWithPath("visible").type(STRING).description("노출 여부")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.title").value("FAQ 테스트"))
                 .andExpect(jsonPath("$.description").value("FAQ 테스트"));
@@ -260,7 +260,7 @@ class AdminFaqJpaControllerTest {
         mockMvc.perform(delete("/api/jpa-faq/{idx}", adminFaqEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminFaqEntity.getIdx())));
     }

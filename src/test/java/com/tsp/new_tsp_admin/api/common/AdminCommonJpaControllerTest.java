@@ -117,7 +117,6 @@ class AdminCommonJpaControllerTest {
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
-                .alwaysExpect(status().isOk())
                 .alwaysDo(print())
                 .build();
 
@@ -189,7 +188,7 @@ class AdminCommonJpaControllerTest {
                                 fieldWithPath("categoryNm").type(STRING).description("공통코드명"),
                                 fieldWithPath("cmmType").type(STRING).description("공통코드 타입")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.categoryNm").value("men"))
@@ -244,7 +243,7 @@ class AdminCommonJpaControllerTest {
         mockMvc.perform(delete("/api/jpa-common/{idx}", commonCodeEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(commonCodeEntity.getIdx())));
     }

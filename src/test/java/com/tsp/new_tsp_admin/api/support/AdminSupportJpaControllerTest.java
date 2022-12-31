@@ -130,7 +130,6 @@ class AdminSupportJpaControllerTest {
 				.addFilter(new CharacterEncodingFilter("UTF-8", true))
 				.apply(springSecurity())
 				.apply(documentationConfiguration(restDocumentationContextProvider))
-				.alwaysExpect(status().isOk())
 				.alwaysDo(print())
 				.build();
 
@@ -259,7 +258,7 @@ class AdminSupportJpaControllerTest {
 		mockMvc.perform(delete("/api/support/{idx}", adminSupportEntity.getIdx())
 				.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
-				.andExpect(status().isOk())
+				.andExpect(status().isNoContent())
 				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(content().string(getString(adminSupportEntity.getIdx())));
 	}
@@ -329,7 +328,7 @@ class AdminSupportJpaControllerTest {
 							fieldWithPath("supportIdx").type(NUMBER).description("평가 모델 IDX"),
 							fieldWithPath("evaluateComment").type(STRING).description("평가 내용")
 						)))
-				.andExpect(status().isOk())
+				.andExpect(status().isCreated())
 				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(jsonPath("$.supportIdx").value(1))
 				.andExpect(jsonPath("$.evaluateComment").value("합격"));
@@ -397,7 +396,7 @@ class AdminSupportJpaControllerTest {
 		mockMvc.perform(delete("/api/support/{idx}/evaluation", evaluationEntity.getIdx())
 						.header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
 				.andDo(print())
-				.andExpect(status().isOk())
+				.andExpect(status().isNoContent())
 				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(content().string(getString(evaluationEntity.getIdx())));
 	}

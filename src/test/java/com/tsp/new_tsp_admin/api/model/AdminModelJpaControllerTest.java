@@ -311,7 +311,7 @@ class AdminModelJpaControllerTest {
                                 fieldWithPath("size3").type(STRING).description("모델 사이즈"),
                                 fieldWithPath("shoes").type(NUMBER).description("모델 발 사이즈")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.categoryAge").value(2))
@@ -335,7 +335,7 @@ class AdminModelJpaControllerTest {
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.categoryCd").value(1))
                 .andExpect(jsonPath("$.categoryAge").value(2))
@@ -618,7 +618,7 @@ class AdminModelJpaControllerTest {
                         .file("images", imageFiles.get(1).getBytes())
                 .contentType(MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().string("Y"));
     }
 
@@ -641,7 +641,7 @@ class AdminModelJpaControllerTest {
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().string(getString(commonImageEntity.getIdx(),"")));
     }
 
