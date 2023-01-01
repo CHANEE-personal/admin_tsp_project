@@ -13,12 +13,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +43,8 @@ public class AdminAgencyJpaController {
      * 1. MethodName : findAgencyList
      * 2. ClassName  : AdminAgencyJpaController.java
      * 3. Comment    : 관리자 소속사 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @ApiOperation(value = "소속사 조회", notes = "소속사를 조회한다.")
@@ -51,10 +53,11 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findAgencyList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findAgencyList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         // 페이징 및 검색
         Map<String, Object> agencyMap = searchCommon.searchCommon(page, paramMap);
 
@@ -74,7 +77,7 @@ public class AdminAgencyJpaController {
 
         agencyMap.put("agencyList", agencyList);
 
-        return agencyMap;
+        return ResponseEntity.ok().body(agencyMap);
     }
 
     /**
@@ -82,21 +85,22 @@ public class AdminAgencyJpaController {
      * 1. MethodName : findOneAgency
      * 2. ClassName  : AdminAgencyJpaController.java
      * 3. Comment    : 관리자 소속사 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @ApiOperation(value = "소속사 상세 조회", notes = "소속사를 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "성공", response = Map.class),
+            @ApiResponse(code = 200, message = "성공", response = AdminAgencyDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminAgencyDTO findOneAgency(@PathVariable Long idx) {
-        return this.adminAgencyJpaService.findOneAgency(idx);
+    public ResponseEntity<AdminAgencyDTO> findOneAgency(@PathVariable Long idx) {
+        return ResponseEntity.ok(adminAgencyJpaService.findOneAgency(idx));
     }
 
     /**
@@ -104,21 +108,22 @@ public class AdminAgencyJpaController {
      * 1. MethodName : insertAgency
      * 2. ClassName  : AdminAgencyJpaController.java
      * 3. Comment    : 관리자 소속사 저장
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @ApiOperation(value = "소속사 저장", notes = "소속사를 저장한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "소속사 등록성공", response = Map.class),
+            @ApiResponse(code = 201, message = "소속사 등록성공", response = AdminAgencyDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminAgencyDTO insertAgency(@Valid @RequestBody AdminAgencyEntity adminAgencyEntity) {
-        return this.adminAgencyJpaService.insertAgency(adminAgencyEntity);
+    public ResponseEntity<AdminAgencyDTO> insertAgency(@Valid @RequestBody AdminAgencyEntity adminAgencyEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminAgencyJpaService.insertAgency(adminAgencyEntity));
     }
 
     /**
@@ -126,21 +131,25 @@ public class AdminAgencyJpaController {
      * 1. MethodName : updateAgency
      * 2. ClassName  : AdminAgencyJpaController.java
      * 3. Comment    : 관리자 소속사 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @ApiOperation(value = "소속사 수정", notes = "소속사를 수정한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "소속사 수정성공", response = Map.class),
+            @ApiResponse(code = 200, message = "소속사 수정성공", response = AdminAgencyDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminAgencyDTO updateAgency(@Valid @RequestBody AdminAgencyEntity adminAgencyEntity) {
-        return adminAgencyJpaService.updateAgency(adminAgencyEntity);
+    public ResponseEntity<AdminAgencyDTO> updateAgency(@PathVariable Long idx, @Valid @RequestBody AdminAgencyEntity adminAgencyEntity) {
+        if (adminAgencyJpaService.findOneAgency(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminAgencyJpaService.updateAgency(adminAgencyEntity));
     }
 
     /**
@@ -148,21 +157,26 @@ public class AdminAgencyJpaController {
      * 1. MethodName : deleteAgency
      * 2. ClassName  : AdminAgencyJpaController.java
      * 3. Comment    : 관리자 소속사 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @ApiOperation(value = "소속사 삭제", notes = "소속사를 삭제한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "소속사 삭제성공", response = Map.class),
+            @ApiResponse(code = 200, message = "소속사 삭제성공", response = Long.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteAgency(@PathVariable Long idx) {
-        return adminAgencyJpaService.deleteAgency(idx);
+    public ResponseEntity<Long> deleteAgency(@PathVariable Long idx) {
+        if (adminAgencyJpaService.findOneAgency(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        adminAgencyJpaService.deleteAgency(idx);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -170,21 +184,25 @@ public class AdminAgencyJpaController {
      * 1. MethodName : insertAgencyImage
      * 2. ClassName  : AdminAgencyJpaController.java
      * 3. Comment    : 관리자 소속사 Image 저장
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @ApiOperation(value = "소속사 이미지 저장", notes = "소속사 이미지를 저장한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "소속사 이미지 등록성공", response = Map.class),
+            @ApiResponse(code = 201, message = "소속사 이미지 등록성공", response = List.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
-    public List<CommonImageDTO> insertAgencyImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) {
-        return this.adminAgencyJpaService.insertAgencyImage(CommonImageEntity.builder().typeName(EntityType.AGENCY).typeIdx(idx).build(), fileName);
+    public ResponseEntity<List<CommonImageDTO>> insertAgencyImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) {
+        if (adminAgencyJpaService.findOneAgency(idx) == null) {
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.created(URI.create("")).body(adminAgencyJpaService.insertAgencyImage(CommonImageEntity.builder().typeName(EntityType.AGENCY).typeIdx(idx).build(), fileName));
     }
 
     /**
@@ -192,20 +210,25 @@ public class AdminAgencyJpaController {
      * 1. MethodName : deleteAgencyImage
      * 2. ClassName  : AdminAgencyJpaController.java
      * 3. Comment    : 관리자 소속사 Image 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @ApiOperation(value = "소속사 이미지 삭제", notes = "소속사 이미지를 삭제한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 이미지 삭제성공", response = Map.class),
+            @ApiResponse(code = 204, message = "모델 이미지 삭제성공", response = Long.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}/images")
-    public Long deleteAgencyImage(@PathVariable Long idx) {
-        return this.adminAgencyJpaService.deleteAgencyImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.AGENCY).build());
+    public ResponseEntity<Long> deleteAgencyImage(@PathVariable Long idx) {
+        if (adminAgencyJpaService.findOneAgency(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        adminAgencyJpaService.deleteAgencyImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.AGENCY).build());
+        return ResponseEntity.noContent().build();
     }
 }

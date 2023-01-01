@@ -212,7 +212,7 @@ class AdminScheduleJpaControllerTest {
                                 fieldWithPath("modelIdx").type(NUMBER).description(1),
                                 fieldWithPath("modelSchedule").type(STRING).description("스케줄 등록")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.modelIdx").value(1))
                 .andExpect(jsonPath("$.modelSchedule").value("스케줄 등록"));
@@ -227,7 +227,7 @@ class AdminScheduleJpaControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminScheduleEntity)))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.modelIdx").value(1))
                 .andExpect(jsonPath("$.modelSchedule").value("스케줄 등록"))
@@ -307,7 +307,7 @@ class AdminScheduleJpaControllerTest {
         mockMvc.perform(delete("/api/schedule/{idx}", adminScheduleEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminScheduleEntity.getIdx())));
     }

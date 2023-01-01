@@ -183,7 +183,7 @@ class AdminAgencyJpaControllerTest {
                                 fieldWithPath("agencyName").type(STRING).description("소속사명"),
                                 fieldWithPath("agencyDescription").type(STRING).description("소속사 상세설명")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.agencyName").value("agency"))
                 .andExpect(jsonPath("$.agencyDescription").value("agency"));
@@ -198,7 +198,7 @@ class AdminAgencyJpaControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminAgencyEntity)))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.agencyName").value("agency"))
                 .andExpect(jsonPath("$.agencyDescription").value("agency"))
@@ -278,7 +278,7 @@ class AdminAgencyJpaControllerTest {
         mockMvc.perform(delete("/api/agency/{idx}", adminAgencyEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminAgencyEntity.getIdx())));
     }
@@ -299,7 +299,7 @@ class AdminAgencyJpaControllerTest {
                         .file("images", imageFiles.get(1).getBytes())
                         .contentType(MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().string("Y"));
     }
 
@@ -322,7 +322,7 @@ class AdminAgencyJpaControllerTest {
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().string(getString(commonImageEntity.getIdx(),"")));
     }
 }

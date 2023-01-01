@@ -104,7 +104,6 @@ class AdminUserJpaControllerTest {
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
-                .alwaysExpect(status().isOk())
                 .alwaysDo(print())
                 .build();
 
@@ -180,7 +179,7 @@ class AdminUserJpaControllerTest {
                                 fieldWithPath("userId").type(STRING).description("아이디"),
                                 fieldWithPath("password").type(STRING).description("패스워드")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.userId").value("test"))
                 .andExpect(jsonPath("$.password").value("test"))
@@ -276,7 +275,7 @@ class AdminUserJpaControllerTest {
         mockMvc.perform(delete("/api/user/{idx}", adminUserEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminUserEntity.getIdx())));
     }

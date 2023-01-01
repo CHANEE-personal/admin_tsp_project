@@ -11,10 +11,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,8 +40,8 @@ public class AdminProductionJpaController {
      * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
     @ApiOperation(value = "프로덕션 조회", notes = "프로덕션을 조회한다.")
@@ -48,10 +50,11 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
         Map<String, Object> productionMap = new HashMap<>();
 
         int productionCnt = this.adminProductionJpaService.findProductionCount(searchCommon.searchCommon(page, paramMap));
@@ -70,7 +73,7 @@ public class AdminProductionJpaController {
 
         productionMap.put("productionList", productionList);
 
-        return productionMap;
+        return ResponseEntity.ok().body(productionMap);
     }
 
     /**
@@ -78,21 +81,22 @@ public class AdminProductionJpaController {
      * 1. MethodName : findOneProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 15.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 15.
      * </pre>
      */
     @ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "프로덕션 상세 조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "프로덕션 상세 조회 성공", response = AdminProductionDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public AdminProductionDTO findOneProduction(@PathVariable Long idx) {
-        return adminProductionJpaService.findOneProduction(idx);
+    public ResponseEntity<AdminProductionDTO> findOneProduction(@PathVariable Long idx) {
+        return ResponseEntity.ok(adminProductionJpaService.findOneProduction(idx));
     }
 
     /**
@@ -100,21 +104,22 @@ public class AdminProductionJpaController {
      * 1. MethodName : findPrevOneProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 이전 프로덕션 상세
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
     @ApiOperation(value = "이전 프로덕션 상세 조회", notes = "이전 프로덕션을 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "이전 프로덕션 상세조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "이전 프로덕션 상세조회 성공", response = AdminProductionDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
-    public AdminProductionDTO findPrevOneProduction(@PathVariable Long idx) {
-        return this.adminProductionJpaService.findPrevOneProduction(idx);
+    public ResponseEntity<AdminProductionDTO> findPrevOneProduction(@PathVariable Long idx) {
+        return ResponseEntity.ok(adminProductionJpaService.findPrevOneProduction(idx));
     }
 
     /**
@@ -122,21 +127,22 @@ public class AdminProductionJpaController {
      * 1. MethodName : findNextOneProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 다음 프로덕션 상세
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
     @ApiOperation(value = "다음 프로덕션 상세 조회", notes = "다음 프로덕션을 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "다음 프로덕션 상세조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "다음 프로덕션 상세조회 성공", response = AdminProductionDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
-    public AdminProductionDTO findNextOneProduction(@PathVariable Long idx) {
-        return this.adminProductionJpaService.findNextOneProduction(idx);
+    public ResponseEntity<AdminProductionDTO> findNextOneProduction(@PathVariable Long idx) {
+        return ResponseEntity.ok(adminProductionJpaService.findNextOneProduction(idx));
     }
 
     /**
@@ -144,21 +150,22 @@ public class AdminProductionJpaController {
      * 1. MethodName : insertProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 저장
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 16.
      * </pre>
      */
     @ApiOperation(value = "프로덕션 저장", notes = "프로덕션을 저장한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "프로덕션 등록성공", response = Map.class),
+            @ApiResponse(code = 201, message = "프로덕션 등록성공", response = AdminProductionDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public AdminProductionDTO insertProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
-        return this.adminProductionJpaService.insertProduction(adminProductionEntity);
+    public ResponseEntity<AdminProductionDTO> insertProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminProductionJpaService.insertProduction(adminProductionEntity));
     }
 
     /**
@@ -166,21 +173,25 @@ public class AdminProductionJpaController {
      * 1. MethodName : updateProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 16.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 16.
      * </pre>
      */
     @ApiOperation(value = "프로덕션 수정", notes = "프로덕션을 수정한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "프로덕션 수정 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "프로덕션 수정 성공", response = AdminProductionDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
-    public AdminProductionDTO updateProduction(@Valid @RequestBody AdminProductionEntity adminProductionEntity) {
-        return adminProductionJpaService.updateProduction(adminProductionEntity);
+    public ResponseEntity<AdminProductionDTO> updateProduction(@PathVariable Long idx, @Valid @RequestBody AdminProductionEntity adminProductionEntity) {
+        if (adminProductionJpaService.findOneProduction(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminProductionJpaService.updateProduction(adminProductionEntity));
     }
 
     /**
@@ -188,21 +199,26 @@ public class AdminProductionJpaController {
      * 1. MethodName : deleteProduction
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 17.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
     @ApiOperation(value = "프로덕션 삭제", notes = "프로덕션을 삭제 한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "프로덕션 삭제 성공", response = Map.class),
+            @ApiResponse(code = 204, message = "프로덕션 삭제 성공", response = Long.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public Long deleteProduction(@PathVariable Long idx) {
-        return adminProductionJpaService.deleteProduction(idx);
+    public ResponseEntity<Long> deleteProduction(@PathVariable Long idx) {
+        if (adminProductionJpaService.findOneProduction(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        adminProductionJpaService.deleteProduction(idx);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -210,20 +226,24 @@ public class AdminProductionJpaController {
      * 1. MethodName : findProductionAdminComment
      * 2. ClassName  : AdminProductionJpaController.java
      * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
     @ApiOperation(value = "프로덕션 어드민 코멘트 조회", notes = "프로덕션 어드민 코멘트를 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "프로덕션 어드민 코멘트 조회성공", response = Map.class),
+            @ApiResponse(code = 200, message = "프로덕션 어드민 코멘트 조회성공", response = List.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")
-    public List<AdminCommentDTO> findProductionAdminComment(@PathVariable Long idx) {
-        return adminProductionJpaService.findProductionAdminComment(idx);
+    public ResponseEntity<List<AdminCommentDTO>> findProductionAdminComment(@PathVariable Long idx) {
+        if (adminProductionJpaService.findOneProduction(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminProductionJpaService.findProductionAdminComment(idx));
     }
 }

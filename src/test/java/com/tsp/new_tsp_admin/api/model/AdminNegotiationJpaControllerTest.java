@@ -217,7 +217,7 @@ class AdminNegotiationJpaControllerTest {
                                 fieldWithPath("modelIdx").type(NUMBER).description(1),
                                 fieldWithPath("modelNegotiationDesc").type(STRING).description("섭외 등록")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.modelIdx").value(1))
                 .andExpect(jsonPath("$.modelNegotiationDesc").value("섭외 등록"));
@@ -232,7 +232,7 @@ class AdminNegotiationJpaControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminNegotiationEntity)))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.modelIdx").value(1))
                 .andExpect(jsonPath("$.modelNegotiationDesc").value("섭외 등록"))
@@ -322,7 +322,7 @@ class AdminNegotiationJpaControllerTest {
         mockMvc.perform(delete("/api/negotiation/{idx}", adminNegotiationEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminNegotiationEntity.getIdx())));
     }

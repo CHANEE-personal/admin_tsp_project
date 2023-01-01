@@ -116,7 +116,6 @@ class AdminProductionJpaControllerTest {
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
-                .alwaysExpect(status().isOk())
                 .alwaysDo(print())
                 .build();
 
@@ -235,7 +234,7 @@ class AdminProductionJpaControllerTest {
                                 fieldWithPath("description").type(STRING).description("상세"),
                                 fieldWithPath("visible").type(STRING).description("노출 여부")
                         )))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.title").value("프로덕션 테스트"))
                 .andExpect(jsonPath("$.description").value("프로덕션 테스트"));
@@ -312,7 +311,7 @@ class AdminProductionJpaControllerTest {
         mockMvc.perform(delete("/api/production/{idx}", adminProductionEntity.getIdx())
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string(getString(adminProductionEntity.getIdx())));
     }

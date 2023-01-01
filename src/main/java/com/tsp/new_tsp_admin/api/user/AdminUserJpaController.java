@@ -24,6 +24,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.net.URI;
 import java.rmi.ServerError;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +49,8 @@ public class AdminUserJpaController {
      * 1. MethodName : findUserList
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : Admin User 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @ApiOperation(value = "Admin 회원 조회", notes = "Admin 회원을 조회한다.")
@@ -58,11 +59,12 @@ public class AdminUserJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping
-    public List<AdminUserDTO> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
-        return adminUserJpaService.findUserList(searchCommon.searchCommon(page, paramMap));
+    public ResponseEntity<List<AdminUserDTO>> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+        return ResponseEntity.ok(adminUserJpaService.findUserList(searchCommon.searchCommon(page, paramMap)));
     }
 
     /**
@@ -70,8 +72,8 @@ public class AdminUserJpaController {
      * 1. MethodName : login
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : Admin User 로그인 처리
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     @ApiOperation(value = "Admin 회원 로그인 처리", notes = "Admin 회원을 로그인 처리한다.")
@@ -80,10 +82,11 @@ public class AdminUserJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
         Map<String, Object> userMap = new HashMap<>();
 
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
@@ -108,7 +111,7 @@ public class AdminUserJpaController {
             adminUserJpaService.insertToken(adminUserEntity);
         }
 
-        return userMap;
+        return ResponseEntity.ok().body(userMap);
 
     }
 
@@ -117,8 +120,8 @@ public class AdminUserJpaController {
      * 1. MethodName : createAuthenticationToken
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 로그인 시 JWT 토큰 발급
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
@@ -152,8 +155,8 @@ public class AdminUserJpaController {
      * 1. MethodName : authenticate
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 로그인 시 인증
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
     private void authenticate(String id, String password) throws Exception {
@@ -174,21 +177,22 @@ public class AdminUserJpaController {
      * 1. MethodName : insertAdminUser
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 회원가입
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     @ApiOperation(value = "Admin 회원가입 처리", notes = "Admin 회원가입을 처리한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "회원가입 성공", response = Map.class),
+            @ApiResponse(code = 201, message = "회원가입 성공", response = AdminUserDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public AdminUserDTO insertAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) {
-        return adminUserJpaService.insertAdminUser(adminUserEntity);
+    public ResponseEntity<AdminUserDTO> insertAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminUserJpaService.insertAdminUser(adminUserEntity));
     }
 
     /**
@@ -196,21 +200,25 @@ public class AdminUserJpaController {
      * 1. MethodName : updateAdminUser
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 회원 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     @ApiOperation(value = "Admin 회원 수정 처리", notes = "Admin 회원 수정 처리한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "회원 수정 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "회원 수정 성공", response = AdminUserDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public AdminUserDTO updateAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) {
-        return adminUserJpaService.updateAdminUser(adminUserEntity);
+    public ResponseEntity<AdminUserDTO> updateAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) {
+        if (adminUserJpaService.findOneUser(adminUserEntity.getUserId()) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminUserJpaService.updateAdminUser(adminUserEntity));
     }
 
     /**
@@ -218,20 +226,22 @@ public class AdminUserJpaController {
      * 1. MethodName : deleteAdminUser
      * 2. ClassName  : AdminUserJpaController.java
      * 3. Comment    : 관리자 회원 탈퇴
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 11.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
     @ApiOperation(value = "Admin 회원 탈퇴 처리", notes = "Admin 회원 탈퇴 처리한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "회원 탈퇴 성공", response = Map.class),
+            @ApiResponse(code = 204, message = "회원 탈퇴 성공", response = Long.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public Long deleteAdminUser(@PathVariable Long idx) {
-        return adminUserJpaService.deleteAdminUser(idx);
+    public ResponseEntity<Long> deleteAdminUser(@PathVariable Long idx) {
+        adminUserJpaService.deleteAdminUser(idx);
+        return ResponseEntity.noContent().build();
     }
 }
