@@ -50,6 +50,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
@@ -90,6 +91,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
@@ -112,6 +114,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/prev")
@@ -134,6 +137,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/next")
@@ -156,6 +160,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
@@ -178,6 +183,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
@@ -203,6 +209,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
@@ -229,6 +236,7 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}/admin-comment")

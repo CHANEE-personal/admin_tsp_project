@@ -53,9 +53,9 @@ public class AdminScheduleJpaController {
     })
     @GetMapping(value = "/lists")
     public ResponseEntity<Map<String, Object>> findScheduleList(@RequestParam(required = false) Map<String, Object> paramMap,
-                                                               @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
-                                                               @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
-                                                               Page page) {
+                                                                @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
+                                                                @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
+                                                                Page page) {
         // 페이징 및 검색
         Map<String, Object> scheduleMap = searchCommon.searchCommon(page, paramMap);
 
@@ -207,7 +207,7 @@ public class AdminScheduleJpaController {
      */
     @ApiOperation(value = "모델 스케줄 삭제", notes = "모델 스케줄을 삭제한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "모델 스케줄 삭제성공", response = Long.class),
+            @ApiResponse(code = 204, message = "모델 스케줄 삭제성공", response = Long.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
