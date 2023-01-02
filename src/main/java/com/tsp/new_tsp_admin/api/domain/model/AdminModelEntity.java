@@ -125,6 +125,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private String newYn;
 
     @JsonIgnore
+    @Where(clause = "cmm_type = 'model'")
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newModelCodeJpaDTO;
@@ -141,6 +142,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private AdminAgencyEntity adminAgencyEntity;
 
     @JsonIgnore
+    @BatchSize(size = 20)
     @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
 
@@ -149,7 +151,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
 
     @JsonIgnore
-    @BatchSize(size = 5)
+    @BatchSize(size = 20)
     @Where(clause = "comment_type = 'model'")
     @OneToMany(mappedBy = "adminModelEntity")
     private List<AdminCommentEntity> commentList = new ArrayList<>();

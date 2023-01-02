@@ -220,14 +220,14 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("모델 상세 조회 테스트")
     void 모델상세조회테스트() {
         // given
-        adminModelEntity = AdminModelEntity.builder().idx(143L).categoryCd(2).build();
+        adminModelEntity = AdminModelEntity.builder().idx(1L).categoryCd(2).build();
 
         // when
         adminModelDTO = adminModelJpaRepository.findOneModel(adminModelEntity.getIdx());
 
         // then
         assertAll(() -> {
-                    assertThat(adminModelDTO.getIdx()).isEqualTo(143);
+                    assertThat(adminModelDTO.getIdx()).isEqualTo(1);
                 },
                 () -> {
                     assertThat(adminModelDTO.getCategoryCd()).isEqualTo(2);
@@ -599,7 +599,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelJpaRepository.updateModelByEm(adminModelEntity);
+        adminModelJpaRepository.updateModel(adminModelEntity);
 
         adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
 
@@ -645,7 +645,7 @@ class AdminModelJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminModelJpaRepository.updateModelByEm(adminModelEntity);
+        adminModelJpaRepository.updateModel(adminModelEntity);
 
         adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
 
@@ -685,7 +685,7 @@ class AdminModelJpaRepositoryTest {
                 .build();
 
         // then
-        assertThatThrownBy(() -> adminModelJpaRepository.updateModelByEm(adminModelEntity))
+        assertThatThrownBy(() -> adminModelJpaRepository.updateModel(adminModelEntity))
                 .isInstanceOf(TspException.class);
     }
 
@@ -696,7 +696,7 @@ class AdminModelJpaRepositoryTest {
         em.persist(adminModelEntity);
 
         Long entityIdx = adminModelEntity.getIdx();
-        Long deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
+        Long deleteIdx = adminModelJpaRepository.deleteModel(adminModelEntity.getIdx());
 
         // then
         assertThat(deleteIdx).isEqualTo(entityIdx);
@@ -711,7 +711,7 @@ class AdminModelJpaRepositoryTest {
 
         // when
         when(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).thenReturn(adminModelDTO);
-        Long deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
+        Long deleteIdx = adminModelJpaRepository.deleteModel(adminModelEntity.getIdx());
 
         // then
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
@@ -734,7 +734,7 @@ class AdminModelJpaRepositoryTest {
 
         // when
         given(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx())).willReturn(adminModelDTO);
-        Long deleteIdx = adminModelJpaRepository.deleteModelByEm(adminModelEntity.getIdx());
+        Long deleteIdx = adminModelJpaRepository.deleteModel(adminModelEntity.getIdx());
 
         // then
         assertThat(mockAdminModelJpaRepository.findOneModel(adminModelEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);

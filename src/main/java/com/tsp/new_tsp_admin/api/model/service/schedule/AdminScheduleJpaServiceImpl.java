@@ -49,8 +49,8 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Cacheable(value = "model", key = "#scheduleMap")
     @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) {
-        return adminScheduleJpaRepository.findModelScheduleList(scheduleMap);
+    public List<AdminScheduleDTO> findScheduleList(Map<String, Object> scheduleMap) {
+        return adminScheduleJpaRepository.findScheduleList(scheduleMap);
     }
 
     /**

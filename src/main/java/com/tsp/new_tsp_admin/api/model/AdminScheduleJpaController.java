@@ -65,10 +65,10 @@ public class AdminScheduleJpaController {
         }
 
         int scheduleListCount = this.adminScheduleJpaService.findScheduleCount(scheduleMap);
-        List<AdminModelDTO> scheduleList = new ArrayList<>();
+        List<AdminScheduleDTO> scheduleList = new ArrayList<>();
 
         if (scheduleListCount > 0) {
-            scheduleList = this.adminScheduleJpaService.findModelScheduleList(scheduleMap);
+            scheduleList = this.adminScheduleJpaService.findScheduleList(scheduleMap);
         }
 
         // 리스트 수

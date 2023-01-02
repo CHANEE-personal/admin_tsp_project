@@ -66,10 +66,10 @@ public class AdminNegotiationJpaController {
         }
 
         int negotiationCount = this.adminNegotiationJpaService.findNegotiationCount(negotiationMap);
-        List<AdminModelDTO> negotiationList = new ArrayList<>();
+        List<AdminNegotiationDTO> negotiationList = new ArrayList<>();
 
         if (negotiationCount > 0) {
-            negotiationList = this.adminNegotiationJpaService.findModelNegotiationList(negotiationMap);
+            negotiationList = this.adminNegotiationJpaService.findNegotiationList(negotiationMap);
         }
 
         // 리스트 수

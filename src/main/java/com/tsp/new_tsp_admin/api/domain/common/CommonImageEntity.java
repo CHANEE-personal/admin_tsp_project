@@ -40,6 +40,7 @@ public class CommonImageEntity {
     private Long typeIdx;
 
     @Column(name = "type_name")
+    @Enumerated(EnumType.STRING)
     @ApiModelProperty(value = "분야명", required = true, hidden = true)
     private EntityType typeName;
 

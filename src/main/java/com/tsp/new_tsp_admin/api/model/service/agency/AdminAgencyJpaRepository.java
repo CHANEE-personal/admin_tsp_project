@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.*;
 
-import static com.tsp.new_tsp_admin.api.domain.faq.QAdminFaqEntity.adminFaqEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity.toDto;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.adminAgencyEntity;
@@ -70,7 +69,8 @@ public class AdminAgencyJpaRepository {
         List<AdminAgencyEntity> agencyList = queryFactory
                 .selectFrom(adminAgencyEntity)
                 .orderBy(adminAgencyEntity.idx.desc())
-                .where(searchAgency(agencyMap).and(adminAgencyEntity.visible.eq("Y")))
+                .where(searchAgency(agencyMap))
+                .where(adminAgencyEntity.visible.eq("Y"))
                 .offset(getInt(agencyMap.get("jpaStartPage"), 0))
                 .limit(getInt(agencyMap.get("size"), 0))
                 .fetch();

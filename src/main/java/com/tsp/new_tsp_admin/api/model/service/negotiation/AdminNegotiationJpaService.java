@@ -21,14 +21,14 @@ public interface AdminNegotiationJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findModelNegotiationList
+     * 1. MethodName : findNegotiationList
      * 2. ClassName  : AdminNegotiationJpaService.java
      * 3. Comment    : 관리자 모델 섭외 리스트 조회
      * 4. 작성자       : CHO
      * 5. 작성일       : 2022. 09. 09.
      * </pre>
      */
-    List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap);
+    List<AdminNegotiationDTO> findNegotiationList(Map<String, Object> negotiationMap);
 
     /**
      * <pre>

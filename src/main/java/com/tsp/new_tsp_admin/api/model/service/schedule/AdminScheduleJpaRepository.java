@@ -17,9 +17,9 @@ import java.time.LocalTime;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDto;
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.adminScheduleEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
@@ -40,12 +40,8 @@ public class AdminScheduleJpaRepository {
         LocalDateTime searchStartTime = scheduleMap.get("searchStartTime") != null ? (LocalDateTime) scheduleMap.get("searchStartTime") : now().minusDays(now().getDayOfMonth() - 1).atStartOfDay();
         LocalDateTime searchEndTime = scheduleMap.get("searchEndTime") != null ? (LocalDateTime) scheduleMap.get("searchStartTime") : of(now().minusDays(now().getDayOfMonth()).plusMonths(1), LocalTime.of(23, 59, 59));
 
-
         return !Objects.equals(searchKeyword, "") ?
-                adminModelEntity.modelKorName.contains(searchKeyword)
-                        .or(adminModelEntity.modelEngName.contains(searchKeyword)
-                                .or(adminModelEntity.modelDescription.contains(searchKeyword)))
-                        .or(adminScheduleEntity.modelSchedule.contains(searchKeyword)) :
+                        adminScheduleEntity.modelSchedule.contains(searchKeyword) :
                 adminScheduleEntity.modelScheduleTime.between(searchStartTime, searchEndTime);
     }
 
@@ -73,20 +69,17 @@ public class AdminScheduleJpaRepository {
      * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
-    public List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap) {
-        List<AdminModelEntity> modelScheduleList = queryFactory
-                .selectFrom(adminModelEntity)
+    public List<AdminScheduleDTO> findScheduleList(Map<String, Object> scheduleMap) {
+        List<AdminScheduleEntity> scheduleList = queryFactory
+                .selectFrom(adminScheduleEntity)
                 .orderBy(adminScheduleEntity.idx.desc())
-                .leftJoin(adminModelEntity.scheduleList, adminScheduleEntity)
-                .fetchJoin()
                 .where(searchModelSchedule(scheduleMap)
-                        .and(adminModelEntity.visible.eq("Y"))
                         .and(adminScheduleEntity.visible.eq("Y")))
                 .offset(getInt(scheduleMap.get("jpaStartPage"), 0))
                 .limit(getInt(scheduleMap.get("size"), 0))
                 .fetch();
 
-        return modelScheduleList != null ? toDtoList(modelScheduleList) : emptyList();
+        return scheduleList != null ? toDtoList(scheduleList) : emptyList();
     }
 
     /**

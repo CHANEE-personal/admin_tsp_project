@@ -21,22 +21,22 @@ public interface AdminScheduleJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findModelScheduleList
+     * 1. MethodName : findScheduleList
      * 2. ClassName  : AdminScheduleJpaService.java
      * 3. Comment    : 관리자 모델 스케줄 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 31.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
-    List<AdminModelDTO> findModelScheduleList(Map<String, Object> scheduleMap);
+    List<AdminScheduleDTO> findScheduleList(Map<String, Object> scheduleMap);
 
     /**
      * <pre>
      * 1. MethodName : findOneSchedule
      * 2. ClassName  : AdminScheduleJpaService.java
      * 3. Comment    : 관리자 모델 스케줄 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 31.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
     AdminScheduleDTO findOneSchedule(Long idx);

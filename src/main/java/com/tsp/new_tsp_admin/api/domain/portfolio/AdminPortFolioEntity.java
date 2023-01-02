@@ -66,6 +66,7 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
     private String visible;
 
     @JsonIgnore
+    @Where(clause = "cmm_type = 'portfolio'")
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newPortFolioJpaDTO;
@@ -77,7 +78,7 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
     @JsonIgnore
-    @BatchSize(size = 5)
+    @BatchSize(size = 20)
     @Where(clause = "comment_type = 'portfolio'")
     @OneToMany(mappedBy = "adminPortfolioEntity")
     private List<AdminCommentEntity> commentList = new ArrayList<>();
