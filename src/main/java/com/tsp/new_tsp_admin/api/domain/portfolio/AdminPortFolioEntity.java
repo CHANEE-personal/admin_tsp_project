@@ -66,6 +66,7 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
     private String visible;
 
     @JsonIgnore
+    @Where(clause = "cmm_type = 'portfolio'")
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newPortFolioJpaDTO;

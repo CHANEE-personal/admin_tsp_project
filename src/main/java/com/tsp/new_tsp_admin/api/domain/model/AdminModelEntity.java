@@ -125,6 +125,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private String newYn;
 
     @JsonIgnore
+    @Where(clause = "cmm_type = 'model'")
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newModelCodeJpaDTO;
