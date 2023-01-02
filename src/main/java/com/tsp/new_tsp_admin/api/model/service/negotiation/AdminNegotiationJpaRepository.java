@@ -17,11 +17,10 @@ import java.time.LocalTime;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDto;
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity.toDto;
+import static com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.negotiation.QAdminNegotiationEntity.*;
-import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.adminScheduleEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL_NEGOTIATION;
@@ -42,10 +41,7 @@ public class AdminNegotiationJpaRepository {
         LocalDateTime searchEndTime = negotiationMap.get("searchEndTime") != null ? (LocalDateTime) negotiationMap.get("searchStartTime") : of(now().minusDays(now().getDayOfMonth()).plusMonths(1), LocalTime.of(23, 59, 59));
 
         return !Objects.equals(searchKeyword, "") ?
-                adminModelEntity.modelKorName.contains(searchKeyword)
-                    .or(adminModelEntity.modelEngName.contains(searchKeyword)
-                            .or(adminModelEntity.modelDescription.contains(searchKeyword)))
-                    .or(adminNegotiationEntity.modelNegotiationDesc.contains(searchKeyword)) :
+                    adminNegotiationEntity.modelNegotiationDesc.contains(searchKeyword) :
                 adminNegotiationEntity.modelNegotiationDate.between(searchStartTime, searchEndTime);
     }
 
@@ -66,27 +62,24 @@ public class AdminNegotiationJpaRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findModelNegotiationList
+     * 1. MethodName : findNegotiationList
      * 2. ClassName  : AdminNegotiationJpaRepository.java
      * 3. Comment    : 관리자 모델 섭외 리스트 조회
      * 4. 작성자      : CHO
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
-    public List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap) {
-        List<AdminModelEntity> modelNegotiationList = queryFactory
-                .selectFrom(adminModelEntity)
-                .orderBy(adminScheduleEntity.idx.desc())
-                .leftJoin(adminModelEntity.negotiationList, adminNegotiationEntity)
-                .fetchJoin()
+    public List<AdminNegotiationDTO> findNegotiationList(Map<String, Object> negotiationMap) {
+        List<AdminNegotiationEntity> negotiationList = queryFactory
+                .selectFrom(adminNegotiationEntity)
+                .orderBy(adminNegotiationEntity.idx.desc())
                 .where(searchNegotiation(negotiationMap)
-                        .and(adminModelEntity.visible.eq("Y"))
-                        .and(adminScheduleEntity.visible.eq("Y")))
+                        .and(adminNegotiationEntity.visible.eq("Y")))
                 .offset(getInt(negotiationMap.get("jpaStartPage"), 0))
                 .limit(getInt(negotiationMap.get("size"), 0))
                 .fetch();
 
-        return modelNegotiationList != null ? toDtoList(modelNegotiationList) : emptyList();
+        return negotiationList != null ? toDtoList(negotiationList) : emptyList();
     }
 
     /**

@@ -124,7 +124,7 @@ class AdminScheduleJpaRepositoryTest {
         scheduleMap.put("size", 100);
 
         // then
-        assertThat(adminScheduleJpaRepository.findModelScheduleList(scheduleMap)).isNotEmpty();
+        assertThat(adminScheduleJpaRepository.findScheduleList(scheduleMap)).isNotEmpty();
 
         Map<String, Object> lastMonthScheduleMap = new HashMap<>();
         lastMonthScheduleMap.put("searchStartTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 1, 0, 0, 0, 0));
@@ -133,7 +133,7 @@ class AdminScheduleJpaRepositoryTest {
         lastMonthScheduleMap.put("size", 100);
 
         // then
-        assertThat(adminScheduleJpaRepository.findModelScheduleList(lastMonthScheduleMap)).isEmpty();
+        assertThat(adminScheduleJpaRepository.findScheduleList(lastMonthScheduleMap)).isEmpty();
 
         Map<String, Object> currentScheduleMap = new HashMap<>();
         currentScheduleMap.put("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0));
@@ -142,7 +142,7 @@ class AdminScheduleJpaRepositoryTest {
         currentScheduleMap.put("size", 100);
 
         // then
-        assertThat(adminScheduleJpaRepository.findModelScheduleList(currentScheduleMap)).isNotEmpty();
+        assertThat(adminScheduleJpaRepository.findScheduleList(currentScheduleMap)).isNotEmpty();
     }
 
     @Test
@@ -159,26 +159,21 @@ class AdminScheduleJpaRepositoryTest {
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
-        List<AdminModelDTO> modelScheduleList = new ArrayList<>();
-        modelScheduleList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
-                .modelSchedule(scheduleList).build());
-
         // when
-        when(mockAdminScheduleJpaRepository.findModelScheduleList(scheduleMap)).thenReturn(modelScheduleList);
-        List<AdminModelDTO> newModelScheduleList = mockAdminScheduleJpaRepository.findModelScheduleList(scheduleMap);
+        when(mockAdminScheduleJpaRepository.findScheduleList(scheduleMap)).thenReturn(scheduleList);
+        List<AdminScheduleDTO> newModelScheduleList = mockAdminScheduleJpaRepository.findScheduleList(scheduleMap);
 
         // then
-        assertThat(newModelScheduleList.get(0).getIdx()).isEqualTo(modelScheduleList.get(0).getIdx());
-        assertThat(newModelScheduleList.get(0).getModelKorName()).isEqualTo(modelScheduleList.get(0).getModelKorName());
-        assertThat(newModelScheduleList.get(0).getModelSchedule().get(0).getModelSchedule()).isEqualTo(modelScheduleList.get(0).getModelSchedule().get(0).getModelSchedule());
+        assertThat(newModelScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
+        assertThat(newModelScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
 
         // verify
-        verify(mockAdminScheduleJpaRepository, times(1)).findModelScheduleList(scheduleMap);
-        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findModelScheduleList(scheduleMap);
+        verify(mockAdminScheduleJpaRepository, times(1)).findScheduleList(scheduleMap);
+        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findScheduleList(scheduleMap);
         verifyNoMoreInteractions(mockAdminScheduleJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaRepository);
-        inOrder.verify(mockAdminScheduleJpaRepository).findModelScheduleList(scheduleMap);
+        inOrder.verify(mockAdminScheduleJpaRepository).findScheduleList(scheduleMap);
     }
 
     @Test
@@ -195,22 +190,17 @@ class AdminScheduleJpaRepositoryTest {
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
-        List<AdminModelDTO> modelScheduleList = new ArrayList<>();
-        modelScheduleList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
-                .modelSchedule(scheduleList).build());
-
         // when
-        given(mockAdminScheduleJpaRepository.findModelScheduleList(scheduleMap)).willReturn(modelScheduleList);
-        List<AdminModelDTO> newModelScheduleList = mockAdminScheduleJpaRepository.findModelScheduleList(scheduleMap);
+        given(mockAdminScheduleJpaRepository.findScheduleList(scheduleMap)).willReturn(scheduleList);
+        List<AdminScheduleDTO> newModelScheduleList = mockAdminScheduleJpaRepository.findScheduleList(scheduleMap);
 
         // then
-        assertThat(newModelScheduleList.get(0).getIdx()).isEqualTo(modelScheduleList.get(0).getIdx());
-        assertThat(newModelScheduleList.get(0).getModelKorName()).isEqualTo(modelScheduleList.get(0).getModelKorName());
-        assertThat(newModelScheduleList.get(0).getModelSchedule().get(0).getModelSchedule()).isEqualTo(modelScheduleList.get(0).getModelSchedule().get(0).getModelSchedule());
+        assertThat(newModelScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
+        assertThat(newModelScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
 
         // verify
-        then(mockAdminScheduleJpaRepository).should(times(1)).findModelScheduleList(scheduleMap);
-        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findModelScheduleList(scheduleMap);
+        then(mockAdminScheduleJpaRepository).should(times(1)).findScheduleList(scheduleMap);
+        then(mockAdminScheduleJpaRepository).should(atLeastOnce()).findScheduleList(scheduleMap);
         then(mockAdminScheduleJpaRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -228,26 +218,21 @@ class AdminScheduleJpaRepositoryTest {
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
-        List<AdminModelDTO> modelScheduleList = new ArrayList<>();
-        modelScheduleList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
-                .modelSchedule(scheduleList).build());
-
         // when
-        when(mockAdminScheduleJpaRepository.findModelScheduleList(scheduleMap)).thenReturn(modelScheduleList);
-        List<AdminModelDTO> newModelScheduleList = mockAdminScheduleJpaRepository.findModelScheduleList(scheduleMap);
+        when(mockAdminScheduleJpaRepository.findScheduleList(scheduleMap)).thenReturn(scheduleList);
+        List<AdminScheduleDTO> newModelScheduleList = mockAdminScheduleJpaRepository.findScheduleList(scheduleMap);
 
         // then
-        assertThat(newModelScheduleList.get(0).getIdx()).isEqualTo(modelScheduleList.get(0).getIdx());
-        assertThat(newModelScheduleList.get(0).getModelKorName()).isEqualTo(modelScheduleList.get(0).getModelKorName());
-        assertThat(newModelScheduleList.get(0).getModelSchedule().get(0).getModelSchedule()).isEqualTo(modelScheduleList.get(0).getModelSchedule().get(0).getModelSchedule());
+        assertThat(newModelScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
+        assertThat(newModelScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
 
         // verify
-        verify(mockAdminScheduleJpaRepository, times(1)).findModelScheduleList(scheduleMap);
-        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findModelScheduleList(scheduleMap);
+        verify(mockAdminScheduleJpaRepository, times(1)).findScheduleList(scheduleMap);
+        verify(mockAdminScheduleJpaRepository, atLeastOnce()).findScheduleList(scheduleMap);
         verifyNoMoreInteractions(mockAdminScheduleJpaRepository);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaRepository);
-        inOrder.verify(mockAdminScheduleJpaRepository).findModelScheduleList(scheduleMap);
+        inOrder.verify(mockAdminScheduleJpaRepository).findScheduleList(scheduleMap);
     }
 
     @Test

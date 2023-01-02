@@ -142,6 +142,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private AdminAgencyEntity adminAgencyEntity;
 
     @JsonIgnore
+    @BatchSize(size = 20)
     @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
     private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
 

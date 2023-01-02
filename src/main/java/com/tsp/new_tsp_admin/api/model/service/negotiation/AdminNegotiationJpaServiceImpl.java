@@ -50,8 +50,8 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Cacheable(value = "model", key = "#negotiationMap")
     @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelNegotiationList(Map<String, Object> negotiationMap) {
-        return adminNegotiationJpaRepository.findModelNegotiationList(negotiationMap);
+    public List<AdminNegotiationDTO> findNegotiationList(Map<String, Object> negotiationMap) {
+        return adminNegotiationJpaRepository.findNegotiationList(negotiationMap);
     }
 
     /**
