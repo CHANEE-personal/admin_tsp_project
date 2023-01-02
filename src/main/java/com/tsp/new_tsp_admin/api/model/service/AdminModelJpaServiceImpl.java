@@ -147,7 +147,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Transactional
     public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
         try {
-            return adminModelJpaRepository.updateModelByEm(adminModelEntity);
+            return adminModelJpaRepository.updateModel(adminModelEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_MODEL, e);
         }
@@ -168,7 +168,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Transactional
     public Long deleteModel(Long idx) {
         try {
-            return adminModelJpaRepository.deleteModelByEm(idx);
+            return adminModelJpaRepository.deleteModel(idx);
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_MODEL, e);
         }

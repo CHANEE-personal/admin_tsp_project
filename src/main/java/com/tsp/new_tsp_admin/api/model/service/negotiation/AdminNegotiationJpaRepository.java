@@ -41,7 +41,6 @@ public class AdminNegotiationJpaRepository {
         LocalDateTime searchStartTime = negotiationMap.get("searchStartTime") != null ? (LocalDateTime) negotiationMap.get("searchStartTime") : now().minusDays(now().getDayOfMonth() - 1).atStartOfDay();
         LocalDateTime searchEndTime = negotiationMap.get("searchEndTime") != null ? (LocalDateTime) negotiationMap.get("searchStartTime") : of(now().minusDays(now().getDayOfMonth()).plusMonths(1), LocalTime.of(23, 59, 59));
 
-
         return !Objects.equals(searchKeyword, "") ?
                 adminModelEntity.modelKorName.contains(searchKeyword)
                     .or(adminModelEntity.modelEngName.contains(searchKeyword)

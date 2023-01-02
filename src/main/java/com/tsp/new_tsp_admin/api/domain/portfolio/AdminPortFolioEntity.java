@@ -77,7 +77,7 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
     @JsonIgnore
-    @BatchSize(size = 5)
+    @BatchSize(size = 20)
     @Where(clause = "comment_type = 'portfolio'")
     @OneToMany(mappedBy = "adminPortfolioEntity")
     private List<AdminCommentEntity> commentList = new ArrayList<>();

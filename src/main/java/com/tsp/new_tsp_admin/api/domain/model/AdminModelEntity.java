@@ -149,7 +149,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
 
     @JsonIgnore
-    @BatchSize(size = 5)
+    @BatchSize(size = 20)
     @Where(clause = "comment_type = 'model'")
     @OneToMany(mappedBy = "adminModelEntity")
     private List<AdminCommentEntity> commentList = new ArrayList<>();

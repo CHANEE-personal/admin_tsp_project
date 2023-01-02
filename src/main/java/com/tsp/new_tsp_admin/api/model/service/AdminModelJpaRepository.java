@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.model.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
@@ -98,7 +97,7 @@ public class AdminModelJpaRepository {
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
-                .where((searchCategory(modelMap).or(searchModelInfo(modelMap))).and(searchNewModel(modelMap)))
+                .where(searchCategory(modelMap), searchModelInfo(modelMap), searchNewModel(modelMap))
                 .offset(getInt(modelMap.get("jpaStartPage"), 0))
                 .limit(getInt(modelMap.get("size"), 0))
                 .fetch();
@@ -120,12 +119,10 @@ public class AdminModelJpaRepository {
         AdminModelEntity findOneModel = Optional.ofNullable(queryFactory
                 .selectFrom(adminModelEntity)
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
-                .fetchJoin()
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
                 .where(adminModelEntity.idx.eq(idx)
-                        .and(adminModelEntity.visible.eq("Y"))
-                        .and(commonImageEntity.typeName.eq(EntityType.MODEL)))
+                        .and(adminModelEntity.visible.eq("Y")))
                 .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL, new Throwable()));
 
         return toDto(findOneModel);
@@ -207,43 +204,12 @@ public class AdminModelJpaRepository {
      * <pre>
      * 1. MethodName : updateModel
      * 2. ClassName  : AdminModelJpaRepository.java
-     * 3. Comment    : 관리자 모델 수정 by queryDsl
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 07.
-     * </pre>
-     */
-//    @Modifying(clearAutomatically = true)
-//    public AdminModelEntity updateModel(AdminModelEntity existAdminModelEntity) {
-//        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
-//
-//        existAdminModelEntity.setUpdater("1");
-//        existAdminModelEntity.setUpdateTime(new Date());
-//
-//        update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
-//                .set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
-//                .set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
-//                .set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
-//                .set(adminModelEntity.height, existAdminModelEntity.getHeight())
-//                .set(adminModelEntity.size3, existAdminModelEntity.getSize3())
-//                .set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
-//                .set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
-//                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-//                .set(adminModelEntity.updater, "1")
-//                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
-//
-//        return existAdminModelEntity;
-//    }
-
-    /**
-     * <pre>
-     * 1. MethodName : updateModelByEm
-     * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 수정 by entityManager
      * 4. 작성자      : CHO
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
-    public AdminModelDTO updateModelByEm(AdminModelEntity existAdminModelEntity) {
+    public AdminModelDTO updateModel(AdminModelEntity existAdminModelEntity) {
         em.merge(existAdminModelEntity);
         em.flush();
         em.clear();
@@ -254,33 +220,12 @@ public class AdminModelJpaRepository {
      * <pre>
      * 1. MethodName : deleteModel
      * 2. ClassName  : AdminModelJpaRepository.java
-     * 3. Comment    : 관리자 모델 삭제 by queryDsl
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 17.
-     * </pre>
-     */
-//    public Long deleteModel(AdminModelEntity existAdminModelEntity) {
-//        JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
-//
-//        existAdminModelEntity.setUpdater(1L);
-//        existAdminModelEntity.setUpdateTime(LocalDateTime.now());
-//
-//        return update.set(adminModelEntity.visible, "N")
-//                .set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-//                .set(adminModelEntity.updater, 1L)
-//                .where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
-//    }
-
-    /**
-     * <pre>
-     * 1. MethodName : deleteModel
-     * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 삭제 by entityManager
      * 4. 작성자      : CHO
      * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
-    public Long deleteModelByEm(Long idx) {
+    public Long deleteModel(Long idx) {
         em.remove(em.find(AdminModelEntity.class, idx));
         em.flush();
         em.clear();

@@ -40,7 +40,6 @@ public class AdminScheduleJpaRepository {
         LocalDateTime searchStartTime = scheduleMap.get("searchStartTime") != null ? (LocalDateTime) scheduleMap.get("searchStartTime") : now().minusDays(now().getDayOfMonth() - 1).atStartOfDay();
         LocalDateTime searchEndTime = scheduleMap.get("searchEndTime") != null ? (LocalDateTime) scheduleMap.get("searchStartTime") : of(now().minusDays(now().getDayOfMonth()).plusMonths(1), LocalTime.of(23, 59, 59));
 
-
         return !Objects.equals(searchKeyword, "") ?
                 adminModelEntity.modelKorName.contains(searchKeyword)
                         .or(adminModelEntity.modelEngName.contains(searchKeyword)
