@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -122,7 +121,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CachePut("model")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         try {
@@ -143,7 +141,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CachePut(value = "model", key = "#adminModelEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
         try {
@@ -164,7 +161,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CacheEvict(value = "model", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteModel(Long idx) {
         try {
@@ -184,7 +180,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Modifying(clearAutomatically = true)
     @Transactional
     public List<CommonImageDTO> insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {
         try {
@@ -223,7 +218,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CachePut(value = "model", key = "#adminModelEntity.agencyIdx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity) {
         // 기존 소속사 존재 여부 판단
@@ -259,7 +253,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @CachePut(value = "model", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminModelDTO toggleModelNewYn(Long idx) {
         try {
