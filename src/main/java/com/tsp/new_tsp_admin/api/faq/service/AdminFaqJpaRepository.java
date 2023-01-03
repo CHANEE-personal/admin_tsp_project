@@ -162,8 +162,6 @@ public class AdminFaqJpaRepository {
      */
     public AdminFaqDTO updateFaq(AdminFaqEntity existAdminFaqEntity) {
         em.merge(existAdminFaqEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminFaqEntity);
     }
 
@@ -178,8 +176,6 @@ public class AdminFaqJpaRepository {
      */
     public Long deleteFaq(Long idx) {
         em.remove(em.find(AdminFaqEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 }

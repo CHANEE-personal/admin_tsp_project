@@ -119,6 +119,7 @@ public class AdminModelJpaRepository {
         AdminModelEntity findOneModel = Optional.ofNullable(queryFactory
                 .selectFrom(adminModelEntity)
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
+                .fetchJoin()
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
                 .where(adminModelEntity.idx.eq(idx)

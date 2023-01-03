@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,7 +72,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
 
     @Override
     @CachePut(value = "support")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         try {
@@ -94,7 +92,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      */
     @Override
     @CachePut(value = "support", key = "#adminSupportEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) {
         try {
@@ -115,7 +112,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      */
     @Override
     @CacheEvict(value = "support", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteSupportModel(Long idx) {
         try {
@@ -223,7 +219,6 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      */
     @Override
     @CacheEvict(value = "evaluation", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteEvaluation(Long idx) {
         try {

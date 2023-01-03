@@ -130,8 +130,6 @@ public class AdminSupportJpaRepository {
      */
     public AdminSupportDTO updateSupportModel(AdminSupportEntity existAdminSupportEntity) {
         em.merge(existAdminSupportEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminSupportEntity);
     }
 
@@ -146,8 +144,6 @@ public class AdminSupportJpaRepository {
      */
     public Long deleteSupportModel(Long idx) {
         em.remove(em.find(AdminSupportEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 
@@ -228,8 +224,6 @@ public class AdminSupportJpaRepository {
      */
     public EvaluationDTO updateEvaluation(EvaluationEntity existEvaluationEntity) {
         em.merge(existEvaluationEntity);
-        em.flush();
-        em.clear();
         return toDto(existEvaluationEntity);
     }
 
@@ -244,8 +238,6 @@ public class AdminSupportJpaRepository {
      */
     public Long deleteEvaluation(Long idx) {
         em.remove(em.find(EvaluationEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 

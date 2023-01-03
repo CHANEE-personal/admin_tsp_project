@@ -111,7 +111,6 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      */
     @Override
     @CachePut("faq")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminFaqDTO insertFaq(AdminFaqEntity adminFaqEntity) {
         try {
@@ -132,7 +131,6 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      */
     @Override
     @CachePut(value = "faq", key = "#adminFaqEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity) {
         try {
@@ -153,7 +151,6 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      */
     @Override
     @CacheEvict(value = "faq", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteFaq(Long idx) {
         try {

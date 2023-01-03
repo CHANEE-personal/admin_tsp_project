@@ -12,7 +12,6 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -173,7 +172,6 @@ public class AdminProductionJpaRepository {
      * 5. 작성일      : 2022. 05. 14.
      * </pre>
      */
-    @Modifying(clearAutomatically = true)
     public Long insertProductionImage(CommonImageEntity commonImageEntity) {
         em.persist(commonImageEntity);
         return commonImageEntity.getIdx();
@@ -190,8 +188,6 @@ public class AdminProductionJpaRepository {
      */
     public AdminProductionDTO updateProductionByEm(AdminProductionEntity existAdminProductionEntity) {
         em.merge(existAdminProductionEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminProductionEntity);
     }
 
@@ -206,8 +202,6 @@ public class AdminProductionJpaRepository {
      */
     public Long deleteProductionByEm(Long idx) {
         em.remove(em.find(AdminProductionEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 

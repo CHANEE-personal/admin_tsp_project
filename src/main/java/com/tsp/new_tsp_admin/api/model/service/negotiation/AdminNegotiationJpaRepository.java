@@ -192,8 +192,6 @@ public class AdminNegotiationJpaRepository {
      */
     public AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity existAdminNegotiationEntity) {
         em.merge(existAdminNegotiationEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminNegotiationEntity);
     }
 
@@ -208,8 +206,6 @@ public class AdminNegotiationJpaRepository {
      */
     public Long deleteModelNegotiation(Long idx) {
         em.remove(em.find(AdminNegotiationEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 }

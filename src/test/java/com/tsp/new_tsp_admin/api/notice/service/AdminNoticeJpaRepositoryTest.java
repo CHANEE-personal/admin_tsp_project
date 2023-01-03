@@ -451,7 +451,7 @@ class AdminNoticeJpaRepositoryTest {
         // given
         Long idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
 
-        Boolean fixed = adminNoticeJpaRepository.toggleFixed(idx).getTopFixed();
+        Boolean fixed = adminNoticeJpaRepository.toggleFixed(idx);
 
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(idx)
@@ -485,7 +485,7 @@ class AdminNoticeJpaRepositoryTest {
         // given
         Long idx = adminNoticeJpaRepository.insertNotice(adminNoticeEntity).getIdx();
 
-        Boolean fixed = adminNoticeJpaRepository.toggleFixed(idx).getTopFixed();
+        Boolean fixed = adminNoticeJpaRepository.toggleFixed(idx);
 
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(idx)

@@ -124,8 +124,6 @@ public class AdminUserJpaRepository {
      */
     public Long insertUserTokenByEm(AdminUserEntity adminUserEntity) {
         em.merge(adminUserEntity);
-        em.flush();
-        em.clear();
         return adminUserEntity.getIdx();
     }
 
@@ -175,8 +173,6 @@ public class AdminUserJpaRepository {
      */
     public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
         em.merge(adminUserEntity);
-        em.flush();
-        em.clear();
         return AdminUserEntity.toDto(adminUserEntity);
     }
 
@@ -191,8 +187,6 @@ public class AdminUserJpaRepository {
      */
     public Long deleteAdminUser(Long idx) {
         em.remove(em.find(AdminUserEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 }

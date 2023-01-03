@@ -123,8 +123,6 @@ public class AdminAgencyJpaRepository {
      */
     public AdminAgencyDTO updateAgency(AdminAgencyEntity existAdminAgencyEntity) {
         em.merge(existAdminAgencyEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminAgencyEntity);
     }
 
@@ -139,8 +137,6 @@ public class AdminAgencyJpaRepository {
      */
     public Long deleteAgency(Long idx) {
         em.remove(em.find(AdminAgencyEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 }

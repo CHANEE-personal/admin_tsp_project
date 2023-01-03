@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.model.service.negotiation;
 
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -8,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -113,7 +111,6 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      */
     @Override
     @CachePut("negotiation")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminNegotiationDTO insertModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
         try {
@@ -134,7 +131,6 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      */
     @Override
     @CachePut(value = "negotiation", key = "#adminNegotiationEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
         try {
@@ -155,7 +151,6 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      */
     @Override
     @CacheEvict(value = "negotiation", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteModelNegotiation(Long idx) {
         try {

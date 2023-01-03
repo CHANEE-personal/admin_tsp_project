@@ -113,8 +113,6 @@ public class AdminCommentJpaRepository {
      */
     public AdminCommentDTO updateAdminComment(AdminCommentEntity existAdminCommentEntity) {
         em.merge(existAdminCommentEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminCommentEntity);
     }
 
@@ -129,8 +127,6 @@ public class AdminCommentJpaRepository {
      */
     public Long deleteAdminComment(Long idx) {
         em.remove(em.find(AdminCommentEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 }

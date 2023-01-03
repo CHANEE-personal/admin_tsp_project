@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.model.service.schedule;
 
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -112,7 +111,6 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      */
     @Override
     @CachePut("schedule")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminScheduleDTO insertSchedule(AdminScheduleEntity adminScheduleEntity) {
         try {
@@ -133,7 +131,6 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      */
     @Override
     @CachePut(value = "schedule", key = "#adminScheduleEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminScheduleDTO updateSchedule(AdminScheduleEntity adminScheduleEntity) {
         try {
@@ -154,7 +151,6 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      */
     @Override
     @CacheEvict(value = "schedule", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteSchedule(Long idx) {
         try {

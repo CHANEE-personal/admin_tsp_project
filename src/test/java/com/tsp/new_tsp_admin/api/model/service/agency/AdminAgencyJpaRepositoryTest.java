@@ -210,7 +210,7 @@ class AdminAgencyJpaRepositoryTest {
         assertThat(agencyInfo.getAgencyImage().get(0).getFileMask()).isEqualTo("test.jpg");
         assertThat(agencyInfo.getAgencyImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
         assertThat(agencyInfo.getAgencyImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(agencyInfo.getAgencyImage().get(0).getTypeName()).isEqualTo("agency");
+        assertThat(agencyInfo.getAgencyImage().get(0).getTypeName()).isEqualTo(EntityType.AGENCY);
 
         // verify
         verify(mockAdminAgencyJpaRepository, times(1)).findOneAgency(adminAgencyEntity.getIdx());
@@ -250,7 +250,7 @@ class AdminAgencyJpaRepositoryTest {
         assertThat(agencyInfo.getAgencyImage().get(0).getFileMask()).isEqualTo("test.jpg");
         assertThat(agencyInfo.getAgencyImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
         assertThat(agencyInfo.getAgencyImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(agencyInfo.getAgencyImage().get(0).getTypeName()).isEqualTo("agency");
+        assertThat(agencyInfo.getAgencyImage().get(0).getTypeName()).isEqualTo(EntityType.AGENCY);
 
         // verify
         then(mockAdminAgencyJpaRepository).should(times(1)).findOneAgency(adminAgencyEntity.getIdx());

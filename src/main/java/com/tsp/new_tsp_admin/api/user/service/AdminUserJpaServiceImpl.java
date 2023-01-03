@@ -103,7 +103,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @CachePut("user")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public void insertToken(AdminUserEntity paramUserEntity) {
         try {
@@ -125,7 +124,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @CachePut("user")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
         try {
@@ -146,7 +144,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @CachePut(value = "user", key = "#adminUserEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity) {
         try {
@@ -167,7 +164,6 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @CacheEvict(value = "user", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteAdminUser(Long idx) {
         try {
