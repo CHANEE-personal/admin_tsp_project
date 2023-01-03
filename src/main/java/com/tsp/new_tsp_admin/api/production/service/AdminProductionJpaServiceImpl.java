@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,7 +111,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @CachePut("production")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         try {
@@ -133,7 +131,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @CachePut(value = "production", key = "#adminProductionEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity) {
         try {
@@ -154,7 +151,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @CacheEvict(value = "production", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteProduction(Long idx) {
         try {

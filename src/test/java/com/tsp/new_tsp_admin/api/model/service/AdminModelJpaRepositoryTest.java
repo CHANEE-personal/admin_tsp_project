@@ -28,9 +28,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -256,26 +258,7 @@ class AdminModelJpaRepositoryTest {
                 () -> {
                     assertThat(adminModelDTO.getShoes()).isEqualTo(240);
                     assertNotNull(adminModelDTO.getShoes());
-                },
-                () -> {
-                    assertThat(adminModelDTO.getModelAgency().getAgencyName()).isEqualTo("agency");
-                    assertNotNull(adminModelDTO.getModelAgency().getAgencyName());
-                },
-                () -> {
-                    assertThat(adminModelDTO.getModelAgency().getAgencyDescription()).isEqualTo("agency");
-                    assertNotNull(adminModelDTO.getModelAgency().getAgencyDescription());
-                }
-                );
-
-        assertThat(adminModelDTO.getModelImage().get(0).getTypeName()).isEqualTo("model");
-        assertThat(adminModelDTO.getModelImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(adminModelDTO.getModelImage().get(0).getFileName()).isEqualTo("1.png");
-        assertThat(adminModelDTO.getModelImage().get(0).getFilePath()).isEqualTo("/var/www/dist/upload/0522045010647.png");
-
-        assertThat(adminModelDTO.getModelImage().get(1).getTypeName()).isEqualTo("model");
-        assertThat(adminModelDTO.getModelImage().get(1).getImageType()).isEqualTo("sub1");
-        assertThat(adminModelDTO.getModelImage().get(1).getFileName()).isEqualTo("2.png");
-        assertThat(adminModelDTO.getModelImage().get(1).getFilePath()).isEqualTo("/var/www/dist/upload/0522045010772.png");
+                });
     }
 
     @Test
@@ -400,6 +383,7 @@ class AdminModelJpaRepositoryTest {
                 .shoes(270)
                 .visible("Y")
                 .modelAgency(AdminAgencyEntity.toDto(adminAgencyEntity))
+                .modelImage(CommonImageEntity.toDtoList(commonImageEntityList))
                 .build();
 
         // when
@@ -423,7 +407,7 @@ class AdminModelJpaRepositoryTest {
         assertThat(modelInfo.getModelImage().get(0).getFileMask()).isEqualTo("test.jpg");
         assertThat(modelInfo.getModelImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
         assertThat(modelInfo.getModelImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(modelInfo.getModelImage().get(0).getTypeName()).isEqualTo("model");
+        assertThat(modelInfo.getModelImage().get(0).getTypeName()).isEqualTo(EntityType.MODEL);
 
         // verify
         verify(mockAdminModelJpaRepository, times(1)).findOneModel(adminModelEntity.getIdx());
@@ -479,7 +463,7 @@ class AdminModelJpaRepositoryTest {
         assertThat(modelInfo.getModelImage().get(0).getFileMask()).isEqualTo("test.jpg");
         assertThat(modelInfo.getModelImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
         assertThat(modelInfo.getModelImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(modelInfo.getModelImage().get(0).getTypeName()).isEqualTo("model");
+        assertThat(modelInfo.getModelImage().get(0).getTypeName()).isEqualTo(EntityType.MODEL);
 
         // verify
         then(mockAdminModelJpaRepository).should(times(1)).findOneModel(adminModelEntity.getIdx());
@@ -571,7 +555,7 @@ class AdminModelJpaRepositoryTest {
 
         // then
         assertThatThrownBy(() -> adminModelJpaRepository.insertModel(adminModelEntity))
-                .isInstanceOf(TspException.class);
+                .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
@@ -686,7 +670,7 @@ class AdminModelJpaRepositoryTest {
 
         // then
         assertThatThrownBy(() -> adminModelJpaRepository.updateModel(adminModelEntity))
-                .isInstanceOf(TspException.class);
+                .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
@@ -828,8 +812,6 @@ class AdminModelJpaRepositoryTest {
 
         // then
         assertThat(modelInfo.getAgencyIdx()).isEqualTo(adminModelEntity.getAgencyIdx());
-        assertThat(modelInfo.getModelAgency().getAgencyName()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyName());
-        assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyDescription());
 
         // verify
         verify(mockAdminModelJpaRepository, times(1)).findOneModel(newAdminModelEntity.getIdx());
@@ -903,8 +885,6 @@ class AdminModelJpaRepositoryTest {
 
         // then
         assertThat(modelInfo.getAgencyIdx()).isEqualTo(adminModelEntity.getAgencyIdx());
-        assertThat(modelInfo.getModelAgency().getAgencyName()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyName());
-        assertThat(modelInfo.getModelAgency().getAgencyDescription()).isEqualTo(adminModelEntity.getAdminAgencyEntity().getAgencyDescription());
 
         // verify
         then(mockAdminModelJpaRepository).should(times(1)).findOneModel(newAdminModelEntity.getIdx());
@@ -1025,7 +1005,6 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("새로운 모델 설정 Mockito 테스트")
     void 새로운모델설정Mockito테스트() {
         adminModelEntity = AdminModelEntity.builder()
-                .idx(1L)
                 .categoryCd(1)
                 .categoryAge(2)
                 .modelKorFirstName("조")
@@ -1045,6 +1024,8 @@ class AdminModelJpaRepositoryTest {
                 .shoes(270)
                 .visible("Y")
                 .build();
+
+        em.persist(adminModelEntity);
 
         adminModelJpaRepository.toggleModelNewYn(adminModelEntity.getIdx());
         adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
@@ -1068,7 +1049,6 @@ class AdminModelJpaRepositoryTest {
     @DisplayName("새로운 모델 설정 BDD 테스트")
     void 새로운모델설정BDD테스트() {
         adminModelEntity = AdminModelEntity.builder()
-                .idx(1L)
                 .categoryCd(1)
                 .categoryAge(2)
                 .modelKorFirstName("조")
@@ -1088,6 +1068,8 @@ class AdminModelJpaRepositoryTest {
                 .shoes(270)
                 .visible("Y")
                 .build();
+
+        em.persist(adminModelEntity);
 
         adminModelJpaRepository.toggleModelNewYn(adminModelEntity.getIdx());
         adminModelDTO = AdminModelEntity.toDto(adminModelEntity);

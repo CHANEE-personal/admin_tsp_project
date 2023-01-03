@@ -104,8 +104,6 @@ public class AdminCommonJpaRepository {
      */
     public CommonCodeDTO updateCommonCode(CommonCodeEntity existCommonCodeEntity) {
         em.merge(existCommonCodeEntity);
-        em.flush();
-        em.clear();
         return toDto(existCommonCodeEntity);
     }
 
@@ -120,8 +118,6 @@ public class AdminCommonJpaRepository {
      */
     public Long deleteCommonCode(Long idx) {
         em.remove(em.find(CommonCodeEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 }

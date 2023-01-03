@@ -119,6 +119,7 @@ public class AdminModelJpaRepository {
         AdminModelEntity findOneModel = Optional.ofNullable(queryFactory
                 .selectFrom(adminModelEntity)
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
+                .fetchJoin()
                 .leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
                 .fetchJoin()
                 .where(adminModelEntity.idx.eq(idx)
@@ -211,8 +212,6 @@ public class AdminModelJpaRepository {
      */
     public AdminModelDTO updateModel(AdminModelEntity existAdminModelEntity) {
         em.merge(existAdminModelEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminModelEntity);
     }
 
@@ -227,8 +226,6 @@ public class AdminModelJpaRepository {
      */
     public Long deleteModel(Long idx) {
         em.remove(em.find(AdminModelEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 

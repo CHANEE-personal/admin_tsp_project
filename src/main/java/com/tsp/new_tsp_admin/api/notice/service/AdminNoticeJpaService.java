@@ -93,7 +93,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 09. 23.
      * </pre>
      */
-    AdminNoticeDTO toggleFixed(Long idx);
+    Boolean toggleFixed(Long idx);
 
     /**
      * <pre>

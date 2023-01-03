@@ -79,7 +79,6 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      */
     @Override
     @CachePut("comment")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity) {
         try {
@@ -100,7 +99,6 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      */
     @Override
     @CachePut(value = "comment", key = "#adminCommentEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminCommentDTO updateAdminComment(AdminCommentEntity adminCommentEntity) {
         try {
@@ -121,7 +119,6 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      */
     @Override
     @CacheEvict(value = "comment", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteAdminComment(Long idx) {
         try {

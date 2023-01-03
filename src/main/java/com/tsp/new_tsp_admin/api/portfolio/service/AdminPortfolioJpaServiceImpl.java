@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,7 +111,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @CachePut("portfolio")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         try {
@@ -133,7 +131,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @CachePut(value = "portfolio", key = "#adminPortFolioEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         try {
@@ -154,7 +151,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @CacheEvict(value = "portfolio", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deletePortfolio(Long idx) {
         try {

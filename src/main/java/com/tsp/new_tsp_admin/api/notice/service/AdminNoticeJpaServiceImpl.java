@@ -111,7 +111,6 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      */
     @Override
     @CachePut("notice")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminNoticeDTO insertNotice(AdminNoticeEntity adminNoticeEntity) {
         try {
@@ -132,7 +131,6 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      */
     @Override
     @CachePut(value = "notice", key = "#adminNoticeEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity) {
         try {
@@ -153,9 +151,8 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      */
     @Override
     @CachePut(value = "notice", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
-    public AdminNoticeDTO toggleFixed(Long idx) {
+    public Boolean toggleFixed(Long idx) {
         try {
             return adminNoticeJpaRepository.toggleFixed(idx);
         } catch (Exception e) {
@@ -174,7 +171,6 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      */
     @Override
     @CacheEvict(value = "notice", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteNotice(Long idx) {
         try {

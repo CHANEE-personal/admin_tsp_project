@@ -203,7 +203,7 @@ public class AdminNoticeJpaController {
      */
     @ApiOperation(value = "공지사항 상단 고정", notes = "공지사항을 상단 고정한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "공지사항 상단 고정 성공", response = AdminNoticeDTO.class),
+            @ApiResponse(code = 200, message = "공지사항 상단 고정 성공", response = Boolean.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
@@ -211,7 +211,7 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping(value = "/{idx}/fixed")
-    public ResponseEntity<AdminNoticeDTO> toggleFixed(@PathVariable Long idx) {
+    public ResponseEntity<Boolean> toggleFixed(@PathVariable Long idx) {
         if (adminNoticeJpaService.findOneNotice(idx) == null) {
             return ResponseEntity.notFound().build();
         }

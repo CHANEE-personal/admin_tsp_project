@@ -86,7 +86,6 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      */
     @Override
     @CachePut("agency")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) {
         try {
@@ -107,7 +106,6 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      */
     @Override
     @CachePut(value = "agency", key = "#adminAgencyEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) {
         try {
@@ -128,7 +126,6 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      */
     @Override
     @CacheEvict(value = "agency", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteAgency(Long idx) {
         try {

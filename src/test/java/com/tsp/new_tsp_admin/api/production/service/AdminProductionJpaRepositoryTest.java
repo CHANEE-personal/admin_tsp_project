@@ -227,7 +227,7 @@ class AdminProductionJpaRepositoryTest {
         assertThat(productionInfo.getProductionImage().get(0).getFileMask()).isEqualTo("test.jpg");
         assertThat(productionInfo.getProductionImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
         assertThat(productionInfo.getProductionImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(productionInfo.getProductionImage().get(0).getTypeName()).isEqualTo("production");
+        assertThat(productionInfo.getProductionImage().get(0).getTypeName()).isEqualTo(EntityType.PRODUCTION);
 
         // verify
         verify(mockAdminProductionJpaRepository, times(1)).findOneProduction(adminProductionEntity.getIdx());
@@ -268,7 +268,7 @@ class AdminProductionJpaRepositoryTest {
         assertThat(productionInfo.getProductionImage().get(0).getFileMask()).isEqualTo("test.jpg");
         assertThat(productionInfo.getProductionImage().get(0).getFilePath()).isEqualTo("/test/test.jpg");
         assertThat(productionInfo.getProductionImage().get(0).getImageType()).isEqualTo("main");
-        assertThat(productionInfo.getProductionImage().get(0).getTypeName()).isEqualTo("production");
+        assertThat(productionInfo.getProductionImage().get(0).getTypeName()).isEqualTo(EntityType.PRODUCTION);
 
         // verify
         then(mockAdminProductionJpaRepository).should(times(1)).findOneProduction(adminProductionEntity.getIdx());

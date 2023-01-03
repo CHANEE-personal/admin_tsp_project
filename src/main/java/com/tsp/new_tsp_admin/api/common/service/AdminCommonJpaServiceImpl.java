@@ -80,7 +80,6 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      */
     @Override
     @CachePut("common")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) {
         try {
@@ -101,7 +100,6 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      */
     @Override
     @CachePut(value = "common", key = "#commonCodeEntity.idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity) {
         try {
@@ -122,7 +120,6 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
      */
     @Override
     @CacheEvict(value = "common", key = "#idx")
-    @Modifying(clearAutomatically = true)
     @Transactional
     public Long deleteCommonCode(Long idx) {
         try {

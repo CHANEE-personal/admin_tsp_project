@@ -189,8 +189,6 @@ public class AdminPortfolioJpaRepository {
      */
     public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity existAdminPortfolioEntity) {
         em.merge(existAdminPortfolioEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminPortfolioEntity);
     }
 
@@ -205,8 +203,6 @@ public class AdminPortfolioJpaRepository {
      */
     public Long deletePortfolio(Long idx) {
         em.remove(em.find(AdminPortFolioEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 

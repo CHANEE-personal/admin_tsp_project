@@ -192,8 +192,6 @@ public class AdminScheduleJpaRepository {
      */
     public AdminScheduleDTO updateSchedule(AdminScheduleEntity existAdminScheduleEntity) {
         em.merge(existAdminScheduleEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminScheduleEntity);
     }
 
@@ -208,8 +206,6 @@ public class AdminScheduleJpaRepository {
      */
     public Long deleteSchedule(Long idx) {
         em.remove(em.find(AdminScheduleEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 }

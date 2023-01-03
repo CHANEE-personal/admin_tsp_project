@@ -163,8 +163,6 @@ public class AdminNoticeJpaRepository {
      */
     public AdminNoticeDTO updateNotice(AdminNoticeEntity existAdminNoticeEntity) {
         em.merge(existAdminNoticeEntity);
-        em.flush();
-        em.clear();
         return toDto(existAdminNoticeEntity);
     }
 
@@ -177,7 +175,7 @@ public class AdminNoticeJpaRepository {
      * 5. 작성일      : 2022. 09. 23.
      * </pre>
      */
-    public AdminNoticeDTO toggleFixed(Long idx) {
+    public Boolean toggleFixed(Long idx) {
         AdminNoticeEntity oneNotice = em.find(AdminNoticeEntity.class, idx);
         Boolean fixed = !oneNotice.getTopFixed();
 
@@ -190,7 +188,7 @@ public class AdminNoticeJpaRepository {
         em.flush();
         em.clear();
 
-        return toDto(oneNotice);
+        return fixed;
     }
 
     /**
@@ -204,8 +202,6 @@ public class AdminNoticeJpaRepository {
      */
     public Long deleteNotice(Long idx) {
         em.remove(em.find(AdminNoticeEntity.class, idx));
-        em.flush();
-        em.clear();
         return idx;
     }
 }
