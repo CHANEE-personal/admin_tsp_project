@@ -21,8 +21,7 @@ import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDto;
-import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDtoList;
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.*;
@@ -102,7 +101,7 @@ public class AdminModelJpaRepository {
                 .limit(getInt(modelMap.get("size"), 0))
                 .fetch();
 
-        return modelList != null ? toDtoList(modelList) : emptyList();
+        return modelList != null ? toPartDtoList(modelList) : emptyList();
     }
 
     /**

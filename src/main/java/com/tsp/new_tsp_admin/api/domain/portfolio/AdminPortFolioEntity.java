@@ -103,10 +103,36 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
                 .build();
     }
 
+    public static AdminPortFolioDTO toPartDto(AdminPortFolioEntity entity) {
+        if (entity == null) return null;
+        return AdminPortFolioDTO.builder()
+                .rowNum(entity.getRowNum())
+                .idx(entity.getIdx())
+                .categoryCd(entity.getCategoryCd())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .hashTag(entity.getHashTag())
+                .videoUrl(entity.getVideoUrl())
+                .viewCount(entity.getViewCount())
+                .visible(entity.getVisible())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
     public static List<AdminPortFolioDTO> toDtoList(List<AdminPortFolioEntity> entityList) {
         if (entityList == null) return null;
         return entityList.stream()
                 .map(AdminPortFolioEntity::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public static List<AdminPortFolioDTO> toPartDtoList(List<AdminPortFolioEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminPortFolioEntity::toPartDto)
                 .collect(Collectors.toList());
     }
 }
