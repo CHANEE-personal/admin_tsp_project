@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
+import static com.tsp.new_tsp_admin.api.domain.model.QAdminModelEntity.adminModelEntity;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity.toDto;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.adminAgencyEntity;
@@ -91,6 +93,8 @@ public class AdminAgencyJpaRepository {
         AdminAgencyEntity findOneAgency = Optional.ofNullable(queryFactory
                 .selectFrom(adminAgencyEntity)
                 .orderBy(adminAgencyEntity.idx.desc())
+                .leftJoin(adminAgencyEntity.commonImageEntityList, commonImageEntity)
+                .fetchJoin()
                 .where(adminAgencyEntity.visible.eq("Y")
                         .and(adminAgencyEntity.idx.eq(idx)))
                 .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_AGENCY, new Throwable()));

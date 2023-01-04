@@ -6,6 +6,7 @@ import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -52,6 +53,7 @@ public class AdminAgencyEntity extends NewCommonMappedClass {
     private String visible;
 
     @JsonIgnore
+    @Where(clause = "type_name = 'agency'")
     @OneToMany(mappedBy = "adminAgencyEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 

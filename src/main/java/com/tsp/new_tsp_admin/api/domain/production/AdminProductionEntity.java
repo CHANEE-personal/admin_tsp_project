@@ -79,10 +79,33 @@ public class AdminProductionEntity extends NewCommonMappedClass {
                 .build();
     }
 
+    public static AdminProductionDTO toPartDto(AdminProductionEntity entity) {
+        if (entity == null) return null;
+        return AdminProductionDTO.builder()
+                .rowNum(entity.getRowNum())
+                .idx(entity.getIdx())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .viewCount(entity.getViewCount())
+                .visible(entity.getVisible())
+                .creator(entity.getCreator())
+                .createTime(entity.getCreateTime())
+                .updater(entity.getUpdater())
+                .updateTime(entity.getUpdateTime())
+                .build();
+    }
+
     public static List<AdminProductionDTO> toDtoList(List<AdminProductionEntity> entityList) {
         if (entityList == null) return null;
         return entityList.stream()
                 .map(AdminProductionEntity::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public static List<AdminProductionDTO> toPartDtoList(List<AdminProductionEntity> entityList) {
+        if (entityList == null) return null;
+        return entityList.stream()
+                .map(AdminProductionEntity::toPartDto)
                 .collect(Collectors.toList());
     }
 }

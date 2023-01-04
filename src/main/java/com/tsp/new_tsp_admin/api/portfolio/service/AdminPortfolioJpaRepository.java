@@ -19,8 +19,7 @@ import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
-import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.toDto;
-import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.toDtoList;
+import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
@@ -82,7 +81,7 @@ public class AdminPortfolioJpaRepository {
                 .limit(getInt(portfolioMap.get("size"), 0))
                 .fetch();
 
-        return portfolioList != null ? toDtoList(portfolioList) : emptyList();
+        return portfolioList != null ? toPartDtoList(portfolioList) : emptyList();
     }
 
     /**

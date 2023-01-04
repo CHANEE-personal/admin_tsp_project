@@ -19,8 +19,7 @@ import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
-import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.toDto;
-import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.toDtoList;
+import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
 import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
@@ -81,7 +80,7 @@ public class AdminProductionJpaRepository {
                 .limit(getInt(productionMap.get("size"), 0))
                 .fetch();
 
-        return productionList != null ? toDtoList(productionList) : emptyList();
+        return productionList != null ? toPartDtoList(productionList) : emptyList();
     }
 
     /**
