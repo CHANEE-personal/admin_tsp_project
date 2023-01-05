@@ -6,6 +6,8 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
 import com.tsp.new_tsp_admin.common.Page;
@@ -26,6 +28,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -385,5 +388,129 @@ public class AdminModelJpaController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(adminModelJpaService.findOneModelSchedule(idx));
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findRecommendList
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 추천 검색어 리스트 조회
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @ApiOperation(value = "추천 검색어 조회", notes = "추천 검색어를 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "추천 검색어 조회성공", response = Map.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping(value = "/recommend")
+    public ResponseEntity<Map<String, Object>> findRecommendList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+        Map<String, Object> recommendMap = new HashMap<>();
+        recommendMap.put("recommendList", adminModelJpaService.findRecommendList(searchCommon.searchCommon(page, paramMap)));
+        return ResponseEntity.ok().body(recommendMap);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneRecommend
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 추천 검색어 상세 조회
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @ApiOperation(value = "추천 검색어 상세 조회", notes = "추천 검색어를 상세 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "추천 검색어 상세 조회성공", response = AdminRecommendDTO.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @GetMapping(value = "/recommend/{idx}")
+    public ResponseEntity<AdminRecommendDTO> findOneRecommend(@PathVariable Long idx) {
+        return ResponseEntity.ok(adminModelJpaService.findOneRecommend(idx));
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertRecommend
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 추천 검색어 등록
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @ApiOperation(value = "추천 검색어 등록", notes = "추천 검색어를 등록한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "추천 검색어 등록성공", response = AdminRecommendDTO.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping("/recommend")
+    public ResponseEntity<AdminRecommendDTO> insertRecommend(@Valid @RequestBody AdminRecommendEntity adminRecommendEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminModelJpaService.insertRecommend(adminRecommendEntity));
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateRecommend
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 추천 검색어 수정
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @ApiOperation(value = "추천 검색어 등록", notes = "추천 검색어를 등록한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "추천 검색어 등록성공", response = AdminRecommendDTO.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PutMapping("/recommend/{idx}")
+    public ResponseEntity<AdminRecommendDTO> updateRecommend(@PathVariable Long idx, @Valid @RequestBody AdminRecommendEntity adminRecommendEntity) {
+        if (adminModelJpaService.findOneRecommend(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(adminModelJpaService.updateRecommend(adminRecommendEntity));
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteRecommend
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 추천 검색어 삭제
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @ApiOperation(value = "추천 검색어 삭제", notes = "추천 검색어를 삭제한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "추천 검색어 삭제성공", response = AdminRecommendDTO.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @DeleteMapping("/recommend/{idx}")
+    public ResponseEntity<AdminRecommendDTO> deleteRecommend(@PathVariable Long idx) {
+        if (adminModelJpaService.findOneRecommend(idx) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        adminModelJpaService.deleteRecommend(idx);
+        return ResponseEntity.noContent().build();
     }
 }
