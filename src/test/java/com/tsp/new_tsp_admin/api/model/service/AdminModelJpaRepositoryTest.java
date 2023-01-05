@@ -10,10 +10,11 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.CareerJson;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
-import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +29,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -1143,5 +1143,105 @@ class AdminModelJpaRepositoryTest {
         then(mockAdminModelJpaRepository).should(times(1)).findOneModelSchedule(adminModelEntity.getIdx());
         then(mockAdminModelJpaRepository).should(atLeastOnce()).findOneModelSchedule(adminModelEntity.getIdx());
         then(mockAdminModelJpaRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("추천 검색어 리스트 조회 테스트")
+    void 추천검색어리스트조회테스트() {
+        Map<String, Object> recommendMap = new HashMap<>();
+        recommendMap.put("jpaStartPage", 0);
+        recommendMap.put("size", 3);
+
+        List<String> list = new ArrayList<>();
+        list.add("모델1");
+        list.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                        .recommendKeyword(list)
+                        .build();
+
+        adminModelJpaRepository.changeRecommend(adminRecommendEntity);
+
+        assertThat(adminModelJpaRepository.findRecommendList(recommendMap)).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("추천 검색어 상세 조회 테스트")
+    void 추천검색어상세조회테스트() {
+        List<String> list = new ArrayList<>();
+        list.add("모델1");
+        list.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        AdminRecommendDTO adminRecommendDTO = adminModelJpaRepository.changeRecommend(adminRecommendEntity);
+
+        assertThat(adminModelJpaRepository.findOneRecommend(adminRecommendDTO.getIdx()).getRecommendKeyword()).isEqualTo(list);
+    }
+
+
+    @Test
+    @DisplayName("추천 검색어 등록 테스트")
+    void 추천검색어등록테스트() {
+        List<String> list = new ArrayList<>();
+        list.add("모델1");
+        list.add("모델2");
+
+        AdminRecommendEntity recommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        AdminRecommendDTO adminRecommendDTO = adminModelJpaRepository.changeRecommend(recommendEntity);
+
+        assertThat(adminRecommendDTO.getRecommendKeyword()).isEqualTo(list);
+    }
+
+    @Test
+    @DisplayName("추천 검색어 수정 테스트")
+    void 추천검색어수정테스트() {
+        List<String> list = new ArrayList<>();
+        list.add("모덻1");
+        list.add("모델2");
+
+        AdminRecommendEntity recommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        AdminRecommendDTO adminRecommendDTO = adminModelJpaRepository.changeRecommend(recommendEntity);
+
+        list.add("모델3");
+        recommendEntity = AdminRecommendEntity.builder()
+                .idx(adminRecommendDTO.getIdx())
+                .recommendKeyword(list)
+                .build();
+
+        em.flush();
+        em.clear();
+
+        AdminRecommendDTO updateRecommendDTO = adminModelJpaRepository.changeRecommend(recommendEntity);
+
+        assertThat(updateRecommendDTO.getRecommendKeyword()).isEqualTo(list);
+    }
+
+    @Test
+    @DisplayName("추천 검색어 삭제 테스트")
+    void 추천검색어삭제테스트() {
+        List<String> list = new ArrayList<>();
+        list.add("모덻1");
+        list.add("모델2");
+
+        AdminRecommendEntity recommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        AdminRecommendDTO adminRecommendDTO = adminModelJpaRepository.changeRecommend(recommendEntity);
+
+        Long deleteIdx = adminModelJpaRepository.deleteRecommend(adminRecommendDTO.getIdx());
+        em.flush();
+        em.clear();
+
+        assertThat(deleteIdx).isEqualTo(adminRecommendDTO.getIdx());
     }
 }

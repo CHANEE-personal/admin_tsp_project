@@ -9,6 +9,9 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.QAdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -27,6 +30,7 @@ import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.*
 import static com.tsp.new_tsp_admin.api.domain.model.schedule.QAdminScheduleEntity.*;
 import static com.tsp.new_tsp_admin.common.StringUtil.*;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_MODEL;
+import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_RECOMMEND;
 import static java.util.Collections.emptyList;
 
 @Slf4j
@@ -300,8 +304,8 @@ public class AdminModelJpaRepository {
      * 1. MethodName : findOneModelSchedule
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 스케줄 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 03.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 03.
      * </pre>
      */
     public List<AdminScheduleDTO> findOneModelSchedule(Long idx) {
@@ -313,5 +317,75 @@ public class AdminModelJpaRepository {
                 .fetch();
 
         return scheduleList != null ? AdminScheduleEntity.toDtoList(scheduleList) : emptyList();
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findRecommendList
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 추천 검색어 리스트 조회
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    public List<AdminRecommendDTO> findRecommendList(Map<String, Object> recommendMap) {
+        List<AdminRecommendEntity> recommendList = queryFactory
+                .selectFrom(QAdminRecommendEntity.adminRecommendEntity)
+                .orderBy(QAdminRecommendEntity.adminRecommendEntity.idx.desc())
+                .offset(getInt(recommendMap.get("jpaStartPage"), 0))
+                .limit(getInt(recommendMap.get("size"), 0))
+                .fetch();
+
+        return recommendList != null ? AdminRecommendEntity.toDtoList(recommendList) : emptyList();
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneRecommend
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 추천 검색어 상세 조회
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    public AdminRecommendDTO findOneRecommend(Long idx) {
+        AdminRecommendEntity oneRecommend = Optional.ofNullable(queryFactory
+                .selectFrom(QAdminRecommendEntity.adminRecommendEntity)
+                .where(QAdminRecommendEntity.adminRecommendEntity.idx.eq(idx))
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_RECOMMEND, new Throwable()));
+
+        return AdminRecommendEntity.toDto(oneRecommend);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : changeRecommend
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 추천 검색어 등록 or 수정
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    public AdminRecommendDTO changeRecommend(AdminRecommendEntity adminRecommendEntity) {
+        if (adminRecommendEntity.getIdx() == null) {
+            em.persist(adminRecommendEntity);
+        } else {
+            em.merge(adminRecommendEntity);
+        }
+        return AdminRecommendEntity.toDto(adminRecommendEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteRecommend
+     * 2. ClassName  : AdminModelJpaRepository.java
+     * 3. Comment    : 관리자 추천 검색어 삭제
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    public Long deleteRecommend(Long idx) {
+        em.remove(em.find(AdminRecommendEntity.class, idx));
+        return idx;
     }
 }

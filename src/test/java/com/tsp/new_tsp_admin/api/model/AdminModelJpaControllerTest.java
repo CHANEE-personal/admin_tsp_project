@@ -6,6 +6,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.CareerJson;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,7 @@ import java.util.List;
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static java.util.List.of;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -61,6 +63,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.TestConstructor.AutowireMode.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -117,7 +120,7 @@ class AdminModelJpaControllerTest {
 
         // model 생성
         ArrayList<CareerJson> careerList = new ArrayList<>();
-        careerList.add(new CareerJson("title","txt"));
+        careerList.add(new CareerJson("title", "txt"));
 
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
@@ -161,7 +164,7 @@ class AdminModelJpaControllerTest {
         modelMap.add("jpaStartPage", "1");
         modelMap.add("size", "3");
         mockMvc.perform(get("/api/model/lists/1").queryParams(modelMap)
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"));
@@ -190,7 +193,7 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 조회 예외 테스트")
     void 모델조회Api예외테스트() throws Exception {
         mockMvc.perform(get("/api/model/lists/-1")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andReturn().getResponse().getContentAsString().equals("모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.");
@@ -202,7 +205,7 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 조회 권한 테스트")
     void 모델조회Api권한테스트() throws Exception {
         mockMvc.perform(get("/api/model/lists/1")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -212,7 +215,7 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 상세 조회 테스트")
     void 모델상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/model/143")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
@@ -242,7 +245,7 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 상세 조회 권한 테스트")
     void 모델상세조회Api권한테스트() throws Exception {
         mockMvc.perform(get("/api/model/143")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -278,9 +281,9 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 등록 테스트")
     void 모델등록Api테스트() throws Exception {
         mockMvc.perform(post("/api/model")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminModelEntity)))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andDo(document("model/post",
                         preprocessRequest(prettyPrint()),
@@ -331,9 +334,9 @@ class AdminModelJpaControllerTest {
     @DisplayName("CreatedBy, CreationTimestamp 테스트")
     void CreatedByAndCreationTimestamp테스트() throws Exception {
         mockMvc.perform(post("/api/model")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminModelEntity)))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
@@ -375,9 +378,9 @@ class AdminModelJpaControllerTest {
                 .build();
 
         mockMvc.perform(post("/api/model")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(exAdminModelEntity)))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(exAdminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 //                .andExpect(jsonPath("$.code").value("ERROR_MODEL"))
@@ -391,9 +394,9 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 등록 권한 테스트")
     void 모델등록Api권한테스트() throws Exception {
         mockMvc.perform(post("/api/model")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminModelEntity)))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -424,9 +427,9 @@ class AdminModelJpaControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/model/{idx}", adminModelEntity.getIdx())
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminModelEntity)))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andDo(document("model/put",
                         preprocessRequest(prettyPrint()),
@@ -492,9 +495,9 @@ class AdminModelJpaControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/model/{idx}", newAdminModelEntity.getIdx())
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(newAdminModelEntity)))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(newAdminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
@@ -531,9 +534,9 @@ class AdminModelJpaControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/model/{idx}", adminModelEntity.getIdx())
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminModelEntity)))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 //                .andExpect(jsonPath("$.code").value("ERROR_UPDATE_MODEL"))
@@ -568,9 +571,9 @@ class AdminModelJpaControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/model/{idx}", adminModelEntity.getIdx())
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminModelEntity)))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminModelEntity)))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -582,7 +585,7 @@ class AdminModelJpaControllerTest {
         em.persist(adminModelEntity);
 
         mockMvc.perform(delete("/api/model/{idx}", adminModelEntity.getIdx())
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
@@ -597,7 +600,7 @@ class AdminModelJpaControllerTest {
         em.persist(adminModelEntity);
 
         mockMvc.perform(delete("/api/model/{idx}", adminModelEntity.getIdx())
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -607,16 +610,16 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 이미지 등록 테스트")
     void 모델이미지등록Api테스트() throws Exception {
         List<MultipartFile> imageFiles = of(
-                new MockMultipartFile("0522045010647","0522045010647.png",
-                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
-                new MockMultipartFile("0522045010772","0522045010772.png" ,
-                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
+                new MockMultipartFile("0522045010647", "0522045010647.png",
+                        "image/png", new FileInputStream("src/main/resources/static/images/0522045010647.png")),
+                new MockMultipartFile("0522045010772", "0522045010772.png",
+                        "image/png", new FileInputStream("src/main/resources/static/images/0522045010772.png"))
         );
 
         mockMvc.perform(multipart("/api/model/{idx}/images", adminModelEntity.getIdx())
                         .file("images", imageFiles.get(0).getBytes())
                         .file("images", imageFiles.get(1).getBytes())
-                .contentType(MULTIPART_FORM_DATA_VALUE))
+                        .contentType(MULTIPART_FORM_DATA_VALUE))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().string("Y"));
@@ -642,7 +645,7 @@ class AdminModelJpaControllerTest {
                         .contentType(APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andExpect(content().string(getString(commonImageEntity.getIdx(),"")));
+                .andExpect(content().string(getString(commonImageEntity.getIdx(), "")));
     }
 
     @Test
@@ -651,10 +654,10 @@ class AdminModelJpaControllerTest {
     void 모델소속사수정Api테스트() throws Exception {
         // 소속사 등록
         AdminAgencyEntity adminAgencyEntity = AdminAgencyEntity.builder()
-                        .agencyName("agency")
-                        .agencyDescription("agency")
-                        .visible("Y")
-                        .build();
+                .agencyName("agency")
+                .agencyDescription("agency")
+                .visible("Y")
+                .build();
 
         em.persist(adminAgencyEntity);
 
@@ -686,18 +689,18 @@ class AdminModelJpaControllerTest {
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(adminModelEntity)))
-                    .andDo(print())
-                    .andDo(document("model/put/agency",
-                            preprocessRequest(prettyPrint()),
-                            preprocessResponse(prettyPrint()),
-                            relaxedRequestFields(
-                                    fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
-                            ),
-                            relaxedResponseFields(
-                                    fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
-                            )))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.agencyIdx").value(adminAgencyEntity.getIdx()));
+                .andDo(print())
+                .andDo(document("model/put/agency",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        relaxedRequestFields(
+                                fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("agencyIdx").type(NUMBER).description("소속사 IDX")
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.agencyIdx").value(adminAgencyEntity.getIdx()));
     }
 
     @Test
@@ -735,5 +738,115 @@ class AdminModelJpaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.modelIdx").value(adminModelEntity.getIdx()));
+    }
+
+    @Test
+    @DisplayName("추천 검색어 조회 테스트")
+    void 추천검색어조회테스트() throws Exception {
+        List<String> recommendList = new ArrayList<>();
+        recommendList.add("모델1");
+        recommendList.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(recommendList)
+                .build();
+
+        em.persist(adminRecommendEntity);
+
+        mockMvc.perform(get("/api/model/recommend").param("page", "1").param("size", "100"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.recommendList.length()", greaterThan(0)));
+    }
+
+    @Test
+    @DisplayName("추천 검색어 상세 조회 테스트")
+    void 추천검색어상세조회테스트() throws Exception {
+        List<String> recommendList = new ArrayList<>();
+        recommendList.add("모델1");
+        recommendList.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(recommendList)
+                .build();
+
+        em.persist(adminRecommendEntity);
+        mockMvc.perform(get("/api/model/recommend/{idx}", adminRecommendEntity.getIdx()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.idx").value(adminRecommendEntity.getIdx()));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("추천 검색어 등록 테스트")
+    void 추천검색어등록테스트() throws Exception {
+        List<String> recommendList = new ArrayList<>();
+        recommendList.add("모델1");
+        recommendList.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(recommendList)
+                .build();
+
+        mockMvc.perform(post("/api/model/recommend")
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminRecommendEntity)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.recommendKeyword").value(recommendList));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("추천 검색어 수정 테스트")
+    void 추천검색어수정테스트() throws Exception {
+        List<String> recommendList = new ArrayList<>();
+        recommendList.add("모델1");
+        recommendList.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(recommendList)
+                .build();
+
+        em.persist(adminRecommendEntity);
+
+        recommendList.add("모델3");
+        AdminRecommendEntity updateRecommendEntity = AdminRecommendEntity.builder()
+                    .idx(adminRecommendEntity.getIdx())
+                    .recommendKeyword(recommendList)
+                    .build();
+
+        mockMvc.perform(put("/api/model/recommend/{idx}", updateRecommendEntity.getIdx())
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(adminRecommendEntity)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
+                .andExpect(jsonPath("$.recommendKeyword").value(recommendList));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("추천 검색어 삭제 테스트")
+    void 추천검색어삭제테스트() throws Exception {
+        List<String> recommendList = new ArrayList<>();
+        recommendList.add("모델1");
+        recommendList.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(recommendList)
+                .build();
+
+        em.persist(adminRecommendEntity);
+        mockMvc.perform(delete("/api/model/recommend/{idx}", adminRecommendEntity.getIdx())
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 }
