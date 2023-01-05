@@ -6,6 +6,8 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaRepository;
@@ -276,5 +278,97 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Transactional(readOnly = true)
     public List<AdminScheduleDTO> findOneModelSchedule(Long idx) {
         return adminModelJpaRepository.findOneModelSchedule(idx);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findRecommendList
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 추천 검색어 리스트 조회
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @Override
+    @Cacheable(value = "recommend")
+    @Transactional(readOnly = true)
+    public List<AdminRecommendDTO> findRecommendList(Map<String, Object> recommendMap) {
+        return adminModelJpaRepository.findRecommendList(recommendMap);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : findOneRecommend
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 추천 검색어 상세 조회
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 01. 05.
+     * </pre>
+     */
+    @Override
+    @Cacheable(value = "recommend", key = "#idx")
+    @Transactional(readOnly = true)
+    public AdminRecommendDTO findOneRecommend(Long idx) {
+        return adminModelJpaRepository.findOneRecommend(idx);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertRecommend
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 추천 검색어 등록
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @Override
+    @CachePut(value = "recommend")
+    @Transactional
+    public AdminRecommendDTO insertRecommend(AdminRecommendEntity adminRecommendEntity) {
+        try {
+            return adminModelJpaRepository.changeRecommend(adminRecommendEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_RECOMMEND, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : updateRecommend
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 추천 검색어 수정
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @Override
+    @CachePut(value = "recommend", key = "#adminRecommendEntity.idx")
+    @Transactional
+    public AdminRecommendDTO updateRecommend(AdminRecommendEntity adminRecommendEntity) {
+        try {
+            return adminModelJpaRepository.changeRecommend(adminRecommendEntity);
+        } catch (Exception e) {
+            throw new TspException(ERROR_UPDATE_RECOMMEND, e);
+        }
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : deleteRecommend
+     * 2. ClassName  : AdminModelJpaServiceImpl.java
+     * 3. Comment    : 관리자 추천 검색어 삭제
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2023. 01. 05.
+     * </pre>
+     */
+    @Override
+    @CacheEvict(value = "recommend", key = "#idx")
+    @Transactional
+    public Long deleteRecommend(Long idx) {
+        try {
+            return adminModelJpaRepository.deleteRecommend(idx);
+        } catch (Exception e) {
+            throw new TspException(ERROR_DELETE_RECOMMEND, e);
+        }
     }
 }

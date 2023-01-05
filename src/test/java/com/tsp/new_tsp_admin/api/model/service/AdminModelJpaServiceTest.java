@@ -9,6 +9,8 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
+import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaService;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -1043,5 +1045,105 @@ class AdminModelJpaServiceTest {
         then(mockAdminModelJpaService).should(times(1)).findOneModelSchedule(adminModelEntity.getIdx());
         then(mockAdminModelJpaService).should(atLeastOnce()).findOneModelSchedule(adminModelEntity.getIdx());
         then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("추천 검색어 리스트 조회 테스트")
+    void 추천검색어리스트조회테스트() {
+        Map<String, Object> recommendMap = new HashMap<>();
+        recommendMap.put("jpaStartPage", 0);
+        recommendMap.put("size", 3);
+
+        List<String> list = new ArrayList<>();
+        list.add("모델1");
+        list.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        adminModelJpaService.insertRecommend(adminRecommendEntity);
+
+        assertThat(adminModelJpaService.findRecommendList(recommendMap)).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("추천 검색어 상세 조회 테스트")
+    void 추천검색어상세조회테스트() {
+        List<String> list = new ArrayList<>();
+        list.add("모델1");
+        list.add("모델2");
+
+        AdminRecommendEntity adminRecommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        AdminRecommendDTO adminRecommendDTO = adminModelJpaService.insertRecommend(adminRecommendEntity);
+
+        assertThat(adminModelJpaService.findOneRecommend(adminRecommendDTO.getIdx()).getRecommendKeyword()).isEqualTo(list);
+    }
+
+
+    @Test
+    @DisplayName("추천 검색어 등록 테스트")
+    void 추천검색어등록테스트() {
+        List<String> list = new ArrayList<>();
+        list.add("모델1");
+        list.add("모델2");
+
+        AdminRecommendEntity recommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        AdminRecommendDTO adminRecommendDTO = adminModelJpaService.insertRecommend(recommendEntity);
+
+        assertThat(adminRecommendDTO.getRecommendKeyword()).isEqualTo(list);
+    }
+
+    @Test
+    @DisplayName("추천 검색어 수정 테스트")
+    void 추천검색어수정테스트() {
+        List<String> list = new ArrayList<>();
+        list.add("모덻1");
+        list.add("모델2");
+
+        AdminRecommendEntity recommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        AdminRecommendDTO adminRecommendDTO = adminModelJpaService.insertRecommend(recommendEntity);
+
+        list.add("모델3");
+        recommendEntity = AdminRecommendEntity.builder()
+                .idx(adminRecommendDTO.getIdx())
+                .recommendKeyword(list)
+                .build();
+
+        em.flush();
+        em.clear();
+
+        AdminRecommendDTO updateRecommendDTO = adminModelJpaService.updateRecommend(recommendEntity);
+
+        assertThat(updateRecommendDTO.getRecommendKeyword()).isEqualTo(list);
+    }
+
+    @Test
+    @DisplayName("추천 검색어 삭제 테스트")
+    void 추천검색어삭제테스트() {
+        List<String> list = new ArrayList<>();
+        list.add("모덻1");
+        list.add("모델2");
+
+        AdminRecommendEntity recommendEntity = AdminRecommendEntity.builder()
+                .recommendKeyword(list)
+                .build();
+
+        AdminRecommendDTO adminRecommendDTO = adminModelJpaService.insertRecommend(recommendEntity);
+
+        Long deleteIdx = adminModelJpaService.deleteRecommend(adminRecommendDTO.getIdx());
+        em.flush();
+        em.clear();
+
+        assertThat(deleteIdx).isEqualTo(adminRecommendDTO.getIdx());
     }
 }
