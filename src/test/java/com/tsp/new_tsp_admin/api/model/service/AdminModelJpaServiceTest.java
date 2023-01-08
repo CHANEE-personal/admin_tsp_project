@@ -1104,7 +1104,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("추천 검색어 수정 테스트")
     void 추천검색어수정테스트() {
         List<String> list = new ArrayList<>();
-        list.add("모덻1");
+        list.add("모델1");
         list.add("모델2");
 
         AdminRecommendEntity recommendEntity = AdminRecommendEntity.builder()
@@ -1131,7 +1131,7 @@ class AdminModelJpaServiceTest {
     @DisplayName("추천 검색어 삭제 테스트")
     void 추천검색어삭제테스트() {
         List<String> list = new ArrayList<>();
-        list.add("모덻1");
+        list.add("모델1");
         list.add("모델2");
 
         AdminRecommendEntity recommendEntity = AdminRecommendEntity.builder()

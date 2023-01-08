@@ -12,6 +12,7 @@ import com.tsp.new_tsp_admin.common.CustomConverter;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Range;
 
@@ -124,6 +125,10 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @NotEmpty(message = "새로운 모델 선택은 필수입니다.")
     private String newYn;
 
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "model_keyword")
+    private List<String> modelKeyword = new ArrayList<>();
+
     @JsonIgnore
     @Where(clause = "cmm_type = 'model'")
     @ManyToOne(fetch = LAZY)
@@ -180,6 +185,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
                 .careerList(entity.getCareerList())
                 .status(entity.getStatus())
                 .newYn(entity.getNewYn())
+                .modelKeyword(entity.getModelKeyword())
                 .creator(entity.getCreator())
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())
@@ -212,6 +218,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
                 .careerList(entity.getCareerList())
                 .status(entity.getStatus())
                 .newYn(entity.getNewYn())
+                .modelKeyword(entity.getModelKeyword())
                 .creator(entity.getCreator())
                 .createTime(entity.getCreateTime())
                 .updater(entity.getUpdater())

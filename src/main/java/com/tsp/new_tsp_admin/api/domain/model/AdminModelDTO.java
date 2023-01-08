@@ -10,8 +10,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.Convert;
 import javax.validation.constraints.NotEmpty;
@@ -115,6 +117,11 @@ public class AdminModelDTO extends NewCommonDTO {
     @NotEmpty(message = "새로운 모델 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "새로운 모델((ex)Y,N")
     private String newYn;
+
+    @Type(type = "json")
+    @Nullable
+    @ApiModelProperty(value = "model keyword")
+    private List<String> modelKeyword = new ArrayList<>();
 
     @ApiModelProperty(value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();
