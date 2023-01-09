@@ -115,7 +115,12 @@ public enum ApiExceptionType implements BaseExceptionType {
     NOT_FOUND_RECOMMEND("NOT_FOUND_RECOMMEND", 404, "추천 검색어 없음"),
     ERROR_RECOMMEND("ERROR_RECOMMEND", 500, "추천 검색어 등록 에러"),
     ERROR_UPDATE_RECOMMEND("ERROR_UPDATE_RECOMMEND", 500, "추천 검색어 수정 에러"),
-    ERROR_DELETE_RECOMMEND("ERROR_DELETE_RECOMMEND", 500, "추천 검색어 삭제 에러");
+    ERROR_DELETE_RECOMMEND("ERROR_DELETE_RECOMMEND", 500, "추천 검색어 삭제 에러"),
+    NOT_FOUND_FESTIVAL_LIST("NOT_FOUND_FESTIVAL_LIST", 404, "행사 리스트 없음"),
+    NOT_FOUND_FESTIVAL("NOT_FOUND_FESTIVAL", 404, "행사 상세 없음"),
+    ERROR_FESTIVAL("ERROR_FESTIVAL", 500, "행사 등록 에러"),
+    ERROR_UPDATE_FESTIVAL("ERROR_UPDATE_FESTIVAL", 500, "행사 수정 에러"),
+    ERROR_DELETE_FESTIVAL("ERROR_DELETE_FESTIVAL", 500, "행사 삭제 에러");
 
     private final String errorCode;
     private final int httpStatus;
