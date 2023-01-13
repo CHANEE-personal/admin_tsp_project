@@ -349,7 +349,7 @@ class AdminProductionJpaServiceTest {
 
         AdminProductionDTO adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
-        adminProductionJpaService.updateProduction(adminProductionEntity);
+        adminProductionJpaService.updateProduction(idx, adminProductionEntity);
 
         // when
         when(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).thenReturn(adminProductionDTO);
@@ -383,7 +383,7 @@ class AdminProductionJpaServiceTest {
 
         AdminProductionDTO adminProductionDTO = AdminProductionEntity.toDto(adminProductionEntity);
 
-        adminProductionJpaService.updateProduction(adminProductionEntity);
+        adminProductionJpaService.updateProduction(idx, adminProductionEntity);
 
         // when
         given(mockAdminProductionJpaService.findOneProduction(adminProductionEntity.getIdx())).willReturn(adminProductionDTO);
@@ -423,7 +423,6 @@ class AdminProductionJpaServiceTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("production")
-                .commentTypeIdx(productionIdx)
                 .visible("Y")
                 .build();
 
@@ -431,7 +430,6 @@ class AdminProductionJpaServiceTest {
         adminCommentList.add(AdminCommentDTO.builder()
                 .comment("코멘트 테스트")
                 .commentType("production")
-                .commentTypeIdx(productionIdx)
                 .visible("Y")
                 .build());
 
@@ -464,7 +462,6 @@ class AdminProductionJpaServiceTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("production")
-                .commentTypeIdx(productionIdx)
                 .visible("Y")
                 .build();
 

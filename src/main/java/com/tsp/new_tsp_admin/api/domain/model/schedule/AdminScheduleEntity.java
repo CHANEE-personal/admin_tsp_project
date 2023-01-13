@@ -2,14 +2,10 @@ package com.tsp.new_tsp_admin.api.domain.model.schedule;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -17,19 +13,19 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
+@SuperBuilder
 @Entity
 @Getter
 @Setter
-@SuperBuilder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Table(name = "tsp_model_schedule")
 public class AdminScheduleEntity extends NewCommonMappedClass {
     @Transient
@@ -39,10 +35,6 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
     private Long idx;
-
-    @Column(name = "model_idx")
-    @ApiModelProperty(value = "모델 idx", required = true)
-    private Long modelIdx;
 
     @Column(name = "model_schedule")
     @Lob
@@ -60,15 +52,22 @@ public class AdminScheduleEntity extends NewCommonMappedClass {
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "model_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+    @JoinColumn(name = "model_idx", referencedColumnName = "idx", nullable = false)
     private AdminModelEntity adminModelEntity;
+
+    public void update(AdminScheduleEntity adminScheduleEntity) {
+        this.modelSchedule = adminScheduleEntity.modelSchedule;
+        this.modelScheduleTime = adminScheduleEntity.modelScheduleTime;
+        this.visible = adminScheduleEntity.visible;
+    }
 
     public static AdminScheduleDTO toDto(AdminScheduleEntity entity) {
         if (entity == null) return null;
         return AdminScheduleDTO.builder()
                 .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
-                .modelIdx(entity.getModelIdx())
+                .modelIdx(entity.getAdminModelEntity().getIdx())
+                .adminModelDTO(AdminModelEntity.toDto(entity.getAdminModelEntity()))
                 .modelSchedule(entity.getModelSchedule())
                 .modelScheduleTime(entity.getModelScheduleTime())
                 .visible(entity.getVisible())

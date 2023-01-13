@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model.service.schedule;
 
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 
@@ -72,7 +73,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    AdminScheduleDTO insertSchedule(AdminScheduleEntity adminScheduleEntity);
+    AdminScheduleDTO insertSchedule(Long idx, AdminScheduleEntity adminScheduleEntity);
 
     /**
      * <pre>

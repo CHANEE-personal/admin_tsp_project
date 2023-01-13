@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.domain.model.negotiation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -60,4 +61,7 @@ public class AdminNegotiationDTO extends NewCommonDTO {
     @NotEmpty(message = "모델 섭외 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "visible")
     private String visible;
+
+    @ApiModelProperty(value = "adminModelDTO", hidden = true)
+    private AdminModelDTO adminModelDTO;
 }

@@ -3,11 +3,13 @@ package com.tsp.new_tsp_admin.api.domain.notice;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -17,8 +19,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@DynamicUpdate
 @Table(name = "tsp_notice")
 public class AdminNoticeEntity extends NewCommonMappedClass {
     @Transient
@@ -47,6 +50,17 @@ public class AdminNoticeEntity extends NewCommonMappedClass {
 
     @Column(name = "top_fixed")
     private Boolean topFixed;
+
+    public void update(AdminNoticeEntity adminNoticeEntity) {
+        this.title = adminNoticeEntity.title;
+        this.description = adminNoticeEntity.description;
+        this.visible = adminNoticeEntity.visible;
+        this.topFixed = adminNoticeEntity.topFixed;
+    }
+
+    public void toggleTopFixed(Boolean topFixed) {
+        this.topFixed = !topFixed;
+    }
 
     public static AdminNoticeDTO toDto(AdminNoticeEntity entity) {
         if (entity == null) return null;

@@ -64,7 +64,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity);
+    AdminSupportDTO updateSupportModel(Long idx, AdminSupportEntity adminSupportEntity);
 
     /**
      * <pre>
@@ -119,7 +119,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity);
+    EvaluationDTO evaluationSupportModel(Long idx, EvaluationEntity evaluationEntity);
 
     /**
      * <pre>
@@ -130,7 +130,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity);
+    EvaluationDTO updateEvaluation(Long idx, EvaluationEntity evaluationEntity);
 
     /**
      * <pre>

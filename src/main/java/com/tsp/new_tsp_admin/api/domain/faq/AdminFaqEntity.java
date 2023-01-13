@@ -6,6 +6,7 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -21,8 +22,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Table(name = "tsp_notice")
 public class AdminFaqEntity extends NewCommonMappedClass {
     @Transient
@@ -48,6 +50,12 @@ public class AdminFaqEntity extends NewCommonMappedClass {
     @Column(name = "visible")
     @NotEmpty(message = "FAQ 노출 여부 선택은 필수입니다.")
     private String visible;
+
+    public void update(AdminFaqEntity adminFaqEntity) {
+        this.title = adminFaqEntity.title;
+        this.description = adminFaqEntity.description;
+        this.visible = adminFaqEntity.visible;
+    }
 
     public static AdminFaqDTO toDto(AdminFaqEntity entity) {
         if (entity == null) return null;

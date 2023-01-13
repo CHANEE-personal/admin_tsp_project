@@ -2,6 +2,9 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
+import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeDTO;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
@@ -51,10 +55,23 @@ class AdminPortfolioJpaServiceTest {
     private AdminPortFolioDTO adminPortFolioDTO;
     private AdminCommentEntity adminCommentEntity;
     private AdminCommentDTO adminCommentDTO;
+    private NewCodeEntity newCodeEntity;
+    private NewCodeDTO newCodeDTO;
+    private final EntityManager em;
 
     void createPortfolio() {
+        newCodeEntity = NewCodeEntity.builder()
+                .categoryCd(10)
+                .categoryNm("테스트")
+                .cmmType("test")
+                .visible("Y")
+                .build();
+
+        em.persist(newCodeEntity);
+        newCodeDTO = NewCodeEntity.toDto(newCodeEntity);
+
         adminPortFolioEntity = AdminPortFolioEntity.builder()
-                .categoryCd(1)
+                .categoryCd(newCodeDTO.getCategoryCd())
                 .title("포트폴리오 테스트")
                 .description("포트폴리오 테스트")
                 .hashTag("#test")
@@ -399,7 +416,7 @@ class AdminPortfolioJpaServiceTest {
 
         adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
-        adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
+        adminPortfolioJpaService.updatePortfolio(idx, adminPortFolioEntity);
 
         // when
         when(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx())).thenReturn(adminPortFolioDTO);
@@ -435,7 +452,7 @@ class AdminPortfolioJpaServiceTest {
 
         adminPortFolioDTO = AdminPortFolioEntity.toDto(adminPortFolioEntity);
 
-        adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity);
+        adminPortfolioJpaService.updatePortfolio(idx, adminPortFolioEntity);
 
         // when
         given(mockAdminPortfolioJpaService.findOnePortfolio(adminPortFolioEntity.getIdx())).willReturn(adminPortFolioDTO);
@@ -476,7 +493,6 @@ class AdminPortfolioJpaServiceTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("portfolio")
-                .commentTypeIdx(portfolioIdx)
                 .visible("Y")
                 .build();
 
@@ -484,7 +500,6 @@ class AdminPortfolioJpaServiceTest {
         adminCommentList.add(AdminCommentDTO.builder()
                 .comment("코멘트 테스트")
                 .commentType("portfolio")
-                .commentTypeIdx(portfolioIdx)
                 .visible("Y")
                 .build());
 
@@ -519,7 +534,6 @@ class AdminPortfolioJpaServiceTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("portfolio")
-                .commentTypeIdx(portfolioIdx)
                 .visible("Y")
                 .build();
 
@@ -527,7 +541,6 @@ class AdminPortfolioJpaServiceTest {
         adminCommentList.add(AdminCommentDTO.builder()
                 .comment("코멘트 테스트")
                 .commentType("portfolio")
-                .commentTypeIdx(portfolioIdx)
                 .visible("Y")
                 .build());
 

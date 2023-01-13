@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.domain.festival;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -20,7 +21,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Table(name = "tsp_festival")
 public class AdminFestivalEntity extends NewCommonMappedClass {
 
@@ -54,6 +56,14 @@ public class AdminFestivalEntity extends NewCommonMappedClass {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "축제 일정 입력은 필수입니다.")
     private LocalDateTime festivalTime;
+
+    public void update(AdminFestivalEntity adminFestival) {
+        this.festivalTitle = adminFestival.festivalTitle;
+        this.festivalDescription = adminFestival.festivalDescription;
+        this.festivalTime = adminFestival.festivalTime;
+        this.festivalMonth = adminFestival.festivalMonth;;
+        this.festivalDay = adminFestival.festivalDay;
+    }
 
     public static AdminFestivalDTO toDto(AdminFestivalEntity entity) {
         if (entity == null) return null;

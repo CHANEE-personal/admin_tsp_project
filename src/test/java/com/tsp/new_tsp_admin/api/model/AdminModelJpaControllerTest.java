@@ -423,6 +423,7 @@ class AdminModelJpaControllerTest {
                 .size3("34-24-34")
                 .shoes(270)
                 .visible("Y")
+                .newYn("N")
                 .status("active")
                 .build();
 
@@ -490,8 +491,6 @@ class AdminModelJpaControllerTest {
                 .shoes(270)
                 .visible("Y")
                 .status("active")
-                .updater("1")
-                .updateTime(LocalDateTime.now())
                 .build();
 
         mockMvc.perform(put("/api/model/{idx}", newAdminModelEntity.getIdx())
@@ -677,7 +676,6 @@ class AdminModelJpaControllerTest {
                 .modelEngName("test")
                 .modelDescription("test")
                 .modelMainYn("Y")
-                .agencyIdx(adminAgencyEntity.getIdx())
                 .height(170)
                 .size3("34-24-34")
                 .shoes(270)

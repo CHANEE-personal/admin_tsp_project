@@ -8,39 +8,42 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Service
 @RequiredArgsConstructor
 public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
+    private final AdminAgencyJpaQueryRepository adminAgencyJpaQueryRepository;
     private final AdminAgencyJpaRepository adminAgencyJpaRepository;
     private final SaveImage saveImage;
     private final ImageService imageService;
+
+    private AdminAgencyEntity oneAgency(Long idx) {
+        return adminAgencyJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_AGENCY));
+    }
 
     /**
      * <pre>
      * 1. MethodName : findAgencyCount
      * 2. ClassName  : AdminAgencyJpaServiceImpl.java
      * 3. Comment    : 관리자 소속사 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public int findAgencyCount(Map<String, Object> agencyMap) {
-        return adminAgencyJpaRepository.findAgencyCount(agencyMap);
+        return adminAgencyJpaQueryRepository.findAgencyCount(agencyMap);
     }
 
     /**
@@ -48,15 +51,14 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * 1. MethodName : findAgencyList
      * 2. ClassName  : AdminAgencyJpaServiceImpl.java
      * 3. Comment    : 관리자 소속사 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @Override
-    @Cacheable(value = "agency", key = "#agencyMap")
     @Transactional(readOnly = true)
     public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) {
-        return adminAgencyJpaRepository.findAgencyList(agencyMap);
+        return adminAgencyJpaQueryRepository.findAgencyList(agencyMap);
     }
 
     /**
@@ -64,15 +66,14 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * 1. MethodName : findOneAgency
      * 2. ClassName  : AdminAgencyJpaServiceImpl.java
      * 3. Comment    : 관리자 소속사 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @Override
-    @Cacheable(value = "agency", key = "#idx")
     @Transactional(readOnly = true)
     public AdminAgencyDTO findOneAgency(Long idx) {
-        return adminAgencyJpaRepository.findOneAgency(idx);
+        return adminAgencyJpaQueryRepository.findOneAgency(idx);
     }
 
     /**
@@ -80,18 +81,17 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * 1. MethodName : insertAgency
      * 2. ClassName  : AdminAgencyJpaServiceImpl.java
      * 3. Comment    : 관리자 소속사 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @Override
-    @CachePut("agency")
     @Transactional
     public AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity) {
         try {
-            return adminAgencyJpaRepository.insertAgency(adminAgencyEntity);
+            return AdminAgencyEntity.toDto(adminAgencyJpaRepository.save(adminAgencyEntity));
         } catch (Exception e) {
-            throw new TspException(ERROR_AGENCY, e);
+            throw new TspException(ERROR_AGENCY);
         }
     }
 
@@ -100,18 +100,19 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * 1. MethodName : updateAgency
      * 2. ClassName  : AdminAgencyJpaServiceImpl.java
      * 3. Comment    : 관리자 소속사 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     @Override
-    @CachePut(value = "agency", key = "#adminAgencyEntity.idx")
     @Transactional
     public AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) {
         try {
-            return adminAgencyJpaRepository.updateAgency(adminAgencyEntity);
+            Optional.ofNullable(oneAgency(adminAgencyEntity.getIdx()))
+                    .ifPresent(adminAgency -> adminAgency.update(adminAgencyEntity));
+            return AdminAgencyEntity.toDto(adminAgencyEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_AGENCY, e);
+            throw new TspException(ERROR_UPDATE_AGENCY);
         }
     }
 
@@ -125,13 +126,13 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict(value = "agency", key = "#idx")
     @Transactional
     public Long deleteAgency(Long idx) {
         try {
-            return adminAgencyJpaRepository.deleteAgency(idx);
+            adminAgencyJpaRepository.deleteById(idx);
+            return idx;
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_AGENCY, e);
+            throw new TspException(ERROR_DELETE_AGENCY);
         }
     }
 
@@ -149,7 +150,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
         try {
             return saveImage.saveFile(fileName, commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_AGENCY, e);
+            throw new TspException(ERROR_AGENCY);
         }
     }
 
@@ -167,7 +168,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
         try {
             return imageService.deleteImage(commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_IMAGE, e);
+            throw new TspException(ERROR_DELETE_IMAGE);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.tsp.new_tsp_admin.api.model;
 
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.api.model.service.schedule.AdminScheduleJpaService;
@@ -166,9 +166,9 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PostMapping
-    public ResponseEntity<AdminScheduleDTO> insertSchedule(@Valid @RequestBody AdminScheduleEntity adminScheduleEntity) {
-        return ResponseEntity.created(URI.create("")).body(adminScheduleJpaService.insertSchedule(adminScheduleEntity));
+    @PostMapping("/model/{idx}")
+    public ResponseEntity<AdminScheduleDTO> insertSchedule(@PathVariable Long idx, @Valid @RequestBody AdminScheduleEntity adminScheduleEntity) throws Exception {
+        return ResponseEntity.created(URI.create("")).body(adminScheduleJpaService.insertSchedule(idx, adminScheduleEntity));
     }
 
     /**
@@ -189,10 +189,7 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public ResponseEntity<AdminScheduleDTO> updateSchedule(@PathVariable Long idx, @Valid @RequestBody AdminScheduleEntity adminScheduleEntity) {
-        if (adminScheduleJpaService.findOneSchedule(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<AdminScheduleDTO> updateSchedule(@Valid @RequestBody AdminScheduleEntity adminScheduleEntity) {
         return ResponseEntity.ok(adminScheduleJpaService.updateSchedule(adminScheduleEntity));
     }
 
@@ -215,9 +212,6 @@ public class AdminScheduleJpaController {
     })
     @DeleteMapping("/{idx}")
     public ResponseEntity<Long> deleteSchedule(@PathVariable Long idx) {
-        if (adminScheduleJpaService.findOneSchedule(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminScheduleJpaService.deleteSchedule(idx);
         return ResponseEntity.noContent().build();
     }

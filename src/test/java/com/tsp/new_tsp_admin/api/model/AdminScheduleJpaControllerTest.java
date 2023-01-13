@@ -110,7 +110,6 @@ class AdminScheduleJpaControllerTest {
         createUser();
 
         adminScheduleEntity = AdminScheduleEntity.builder()
-                .modelIdx(1L)
                 .modelSchedule("스케줄 테스트")
                 .modelScheduleTime(now())
                 .visible("Y")
@@ -243,7 +242,6 @@ class AdminScheduleJpaControllerTest {
 
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(adminScheduleEntity.getIdx())
-                .modelIdx(1L)
                 .modelSchedule("스케줄 수정")
                 .visible("Y")
                 .build();
@@ -278,7 +276,6 @@ class AdminScheduleJpaControllerTest {
 
         AdminScheduleEntity newAdminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(adminScheduleEntity.getIdx())
-                .modelIdx(1L)
                 .modelSchedule("스케줄 수정")
                 .visible("Y")
                 .updater("1")

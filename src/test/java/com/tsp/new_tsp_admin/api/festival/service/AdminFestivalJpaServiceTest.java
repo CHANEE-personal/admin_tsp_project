@@ -202,7 +202,7 @@ class AdminFestivalJpaServiceTest {
                 .festivalTime(dateTime)
                 .build();
 
-        AdminFestivalDTO updateFestival = adminFestivalJpaService.updateFestival(updateFestivalEntity);
+        AdminFestivalDTO updateFestival = adminFestivalJpaService.updateFestival(adminFestivalEntity.getIdx(), updateFestivalEntity);
         assertThat(updateFestival.getFestivalTitle()).isEqualTo("축제 수정 제목");
         assertThat(updateFestival.getFestivalDescription()).isEqualTo("축제 수정 내용");
     }
@@ -224,8 +224,8 @@ class AdminFestivalJpaServiceTest {
         AdminFestivalDTO updateFestivalDTO = AdminFestivalEntity.toDto(updateFestivalEntity);
 
         // when
-        when(mockAdminFestivalJpaService.updateFestival(updateFestivalEntity)).thenReturn(updateFestivalDTO);
-        AdminFestivalDTO oneFestival = mockAdminFestivalJpaService.updateFestival(updateFestivalEntity);
+        when(mockAdminFestivalJpaService.updateFestival(adminFestivalDTO.getIdx(), updateFestivalEntity)).thenReturn(updateFestivalDTO);
+        AdminFestivalDTO oneFestival = mockAdminFestivalJpaService.updateFestival(adminFestivalDTO.getIdx(), updateFestivalEntity);
 
         // then
         assertThat(oneFestival.getIdx()).isEqualTo(updateFestivalDTO.getIdx());
@@ -233,12 +233,12 @@ class AdminFestivalJpaServiceTest {
         assertThat(oneFestival.getFestivalDescription()).isEqualTo("축제 수정 내용");
 
         // verify
-        verify(mockAdminFestivalJpaService, times(1)).updateFestival(updateFestivalEntity);
-        verify(mockAdminFestivalJpaService, atLeastOnce()).updateFestival(updateFestivalEntity);
+        verify(mockAdminFestivalJpaService, times(1)).updateFestival(adminFestivalDTO.getIdx(), updateFestivalEntity);
+        verify(mockAdminFestivalJpaService, atLeastOnce()).updateFestival(adminFestivalDTO.getIdx(), updateFestivalEntity);
         verifyNoMoreInteractions(mockAdminFestivalJpaService);
 
         InOrder inOrder = inOrder(mockAdminFestivalJpaService);
-        inOrder.verify(mockAdminFestivalJpaService).updateFestival(updateFestivalEntity);
+        inOrder.verify(mockAdminFestivalJpaService).updateFestival(adminFestivalDTO.getIdx(), updateFestivalEntity);
     }
 
     @Test

@@ -61,7 +61,7 @@ public interface AdminFestivalJpaService {
      * 5. 작성일      : 2023. 01. 09.
      * </pre>
      */
-    AdminFestivalDTO updateFestival(AdminFestivalEntity adminFestivalEntity);
+    AdminFestivalDTO updateFestival(Long idx, AdminFestivalEntity adminFestivalEntity);
 
     /**
      * <pre>

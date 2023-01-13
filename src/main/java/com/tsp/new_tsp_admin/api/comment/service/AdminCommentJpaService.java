@@ -43,14 +43,36 @@ public interface AdminCommentJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : insertAdminComment
+     * 1. MethodName : insertModelAdminComment
      * 2. ClassName  : AdminCommentJpaService.java
-     * 3. Comment    : 관리자 코멘트 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 3. Comment    : 관리자 모델 코멘트 등록
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
-    AdminCommentDTO insertAdminComment(AdminCommentEntity adminCommentEntity);
+    AdminCommentDTO insertModelAdminComment(Long idx, AdminCommentEntity adminCommentEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : insertProductionAdminComment
+     * 2. ClassName  : AdminCommentJpaService.java
+     * 3. Comment    : 관리자 프로덕션 코멘트 등록
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
+     * </pre>
+     */
+    AdminCommentDTO insertProductionAdminComment(Long idx, AdminCommentEntity adminCommentEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : insertPortfolioAdminComment
+     * 2. ClassName  : AdminCommentJpaService.java
+     * 3. Comment    : 관리자 포트폴리오 코멘트 등록
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
+     * </pre>
+     */
+    AdminCommentDTO insertPortfolioAdminComment(Long idx, AdminCommentEntity adminCommentEntity);
 
     /**
      * <pre>
@@ -61,7 +83,7 @@ public interface AdminCommentJpaService {
      * 5. 작성일       : 2022. 08. 24.
      * </pre>
      */
-    AdminCommentDTO updateAdminComment(AdminCommentEntity adminCommentEntity);
+    AdminCommentDTO updateAdminComment(Long idx, AdminCommentEntity adminCommentEntity);
 
     /**
      * <pre>

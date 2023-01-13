@@ -6,6 +6,7 @@ import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -25,7 +25,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Table(name = "tsp_agency")
 public class AdminAgencyEntity extends NewCommonMappedClass {
     @Transient
@@ -58,8 +59,23 @@ public class AdminAgencyEntity extends NewCommonMappedClass {
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
     @JsonIgnore
-    @OneToOne(mappedBy = "adminAgencyEntity", cascade = ALL, fetch = LAZY)
+    @OneToOne(mappedBy = "adminAgencyEntity", fetch = LAZY)
     private AdminModelEntity adminModelEntity;
+
+    public void update(AdminAgencyEntity adminAgency) {
+        this.agencyName = adminAgency.agencyName;
+        this.agencyDescription = adminAgency.agencyDescription;
+        this.visible = adminAgency.visible;
+    }
+
+    public void addAgency(AdminModelEntity adminModelEntity) {
+        adminModelEntity.setAdminAgencyEntity(this);
+    }
+
+    public void addImage(CommonImageEntity commonImageEntity) {
+        commonImageEntity.setAdminAgencyEntity(this);
+        this.commonImageEntityList.add(commonImageEntity);
+    }
 
     public static AdminAgencyDTO toDto(AdminAgencyEntity entity) {
         if (entity == null) return null;

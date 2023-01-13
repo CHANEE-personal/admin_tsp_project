@@ -16,6 +16,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
@@ -47,11 +48,14 @@ class AdminNoticeJpaServiceTest {
     private AdminNoticeEntity adminNoticeEntity;
     private AdminNoticeDTO adminNoticeDTO;
 
-    void createProduction() {
+    private final EntityManager em;
+
+    void createNotice() {
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .title("공지사항 테스트")
                 .description("공지사항 테스트")
                 .visible("Y")
+                .topFixed(false)
                 .build();
 
         adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
@@ -60,7 +64,7 @@ class AdminNoticeJpaServiceTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        createProduction();
+        createNotice();
     }
 
     @Test
@@ -372,7 +376,7 @@ class AdminNoticeJpaServiceTest {
 
         AdminNoticeDTO adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
-        adminNoticeJpaService.updateNotice(adminNoticeEntity);
+        adminNoticeJpaService.updateNotice(idx, adminNoticeEntity);
 
         // when
         when(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
@@ -406,7 +410,7 @@ class AdminNoticeJpaServiceTest {
 
         AdminNoticeDTO adminNoticeDTO = AdminNoticeEntity.toDto(adminNoticeEntity);
 
-        adminNoticeJpaService.updateNotice(adminNoticeEntity);
+        adminNoticeJpaService.updateNotice(idx, adminNoticeEntity);
 
         // when
         when(mockAdminNoticeJpaService.findOneNotice(adminNoticeEntity.getIdx())).thenReturn(adminNoticeDTO);
@@ -429,6 +433,8 @@ class AdminNoticeJpaServiceTest {
         Long idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
 
         Boolean fixed = adminNoticeJpaService.toggleFixed(idx);
+        em.flush();
+        em.clear();
 
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(idx)
@@ -463,6 +469,8 @@ class AdminNoticeJpaServiceTest {
         Long idx = adminNoticeJpaService.insertNotice(adminNoticeEntity).getIdx();
 
         Boolean fixed = adminNoticeJpaService.toggleFixed(idx);
+        em.flush();
+        em.clear();
 
         adminNoticeEntity = AdminNoticeEntity.builder()
                 .idx(idx)

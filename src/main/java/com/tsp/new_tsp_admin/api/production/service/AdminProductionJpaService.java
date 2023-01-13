@@ -86,7 +86,7 @@ public interface AdminProductionJpaService {
      * 5. 작성일       : 2022. 05. 16.
      * </pre>
      */
-    AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity);
+    AdminProductionDTO updateProduction(Long idx, AdminProductionEntity adminProductionEntity);
 
     /**
      * <pre>

@@ -1,17 +1,16 @@
 package com.tsp.new_tsp_admin.api.model.service.negotiation;
 
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
@@ -19,7 +18,13 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 @RequiredArgsConstructor
 public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaService {
 
+    private final AdminNegotiationJpaQueryRepository adminNegotiationJpaQueryRepository;
     private final AdminNegotiationJpaRepository adminNegotiationJpaRepository;
+
+    private AdminNegotiationEntity oneNegotiation(Long idx) {
+        return adminNegotiationJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_MODEL_NEGOTIATION));
+    }
 
     /**
      * <pre>
@@ -33,7 +38,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Transactional(readOnly = true)
     public int findNegotiationCount(Map<String, Object> negotiationMap) {
-        return adminNegotiationJpaRepository.findNegotiationCount(negotiationMap);
+        return adminNegotiationJpaQueryRepository.findNegotiationCount(negotiationMap);
     }
 
     /**
@@ -46,10 +51,9 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @Cacheable(value = "model", key = "#negotiationMap")
     @Transactional(readOnly = true)
     public List<AdminNegotiationDTO> findNegotiationList(Map<String, Object> negotiationMap) {
-        return adminNegotiationJpaRepository.findNegotiationList(negotiationMap);
+        return adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap);
     }
 
     /**
@@ -62,10 +66,9 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findOneNegotiation(Long idx) {
-        return adminNegotiationJpaRepository.findOneNegotiation(idx);
+        return adminNegotiationJpaQueryRepository.findOneNegotiation(idx);
     }
 
     /**
@@ -78,10 +81,9 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findPrevOneNegotiation(Long idx) {
-        return adminNegotiationJpaRepository.findPrevOneNegotiation(idx);
+        return adminNegotiationJpaQueryRepository.findPrevOneNegotiation(idx);
     }
 
     /**
@@ -94,10 +96,9 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @Cacheable(value = "negotiation", key = "#idx")
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findNextOneNegotiation(Long idx) {
-        return adminNegotiationJpaRepository.findNextOneNegotiation(idx);
+        return adminNegotiationJpaQueryRepository.findNextOneNegotiation(idx);
     }
 
     /**
@@ -110,14 +111,10 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @CachePut("negotiation")
     @Transactional
-    public AdminNegotiationDTO insertModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
-        try {
-            return adminNegotiationJpaRepository.insertModelNegotiation(adminNegotiationEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_MODEL_NEGOTIATION, e);
-        }
+    public AdminNegotiationDTO insertModelNegotiation(AdminModelEntity adminModelEntity, AdminNegotiationEntity adminNegotiationEntity) {
+        adminModelEntity.addNegotiation(adminNegotiationEntity);
+        return AdminNegotiationEntity.toDto(adminNegotiationJpaRepository.save(adminNegotiationEntity));
     }
 
     /**
@@ -130,13 +127,14 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @CachePut(value = "negotiation", key = "#adminNegotiationEntity.idx")
     @Transactional
-    public AdminNegotiationDTO updateModelNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
+    public AdminNegotiationDTO updateModelNegotiation(Long idx, AdminNegotiationEntity adminNegotiationEntity) {
         try {
-            return adminNegotiationJpaRepository.updateModelNegotiation(adminNegotiationEntity);
+            Optional.ofNullable(oneNegotiation(idx))
+                    .ifPresent(adminNegotiation -> adminNegotiation.update(adminNegotiationEntity));
+            return AdminNegotiationEntity.toDto(adminNegotiationEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_MODEL_NEGOTIATION, e);
+            throw new TspException(ERROR_UPDATE_MODEL_NEGOTIATION);
         }
     }
 
@@ -150,13 +148,13 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      * </pre>
      */
     @Override
-    @CacheEvict(value = "negotiation", key = "#idx")
     @Transactional
     public Long deleteModelNegotiation(Long idx) {
         try {
-            return adminNegotiationJpaRepository.deleteModelNegotiation(idx);
+            adminNegotiationJpaRepository.deleteById(idx);
+            return idx;
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_MODEL_NEGOTIATION, e);
+            throw new TspException(ERROR_DELETE_MODEL_NEGOTIATION);
         }
     }
 }

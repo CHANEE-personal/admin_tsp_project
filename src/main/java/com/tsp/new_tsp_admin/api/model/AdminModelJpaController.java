@@ -226,9 +226,6 @@ public class AdminModelJpaController {
     })
     @DeleteMapping(value = "/{idx}/images")
     public ResponseEntity<Long> deleteModelImage(@PathVariable Long idx) {
-        if (adminModelJpaService.findOneModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminModelJpaService.deleteImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.MODEL).build());
         return ResponseEntity.noContent().build();
     }
@@ -253,10 +250,7 @@ public class AdminModelJpaController {
     })
     @PutMapping("/{idx}")
     public ResponseEntity<AdminModelDTO> updateModel(@PathVariable Long idx, @Valid @RequestBody AdminModelEntity adminModelEntity) {
-        if (adminModelJpaService.findOneModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminModelJpaService.updateModel(adminModelEntity));
+        return ResponseEntity.ok(adminModelJpaService.updateModel(idx, adminModelEntity));
     }
 
     /**
@@ -270,7 +264,7 @@ public class AdminModelJpaController {
      */
     @ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "모델 삭제성공", response = Long.class),
+            @ApiResponse(code = 204, message = "모델 삭제성공", response = void.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
@@ -278,10 +272,7 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public ResponseEntity<Long> deleteModel(@PathVariable Long idx) {
-        if (adminModelJpaService.findOneModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deleteModel(@PathVariable Long idx) {
         adminModelJpaService.deleteModel(idx);
         return ResponseEntity.noContent().build();
     }
@@ -306,10 +297,7 @@ public class AdminModelJpaController {
     })
     @PutMapping("/{idx}/agency")
     public ResponseEntity<AdminModelDTO> updateModelAgency(@PathVariable Long idx, @RequestParam Long agencyIdx) {
-        if (adminModelJpaService.findOneModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminModelJpaService.updateModelAgency(AdminModelEntity.builder().idx(idx).agencyIdx(agencyIdx).build()));
+        return ResponseEntity.ok(adminModelJpaService.updateModelAgency(agencyIdx, AdminModelEntity.builder().idx(idx).build()));
     }
 
     /**
@@ -332,9 +320,6 @@ public class AdminModelJpaController {
     })
     @GetMapping("/{idx}/admin-comment")
     public ResponseEntity<List<AdminCommentDTO>> findModelAdminComment(@PathVariable Long idx) {
-        if (adminModelJpaService.findOneModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminModelJpaService.findModelAdminComment(idx));
     }
 
@@ -358,9 +343,6 @@ public class AdminModelJpaController {
     })
     @PutMapping(value = "/{idx}/toggle-new")
     public ResponseEntity<AdminModelDTO> toggleModelNewYn(@PathVariable Long idx) {
-        if (adminModelJpaService.findOneModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminModelJpaService.toggleModelNewYn(idx));
     }
 
@@ -384,9 +366,6 @@ public class AdminModelJpaController {
     })
     @GetMapping(value = "/{idx}/schedule")
     public ResponseEntity<List<AdminScheduleDTO>> findOneModelSchedule(@PathVariable Long idx) {
-        if (adminModelJpaService.findOneModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminModelJpaService.findOneModelSchedule(idx));
     }
 
@@ -481,9 +460,6 @@ public class AdminModelJpaController {
     })
     @PutMapping("/recommend/{idx}")
     public ResponseEntity<AdminRecommendDTO> updateRecommend(@PathVariable Long idx, @Valid @RequestBody AdminRecommendEntity adminRecommendEntity) {
-        if (adminModelJpaService.findOneRecommend(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminModelJpaService.updateRecommend(adminRecommendEntity));
     }
 
@@ -507,9 +483,6 @@ public class AdminModelJpaController {
     })
     @DeleteMapping("/recommend/{idx}")
     public ResponseEntity<AdminRecommendDTO> deleteRecommend(@PathVariable Long idx) {
-        if (adminModelJpaService.findOneRecommend(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminModelJpaService.deleteRecommend(idx);
         return ResponseEntity.noContent().build();
     }

@@ -82,7 +82,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    AdminFaqDTO updateFaq(AdminFaqEntity adminFaqEntity);
+    AdminFaqDTO updateFaq(Long idx, AdminFaqEntity adminFaqEntity);
 
     /**
      * <pre>

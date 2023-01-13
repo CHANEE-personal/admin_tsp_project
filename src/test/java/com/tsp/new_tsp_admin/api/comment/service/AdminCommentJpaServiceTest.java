@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.comment.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,7 @@ class AdminCommentJpaServiceTest {
     private AdminCommentEntity adminCommentEntity;
     private AdminCommentDTO adminCommentDTO;
     private AdminModelEntity adminModelEntity;
+    private AdminModelDTO adminModelDTO;
 
     void createAdminComment() {
         adminModelEntity = AdminModelEntity.builder()
@@ -64,6 +66,7 @@ class AdminCommentJpaServiceTest {
                 .favoriteCount(1)
                 .viewCount(1)
                 .modelMainYn("Y")
+                .newYn("N")
                 .status("draft")
                 .height(170)
                 .size3("34-24-34")
@@ -71,11 +74,10 @@ class AdminCommentJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Long modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        adminModelDTO = AdminModelEntity.toDto(adminModelJpaRepository.save(adminModelEntity));
+
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
-                .commentType("model")
-                .commentTypeIdx(modelIdx)
                 .visible("Y")
                 .build();
 
@@ -179,29 +181,28 @@ class AdminCommentJpaServiceTest {
                 .idx(1L)
                 .comment("코멘트 테스트")
                 .commentType("model")
-                .commentTypeIdx(adminModelEntity.getIdx())
                 .visible("Y")
                 .build();
 
-        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
+        AdminCommentDTO oneComment = adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
 
         // when
-        when(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx());
+        when(mockAdminCommentJpaService.findOneAdminComment(oneComment.getIdx())).thenReturn(oneComment);
+        AdminCommentDTO commentInfo = mockAdminCommentJpaService.findOneAdminComment(oneComment.getIdx());
 
         // then
         assertThat(commentInfo.getIdx()).isEqualTo(1);
         assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트");
         assertThat(commentInfo.getCommentType()).isEqualTo("model");
-        assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
+        assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelDTO.getIdx());
 
         // verify
-        verify(mockAdminCommentJpaService, times(1)).findOneAdminComment(adminCommentEntity.getIdx());
-        verify(mockAdminCommentJpaService, atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
+        verify(mockAdminCommentJpaService, times(1)).findOneAdminComment(oneComment.getIdx());
+        verify(mockAdminCommentJpaService, atLeastOnce()).findOneAdminComment(oneComment.getIdx());
         verifyNoMoreInteractions(mockAdminCommentJpaService);
 
         InOrder inOrder = inOrder(mockAdminCommentJpaService);
-        inOrder.verify(mockAdminCommentJpaService).findOneAdminComment(adminCommentEntity.getIdx());
+        inOrder.verify(mockAdminCommentJpaService).findOneAdminComment(oneComment.getIdx());
     }
 
     @Test
@@ -212,7 +213,6 @@ class AdminCommentJpaServiceTest {
                 .idx(1L)
                 .comment("코멘트 테스트")
                 .commentType("model")
-                .commentTypeIdx(adminModelEntity.getIdx())
                 .visible("Y")
                 .build();
 
@@ -238,7 +238,7 @@ class AdminCommentJpaServiceTest {
     @DisplayName("어드민코멘트등록Mockito테스트")
     void 어드민코멘트등록Mockito테스트() {
         // given
-        adminCommentJpaService.insertAdminComment(adminCommentEntity);
+        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
 
         // when
         when(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
@@ -259,10 +259,10 @@ class AdminCommentJpaServiceTest {
     }
 
     @Test
-    @DisplayName("FAQ등록BDD테스트")
-    void FAQ등록BDD테스트() {
+    @DisplayName("어드민코멘트등록BDD테스트")
+    void 어드민코멘트등록BDD테스트() {
         // given
-        adminCommentJpaService.insertAdminComment(adminCommentEntity);
+        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
 
         // when
         given(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).willReturn(adminCommentDTO);
@@ -283,19 +283,18 @@ class AdminCommentJpaServiceTest {
     @DisplayName("어드민코멘트수정Mockito테스트")
     void 어드민코멘트수정Mockito테스트() {
         // given
-        Long idx = adminCommentJpaService.insertAdminComment(adminCommentEntity).getIdx();
+        Long idx = adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .idx(idx)
                 .comment("코멘트 테스트1")
                 .commentType("model")
-                .commentTypeIdx(adminModelEntity.getIdx())
                 .visible("Y")
                 .build();
 
         AdminCommentDTO adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
-        adminCommentJpaService.updateAdminComment(adminCommentEntity);
+        adminCommentJpaService.updateAdminComment(idx, adminCommentEntity);
 
         // when
         when(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
@@ -316,22 +315,21 @@ class AdminCommentJpaServiceTest {
     }
 
     @Test
-    @DisplayName("FAQ수정BDD테스트")
-    void FAQ수정BDD테스트() {
+    @DisplayName("어드민코멘트수정BDD테스트")
+    void 어드민코멘트수정BDD테스트() {
         // given
-        Long idx = adminCommentJpaService.insertAdminComment(adminCommentEntity).getIdx();
+        Long idx = adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity).getIdx();
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .idx(idx)
                 .comment("코멘트 테스트1")
                 .commentType("model")
-                .commentTypeIdx(adminModelEntity.getIdx())
                 .visible("Y")
                 .build();
 
         AdminCommentDTO adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
-        adminCommentJpaService.updateAdminComment(adminCommentEntity);
+        adminCommentJpaService.updateAdminComment(idx, adminCommentEntity);
 
         // when
         given(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).willReturn(adminCommentDTO);
@@ -352,7 +350,7 @@ class AdminCommentJpaServiceTest {
     @DisplayName("어드민코멘트삭제테스트")
     void 어드민코멘트삭제테스트() {
         // given
-        adminCommentJpaService.insertAdminComment(adminCommentEntity);
+        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
 
         Long entityIdx = adminCommentEntity.getIdx();
         Long idx = adminCommentJpaService.deleteAdminComment(adminCommentEntity.getIdx());
@@ -365,7 +363,7 @@ class AdminCommentJpaServiceTest {
     @DisplayName("어드민코멘트삭제Mockito테스트")
     void 어드민코멘트삭제Mockito테스트() {
         // given
-        adminCommentJpaService.insertAdminComment(adminCommentEntity);
+        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
         adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when
@@ -388,7 +386,7 @@ class AdminCommentJpaServiceTest {
     @DisplayName("어드민코멘트삭제BDD테스트")
     void 어드민코멘트삭제BDD테스트() {
         // given
-        adminCommentJpaService.insertAdminComment(adminCommentEntity);
+        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
         adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
 
         // when

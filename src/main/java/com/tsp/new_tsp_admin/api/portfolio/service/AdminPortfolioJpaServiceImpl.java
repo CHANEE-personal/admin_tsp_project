@@ -1,25 +1,38 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
+import com.tsp.new_tsp_admin.api.common.service.AdminCommonJpaRepository;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Service
 @RequiredArgsConstructor
 public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
+    private final AdminPortfolioJpaQueryRepository adminPortfolioJpaQueryRepository;
     private final AdminPortfolioJpaRepository adminPortfolioJpaRepository;
+    private final AdminCommonJpaRepository adminCommonJpaRepository;
+
+    private AdminPortFolioEntity onePortfolio(Long idx) {
+        return adminPortfolioJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO));
+    }
+
+    private Optional<NewCodeEntity> oneCommon(Integer categoryCd) {
+        return Optional.ofNullable(adminCommonJpaRepository.findByCategoryCd(categoryCd)
+                .orElseThrow(() -> new TspException(NOT_FOUND_COMMON)));
+    }
 
     /**
      * <pre>
@@ -33,7 +46,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
     @Override
     @Transactional(readOnly = true)
     public int findPortfolioCount(Map<String, Object> portfolioMap) {
-        return adminPortfolioJpaRepository.findPortfolioCount(portfolioMap);
+        return adminPortfolioJpaQueryRepository.findPortfolioCount(portfolioMap);
     }
 
     /**
@@ -46,10 +59,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "portfolio", key = "#portfolioMap")
     @Transactional(readOnly = true)
     public List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) {
-        return adminPortfolioJpaRepository.findPortfolioList(portfolioMap);
+        return adminPortfolioJpaQueryRepository.findPortfolioList(portfolioMap);
     }
 
     /**
@@ -62,10 +74,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
     public AdminPortFolioDTO findOnePortfolio(Long idx) {
-        return adminPortfolioJpaRepository.findOnePortfolio(idx);
+        return adminPortfolioJpaQueryRepository.findOnePortfolio(idx);
     }
 
     /**
@@ -78,10 +89,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
     public AdminPortFolioDTO findPrevOnePortfolio(Long idx) {
-        return adminPortfolioJpaRepository.findPrevOnePortfolio(idx);
+        return adminPortfolioJpaQueryRepository.findPrevOnePortfolio(idx);
     }
 
     /**
@@ -94,10 +104,9 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "portfolio", key = "#idx")
     @Transactional(readOnly = true)
     public AdminPortFolioDTO findNextOnePortfolio(Long idx) {
-        return adminPortfolioJpaRepository.findNextOnePortfolio(idx);
+        return adminPortfolioJpaQueryRepository.findNextOnePortfolio(idx);
     }
 
     /**
@@ -110,13 +119,14 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @CachePut("portfolio")
     @Transactional
     public AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity) {
         try {
-            return adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
+            oneCommon(adminPortFolioEntity.getCategoryCd())
+                    .ifPresent(adminCommon -> adminCommon.addPortfolio(adminPortFolioEntity));
+            return AdminPortFolioEntity.toDto(adminPortfolioJpaRepository.save(adminPortFolioEntity));
         } catch (Exception e) {
-            throw new TspException(ERROR_PORTFOLIO, e);
+            throw new TspException(ERROR_PORTFOLIO);
         }
     }
 
@@ -130,13 +140,14 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "portfolio", key = "#adminPortFolioEntity.idx")
     @Transactional
-    public AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity) {
+    public AdminPortFolioDTO updatePortfolio(Long idx, AdminPortFolioEntity adminPortFolioEntity) {
         try {
-            return adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
+            Optional.ofNullable(onePortfolio(idx))
+                    .ifPresent(adminPortFolio -> adminPortFolio.update(adminPortFolioEntity));
+            return AdminPortFolioEntity.toDto(adminPortFolioEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_PORTFOLIO, e);
+            throw new TspException(ERROR_UPDATE_PORTFOLIO);
         }
     }
 
@@ -150,13 +161,13 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict(value = "portfolio", key = "#idx")
     @Transactional
     public Long deletePortfolio(Long idx) {
         try {
-            return adminPortfolioJpaRepository.deletePortfolio(idx);
+            adminPortfolioJpaRepository.deleteById(idx);
+            return idx;
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_PORTFOLIO, e);
+            throw new TspException(ERROR_DELETE_PORTFOLIO);
         }
     }
 
@@ -173,6 +184,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
     @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) {
-        return adminPortfolioJpaRepository.findPortfolioAdminComment(idx);
+        return adminPortfolioJpaQueryRepository.findPortfolioAdminComment(idx);
     }
 }

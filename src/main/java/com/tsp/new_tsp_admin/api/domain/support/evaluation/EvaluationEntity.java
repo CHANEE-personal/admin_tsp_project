@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -22,8 +23,9 @@ import static javax.persistence.GenerationType.*;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Table(name = "tsp_evaluate")
 public class EvaluationEntity extends NewCommonMappedClass {
     @Transient
@@ -32,10 +34,6 @@ public class EvaluationEntity extends NewCommonMappedClass {
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
     private Long idx;
-
-    @Column(name = "support_idx")
-    @NotNull(message = "지원모델 idx는 필수입니다.")
-    private Long supportIdx;
 
     @Column(name = "visible")
     @NotEmpty(message = "지원모델 노출 여부 선택은 필수입니다.")
@@ -51,12 +49,17 @@ public class EvaluationEntity extends NewCommonMappedClass {
     @JoinColumn(name = "support_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminSupportEntity adminSupportEntity;
 
+    public void update(EvaluationEntity evaluationEntity) {
+        this.visible = evaluationEntity.visible;
+        this.evaluateComment = evaluationEntity.evaluateComment;
+    }
+
     public static EvaluationDTO toDto(EvaluationEntity entity) {
         if (entity == null) return null;
         return EvaluationDTO.builder()
                 .rowNum(entity.getRowNum())
                 .idx(entity.getIdx())
-                .supportIdx(entity.getSupportIdx())
+                .supportIdx(entity.getAdminSupportEntity().getIdx())
                 .evaluateComment(entity.getEvaluateComment())
                 .visible(entity.getVisible())
                 .build();

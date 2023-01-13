@@ -15,11 +15,9 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -141,6 +139,7 @@ class AdminUserJpaServiceTest {
                 .userId("admin03")
                 .password("pass1234")
                 .name("admin03")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
@@ -172,6 +171,7 @@ class AdminUserJpaServiceTest {
                 .userId("admin03")
                 .password("pass1234")
                 .name("admin03")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
@@ -244,6 +244,7 @@ class AdminUserJpaServiceTest {
                 .password("test")
                 .name("test")
                 .email("test@test.com")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
@@ -276,6 +277,7 @@ class AdminUserJpaServiceTest {
                 .password("test")
                 .name("test")
                 .email("test@test.com")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
@@ -305,6 +307,7 @@ class AdminUserJpaServiceTest {
                 .password("test")
                 .name("test")
                 .email("test@test.com")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
@@ -316,10 +319,11 @@ class AdminUserJpaServiceTest {
                 .password("test1")
                 .name("test1")
                 .email("test1@test.com")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
-        adminUserJpaService.updateAdminUser(newAdminUserEntity);
+        adminUserJpaService.updateAdminUser(idx, newAdminUserEntity);
 
         // when
         when(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).thenReturn(newAdminUserEntity);
@@ -348,6 +352,7 @@ class AdminUserJpaServiceTest {
                 .password("test")
                 .name("test")
                 .email("test@test.com")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
@@ -359,10 +364,11 @@ class AdminUserJpaServiceTest {
                 .password("test1")
                 .name("test1")
                 .email("test1@test.com")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
-        adminUserJpaService.updateAdminUser(newAdminUserEntity);
+        adminUserJpaService.updateAdminUser(idx, newAdminUserEntity);
 
         // when
         given(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).willReturn(newAdminUserEntity);
@@ -388,6 +394,7 @@ class AdminUserJpaServiceTest {
                 .password("test")
                 .name("test")
                 .email("test@test.com")
+                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 

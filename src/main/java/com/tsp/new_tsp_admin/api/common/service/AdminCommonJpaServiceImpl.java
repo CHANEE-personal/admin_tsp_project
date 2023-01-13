@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,7 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 @RequiredArgsConstructor
 public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
 
-    private final AdminCommonJpaRepository adminCommonJpaRepository;
+    private final AdminCommonJpaQueryRepository adminCommonJpaQueryRepository;
 
     /**
      * <pre>
@@ -34,7 +33,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @Override
     @Transactional(readOnly = true)
     public int findCommonCodeListCount(Map<String, Object> commonMap) {
-        return adminCommonJpaRepository.findCommonCodeListCount(commonMap);
+        return adminCommonJpaQueryRepository.findCommonCodeListCount(commonMap);
     }
 
     /**
@@ -50,7 +49,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @Cacheable(value = "common", key = "#commonMap")
     @Transactional(readOnly = true)
     public List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap) {
-        return adminCommonJpaRepository.findCommonCodeList(commonMap);
+        return adminCommonJpaQueryRepository.findCommonCodeList(commonMap);
     }
 
     /**
@@ -66,7 +65,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @Cacheable(value = "common", key = "#idx")
     @Transactional(readOnly = true)
     public CommonCodeDTO findOneCommonCode(Long idx) {
-        return adminCommonJpaRepository.findOneCommonCode(idx);
+        return adminCommonJpaQueryRepository.findOneCommonCode(idx);
     }
 
     /**
@@ -83,9 +82,9 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @Transactional
     public CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity) {
         try {
-            return adminCommonJpaRepository.insertCommonCode(commonCodeEntity);
+            return adminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_COMMON, e);
+            throw new TspException(ERROR_COMMON);
         }
     }
 
@@ -103,9 +102,9 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @Transactional
     public CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity) {
         try {
-            return adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
+            return adminCommonJpaQueryRepository.updateCommonCode(commonCodeEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_COMMON, e);
+            throw new TspException(ERROR_UPDATE_COMMON);
         }
     }
 
@@ -123,9 +122,9 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
     @Transactional
     public Long deleteCommonCode(Long idx) {
         try {
-            return adminCommonJpaRepository.deleteCommonCode(idx);
+            return adminCommonJpaQueryRepository.deleteCommonCode(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_COMMON, e);
+            throw new TspException(ERROR_DELETE_COMMON);
         }
     }
 }

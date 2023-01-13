@@ -8,6 +8,7 @@ import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -25,8 +26,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Table(name = "tsp_portfolio")
 public class AdminPortFolioEntity extends NewCommonMappedClass {
     @Transient
@@ -71,17 +73,33 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newPortFolioJpaDTO;
 
+    @Builder.Default
     @JsonIgnore
     @BatchSize(size = 5)
     @Where(clause = "type_name = 'portfolio'")
     @OneToMany(mappedBy = "adminPortfolioEntity")
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
+    @Builder.Default
     @JsonIgnore
     @BatchSize(size = 20)
     @Where(clause = "comment_type = 'portfolio'")
     @OneToMany(mappedBy = "adminPortfolioEntity")
     private List<AdminCommentEntity> commentList = new ArrayList<>();
+
+    public void update(AdminPortFolioEntity adminPortFolioEntity) {
+        this.categoryCd = adminPortFolioEntity.categoryCd;
+        this.title = adminPortFolioEntity.title;
+        this.description = adminPortFolioEntity.description;
+        this.hashTag = adminPortFolioEntity.hashTag;
+        this.videoUrl = adminPortFolioEntity.videoUrl;
+        this.visible = adminPortFolioEntity.visible;
+    }
+
+    public void addComment(AdminCommentEntity adminCommentEntity) {
+        adminCommentEntity.setAdminPortfolioEntity(this);
+        this.commentList.add(adminCommentEntity);
+    }
 
     public static AdminPortFolioDTO toDto(AdminPortFolioEntity entity) {
         if (entity == null) return null;

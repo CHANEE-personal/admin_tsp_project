@@ -371,7 +371,7 @@ class AdminFaqJpaServiceTest {
 
         AdminFaqDTO adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
-        adminFaqJpaService.updateFaq(adminFaqEntity);
+        adminFaqJpaService.updateFaq(idx, adminFaqEntity);
 
         // when
         when(mockAdminFaqJpaService.findOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);
@@ -405,7 +405,7 @@ class AdminFaqJpaServiceTest {
 
         AdminFaqDTO adminFaqDTO = AdminFaqEntity.toDto(adminFaqEntity);
 
-        adminFaqJpaService.updateFaq(adminFaqEntity);
+        adminFaqJpaService.updateFaq(idx, adminFaqEntity);
 
         // when
         when(mockAdminFaqJpaService.findOneFaq(adminFaqEntity.getIdx())).thenReturn(adminFaqDTO);

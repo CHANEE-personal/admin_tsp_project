@@ -4,6 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -23,6 +24,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @TypeDef(name = "json", typeClass = JsonStringType.class)
+@DynamicUpdate
 @Table(name = "tsp_recommend")
 public class AdminRecommendEntity extends NewCommonMappedClass {
     @Transient
@@ -36,6 +38,10 @@ public class AdminRecommendEntity extends NewCommonMappedClass {
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "recommend_keyword")
     private List<String> recommendKeyword = new ArrayList<>();
+
+    public void update(AdminRecommendEntity adminRecommendEntity) {
+        this.recommendKeyword = adminRecommendEntity.recommendKeyword;
+    }
 
     public static AdminRecommendDTO toDto(AdminRecommendEntity entity) {
         if (entity == null) return null;

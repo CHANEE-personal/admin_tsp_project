@@ -2,6 +2,8 @@ package com.tsp.new_tsp_admin.api.domain.model.schedule;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
+import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -46,4 +48,7 @@ public class AdminScheduleDTO extends NewCommonDTO {
     @NotEmpty(message = "모델 스케줄 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "visible")
     private String visible;
+
+    @ApiModelProperty(value = "adminModelDTO", hidden = true)
+    private AdminModelDTO adminModelDTO;
 }

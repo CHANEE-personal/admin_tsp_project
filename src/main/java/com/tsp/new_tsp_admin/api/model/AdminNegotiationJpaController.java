@@ -1,6 +1,6 @@
 package com.tsp.new_tsp_admin.api.model;
 
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.api.model.service.negotiation.AdminNegotiationJpaService;
@@ -172,8 +172,8 @@ public class AdminNegotiationJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public ResponseEntity<AdminNegotiationDTO> insertModelNegotiation(@Valid @RequestBody AdminNegotiationEntity adminNegotiationEntity) {
-        return ResponseEntity.created(URI.create("")).body(adminNegotiationJpaService.insertModelNegotiation(adminNegotiationEntity));
+    public ResponseEntity<AdminNegotiationDTO> insertModelNegotiation(@Valid @RequestBody AdminModelEntity adminModelEntity, @Valid @RequestBody AdminNegotiationEntity adminNegotiationEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminNegotiationJpaService.insertModelNegotiation(adminModelEntity, adminNegotiationEntity));
     }
 
     /**
@@ -196,10 +196,7 @@ public class AdminNegotiationJpaController {
     })
     @PutMapping("/{idx}")
     public ResponseEntity<AdminNegotiationDTO> updateModelNegotiation(@PathVariable Long idx, @Valid @RequestBody AdminNegotiationEntity adminNegotiationEntity) {
-        if (adminNegotiationJpaService.findOneNegotiation(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminNegotiationJpaService.updateModelNegotiation(adminNegotiationEntity));
+        return ResponseEntity.ok(adminNegotiationJpaService.updateModelNegotiation(idx, adminNegotiationEntity));
     }
 
     /**
@@ -222,9 +219,6 @@ public class AdminNegotiationJpaController {
     })
     @DeleteMapping("/{idx}")
     public ResponseEntity<Long> deleteModelNegotiation(@PathVariable Long idx) {
-        if (adminNegotiationJpaService.findOneNegotiation(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminNegotiationJpaService.deleteModelNegotiation(idx);
         return ResponseEntity.noContent().build();
     }

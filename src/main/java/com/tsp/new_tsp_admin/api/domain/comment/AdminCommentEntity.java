@@ -9,6 +9,8 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -24,8 +26,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="comment_type")
 @Table(name = "tsp_admin_comment")
 public class AdminCommentEntity extends NewCommonMappedClass {
     @Transient
@@ -55,23 +60,28 @@ public class AdminCommentEntity extends NewCommonMappedClass {
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+    @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", nullable = false)
     private AdminUserEntity adminUserEntity;
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+    @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", nullable = false)
     private AdminModelEntity adminModelEntity;
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+    @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", nullable = false)
     private AdminProductionEntity adminProductionEntity;
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+    @JoinColumn(name = "comment_type_idx", referencedColumnName = "idx", nullable = false)
     private AdminPortFolioEntity adminPortfolioEntity;
+
+    public void update(AdminCommentEntity adminCommentEntity) {
+        this.comment = adminCommentEntity.comment;
+        this.visible = adminCommentEntity.visible;
+    }
 
     public static AdminCommentDTO toDto(AdminCommentEntity entity) {
         if (entity == null) return null;
@@ -79,7 +89,6 @@ public class AdminCommentEntity extends NewCommonMappedClass {
                 .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
                 .comment(entity.getComment())
-                .commentTypeIdx(entity.getCommentTypeIdx())
                 .commentType(entity.getCommentType())
                 .visible(entity.getVisible())
                 .creator(entity.getCreator())

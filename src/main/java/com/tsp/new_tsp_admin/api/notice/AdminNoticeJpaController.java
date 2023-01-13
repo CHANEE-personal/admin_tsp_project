@@ -186,10 +186,7 @@ public class AdminNoticeJpaController {
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<AdminNoticeDTO> updateNotice(@PathVariable Long idx, @Valid @RequestBody AdminNoticeEntity adminNoticeEntity) {
-        if (adminNoticeJpaService.findOneNotice(idx) == null) {
-            ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminNoticeJpaService.updateNotice(adminNoticeEntity));
+        return ResponseEntity.ok(adminNoticeJpaService.updateNotice(idx, adminNoticeEntity));
     }
 
     /**
@@ -212,9 +209,6 @@ public class AdminNoticeJpaController {
     })
     @PutMapping(value = "/{idx}/fixed")
     public ResponseEntity<Boolean> toggleFixed(@PathVariable Long idx) {
-        if (adminNoticeJpaService.findOneNotice(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminNoticeJpaService.toggleFixed(idx));
     }
 
@@ -238,9 +232,6 @@ public class AdminNoticeJpaController {
     })
     @DeleteMapping(value = "/{idx}")
     public ResponseEntity<Long> deleteNotice(@PathVariable Long idx) {
-        if (adminNoticeJpaService.findOneNotice(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminNoticeJpaService.deleteNotice(idx);
         return ResponseEntity.noContent().build();
     }

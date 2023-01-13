@@ -23,6 +23,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static java.time.LocalDateTime.now;
@@ -63,6 +64,7 @@ class AdminSupportJpaServiceTest {
                 .supportPhone("010-9466-2702")
                 .supportSize3("31-24-31")
                 .supportInstagram("https://instagram.com")
+                .supportTime(LocalDateTime.now())
                 .visible("Y")
                 .build();
 
@@ -219,8 +221,9 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원모델 수정 Mockito 테스트")
     void 지원모델수정Mockito테스트() {
         // given
+        Long idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
         adminSupportEntity = AdminSupportEntity.builder()
-                .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
+                .idx(idx)
                 .supportName("test")
                 .supportPhone("010-9466-2702")
                 .supportHeight(170)
@@ -230,7 +233,7 @@ class AdminSupportJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminSupportJpaService.updateSupportModel(adminSupportEntity);
+        adminSupportJpaService.updateSupportModel(idx, adminSupportEntity);
         adminSupportDTO = AdminSupportEntity.toDto(adminSupportEntity);
 
         // when
@@ -254,8 +257,9 @@ class AdminSupportJpaServiceTest {
     @DisplayName("지원모델 수정 BDD 테스트")
     void 지원모델수정BDD테스트() {
         // given
+        Long idx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
         adminSupportEntity = AdminSupportEntity.builder()
-                .idx(adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx())
+                .idx(idx)
                 .supportName("test")
                 .supportPhone("010-9466-2702")
                 .supportHeight(170)
@@ -265,7 +269,7 @@ class AdminSupportJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminSupportJpaService.updateSupportModel(adminSupportEntity);
+        adminSupportJpaService.updateSupportModel(idx, adminSupportEntity);
         adminSupportDTO = AdminSupportEntity.toDto(adminSupportEntity);
 
         // when
@@ -354,7 +358,7 @@ class AdminSupportJpaServiceTest {
     void 지원모델평가상세조회Mockito테스트() {
         // given
         evaluationEntity = EvaluationEntity.builder()
-                .idx(1L).supportIdx(adminSupportEntity.getIdx())
+                .idx(1L).adminSupportEntity(adminSupportEntity)
                 .evaluateComment("합격").visible("Y").build();
 
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
@@ -382,7 +386,7 @@ class AdminSupportJpaServiceTest {
     void 지원모델평가상세조회BDD테스트() {
         // given
         evaluationEntity = EvaluationEntity.builder()
-                .idx(1L).supportIdx(adminSupportEntity.getIdx())
+                .idx(1L).adminSupportEntity(adminSupportEntity)
                 .evaluateComment("합격").visible("Y").build();
 
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
@@ -409,12 +413,11 @@ class AdminSupportJpaServiceTest {
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
-                .supportIdx(supportIdx)
                 .evaluateComment("합격")
                 .visible("Y")
                 .build();
 
-        adminSupportJpaService.evaluationSupportModel(evaluationEntity);
+        adminSupportJpaService.evaluationSupportModel(supportIdx, evaluationEntity);
 
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
@@ -442,12 +445,11 @@ class AdminSupportJpaServiceTest {
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
-                .supportIdx(supportIdx)
                 .evaluateComment("합격")
                 .visible("Y")
                 .build();
 
-        adminSupportJpaService.evaluationSupportModel(evaluationEntity);
+        adminSupportJpaService.evaluationSupportModel(supportIdx, evaluationEntity);
 
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
@@ -472,11 +474,10 @@ class AdminSupportJpaServiceTest {
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
-                .supportIdx(supportIdx)
                 .evaluateComment("합격").visible("Y").build();
 
         // 지원모델 평가 저장
-        adminSupportJpaService.evaluationSupportModel(evaluationEntity);
+        adminSupportJpaService.evaluationSupportModel(supportIdx, evaluationEntity);
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity.getIdx())).willReturn(evaluationDTO);
@@ -501,11 +502,10 @@ class AdminSupportJpaServiceTest {
         Long supportIdx = adminSupportJpaService.insertSupportModel(adminSupportEntity).getIdx();
 
         evaluationEntity = EvaluationEntity.builder()
-                .supportIdx(supportIdx)
                 .evaluateComment("합격").visible("Y").build();
 
         // 지원모델 평가 저장
-        adminSupportJpaService.evaluationSupportModel(evaluationEntity);
+        adminSupportJpaService.evaluationSupportModel(supportIdx, evaluationEntity);
         evaluationDTO = EvaluationEntity.toDto(evaluationEntity);
 
         given(mockAdminSupportJpaService.findOneEvaluation(evaluationEntity.getIdx())).willReturn(evaluationDTO);
@@ -576,6 +576,7 @@ class AdminSupportJpaServiceTest {
                 .supportMessage("조찬희")
                 .supportPhone("010-9466-2702")
                 .supportSize3("31-24-31")
+                .supportTime(LocalDateTime.now())
                 .passYn("Y")
                 .passTime(now())
                 .visible("Y")
@@ -586,7 +587,6 @@ class AdminSupportJpaServiceTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("support")
-                .commentTypeIdx(supportIdx)
                 .visible("Y")
                 .build();
 
@@ -631,7 +631,6 @@ class AdminSupportJpaServiceTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("support")
-                .commentTypeIdx(supportIdx)
                 .visible("Y")
                 .build();
 

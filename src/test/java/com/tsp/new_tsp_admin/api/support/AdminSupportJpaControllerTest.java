@@ -36,6 +36,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -119,6 +120,7 @@ class AdminSupportJpaControllerTest {
 				.supportPhone("010-1234-4567")
 				.supportSize3("31-24-31")
 				.supportInstagram("https://instagram.com")
+				.supportTime(LocalDateTime.now())
 				.visible("Y")
 				.build();
 	}
@@ -308,7 +310,7 @@ class AdminSupportJpaControllerTest {
 		em.persist(adminSupportEntity);
 
 		evaluationEntity = EvaluationEntity.builder()
-						.supportIdx(adminSupportEntity.getIdx())
+				.adminSupportEntity(adminSupportEntity)
 						.evaluateComment("합격")
 						.visible("Y").build();
 
@@ -343,7 +345,7 @@ class AdminSupportJpaControllerTest {
 
 		// 지원모델 평가 등록
 		evaluationEntity = EvaluationEntity.builder()
-				.supportIdx(adminSupportEntity.getIdx())
+				.adminSupportEntity(adminSupportEntity)
 				.evaluateComment("합격")
 				.visible("Y").build();
 
@@ -351,7 +353,7 @@ class AdminSupportJpaControllerTest {
 
 		evaluationEntity = EvaluationEntity.builder()
 						.idx(evaluationEntity.getIdx())
-						.supportIdx(adminSupportEntity.getIdx())
+						.adminSupportEntity(adminSupportEntity)
 						.evaluateComment("불합격")
 						.visible("Y")
 						.build();
@@ -387,7 +389,7 @@ class AdminSupportJpaControllerTest {
 
 		// 지원모델 평가 등록
 		evaluationEntity = EvaluationEntity.builder()
-				.supportIdx(adminSupportEntity.getIdx())
+				.adminSupportEntity(adminSupportEntity)
 				.evaluateComment("합격")
 				.visible("Y").build();
 

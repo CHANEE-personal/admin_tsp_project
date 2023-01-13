@@ -82,9 +82,6 @@ class AdminScheduleJpaServiceTest {
                 .newYn("N")
                 .favoriteCount(1)
                 .viewCount(1)
-                .agencyIdx(adminAgencyEntity.getIdx())
-                .adminAgencyEntity(adminAgencyEntity)
-                .careerList(careerList)
                 .height(170)
                 .size3("34-24-34")
                 .shoes(270)
@@ -96,13 +93,11 @@ class AdminScheduleJpaServiceTest {
         adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
 
         adminScheduleEntity = AdminScheduleEntity.builder()
-                .modelIdx(adminModelEntity.getIdx())
+                .adminModelEntity(adminModelEntity)
                 .modelSchedule("스케줄 테스트")
                 .modelScheduleTime(now())
                 .visible("Y")
                 .build();
-
-        adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
     }
 
     @BeforeEach
@@ -207,7 +202,6 @@ class AdminScheduleJpaServiceTest {
         // given
         AdminScheduleEntity adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(1L)
-                .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
                 .modelScheduleTime(now())
                 .visible("Y")
@@ -240,7 +234,6 @@ class AdminScheduleJpaServiceTest {
         // given
         AdminScheduleEntity adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(1L)
-                .modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트")
                 .modelScheduleTime(now())
                 .visible("Y")
@@ -373,44 +366,44 @@ class AdminScheduleJpaServiceTest {
     @DisplayName("모델스케줄등록Mockito테스트")
     void 모델스케줄등록Mockito테스트() {
         // given
-        adminScheduleJpaService.insertSchedule(adminScheduleEntity);
+        AdminScheduleDTO oneSchedule = adminScheduleJpaService.insertSchedule(adminModelDTO.getIdx(), adminScheduleEntity);
 
         // when
-        when(mockAdminScheduleJpaService.findOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaService.findOneSchedule(adminScheduleEntity.getIdx());
+        when(mockAdminScheduleJpaService.findOneSchedule(oneSchedule.getIdx())).thenReturn(oneSchedule);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaService.findOneSchedule(oneSchedule.getIdx());
 
         // then
-        assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
+        assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelDTO.getIdx());
         assertThat(scheduleInfo.getModelSchedule()).isEqualTo("스케줄 테스트");
         assertThat(scheduleInfo.getModelScheduleTime()).isNotNull();
 
         // verify
-        verify(mockAdminScheduleJpaService, times(1)).findOneSchedule(adminScheduleEntity.getIdx());
-        verify(mockAdminScheduleJpaService, atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
+        verify(mockAdminScheduleJpaService, times(1)).findOneSchedule(oneSchedule.getIdx());
+        verify(mockAdminScheduleJpaService, atLeastOnce()).findOneSchedule(oneSchedule.getIdx());
         verifyNoMoreInteractions(mockAdminScheduleJpaService);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaService);
-        inOrder.verify(mockAdminScheduleJpaService).findOneSchedule(adminScheduleEntity.getIdx());
+        inOrder.verify(mockAdminScheduleJpaService).findOneSchedule(oneSchedule.getIdx());
     }
 
     @Test
     @DisplayName("모델스케줄등록BDD테스트")
     void 모델스케줄등록BDD테스트() {
         // given
-        adminScheduleJpaService.insertSchedule(adminScheduleEntity);
+        AdminScheduleDTO oneSchedule = adminScheduleJpaService.insertSchedule(adminModelDTO.getIdx(), adminScheduleEntity);
 
         // when
-        given(mockAdminScheduleJpaService.findOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaService.findOneSchedule(adminScheduleEntity.getIdx());
+        given(mockAdminScheduleJpaService.findOneSchedule(oneSchedule.getIdx())).willReturn(oneSchedule);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaService.findOneSchedule(oneSchedule.getIdx());
 
         // then
-        assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
+        assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelDTO.getIdx());
         assertThat(scheduleInfo.getModelSchedule()).isEqualTo("스케줄 테스트");
         assertThat(scheduleInfo.getModelScheduleTime()).isNotNull();
 
         // verify
-        then(mockAdminScheduleJpaService).should(times(1)).findOneSchedule(adminScheduleEntity.getIdx());
-        then(mockAdminScheduleJpaService).should(atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
+        then(mockAdminScheduleJpaService).should(times(1)).findOneSchedule(oneSchedule.getIdx());
+        then(mockAdminScheduleJpaService).should(atLeastOnce()).findOneSchedule(oneSchedule.getIdx());
         then(mockAdminScheduleJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -418,66 +411,70 @@ class AdminScheduleJpaServiceTest {
     @DisplayName("모델스케줄수정Mockito테스트")
     void 모델스케줄수정Mockito테스트() {
         // given
-        Long idx = adminScheduleJpaService.insertSchedule(adminScheduleEntity).getIdx();
+        em.persist(adminModelEntity);
+        AdminScheduleDTO insertScheduleDTO = adminScheduleJpaService.insertSchedule(adminModelDTO.getIdx(), adminScheduleEntity);
 
         adminScheduleEntity = AdminScheduleEntity.builder()
-                .idx(idx)
-                .modelIdx(adminModelEntity.getIdx())
+                .idx(insertScheduleDTO.getIdx())
                 .modelSchedule("스케줄 수정 테스트")
-                .modelScheduleTime(now())
+                .adminModelEntity(adminModelEntity)
+                .modelScheduleTime(insertScheduleDTO.getModelScheduleTime())
                 .visible("Y")
                 .build();
 
-        AdminScheduleDTO adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
+        AdminScheduleDTO updateScheduleDTO = adminScheduleJpaService.updateSchedule(adminScheduleEntity);
 
-        adminScheduleJpaService.updateSchedule(adminScheduleEntity);
+        em.flush();
+        em.clear();
 
         // when
-        when(mockAdminScheduleJpaService.findOneSchedule(adminScheduleEntity.getIdx())).thenReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaService.findOneSchedule(adminScheduleEntity.getIdx());
+        when(mockAdminScheduleJpaService.findOneSchedule(updateScheduleDTO.getIdx())).thenReturn(updateScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaService.findOneSchedule(updateScheduleDTO.getIdx());
 
         // then
-        assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
+        assertThat(scheduleInfo.getModelIdx()).isEqualTo(updateScheduleDTO.getModelIdx());
         assertThat(scheduleInfo.getModelSchedule()).isEqualTo("스케줄 수정 테스트");
 
         // verify
-        verify(mockAdminScheduleJpaService, times(1)).findOneSchedule(adminScheduleEntity.getIdx());
-        verify(mockAdminScheduleJpaService, atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
+        verify(mockAdminScheduleJpaService, times(1)).findOneSchedule(updateScheduleDTO.getIdx());
+        verify(mockAdminScheduleJpaService, atLeastOnce()).findOneSchedule(updateScheduleDTO.getIdx());
         verifyNoMoreInteractions(mockAdminScheduleJpaService);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaService);
-        inOrder.verify(mockAdminScheduleJpaService).findOneSchedule(adminScheduleEntity.getIdx());
+        inOrder.verify(mockAdminScheduleJpaService).findOneSchedule(updateScheduleDTO.getIdx());
     }
 
     @Test
     @DisplayName("모델스케줄수정BDD테스트")
     void 모델스케줄수정BDD테스트() {
         // given
-        Long idx = adminScheduleJpaService.insertSchedule(adminScheduleEntity).getIdx();
+        em.persist(adminModelEntity);
+        AdminScheduleDTO insertScheduleDTO = adminScheduleJpaService.insertSchedule(adminModelDTO.getIdx(), adminScheduleEntity);
 
         adminScheduleEntity = AdminScheduleEntity.builder()
-                .idx(idx)
-                .modelIdx(adminModelEntity.getIdx())
+                .idx(insertScheduleDTO.getIdx())
                 .modelSchedule("스케줄 수정 테스트")
-                .modelScheduleTime(now())
+                .adminModelEntity(adminModelEntity)
+                .modelScheduleTime(insertScheduleDTO.getModelScheduleTime())
                 .visible("Y")
                 .build();
 
-        AdminScheduleDTO adminScheduleDTO = AdminScheduleEntity.toDto(adminScheduleEntity);
+        AdminScheduleDTO updateScheduleDTO = adminScheduleJpaService.updateSchedule(adminScheduleEntity);
 
-        adminScheduleJpaService.updateSchedule(adminScheduleEntity);
+        em.flush();
+        em.clear();
 
         // when
-        given(mockAdminScheduleJpaService.findOneSchedule(adminScheduleEntity.getIdx())).willReturn(adminScheduleDTO);
-        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaService.findOneSchedule(adminScheduleEntity.getIdx());
+        given(mockAdminScheduleJpaService.findOneSchedule(updateScheduleDTO.getIdx())).willReturn(updateScheduleDTO);
+        AdminScheduleDTO scheduleInfo = mockAdminScheduleJpaService.findOneSchedule(updateScheduleDTO.getIdx());
 
         // then
-        assertThat(scheduleInfo.getModelIdx()).isEqualTo(adminModelEntity.getIdx());
+        assertThat(scheduleInfo.getModelIdx()).isEqualTo(updateScheduleDTO.getModelIdx());
         assertThat(scheduleInfo.getModelSchedule()).isEqualTo("스케줄 수정 테스트");
 
         // verify
-        then(mockAdminScheduleJpaService).should(times(1)).findOneSchedule(adminScheduleEntity.getIdx());
-        then(mockAdminScheduleJpaService).should(atLeastOnce()).findOneSchedule(adminScheduleEntity.getIdx());
+        then(mockAdminScheduleJpaService).should(times(1)).findOneSchedule(updateScheduleDTO.getIdx());
+        then(mockAdminScheduleJpaService).should(atLeastOnce()).findOneSchedule(updateScheduleDTO.getIdx());
         then(mockAdminScheduleJpaService).shouldHaveNoMoreInteractions();
     }
 

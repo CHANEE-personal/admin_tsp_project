@@ -182,7 +182,7 @@ public class JwtUtil implements Serializable {
             UserDetails userDetails = myUserDetailsService.loadUserByUsername(adminUserJpaService.findOneUserByToken(token));
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER, e);
+            throw new TspException(NOT_FOUND_USER);
         }
     }
 

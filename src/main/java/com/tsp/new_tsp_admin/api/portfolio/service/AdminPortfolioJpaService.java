@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 
@@ -84,7 +85,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 18.
      * </pre>
      */
-    AdminPortFolioDTO updatePortfolio(AdminPortFolioEntity adminPortFolioEntity);
+    AdminPortFolioDTO updatePortfolio(Long idx, AdminPortFolioEntity adminPortFolioEntity);
 
     /**
      * <pre>
