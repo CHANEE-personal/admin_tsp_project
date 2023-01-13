@@ -186,10 +186,7 @@ public class AdminFaqJpaController {
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<AdminFaqDTO> updateFaq(@PathVariable Long idx, @Valid @RequestBody AdminFaqEntity adminFaqEntity) {
-        if (adminFaqJpaService.findOneFaq(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminFaqJpaService.updateFaq(adminFaqEntity));
+        return ResponseEntity.ok(adminFaqJpaService.updateFaq(idx, adminFaqEntity));
     }
 
     /**
@@ -212,9 +209,6 @@ public class AdminFaqJpaController {
     })
     @DeleteMapping(value = "/{idx}")
     public ResponseEntity<Long> deleteFaq(@PathVariable Long idx) {
-        if (adminFaqJpaService.findOneFaq(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminFaqJpaService.deleteFaq(idx);
         return ResponseEntity.noContent().build();
     }

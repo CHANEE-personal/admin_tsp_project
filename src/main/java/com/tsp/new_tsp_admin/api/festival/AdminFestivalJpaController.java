@@ -140,10 +140,7 @@ public class AdminFestivalJpaController {
     })
     @PutMapping("/{idx}")
     public ResponseEntity<AdminFestivalDTO> updateFestival(@PathVariable Long idx, @Valid @RequestBody AdminFestivalEntity adminFestivalEntity) {
-        if (adminFestivalJpaService.findOneFestival(idx) == null) {
-            ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminFestivalJpaService.updateFestival(adminFestivalEntity));
+        return ResponseEntity.ok(adminFestivalJpaService.updateFestival(idx, adminFestivalEntity));
     }
 
     /**
@@ -166,9 +163,6 @@ public class AdminFestivalJpaController {
     })
     @DeleteMapping("/{idx}")
     public ResponseEntity<Long> deleteFestival(@PathVariable Long idx) {
-        if (adminFestivalJpaService.findOneFestival(idx) == null) {
-            ResponseEntity.notFound().build();
-        }
         adminFestivalJpaService.deleteFestival(idx);
         return ResponseEntity.noContent().build();
     }

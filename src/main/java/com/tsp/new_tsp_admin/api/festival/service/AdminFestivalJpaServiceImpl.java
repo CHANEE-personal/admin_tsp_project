@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
@@ -15,7 +16,13 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 @RequiredArgsConstructor
 public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
 
+    private final AdminFestivalJpaQueryRepository adminFestivalJpaQueryRepository;
     private final AdminFestivalJpaRepository adminFestivalJpaRepository;
+
+    private AdminFestivalEntity oneFestival(Long idx) {
+        return adminFestivalJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_FESTIVAL));
+    }
 
     /**
      * <pre>
@@ -27,7 +34,7 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
      * </pre>
      */
     public int findFestivalCount(Map<String, Object> festivalMap) {
-        return adminFestivalJpaRepository.findFestivalCount(festivalMap);
+        return adminFestivalJpaQueryRepository.findFestivalCount(festivalMap);
     }
 
     /**
@@ -40,7 +47,7 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
      * </pre>
      */
     public List<AdminFestivalDTO> findFestivalList(Map<String, Object> festivalMap) {
-        return adminFestivalJpaRepository.findFestivalList(festivalMap);
+        return adminFestivalJpaQueryRepository.findFestivalList(festivalMap);
     }
 
     /**
@@ -53,7 +60,7 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
      * </pre>
      */
     public AdminFestivalDTO findOneFestival(Long idx) {
-        return adminFestivalJpaRepository.findOneFestival(idx);
+        return AdminFestivalEntity.toDto(oneFestival(idx));
     }
 
     /**
@@ -67,7 +74,7 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
      */
     public AdminFestivalDTO insertFestival(AdminFestivalEntity adminFestivalEntity) {
         try {
-            return adminFestivalJpaRepository.changeFestival(adminFestivalEntity);
+            return AdminFestivalEntity.toDto(adminFestivalJpaRepository.save(adminFestivalEntity));
         } catch (Exception e) {
             throw new TspException(ERROR_FESTIVAL);
         }
@@ -82,9 +89,11 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
      * 5. 작성일      : 2023. 01. 09.
      * </pre>
      */
-    public AdminFestivalDTO updateFestival(AdminFestivalEntity adminFestivalEntity) {
+    public AdminFestivalDTO updateFestival(Long idx, AdminFestivalEntity adminFestivalEntity) {
         try {
-            return adminFestivalJpaRepository.changeFestival(adminFestivalEntity);
+            Optional.ofNullable(oneFestival(idx))
+                    .ifPresent(adminFestival -> adminFestival.update(adminFestivalEntity));
+            return AdminFestivalEntity.toDto(adminFestivalEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_FESTIVAL);
         }
@@ -101,7 +110,8 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
      */
     public Long deleteFestival(Long idx) {
         try {
-            return adminFestivalJpaRepository.deleteFestival(idx);
+            adminFestivalJpaRepository.deleteById(idx);
+            return idx;
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_FESTIVAL);
         }
