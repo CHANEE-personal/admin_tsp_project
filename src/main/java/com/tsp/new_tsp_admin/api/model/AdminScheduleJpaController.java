@@ -166,9 +166,9 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PostMapping
-    public ResponseEntity<AdminScheduleDTO> insertSchedule(@Valid @RequestBody AdminModelEntity adminModelEntity, @Valid @RequestBody AdminScheduleEntity adminScheduleEntity) throws Exception {
-        return ResponseEntity.created(URI.create("")).body(adminScheduleJpaService.insertSchedule(adminModelEntity, adminScheduleEntity));
+    @PostMapping("/model/{idx}")
+    public ResponseEntity<AdminScheduleDTO> insertSchedule(@PathVariable Long idx, @Valid @RequestBody AdminScheduleEntity adminScheduleEntity) throws Exception {
+        return ResponseEntity.created(URI.create("")).body(adminScheduleJpaService.insertSchedule(idx, adminScheduleEntity));
     }
 
     /**

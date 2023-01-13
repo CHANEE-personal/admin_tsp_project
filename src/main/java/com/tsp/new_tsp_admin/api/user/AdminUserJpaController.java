@@ -214,11 +214,8 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public ResponseEntity<AdminUserDTO> updateAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) {
-        if (adminUserJpaService.findOneUser(adminUserEntity.getUserId()) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminUserJpaService.updateAdminUser(adminUserEntity));
+    public ResponseEntity<AdminUserDTO> updateAdminUser(@PathVariable Long idx, @Valid @RequestBody AdminUserEntity adminUserEntity) {
+        return ResponseEntity.ok(adminUserJpaService.updateAdminUser(idx, adminUserEntity));
     }
 
     /**

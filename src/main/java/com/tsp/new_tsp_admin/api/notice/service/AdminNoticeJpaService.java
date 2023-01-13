@@ -82,7 +82,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    AdminNoticeDTO updateNotice(AdminNoticeEntity adminNoticeEntity);
+    AdminNoticeDTO updateNotice(Long idx, AdminNoticeEntity adminNoticeEntity);
 
     /**
      * <pre>

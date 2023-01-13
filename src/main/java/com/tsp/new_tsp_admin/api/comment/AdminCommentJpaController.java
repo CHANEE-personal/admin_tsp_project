@@ -99,25 +99,71 @@ public class AdminCommentJpaController {
 
     /**
      * <pre>
-     * 1. MethodName : insertAdminComment
+     * 1. MethodName : insertModelAdminComment
      * 2. ClassName  : AdminCommentJpaController.java
-     * 3. Comment    : 관리자 코멘트 저장
+     * 3. Comment    : 관리자 모델 코멘트 저장
      * 4. 작성자      : CHO
      * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
-    @ApiOperation(value = "어드민 코멘트 저장", notes = "어드민 코멘트를 저장한다.")
+    @ApiOperation(value = "모델 어드민 코멘트 저장", notes = "어드민 코멘트를 저장한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "어드민 코멘트 등록성공", response = AdminCommentDTO.class),
+            @ApiResponse(code = 201, message = "모델 어드민 코멘트 등록성공", response = AdminCommentDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
             @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<AdminCommentDTO> insertAdminComment(@Valid @RequestBody AdminCommentEntity adminCommentEntity) {
-        return ResponseEntity.created(URI.create("")).body(adminCommentJpaService.insertAdminComment(adminCommentEntity));
+    @PostMapping(value = "/model/{idx}", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AdminCommentDTO> insertModelAdminComment(Long idx, @Valid @RequestBody AdminCommentEntity adminCommentEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminCommentJpaService.insertModelAdminComment(idx, adminCommentEntity));
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertProductionAdminComment
+     * 2. ClassName  : AdminCommentJpaController.java
+     * 3. Comment    : 관리자 프로덕션 코멘트 저장
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
+     * </pre>
+     */
+    @ApiOperation(value = "프로덕션 어드민 코멘트 저장", notes = "프로덕션 어드민 코멘트를 저장한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "프로덕션 어드민 코멘트 등록성공", response = AdminCommentDTO.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping(value = "/production/{idx}", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AdminCommentDTO> insertProductionAdminComment(Long idx, @Valid @RequestBody AdminCommentEntity adminCommentEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminCommentJpaService.insertProductionAdminComment(idx, adminCommentEntity));
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertPortfolioAdminComment
+     * 2. ClassName  : AdminCommentJpaController.java
+     * 3. Comment    : 관리자 모델 코멘트 저장
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
+     * </pre>
+     */
+    @ApiOperation(value = "포트폴리오 어드민 코멘트 저장", notes = "포트폴리오 어드민 코멘트를 저장한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "포트폴리오 어드민 코멘트 등록성공", response = AdminCommentDTO.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping(value = "/portfolio/{idx}", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AdminCommentDTO> insertPortfolioAdminComment(Long idx, @Valid @RequestBody AdminCommentEntity adminCommentEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminCommentJpaService.insertPortfolioAdminComment(idx, adminCommentEntity));
     }
 
     /**
@@ -140,10 +186,7 @@ public class AdminCommentJpaController {
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<AdminCommentDTO> updateAdminComment(@PathVariable Long idx, @Valid @RequestBody AdminCommentEntity adminCommentEntity) {
-        if (adminCommentJpaService.findOneAdminComment(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminCommentJpaService.updateAdminComment(adminCommentEntity));
+        return ResponseEntity.ok(adminCommentJpaService.updateAdminComment(idx, adminCommentEntity));
     }
 
     /**
@@ -166,9 +209,6 @@ public class AdminCommentJpaController {
     })
     @DeleteMapping(value = "/{idx}")
     public ResponseEntity<Long> deleteAdminComment(@PathVariable Long idx) {
-        if (adminCommentJpaService.findOneAdminComment(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminCommentJpaService.deleteAdminComment(idx);
         return ResponseEntity.noContent().build();
     }

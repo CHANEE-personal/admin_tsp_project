@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface AdminUserJpaService {
 
@@ -83,7 +84,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 11.
      * </pre>
      */
-    AdminUserDTO updateAdminUser(AdminUserEntity adminUserEntity);
+    AdminUserDTO updateAdminUser(Long idx, AdminUserEntity adminUserEntity);
 
     /**
      * <pre>

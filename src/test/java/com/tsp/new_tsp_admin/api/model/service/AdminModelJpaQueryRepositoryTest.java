@@ -13,7 +13,7 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
+import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +56,7 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 class AdminModelJpaQueryRepositoryTest {
     @Mock private AdminModelJpaQueryRepository mockAdminModelJpaQueryRepository;
     private final AdminModelJpaQueryRepository adminModelJpaQueryRepository;
-    private final AdminUserJpaRepository adminUserJpaRepository;
+    private final AdminUserJpaQueryRepository adminUserJpaQueryRepository;
     private final EntityManager em;
 
     private AdminModelEntity adminModelEntity;
@@ -76,7 +76,7 @@ class AdminModelJpaQueryRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminUserJpaRepository.adminLogin(adminUserEntity);
+        adminUserJpaQueryRepository.adminLogin(adminUserEntity);
 
         adminAgencyEntity = AdminAgencyEntity.builder()
                 .agencyName("agency")
@@ -565,7 +565,6 @@ class AdminModelJpaQueryRepositoryTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("model")
-                .commentTypeIdx(adminModelDTO.getIdx())
                 .visible("Y")
                 .build();
 
@@ -622,7 +621,6 @@ class AdminModelJpaQueryRepositoryTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("model")
-                .commentTypeIdx(adminModelDTO.getIdx())
                 .visible("Y")
                 .build();
 

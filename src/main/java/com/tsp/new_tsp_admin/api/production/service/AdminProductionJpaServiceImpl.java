@@ -1,6 +1,8 @@
 package com.tsp.new_tsp_admin.api.production.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
+import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -13,13 +15,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Service
 @RequiredArgsConstructor
 public class AdminProductionJpaServiceImpl implements AdminProductionJpaService {
+    private final AdminProductionJpaQueryRepository adminProductionJpaQueryRepository;
     private final AdminProductionJpaRepository adminProductionJpaRepository;
+
+    private AdminProductionEntity oneProduction(Long idx) {
+        return adminProductionJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION));
+    }
 
     /**
      * <pre>
@@ -33,7 +42,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
     @Override
     @Transactional(readOnly = true)
     public int findProductionCount(Map<String, Object> productionMap) {
-        return adminProductionJpaRepository.findProductionCount(productionMap);
+        return adminProductionJpaQueryRepository.findProductionCount(productionMap);
     }
 
     /**
@@ -46,10 +55,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable(value = "production", key = "#productionMap")
     @Transactional(readOnly = true)
     public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
-        return adminProductionJpaRepository.findProductionList(productionMap);
+        return adminProductionJpaQueryRepository.findProductionList(productionMap);
     }
 
     /**
@@ -62,10 +70,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findOneProduction(Long idx) {
-        return adminProductionJpaRepository.findOneProduction(idx);
+        return adminProductionJpaQueryRepository.findOneProduction(idx);
     }
 
     /**
@@ -78,10 +85,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findPrevOneProduction(Long idx) {
-        return adminProductionJpaRepository.findPrevOneProduction(idx);
+        return adminProductionJpaQueryRepository.findPrevOneProduction(idx);
     }
 
     /**
@@ -94,10 +100,9 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable(value = "production", key = "#idx")
     @Transactional(readOnly = true)
     public AdminProductionDTO findNextOneProduction(Long idx) {
-        return adminProductionJpaRepository.findNextOneProduction(idx);
+        return adminProductionJpaQueryRepository.findNextOneProduction(idx);
     }
 
     /**
@@ -110,11 +115,10 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @CachePut("production")
     @Transactional
     public AdminProductionDTO insertProduction(AdminProductionEntity adminProductionEntity) {
         try {
-            return adminProductionJpaRepository.insertProduction(adminProductionEntity);
+            return AdminProductionEntity.toDto(adminProductionJpaRepository.save(adminProductionEntity));
         } catch (Exception e) {
             throw new TspException(ERROR_PRODUCTION);
         }
@@ -130,11 +134,11 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @CachePut(value = "production", key = "#adminProductionEntity.idx")
     @Transactional
-    public AdminProductionDTO updateProduction(AdminProductionEntity adminProductionEntity) {
+    public AdminProductionDTO updateProduction(Long idx, AdminProductionEntity adminProductionEntity) {
         try {
-            return adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
+            oneProduction(idx).update(adminProductionEntity);
+            return AdminProductionEntity.toDto(adminProductionEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_MODEL);
         }
@@ -150,11 +154,11 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @CacheEvict(value = "production", key = "#idx")
     @Transactional
     public Long deleteProduction(Long idx) {
         try {
-            return adminProductionJpaRepository.deleteProductionByEm(idx);
+            adminProductionJpaRepository.deleteById(idx);
+            return idx;
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_PRODUCTION);
         }
@@ -170,11 +174,10 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      * </pre>
      */
     @Override
-    @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findProductionAdminComment(Long idx) {
         try {
-            return adminProductionJpaRepository.findProductionAdminComment(idx);
+            return adminProductionJpaQueryRepository.findProductionAdminComment(idx);
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_COMMENT_LIST);
         }

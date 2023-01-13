@@ -739,7 +739,6 @@ class AdminModelJpaServiceTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("model")
-                .commentTypeIdx(modelIdx)
                 .visible("Y")
                 .build();
 
@@ -795,7 +794,6 @@ class AdminModelJpaServiceTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("model")
-                .commentTypeIdx(modelIdx)
                 .visible("Y")
                 .build();
 

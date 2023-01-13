@@ -62,6 +62,17 @@ public class AdminProductionEntity extends NewCommonMappedClass {
     @OneToMany(mappedBy = "adminProductionEntity")
     private List<AdminCommentEntity> commentList = new ArrayList<>();
 
+    public void update(AdminProductionEntity adminProductionEntity) {
+        this.title = adminProductionEntity.title;
+        this.description = adminProductionEntity.description;
+        this.visible = adminProductionEntity.visible;
+    }
+
+    public void addComment(AdminCommentEntity adminCommentEntity) {
+        adminCommentEntity.setAdminProductionEntity(this);
+        this.commentList.add(adminCommentEntity);
+    }
+
     public static AdminProductionDTO toDto(AdminProductionEntity entity) {
         if (entity == null) return null;
         return AdminProductionDTO.builder()

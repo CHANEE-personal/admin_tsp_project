@@ -1,8 +1,10 @@
 package com.tsp.new_tsp_admin.api.model.service.schedule;
 
+import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
+import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,6 +24,12 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     private final AdminScheduleJpaQueryRepository adminScheduleJpaQueryRepository;
     private final AdminScheduleJpaRepository adminScheduleJpaRepository;
+    private final AdminModelJpaRepository adminModelJpaRepository;
+
+    private AdminModelEntity oneModel(Long idx) {
+        return adminModelJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_MODEL));
+    }
 
     /**
      * <pre>
@@ -110,9 +118,9 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      */
     @Override
     @Transactional
-    public AdminScheduleDTO insertSchedule(AdminModelEntity adminModelEntity, AdminScheduleEntity adminScheduleEntity) {
+    public AdminScheduleDTO insertSchedule(Long idx, AdminScheduleEntity adminScheduleEntity) {
         try {
-            adminModelEntity.addSchedule(adminScheduleEntity);
+            oneModel(idx).addSchedule(adminScheduleEntity);
             return AdminScheduleEntity.toDto(adminScheduleJpaRepository.save(adminScheduleEntity));
         } catch (Exception e) {
             throw new TspException(ERROR_MODEL_SCHEDULE);

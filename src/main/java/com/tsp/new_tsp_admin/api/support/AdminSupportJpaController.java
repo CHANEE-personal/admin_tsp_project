@@ -99,10 +99,7 @@ public class AdminSupportJpaController {
     })
     @PutMapping("/{idx}")
     public ResponseEntity<AdminSupportDTO> updateSupportModel(@PathVariable Long idx, @Valid @RequestBody AdminSupportEntity adminSupportEntity) {
-        if (adminSupportJpaService.findOneSupportModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminSupportJpaService.updateSupportModel(adminSupportEntity));
+        return ResponseEntity.ok(adminSupportJpaService.updateSupportModel(idx, adminSupportEntity));
     }
 
     /**
@@ -125,9 +122,6 @@ public class AdminSupportJpaController {
     })
     @DeleteMapping("/{idx}")
     public ResponseEntity<Long> deleteSupportModel(@PathVariable Long idx) {
-        if (adminSupportJpaService.findOneSupportModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminSupportJpaService.deleteSupportModel(idx);
         return ResponseEntity.noContent().build();
     }
@@ -218,12 +212,7 @@ public class AdminSupportJpaController {
     @PostMapping("/{idx}/evaluation")
     public ResponseEntity<EvaluationDTO> evaluationSupportModel(@Valid @RequestBody EvaluationEntity evaluationEntity,
                                                 @PathVariable("idx") Long idx) {
-        if (adminSupportJpaService.findOneSupportModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.created(URI.create("")).body(adminSupportJpaService.evaluationSupportModel(EvaluationEntity.builder().supportIdx(idx)
-                .evaluateComment(evaluationEntity.getEvaluateComment())
-                .visible("Y").build()));
+        return ResponseEntity.created(URI.create("")).body(adminSupportJpaService.evaluationSupportModel(idx, evaluationEntity));
     }
 
     /**
@@ -246,10 +235,7 @@ public class AdminSupportJpaController {
     })
     @PutMapping("/{idx}/evaluation")
     public ResponseEntity<EvaluationDTO> updateEvaluation(@PathVariable Long idx, @Valid @RequestBody EvaluationEntity evaluationEntity) {
-        if (adminSupportJpaService.findOneSupportModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminSupportJpaService.updateEvaluation(evaluationEntity));
+        return ResponseEntity.ok(adminSupportJpaService.updateEvaluation(idx, evaluationEntity));
     }
 
     /**
@@ -272,9 +258,6 @@ public class AdminSupportJpaController {
     })
     @DeleteMapping("/{idx}/evaluation")
     public ResponseEntity<Long> deleteEvaluation(@PathVariable Long idx) {
-        if (adminSupportJpaService.findOneSupportModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminSupportJpaService.deleteEvaluation(idx);
         return ResponseEntity.noContent().build();
     }
@@ -299,9 +282,6 @@ public class AdminSupportJpaController {
     })
     @PutMapping("/{idx}/pass")
     public ResponseEntity<AdminSupportDTO> updatePass(@PathVariable Long idx) {
-        if (adminSupportJpaService.findOneSupportModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminSupportJpaService.updatePass(idx));
     }
 
@@ -325,9 +305,6 @@ public class AdminSupportJpaController {
     })
     @GetMapping("/{idx}/admin-comment")
     public ResponseEntity<List<AdminCommentDTO>> findSupportAdminComment(@PathVariable Long idx) {
-        if (adminSupportJpaService.findOneSupportModel(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminSupportJpaService.findSupportAdminComment(idx));
     }
 }

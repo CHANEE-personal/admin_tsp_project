@@ -130,7 +130,6 @@ class AdminCommentJpaControllerTest {
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("model")
-                .commentTypeIdx(adminModelEntity.getIdx())
                 .visible("Y")
                 .build();
 
@@ -232,7 +231,7 @@ class AdminCommentJpaControllerTest {
     void 어드민코멘트수정Api테스트() throws Exception {
         em.persist(adminCommentEntity);
 
-        adminCommentEntity = AdminCommentEntity.builder().idx(adminCommentEntity.getIdx()).comment("코멘트 테스트1").commentType("model").commentTypeIdx(adminModelEntity.getIdx()).visible("Y").build();
+        adminCommentEntity = AdminCommentEntity.builder().idx(adminCommentEntity.getIdx()).comment("코멘트 테스트1").commentType("model").visible("Y").build();
 
         mockMvc.perform(put("/api/jpa-comment/{idx}", adminCommentEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())

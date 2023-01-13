@@ -188,10 +188,7 @@ public class AdminProductionJpaController {
     })
     @PutMapping(value = "/{idx}", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<AdminProductionDTO> updateProduction(@PathVariable Long idx, @Valid @RequestBody AdminProductionEntity adminProductionEntity) {
-        if (adminProductionJpaService.findOneProduction(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminProductionJpaService.updateProduction(adminProductionEntity));
+        return ResponseEntity.ok(adminProductionJpaService.updateProduction(idx, adminProductionEntity));
     }
 
     /**
@@ -214,9 +211,6 @@ public class AdminProductionJpaController {
     })
     @DeleteMapping(value = "/{idx}")
     public ResponseEntity<Long> deleteProduction(@PathVariable Long idx) {
-        if (adminProductionJpaService.findOneProduction(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminProductionJpaService.deleteProduction(idx);
         return ResponseEntity.noContent().build();
     }
@@ -241,9 +235,6 @@ public class AdminProductionJpaController {
     })
     @GetMapping("/{idx}/admin-comment")
     public ResponseEntity<List<AdminCommentDTO>> findProductionAdminComment(@PathVariable Long idx) {
-        if (adminProductionJpaService.findOneProduction(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminProductionJpaService.findProductionAdminComment(idx));
     }
 }

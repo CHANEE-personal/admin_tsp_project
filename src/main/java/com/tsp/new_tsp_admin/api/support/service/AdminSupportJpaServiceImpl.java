@@ -1,10 +1,12 @@
 package com.tsp.new_tsp_admin.api.support.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
+import com.tsp.new_tsp_admin.api.support.evaluation.AdminEvaluationJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,7 +23,19 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 @Service
 @RequiredArgsConstructor
 public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
+    private final AdminSupportJpaQueryRepository adminSupportJpaQueryRepository;
     private final AdminSupportJpaRepository adminSupportJpaRepository;
+    private final AdminEvaluationJpaRepository adminEvaluationJpaRepository;
+
+    private AdminSupportEntity oneSupport(Long idx) {
+        return adminSupportJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_SUPPORT));
+    }
+
+    private EvaluationEntity oneEvaluation(Long idx) {
+        return adminEvaluationJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_EVALUATION));
+    }
 
     /**
      * <pre>
@@ -35,7 +49,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @Transactional(readOnly = true)
     public int findSupportCount(Map<String, Object> supportMap) {
-        return adminSupportJpaRepository.findSupportCount(supportMap);
+        return adminSupportJpaQueryRepository.findSupportCount(supportMap);
     }
 
     /**
@@ -48,10 +62,9 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "support", key = "#supportMap")
     @Transactional(readOnly = true)
     public List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) {
-        return adminSupportJpaRepository.findSupportList(supportMap);
+        return adminSupportJpaQueryRepository.findSupportList(supportMap);
     }
 
     /**
@@ -64,18 +77,16 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "support", key = "#idx")
     @Transactional(readOnly = true)
     public AdminSupportDTO findOneSupportModel(Long idx) {
-        return adminSupportJpaRepository.findOneSupportModel(idx);
+        return AdminSupportEntity.toDto(oneSupport(idx));
     }
 
     @Override
-    @CachePut(value = "support")
     @Transactional
     public AdminSupportDTO insertSupportModel(AdminSupportEntity adminSupportEntity) {
         try {
-            return adminSupportJpaRepository.insertSupportModel(adminSupportEntity);
+            return AdminSupportEntity.toDto(adminSupportJpaRepository.save(adminSupportEntity));
         } catch (Exception e) {
             throw new TspException(ERROR_SUPPORT);
         }
@@ -91,11 +102,11 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "support", key = "#adminSupportEntity.idx")
     @Transactional
-    public AdminSupportDTO updateSupportModel(AdminSupportEntity adminSupportEntity) {
+    public AdminSupportDTO updateSupportModel(Long idx, AdminSupportEntity adminSupportEntity) {
         try {
-            return adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
+            oneSupport(idx).update(adminSupportEntity);
+            return AdminSupportEntity.toDto(adminSupportEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_SUPPORT);
         }
@@ -111,11 +122,11 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict(value = "support", key = "#idx")
     @Transactional
     public Long deleteSupportModel(Long idx) {
         try {
-            return adminSupportJpaRepository.deleteSupportModel(idx);
+            adminSupportJpaRepository.deleteById(idx);
+            return idx;
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_SUPPORT);
         }
@@ -133,7 +144,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
     @Override
     @Transactional(readOnly = true)
     public int findEvaluationCount(Map<String, Object> evaluationMap) {
-        return adminSupportJpaRepository.findEvaluationCount();
+        return adminSupportJpaQueryRepository.findEvaluationCount();
     }
 
     /**
@@ -146,10 +157,9 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "evaluation", key = "#evaluationMap")
     @Transactional(readOnly = true)
     public List<EvaluationDTO> findEvaluationList(Map<String, Object> evaluationMap) {
-        return adminSupportJpaRepository.findEvaluationList(evaluationMap);
+        return adminSupportJpaQueryRepository.findEvaluationList(evaluationMap);
     }
 
     /**
@@ -162,10 +172,9 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "evaluation", key = "#idx")
     @Transactional(readOnly = true)
     public EvaluationDTO findOneEvaluation(Long idx) {
-        return adminSupportJpaRepository.findOneEvaluation(idx);
+        return EvaluationEntity.toDto(oneEvaluation(idx));
     }
 
     /**
@@ -178,11 +187,11 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @CachePut("evaluation")
     @Transactional
-    public EvaluationDTO evaluationSupportModel(EvaluationEntity evaluationEntity) {
+    public EvaluationDTO evaluationSupportModel(Long idx, EvaluationEntity evaluationEntity) {
         try {
-            return adminSupportJpaRepository.evaluationSupportModel(evaluationEntity);
+            oneSupport(idx).addSupport(evaluationEntity);
+            return adminSupportJpaQueryRepository.evaluationSupportModel(evaluationEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_EVALUATION);
         }
@@ -198,11 +207,11 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "evaluation", key = "#evaluationEntity.idx")
     @Transactional
-    public EvaluationDTO updateEvaluation(EvaluationEntity evaluationEntity) {
+    public EvaluationDTO updateEvaluation(Long idx, EvaluationEntity evaluationEntity) {
         try {
-            return adminSupportJpaRepository.updateEvaluation(evaluationEntity);
+            oneEvaluation(idx).update(evaluationEntity);
+            return EvaluationEntity.toDto(evaluationEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_EVALUATION);
         }
@@ -218,11 +227,11 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict(value = "evaluation", key = "#idx")
     @Transactional
     public Long deleteEvaluation(Long idx) {
         try {
-            return adminSupportJpaRepository.deleteEvaluation(idx);
+            adminEvaluationJpaRepository.deleteById(idx);
+            return idx;
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_EVALUATION);
         }
@@ -238,11 +247,12 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "support", key = "#idx")
     @Transactional
     public AdminSupportDTO updatePass(Long idx) {
         try {
-            return adminSupportJpaRepository.updatePass(idx);
+            AdminSupportEntity oneSupport = oneSupport(idx);
+            oneSupport.togglePassYn(oneSupport.getPassYn());
+            return AdminSupportEntity.toDto(oneSupport);
         } catch (Exception e) {
             throw new TspException(ERROR_UPDATE_SUPPORT);
         }
@@ -258,8 +268,8 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "comment", key = "#idx")
+    @Transactional(readOnly = true)
     public List<AdminCommentDTO> findSupportAdminComment(Long idx) {
-        return adminSupportJpaRepository.findSupportAdminComment(idx);
+        return adminSupportJpaQueryRepository.findSupportAdminComment(idx);
     }
 }

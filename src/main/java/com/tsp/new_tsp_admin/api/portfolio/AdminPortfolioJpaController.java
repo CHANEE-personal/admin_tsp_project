@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.portfolio;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.portfolio.service.AdminPortfolioJpaService;
@@ -187,10 +188,7 @@ public class AdminPortfolioJpaController {
     })
     @PutMapping("/{idx}")
     public ResponseEntity<AdminPortFolioDTO> updatePortfolio(@PathVariable Long idx, @Valid @RequestBody AdminPortFolioEntity adminPortFolioEntity) {
-        if (adminPortfolioJpaService.findOnePortfolio(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminPortfolioJpaService.updatePortfolio(adminPortFolioEntity));
+        return ResponseEntity.ok(adminPortfolioJpaService.updatePortfolio(idx, adminPortFolioEntity));
     }
 
     /**
@@ -213,9 +211,6 @@ public class AdminPortfolioJpaController {
     })
     @DeleteMapping("/{idx}")
     public ResponseEntity<Long> deletePortfolio(@PathVariable Long idx) {
-        if (adminPortfolioJpaService.findOnePortfolio(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminPortfolioJpaService.deletePortfolio(idx);
         return ResponseEntity.noContent().build();
     }
@@ -240,9 +235,6 @@ public class AdminPortfolioJpaController {
     })
     @GetMapping("/{idx}/admin-comment")
     public ResponseEntity<List<AdminCommentDTO>> findPortfolioAdminComment(@PathVariable Long idx) {
-        if (adminPortfolioJpaService.findOnePortfolio(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(adminPortfolioJpaService.findPortfolioAdminComment(idx));
     }
 }

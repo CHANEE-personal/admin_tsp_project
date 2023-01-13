@@ -7,6 +7,7 @@ import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -25,8 +26,9 @@ import static javax.persistence.GenerationType.*;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "tsp_admin")
 public class AdminUserEntity extends NewCommonMappedClass {
@@ -68,11 +70,21 @@ public class AdminUserEntity extends NewCommonMappedClass {
     @Enumerated(value = STRING)
     private Role role;
 
+    @Builder.Default
     @JsonIgnore
     @BatchSize(size = 5)
     @Where(clause = "comment_type = 'user'")
     @OneToMany(mappedBy = "adminUserEntity")
     private List<AdminCommentEntity> commentList = new ArrayList<>();
+
+    public void update(AdminUserEntity adminUserEntity) {
+        this.userId = adminUserEntity.userId;
+        this.password = adminUserEntity.password;
+        this.name = adminUserEntity.name;
+        this.email = adminUserEntity.email;
+        this.visible = adminUserEntity.visible;
+        this.role = adminUserEntity.role;
+    }
 
     public static AdminUserDTO toDto(AdminUserEntity entity) {
         if (entity == null) return null;

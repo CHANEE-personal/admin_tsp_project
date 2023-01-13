@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -22,8 +24,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Table(name = "tsp_support")
 public class AdminSupportEntity extends NewCommonMappedClass {
     @Transient
@@ -73,9 +76,32 @@ public class AdminSupportEntity extends NewCommonMappedClass {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime passTime;
 
+    @Builder.Default
     @JsonIgnore
     @OneToMany(mappedBy = "adminSupportEntity")
     private List<EvaluationEntity> evaluationEntityList = new ArrayList<>();
+
+    public void update(AdminSupportEntity adminSupportEntity) {
+        this.supportName = adminSupportEntity.supportName;
+        this.supportHeight = adminSupportEntity.supportHeight;
+        this.supportSize3 = adminSupportEntity.supportSize3;
+        this.supportInstagram = adminSupportEntity.supportInstagram;
+        this.supportPhone = adminSupportEntity.supportPhone;
+        this.supportMessage = adminSupportEntity.supportMessage;
+        this.visible = adminSupportEntity.visible;
+        this.passYn = adminSupportEntity.passYn;
+        this.passTime = adminSupportEntity.passTime;
+    }
+
+    public void addSupport(EvaluationEntity evaluationEntity) {
+        evaluationEntity.setAdminSupportEntity(this);
+        this.evaluationEntityList.add(evaluationEntity);
+    }
+
+    public void togglePassYn(String passYn) {
+        this.passYn = Objects.equals(passYn, "Y") ? "N" : "Y";
+        this.passTime = LocalDateTime.now();
+    }
 
     public static AdminSupportDTO toDto(AdminSupportEntity entity) {
         if (entity == null) return null;

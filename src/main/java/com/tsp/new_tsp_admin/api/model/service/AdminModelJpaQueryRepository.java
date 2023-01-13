@@ -201,7 +201,7 @@ public class AdminModelJpaQueryRepository {
         List<AdminCommentEntity> commentEntity = queryFactory
                 .selectFrom(QAdminCommentEntity.adminCommentEntity)
                 .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("model")
-                        .and(QAdminCommentEntity.adminCommentEntity.commentTypeIdx.eq(idx))
+                        .and(QAdminCommentEntity.adminCommentEntity.adminModelEntity.idx.eq(idx))
                         .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
                 .fetch();
 

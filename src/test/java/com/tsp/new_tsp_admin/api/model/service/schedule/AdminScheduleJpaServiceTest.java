@@ -88,6 +88,10 @@ class AdminScheduleJpaServiceTest {
                 .visible("Y")
                 .build();
 
+        em.persist(adminModelEntity);
+
+        adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
+
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .adminModelEntity(adminModelEntity)
                 .modelSchedule("스케줄 테스트")
@@ -362,7 +366,7 @@ class AdminScheduleJpaServiceTest {
     @DisplayName("모델스케줄등록Mockito테스트")
     void 모델스케줄등록Mockito테스트() {
         // given
-        AdminScheduleDTO oneSchedule = adminScheduleJpaService.insertSchedule(adminModelEntity, adminScheduleEntity);
+        AdminScheduleDTO oneSchedule = adminScheduleJpaService.insertSchedule(adminModelDTO.getIdx(), adminScheduleEntity);
 
         // when
         when(mockAdminScheduleJpaService.findOneSchedule(oneSchedule.getIdx())).thenReturn(oneSchedule);
@@ -386,7 +390,7 @@ class AdminScheduleJpaServiceTest {
     @DisplayName("모델스케줄등록BDD테스트")
     void 모델스케줄등록BDD테스트() {
         // given
-        AdminScheduleDTO oneSchedule = adminScheduleJpaService.insertSchedule(adminModelEntity, adminScheduleEntity);
+        AdminScheduleDTO oneSchedule = adminScheduleJpaService.insertSchedule(adminModelDTO.getIdx(), adminScheduleEntity);
 
         // when
         given(mockAdminScheduleJpaService.findOneSchedule(oneSchedule.getIdx())).willReturn(oneSchedule);
@@ -408,7 +412,7 @@ class AdminScheduleJpaServiceTest {
     void 모델스케줄수정Mockito테스트() {
         // given
         em.persist(adminModelEntity);
-        AdminScheduleDTO insertScheduleDTO = adminScheduleJpaService.insertSchedule(adminModelEntity, adminScheduleEntity);
+        AdminScheduleDTO insertScheduleDTO = adminScheduleJpaService.insertSchedule(adminModelDTO.getIdx(), adminScheduleEntity);
 
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(insertScheduleDTO.getIdx())
@@ -445,7 +449,7 @@ class AdminScheduleJpaServiceTest {
     void 모델스케줄수정BDD테스트() {
         // given
         em.persist(adminModelEntity);
-        AdminScheduleDTO insertScheduleDTO = adminScheduleJpaService.insertSchedule(adminModelEntity, adminScheduleEntity);
+        AdminScheduleDTO insertScheduleDTO = adminScheduleJpaService.insertSchedule(adminModelDTO.getIdx(), adminScheduleEntity);
 
         adminScheduleEntity = AdminScheduleEntity.builder()
                 .idx(insertScheduleDTO.getIdx())

@@ -198,6 +198,11 @@ public class AdminModelEntity extends NewCommonMappedClass {
         this.negotiationList.add(adminNegotiationEntity);
     }
 
+    public void addComment(AdminCommentEntity adminCommentEntity) {
+        adminCommentEntity.setAdminModelEntity(this);
+        this.commentList.add(adminCommentEntity);
+    }
+
     public void toggleNewYn(String newYn) {
         this.newYn = Objects.equals(newYn, "Y") ? "N" : "Y";
     }

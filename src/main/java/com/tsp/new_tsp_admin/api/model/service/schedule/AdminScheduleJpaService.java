@@ -73,7 +73,7 @@ public interface AdminScheduleJpaService {
      * 5. 작성일       : 2022. 08. 31.
      * </pre>
      */
-    AdminScheduleDTO insertSchedule(AdminModelEntity adminModelEntity, AdminScheduleEntity adminScheduleEntity);
+    AdminScheduleDTO insertSchedule(Long idx, AdminScheduleEntity adminScheduleEntity);
 
     /**
      * <pre>
