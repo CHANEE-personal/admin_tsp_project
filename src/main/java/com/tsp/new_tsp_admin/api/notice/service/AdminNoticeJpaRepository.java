@@ -93,7 +93,7 @@ public class AdminNoticeJpaRepository {
                 .orderBy(adminNoticeEntity.idx.desc())
                 .where(adminNoticeEntity.idx.eq(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE));
 
         return toDto(findOneNotice);
     }
@@ -113,7 +113,7 @@ public class AdminNoticeJpaRepository {
                 .orderBy(adminNoticeEntity.idx.desc())
                 .where(adminNoticeEntity.idx.lt(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
-                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE, new Throwable()));
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE));
 
         return toDto(findPrevOneNotice);
     }
@@ -133,7 +133,7 @@ public class AdminNoticeJpaRepository {
                 .orderBy(adminNoticeEntity.idx.desc())
                 .where(adminNoticeEntity.idx.gt(idx)
                         .and(adminNoticeEntity.visible.eq("Y")))
-                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE, new Throwable()));
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_NOTICE));
 
         return toDto(findNextOneNotice);
     }

@@ -116,7 +116,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
         try {
             return adminNoticeJpaRepository.insertNotice(adminNoticeEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_NOTICE, e);
+            throw new TspException(ERROR_NOTICE);
         }
     }
 
@@ -136,7 +136,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
         try {
             return adminNoticeJpaRepository.updateNotice(adminNoticeEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_NOTICE, e);
+            throw new TspException(ERROR_UPDATE_NOTICE);
         }
     }
 
@@ -156,7 +156,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
         try {
             return adminNoticeJpaRepository.toggleFixed(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_NOTICE, e);
+            throw new TspException(ERROR_UPDATE_NOTICE);
         }
     }
 
@@ -176,7 +176,7 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
         try {
             return adminNoticeJpaRepository.deleteNotice(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_NOTICE, e);
+            throw new TspException(ERROR_DELETE_NOTICE);
         }
     }
 }

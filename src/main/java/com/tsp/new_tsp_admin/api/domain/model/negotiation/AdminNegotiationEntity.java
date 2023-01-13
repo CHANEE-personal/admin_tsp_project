@@ -3,10 +3,9 @@ package com.tsp.new_tsp_admin.api.domain.model.negotiation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -14,7 +13,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +26,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = "idx", callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicUpdate
 @Table(name = "tsp_model_negotiation")
 public class AdminNegotiationEntity extends NewCommonMappedClass {
     @Transient
@@ -37,10 +36,6 @@ public class AdminNegotiationEntity extends NewCommonMappedClass {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "idx")
     private Long idx;
-
-    @Column(name = "model_idx")
-    @ApiModelProperty(value = "모델 idx", required = true)
-    private Long modelIdx;
 
     @Column(name = "model_kor_name")
     @NotEmpty(message = "모델 국문 이름 입력은 필수입니다.")
@@ -75,15 +70,26 @@ public class AdminNegotiationEntity extends NewCommonMappedClass {
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "model_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+    @JoinColumn(name = "model_idx", referencedColumnName = "idx", nullable = false)
     private AdminModelEntity adminModelEntity;
+
+    public void update(AdminNegotiationEntity adminNegotiationEntity) {
+        this.modelKorName = adminNegotiationEntity.modelKorName;
+        this.modelNegotiationDesc = adminNegotiationEntity.modelNegotiationDesc;
+        this.modelNegotiationDate = adminNegotiationEntity.modelNegotiationDate;
+        this.name = adminNegotiationEntity.name;
+        this.email = adminNegotiationEntity.email;
+        this.phone = adminNegotiationEntity.phone;
+        this.visible = adminNegotiationEntity.visible;
+    }
 
     public static AdminNegotiationDTO toDto(AdminNegotiationEntity entity) {
         if (entity == null) return null;
         return AdminNegotiationDTO.builder()
                 .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
-                .modelIdx(entity.getModelIdx())
+                .adminModelDTO(AdminModelEntity.toDto(entity.getAdminModelEntity()))
+                .modelIdx(entity.getAdminModelEntity().getIdx())
                 .modelKorName(entity.getModelKorName())
                 .modelNegotiationDesc(entity.getModelNegotiationDesc())
                 .modelNegotiationDate(entity.getModelNegotiationDate())

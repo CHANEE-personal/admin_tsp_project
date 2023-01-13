@@ -84,7 +84,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
         try {
             return adminCommentJpaRepository.insertAdminComment(adminCommentEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_COMMENT, e);
+            throw new TspException(ERROR_COMMENT);
         }
     }
 
@@ -104,7 +104,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
         try {
             return adminCommentJpaRepository.updateAdminComment(adminCommentEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_COMMENT, e);
+            throw new TspException(ERROR_UPDATE_COMMENT);
         }
     }
 
@@ -124,7 +124,7 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
         try {
             return adminCommentJpaRepository.deleteAdminComment(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_COMMENT, e);
+            throw new TspException(ERROR_DELETE_COMMENT);
         }
     }
 }

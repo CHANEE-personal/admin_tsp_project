@@ -102,7 +102,7 @@ public class AdminPortfolioJpaRepository {
                 .where(adminPortFolioEntity.idx.eq(idx)
                         .and(adminPortFolioEntity.visible.eq("Y")
                                 .and(commonImageEntity.typeName.eq(EntityType.PORTFOLIO))))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO));
 
         return toDto(findOnePortfolio);
     }
@@ -123,7 +123,7 @@ public class AdminPortfolioJpaRepository {
                 .orderBy(adminPortFolioEntity.idx.desc())
                 .where(adminPortFolioEntity.idx.lt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
-                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO, new Throwable()));
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO));
 
         return toDto(findPrevOnePortfolio);
     }
@@ -144,7 +144,7 @@ public class AdminPortfolioJpaRepository {
                 .orderBy(adminPortFolioEntity.idx.desc())
                 .where(adminPortFolioEntity.idx.gt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
-                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO, new Throwable()));
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO));
 
         return toDto(findPrevOnePortfolio);
     }

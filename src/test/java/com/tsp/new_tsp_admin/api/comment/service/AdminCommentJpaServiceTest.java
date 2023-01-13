@@ -3,6 +3,7 @@ package com.tsp.new_tsp_admin.api.comment.service;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaQueryRepository;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,11 +72,12 @@ class AdminCommentJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Long modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        AdminModelEntity oneModel = adminModelJpaRepository.save(adminModelEntity);
+
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
                 .commentType("model")
-                .commentTypeIdx(modelIdx)
+                .commentTypeIdx(oneModel.getIdx())
                 .visible("Y")
                 .build();
 

@@ -74,7 +74,7 @@ public class AdminCommonJpaRepository {
                 .orderBy(commonCodeEntity.idx.desc())
                 .where(commonCodeEntity.idx.eq(idx)
                         .and(commonCodeEntity.visible.eq("Y")))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_COMMON, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_COMMON));
 
         return toDto(findOneCommonCode);
     }

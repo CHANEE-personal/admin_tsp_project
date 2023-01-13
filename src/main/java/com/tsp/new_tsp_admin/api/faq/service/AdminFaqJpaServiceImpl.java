@@ -116,7 +116,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
         try {
             return adminFaqJpaRepository.insertFaq(adminFaqEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_FAQ, e);
+            throw new TspException(ERROR_FAQ);
         }
     }
 
@@ -136,7 +136,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
         try {
             return adminFaqJpaRepository.updateFaq(adminFaqEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_FAQ, e);
+            throw new TspException(ERROR_UPDATE_FAQ);
         }
     }
 
@@ -156,7 +156,7 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
         try {
             return adminFaqJpaRepository.deleteFaq(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_FAQ, e);
+            throw new TspException(ERROR_DELETE_FAQ);
         }
     }
 }

@@ -12,6 +12,7 @@ import com.tsp.new_tsp_admin.common.CustomConverter;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Range;
@@ -21,9 +22,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -34,7 +35,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @SuperBuilder
 @EqualsAndHashCode(of = "idx", callSuper = false)
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Table(name = "tsp_model")
 public class AdminModelEntity extends NewCommonMappedClass {
     @Transient
@@ -110,9 +112,6 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @Column(name = "view_count")
     private Integer viewCount;
 
-    @Column(name = "agency_idx")
-    private Long agencyIdx;
-
     @Column(name = "career_list")
     @Convert(converter = CustomConverter.class)
     private ArrayList<CareerJson> careerList;
@@ -142,29 +141,73 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
     @JsonIgnore
-    @OneToOne(fetch = LAZY, cascade = ALL)
-    @JoinColumn(name = "agency_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "agency_idx", referencedColumnName = "idx")
     private AdminAgencyEntity adminAgencyEntity;
 
-    @JsonIgnore
+    @Builder.Default
     @BatchSize(size = 20)
-    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE, orphanRemoval = true)
     private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
 
+    @Builder.Default
     @JsonIgnore
-    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE, orphanRemoval = true)
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
 
+    @Builder.Default
     @JsonIgnore
     @BatchSize(size = 20)
     @Where(clause = "comment_type = 'model'")
     @OneToMany(mappedBy = "adminModelEntity")
     private List<AdminCommentEntity> commentList = new ArrayList<>();
 
+    public void update(AdminModelEntity adminModelEntity) {
+        this.categoryCd = adminModelEntity.categoryCd;
+        this.categoryAge = adminModelEntity.categoryAge;
+        this.modelKorName = adminModelEntity.modelKorName;
+        this.modelEngName = adminModelEntity.modelEngName;
+        this.height = adminModelEntity.height;
+        this.size3 = adminModelEntity.size3;
+        this.shoes = adminModelEntity.shoes;
+        this.modelDescription = adminModelEntity.modelDescription;
+        this.visible = adminModelEntity.visible;
+        this.modelMainYn = adminModelEntity.modelMainYn;
+        this.modelFirstName = adminModelEntity.modelFirstName;
+        this.modelSecondName = adminModelEntity.modelSecondName;
+        this.modelKorFirstName = adminModelEntity.modelKorFirstName;
+        this.modelKorSecondName = adminModelEntity.modelKorSecondName;
+        this.careerList = adminModelEntity.careerList;
+        this.status = adminModelEntity.status;
+        this.newYn = adminModelEntity.newYn;
+        this.modelKeyword = adminModelEntity.modelKeyword;
+    }
+
+    public void addImage(CommonImageEntity commonImageEntity) {
+        commonImageEntity.setAdminModelEntity(this);
+        this.commonImageEntityList.add(commonImageEntity);
+    }
+
+    public void addSchedule(AdminScheduleEntity adminScheduleEntity) {
+        adminScheduleEntity.setAdminModelEntity(this);
+        this.scheduleList.add(adminScheduleEntity);
+    }
+
+    public void addNegotiation(AdminNegotiationEntity adminNegotiationEntity) {
+        adminNegotiationEntity.setAdminModelEntity(this);
+        this.negotiationList.add(adminNegotiationEntity);
+    }
+
+    public void toggleNewYn(String newYn) {
+        this.newYn = Objects.equals(newYn, "Y") ? "N" : "Y";
+    }
+
     public static AdminModelDTO toDto(AdminModelEntity entity) {
         if (entity == null) return null;
-        return AdminModelDTO.builder().idx(entity.getIdx())
+        return AdminModelDTO.builder()
+                .idx(entity.getIdx())
                 .rowNum(entity.getRowNum())
+                .modelAgency(AdminAgencyEntity.toDto(entity.getAdminAgencyEntity()))
                 .categoryCd(entity.getCategoryCd())
                 .modelKorName(entity.getModelKorName())
                 .modelEngName(entity.getModelEngName())
@@ -181,7 +224,6 @@ public class AdminModelEntity extends NewCommonMappedClass {
                 .modelKorSecondName(entity.getModelKorSecondName())
                 .favoriteCount(entity.getFavoriteCount())
                 .viewCount(entity.getViewCount())
-                .agencyIdx(entity.getAgencyIdx())
                 .careerList(entity.getCareerList())
                 .status(entity.getStatus())
                 .newYn(entity.getNewYn())
@@ -214,7 +256,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
                 .modelKorSecondName(entity.getModelKorSecondName())
                 .favoriteCount(entity.getFavoriteCount())
                 .viewCount(entity.getViewCount())
-                .agencyIdx(entity.getAgencyIdx())
+                .agencyIdx(entity.getAdminAgencyEntity().getIdx())
                 .careerList(entity.getCareerList())
                 .status(entity.getStatus())
                 .newYn(entity.getNewYn())

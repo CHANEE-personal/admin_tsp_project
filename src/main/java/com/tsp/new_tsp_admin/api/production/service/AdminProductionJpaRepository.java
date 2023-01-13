@@ -101,7 +101,7 @@ public class AdminProductionJpaRepository {
                 .where(adminProductionEntity.idx.eq(idx)
                         .and(adminProductionEntity.visible.eq("Y"))
                         .and(commonImageEntity.typeName.eq(EntityType.PRODUCTION)))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION));
 
         return toDto(findOneProduction);
     }
@@ -122,7 +122,7 @@ public class AdminProductionJpaRepository {
                 .orderBy(adminProductionEntity.idx.desc())
                 .where(adminProductionEntity.idx.lt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
-                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION, new Throwable()));
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION));
 
         return toDto(findPrevOneProduction);
     }
@@ -143,7 +143,7 @@ public class AdminProductionJpaRepository {
                 .orderBy(adminProductionEntity.idx.asc())
                 .where(adminProductionEntity.idx.gt(idx)
                         .and(adminProductionEntity.visible.eq("Y")))
-                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION, new Throwable()));
+                .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION));
 
         return toDto(findNextOneProduction);
     }

@@ -116,7 +116,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
         try {
             return adminPortfolioJpaRepository.insertPortfolio(adminPortFolioEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_PORTFOLIO, e);
+            throw new TspException(ERROR_PORTFOLIO);
         }
     }
 
@@ -136,7 +136,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
         try {
             return adminPortfolioJpaRepository.updatePortfolio(adminPortFolioEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_PORTFOLIO, e);
+            throw new TspException(ERROR_UPDATE_PORTFOLIO);
         }
     }
 
@@ -156,7 +156,7 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
         try {
             return adminPortfolioJpaRepository.deletePortfolio(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_PORTFOLIO, e);
+            throw new TspException(ERROR_DELETE_PORTFOLIO);
         }
     }
 

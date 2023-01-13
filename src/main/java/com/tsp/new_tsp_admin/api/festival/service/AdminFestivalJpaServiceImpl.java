@@ -69,7 +69,7 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
         try {
             return adminFestivalJpaRepository.changeFestival(adminFestivalEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_FESTIVAL, e);
+            throw new TspException(ERROR_FESTIVAL);
         }
     }
 
@@ -86,7 +86,7 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
         try {
             return adminFestivalJpaRepository.changeFestival(adminFestivalEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_FESTIVAL, e);
+            throw new TspException(ERROR_UPDATE_FESTIVAL);
         }
     }
 
@@ -103,7 +103,7 @@ public class AdminFestivalJpaServiceImpl implements AdminFestivalJpaService {
         try {
             return adminFestivalJpaRepository.deleteFestival(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_FESTIVAL, e);
+            throw new TspException(ERROR_DELETE_FESTIVAL);
         }
     }
 }

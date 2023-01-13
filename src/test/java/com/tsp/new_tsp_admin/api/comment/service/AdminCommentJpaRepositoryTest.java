@@ -2,8 +2,9 @@ package com.tsp.new_tsp_admin.api.comment.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaRepository;
+import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -46,7 +47,7 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 class AdminCommentJpaRepositoryTest {
     @Mock private AdminCommentJpaRepository mockAdminCommentJpaRepository;
     private final AdminCommentJpaRepository adminCommentJpaRepository;
-    private final AdminModelJpaRepository adminModelJpaRepository;
+    private final AdminModelJpaQueryRepository adminModelJpaQueryRepository;
     private final EntityManager em;
 
     private AdminModelEntity adminModelEntity;
@@ -75,11 +76,12 @@ class AdminCommentJpaRepositoryTest {
                 .visible("Y")
                 .build();
 
-        Long modelIdx = adminModelJpaRepository.insertModel(adminModelEntity).getIdx();
+        em.persist(adminModelEntity);
+        AdminModelDTO adminModelDTO = AdminModelEntity.toDto(adminModelEntity);
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
-                .commentTypeIdx(modelIdx)
+                .commentTypeIdx(adminModelDTO.getIdx())
                 .commentType("model")
                 .visible("Y")
                 .build();

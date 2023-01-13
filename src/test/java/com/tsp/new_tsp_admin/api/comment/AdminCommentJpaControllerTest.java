@@ -122,8 +122,6 @@ class AdminCommentJpaControllerTest {
                 .shoes(270)
                 .visible("Y")
                 .status("active")
-                .updater("1")
-                .updateTime(LocalDateTime.now())
                 .build();
 
         em.persist(adminModelEntity);

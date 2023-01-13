@@ -70,7 +70,7 @@ public class AdminUserJpaRepository {
         return Optional.ofNullable(queryFactory
                 .selectFrom(adminUserEntity)
                 .where(adminUserEntity.userId.eq(id))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_USER, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_USER));
     }
 
     /**

@@ -16,8 +16,8 @@ public interface AdminAgencyJpaService {
      * 1. MethodName : findAgencyCount
      * 2. ClassName  : AdminAgencyJpaService.java
      * 3. Comment    : 관리자 소속사 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     int findAgencyCount(Map<String, Object> agencyMap);
@@ -27,8 +27,8 @@ public interface AdminAgencyJpaService {
      * 1. MethodName : findAgencyList
      * 2. ClassName  : AdminAgencyJpaService.java
      * 3. Comment    : 관리자 소속사 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap);
@@ -38,8 +38,8 @@ public interface AdminAgencyJpaService {
      * 1. MethodName : findOneAgency
      * 2. ClassName  : AdminAgencyJpaService.java
      * 3. Comment    : 관리자 소속사 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     AdminAgencyDTO findOneAgency(Long idx);
@@ -49,8 +49,8 @@ public interface AdminAgencyJpaService {
      * 1. MethodName : insertAgency
      * 2. ClassName  : AdminAgencyJpaService.java
      * 3. Comment    : 관리자 소속사 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     AdminAgencyDTO insertAgency(AdminAgencyEntity adminAgencyEntity);
@@ -60,8 +60,8 @@ public interface AdminAgencyJpaService {
      * 1. MethodName : updateAgency
      * 2. ClassName  : AdminAgencyJpaService.java
      * 3. Comment    : 관리자 소속사 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity);
@@ -71,8 +71,8 @@ public interface AdminAgencyJpaService {
      * 1. MethodName : deleteAgency
      * 2. ClassName  : AdminAgencyJpaService.java
      * 3. Comment    : 관리자 소속사 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     Long deleteAgency(Long idx);
@@ -82,8 +82,8 @@ public interface AdminAgencyJpaService {
      * 1. MethodName : insertAgencyImage
      * 2. ClassName  : AdminAgencyJpaService.java
      * 3. Comment    : 관리자 소속사 이미지 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     List<CommonImageDTO> insertAgencyImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName);
@@ -93,8 +93,8 @@ public interface AdminAgencyJpaService {
      * 1. MethodName : deleteAgencyImage
      * 2. ClassName  : AdminAgencyJpaService.java
      * 3. Comment    : 관리자 소속사 이미지 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
     Long deleteAgencyImage(CommonImageEntity commonImageEntity);

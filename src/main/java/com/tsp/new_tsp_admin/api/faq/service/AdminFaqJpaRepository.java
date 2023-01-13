@@ -92,7 +92,7 @@ public class AdminFaqJpaRepository {
                 .orderBy(adminFaqEntity.idx.desc())
                 .where(adminFaqEntity.idx.eq(idx)
                         .and(adminFaqEntity.visible.eq("Y")))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_FAQ, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_FAQ));
 
         return toDto(findOneFaq);
     }
@@ -112,7 +112,7 @@ public class AdminFaqJpaRepository {
                 .orderBy(adminFaqEntity.idx.desc())
                 .where(adminFaqEntity.idx.lt(idx)
                         .and(adminFaqEntity.visible.eq("Y")))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_FAQ, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_FAQ));
 
         return toDto(findPrevOneFaq);
     }
@@ -132,7 +132,7 @@ public class AdminFaqJpaRepository {
                 .orderBy(adminFaqEntity.idx.desc())
                 .where(adminFaqEntity.idx.gt(idx)
                         .and(adminFaqEntity.visible.eq("Y")))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_FAQ, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_FAQ));
 
         return toDto(findNextOneFaq);
     }

@@ -85,7 +85,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
         try {
             return adminCommonJpaRepository.insertCommonCode(commonCodeEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_COMMON, e);
+            throw new TspException(ERROR_COMMON);
         }
     }
 
@@ -105,7 +105,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
         try {
             return adminCommonJpaRepository.updateCommonCode(commonCodeEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_COMMON, e);
+            throw new TspException(ERROR_UPDATE_COMMON);
         }
     }
 
@@ -125,7 +125,7 @@ public class AdminCommonJpaServiceImpl implements AdminCommonJpaService {
         try {
             return adminCommonJpaRepository.deleteCommonCode(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_COMMON, e);
+            throw new TspException(ERROR_DELETE_COMMON);
         }
     }
 }

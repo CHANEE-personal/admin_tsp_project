@@ -84,7 +84,7 @@ public class AdminFestivalJpaRepository {
         AdminFestivalEntity oneFestival = Optional.ofNullable(queryFactory
                 .selectFrom(adminFestivalEntity)
                 .where(adminFestivalEntity.idx.eq(idx))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_FESTIVAL, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_FESTIVAL));
 
         return AdminFestivalEntity.toDto(oneFestival);
     }

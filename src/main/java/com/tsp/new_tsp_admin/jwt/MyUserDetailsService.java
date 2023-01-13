@@ -29,7 +29,7 @@ public class MyUserDetailsService implements UserDetailsService {
             // 아이디 일치하는지 확인
             return new User(adminUserEntity.getName(), adminUserEntity.getPassword(), createAuthorityList("ROLE_ADMIN"));
         } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER, e);
+            throw new TspException(NOT_FOUND_USER);
         }
     }
 }

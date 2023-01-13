@@ -21,7 +21,7 @@ public class ImageService {
         try {
             return imageRepository.findOneImage(commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(NOT_FOUND_IMAGE, e);
+            throw new TspException(NOT_FOUND_IMAGE);
         }
     }
 
@@ -31,7 +31,7 @@ public class ImageService {
         try {
             return imageRepository.insertImage(commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_IMAGE, e);
+            throw new TspException(ERROR_IMAGE);
         }
     }
 
@@ -41,7 +41,7 @@ public class ImageService {
         try {
             return imageRepository.deleteImage(commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_IMAGE, e);
+            throw new TspException(ERROR_DELETE_IMAGE);
         }
     }
 }

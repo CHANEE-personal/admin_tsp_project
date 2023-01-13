@@ -100,7 +100,7 @@ public class AdminSupportJpaRepository {
         AdminSupportEntity findOneSupportModel = Optional.ofNullable(queryFactory
                 .selectFrom(adminSupportEntity)
                 .where(adminSupportEntity.idx.eq(idx))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_SUPPORT, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_SUPPORT));
 
         return toDto(findOneSupportModel);
     }
@@ -194,7 +194,7 @@ public class AdminSupportJpaRepository {
         EvaluationEntity findOneEvaluation = Optional.ofNullable(queryFactory
                 .selectFrom(evaluationEntity)
                 .where(evaluationEntity.idx.eq(idx))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_EVALUATION, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_EVALUATION));
 
         return toDto(findOneEvaluation);
     }

@@ -6,32 +6,51 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
+import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaRepository;
+import com.tsp.new_tsp_admin.api.model.service.recommend.AdminRecommendJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity.toDto;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminModelJpaServiceImpl implements AdminModelJpaService {
+    private final AdminModelJpaQueryRepository adminModelJpaQueryRepository;
     private final AdminModelJpaRepository adminModelJpaRepository;
     private final AdminAgencyJpaRepository adminAgencyJpaRepository;
+    private final AdminRecommendJpaRepository adminRecommendJpaRepository;
     private final ImageService imageService;
     private final SaveImage saveImage;
+
+    private AdminModelEntity oneModel(Long idx) {
+        return adminModelJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_MODEL));
+    }
+
+    private AdminAgencyEntity oneAgency(Long idx) {
+        return adminAgencyJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_AGENCY));
+    }
+
+    private AdminRecommendEntity oneRecommend(Long idx) {
+        return adminRecommendJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_RECOMMEND));
+    }
 
     /**
      * <pre>
@@ -45,12 +64,12 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Transactional(readOnly = true)
     public int findModelCount(Map<String, Object> modelMap) {
-        return adminModelJpaRepository.findModelCount(modelMap);
+        return adminModelJpaQueryRepository.findModelCount(modelMap);
     }
 
     /**
      * <pre>
-     * 1. MethodName : findModelsList
+     * 1. MethodName : findModelList
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 리스트 조회
      * 4. 작성자      : CHO
@@ -58,10 +77,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "model", key = "#modelMap")
     @Transactional(readOnly = true)
     public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) {
-        return adminModelJpaRepository.findModelList(modelMap);
+        return adminModelJpaQueryRepository.findModelList(modelMap);
     }
 
     /**
@@ -74,10 +92,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "model", key = "#idx")
     @Transactional(readOnly = true)
     public AdminModelDTO findOneModel(Long idx) {
-        return adminModelJpaRepository.findOneModel(idx);
+        return adminModelJpaQueryRepository.findOneModel(idx);
     }
 
     /**
@@ -90,10 +107,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "model", key = "#adminModelEntity.idx")
     @Transactional(readOnly = true)
     public AdminModelDTO findPrevOneModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.findPrevOneModel(adminModelEntity);
+        return adminModelJpaQueryRepository.findPrevOneModel(adminModelEntity);
     }
 
     /**
@@ -106,10 +122,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "model", key = "#adminModelEntity.idx")
     @Transactional(readOnly = true)
     public AdminModelDTO findNextOneModel(AdminModelEntity adminModelEntity) {
-        return adminModelJpaRepository.findNextOneModel(adminModelEntity);
+        return adminModelJpaQueryRepository.findNextOneModel(adminModelEntity);
     }
 
     /**
@@ -122,13 +137,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut("model")
-    @Transactional
     public AdminModelDTO insertModel(AdminModelEntity adminModelEntity) {
         try {
-            return adminModelJpaRepository.insertModel(adminModelEntity);
+            return toDto(adminModelJpaRepository.save(adminModelEntity));
         } catch (Exception e) {
-            throw new TspException(ERROR_MODEL, e);
+            throw new TspException(ERROR_MODEL);
         }
     }
 
@@ -142,13 +155,13 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "model", key = "#adminModelEntity.idx")
-    @Transactional
-    public AdminModelDTO updateModel(AdminModelEntity adminModelEntity) {
+    public AdminModelDTO updateModel(Long idx, AdminModelEntity adminModelEntity) {
         try {
-            return adminModelJpaRepository.updateModel(adminModelEntity);
+            Optional.ofNullable(oneModel(idx))
+                    .ifPresent(adminModel -> adminModel.update(adminModelEntity));
+            return AdminModelEntity.toDto(adminModelJpaRepository.save(adminModelEntity));
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_MODEL, e);
+            throw new TspException(ERROR_UPDATE_MODEL);
         }
     }
 
@@ -162,13 +175,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict(value = "model", key = "#idx")
-    @Transactional
-    public Long deleteModel(Long idx) {
+    public void deleteModel(Long idx) {
         try {
-            return adminModelJpaRepository.deleteModel(idx);
+            adminModelJpaRepository.deleteById(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_MODEL, e);
+            throw new TspException(ERROR_DELETE_MODEL);
         }
     }
 
@@ -182,12 +193,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Transactional
     public List<CommonImageDTO> insertModelImage(CommonImageEntity commonImageEntity, List<MultipartFile> fileName) {
         try {
             return saveImage.saveFile(fileName, commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_MODEL, e);
+            throw new TspException(ERROR_MODEL);
         }
     }
 
@@ -205,7 +215,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         try {
             return imageService.deleteImage(commonImageEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_IMAGE, e);
+            throw new TspException(ERROR_DELETE_IMAGE);
         }
     }
 
@@ -219,13 +229,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "model", key = "#adminModelEntity.agencyIdx")
-    @Transactional
-    public AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity) {
+    public AdminModelDTO updateModelAgency(Long agencyIdx, AdminModelEntity adminModelEntity) {
         // 기존 소속사 존재 여부 판단
-        adminAgencyJpaRepository.findOneAgency(adminModelEntity.getAgencyIdx());
-        // 모델 소속사 수정
-        return adminModelJpaRepository.updateModelAgency(adminModelEntity);
+        Optional.ofNullable(oneAgency(agencyIdx))
+                .ifPresent(adminAgencyEntity -> adminAgencyEntity.addAgency(adminModelEntity));
+        return toDto(adminModelEntity);
     }
 
     /**
@@ -238,10 +246,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "comment", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findModelAdminComment(Long idx) {
-        return adminModelJpaRepository.findModelAdminComment(idx);
+        return adminModelJpaQueryRepository.findModelAdminComment(idx);
     }
 
     /**
@@ -254,13 +261,14 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "model", key = "#idx")
-    @Transactional
     public AdminModelDTO toggleModelNewYn(Long idx) {
         try {
-            return adminModelJpaRepository.toggleModelNewYn(idx);
+            AdminModelEntity oneModelEntity = oneModel(idx);
+            Optional.ofNullable(oneModelEntity)
+                    .ifPresent(adminModelEntity -> adminModelEntity.toggleNewYn(adminModelEntity.getNewYn()));
+            return toDto(oneModelEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_MODEL, e);
+            throw new TspException(ERROR_UPDATE_MODEL);
         }
     }
 
@@ -274,10 +282,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "schedule", key = "#idx")
     @Transactional(readOnly = true)
     public List<AdminScheduleDTO> findOneModelSchedule(Long idx) {
-        return adminModelJpaRepository.findOneModelSchedule(idx);
+        return adminModelJpaQueryRepository.findOneModelSchedule(idx);
     }
 
     /**
@@ -290,10 +297,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "recommend")
     @Transactional(readOnly = true)
     public List<AdminRecommendDTO> findRecommendList(Map<String, Object> recommendMap) {
-        return adminModelJpaRepository.findRecommendList(recommendMap);
+        return adminModelJpaQueryRepository.findRecommendList(recommendMap);
     }
 
     /**
@@ -306,10 +312,10 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @Cacheable(value = "recommend", key = "#idx")
     @Transactional(readOnly = true)
     public AdminRecommendDTO findOneRecommend(Long idx) {
-        return adminModelJpaRepository.findOneRecommend(idx);
+        AdminRecommendEntity oneRecommend = oneRecommend(idx);
+        return AdminRecommendEntity.toDto(oneRecommend);
     }
 
     /**
@@ -322,13 +328,11 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "recommend")
-    @Transactional
     public AdminRecommendDTO insertRecommend(AdminRecommendEntity adminRecommendEntity) {
         try {
-            return adminModelJpaRepository.changeRecommend(adminRecommendEntity);
+            return AdminRecommendEntity.toDto(adminRecommendJpaRepository.save(adminRecommendEntity));
         } catch (Exception e) {
-            throw new TspException(ERROR_RECOMMEND, e);
+            throw new TspException(ERROR_RECOMMEND);
         }
     }
 
@@ -342,13 +346,13 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CachePut(value = "recommend", key = "#adminRecommendEntity.idx")
-    @Transactional
     public AdminRecommendDTO updateRecommend(AdminRecommendEntity adminRecommendEntity) {
         try {
-            return adminModelJpaRepository.changeRecommend(adminRecommendEntity);
+            Optional.ofNullable(oneRecommend(adminRecommendEntity.getIdx()))
+                    .ifPresent(adminRecommend -> adminRecommend.update(adminRecommendEntity));
+            return AdminRecommendEntity.toDto(adminRecommendEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_RECOMMEND, e);
+            throw new TspException(ERROR_UPDATE_RECOMMEND);
         }
     }
 
@@ -362,13 +366,12 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    @CacheEvict(value = "recommend", key = "#idx")
-    @Transactional
     public Long deleteRecommend(Long idx) {
         try {
-            return adminModelJpaRepository.deleteRecommend(idx);
+            adminRecommendJpaRepository.deleteById(idx);
+            return idx;
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_RECOMMEND, e);
+            throw new TspException(ERROR_DELETE_RECOMMEND);
         }
     }
 }

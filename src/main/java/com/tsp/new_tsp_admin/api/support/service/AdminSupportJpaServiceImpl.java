@@ -77,7 +77,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
         try {
             return adminSupportJpaRepository.insertSupportModel(adminSupportEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_SUPPORT, e);
+            throw new TspException(ERROR_SUPPORT);
         }
     }
 
@@ -97,7 +97,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
         try {
             return adminSupportJpaRepository.updateSupportModel(adminSupportEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_SUPPORT, e);
+            throw new TspException(ERROR_UPDATE_SUPPORT);
         }
     }
 
@@ -117,7 +117,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
         try {
             return adminSupportJpaRepository.deleteSupportModel(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_SUPPORT, e);
+            throw new TspException(ERROR_DELETE_SUPPORT);
         }
     }
 
@@ -184,7 +184,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
         try {
             return adminSupportJpaRepository.evaluationSupportModel(evaluationEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_EVALUATION, e);
+            throw new TspException(ERROR_EVALUATION);
         }
     }
 
@@ -204,7 +204,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
         try {
             return adminSupportJpaRepository.updateEvaluation(evaluationEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_EVALUATION, e);
+            throw new TspException(ERROR_UPDATE_EVALUATION);
         }
     }
 
@@ -224,7 +224,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
         try {
             return adminSupportJpaRepository.deleteEvaluation(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_EVALUATION, e);
+            throw new TspException(ERROR_DELETE_EVALUATION);
         }
     }
 
@@ -244,7 +244,7 @@ public class AdminSupportJpaServiceImpl implements AdminSupportJpaService {
         try {
             return adminSupportJpaRepository.updatePass(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_SUPPORT, e);
+            throw new TspException(ERROR_UPDATE_SUPPORT);
         }
     }
 

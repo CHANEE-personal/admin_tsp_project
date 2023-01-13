@@ -53,7 +53,7 @@ class AdminAgencyJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
+        adminAgencyDTO = adminAgencyJpaService.insertAgency(adminAgencyEntity);
     }
 
     @BeforeEach
@@ -158,11 +158,8 @@ class AdminAgencyJpaServiceTest {
     @Test
     @DisplayName("소속사 상세 조회 테스트")
     void 소속사상세조회테스트() {
-        // given
-        adminAgencyEntity = AdminAgencyEntity.builder().idx(1L).build();
-
         // then
-        assertThat(adminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx()).getAgencyName()).isEqualTo("agency");
+        assertThat(adminAgencyJpaService.findOneAgency(adminAgencyDTO.getIdx()).getAgencyName()).isEqualTo("agency");
     }
 
     @Test

@@ -69,7 +69,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.findOneUserByToken(token);
         } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER, e);
+            throw new TspException(NOT_FOUND_USER);
         }
     }
 
@@ -88,7 +88,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.adminLogin(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER, e);
+            throw new TspException(NOT_FOUND_USER);
         }
     }
 
@@ -109,7 +109,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
             AdminUserEntity adminUserEntity = adminUserJpaRepository.findOneUser(paramUserEntity.getUserId());
             adminUserJpaRepository.insertUserTokenByEm(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_USER, e);
+            throw new TspException(ERROR_USER);
         }
     }
 
@@ -129,7 +129,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.insertAdminUser(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_USER, e);
+            throw new TspException(ERROR_USER);
         }
     }
 
@@ -149,7 +149,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.updateAdminUser(adminUserEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_USER, e);
+            throw new TspException(ERROR_UPDATE_USER);
         }
     }
 
@@ -169,7 +169,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         try {
             return adminUserJpaRepository.deleteAdminUser(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_USER, e);
+            throw new TspException(ERROR_DELETE_USER);
         }
     }
 }

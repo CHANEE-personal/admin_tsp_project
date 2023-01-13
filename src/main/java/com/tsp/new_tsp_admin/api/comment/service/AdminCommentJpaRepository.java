@@ -83,7 +83,7 @@ public class AdminCommentJpaRepository {
                 .orderBy(adminCommentEntity.idx.desc())
                 .where(adminCommentEntity.idx.eq(idx)
                         .and(adminCommentEntity.visible.eq("Y")))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_COMMENT, new Throwable()));
+                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_COMMENT));
 
         return toDto(findOneAdminComment);
     }

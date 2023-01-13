@@ -116,7 +116,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
         try {
             return adminProductionJpaRepository.insertProduction(adminProductionEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_PRODUCTION, e);
+            throw new TspException(ERROR_PRODUCTION);
         }
     }
 
@@ -136,7 +136,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
         try {
             return adminProductionJpaRepository.updateProductionByEm(adminProductionEntity);
         } catch (Exception e) {
-            throw new TspException(ERROR_UPDATE_MODEL, e);
+            throw new TspException(ERROR_UPDATE_MODEL);
         }
     }
 
@@ -156,7 +156,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
         try {
             return adminProductionJpaRepository.deleteProductionByEm(idx);
         } catch (Exception e) {
-            throw new TspException(ERROR_DELETE_PRODUCTION, e);
+            throw new TspException(ERROR_DELETE_PRODUCTION);
         }
     }
 
@@ -176,7 +176,7 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
         try {
             return adminProductionJpaRepository.findProductionAdminComment(idx);
         } catch (Exception e) {
-            throw new TspException(NOT_FOUND_COMMENT_LIST, e);
+            throw new TspException(NOT_FOUND_COMMENT_LIST);
         }
     }
 }

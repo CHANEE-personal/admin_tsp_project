@@ -90,7 +90,7 @@ public interface AdminModelJpaService {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
-    AdminModelDTO updateModel(AdminModelEntity adminModelEntity);
+    AdminModelDTO updateModel(Long idx, AdminModelEntity adminModelEntity);
 
     /**
      * <pre>
@@ -101,7 +101,7 @@ public interface AdminModelJpaService {
      * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
-    Long deleteModel(Long idx);
+    void deleteModel(Long idx);
 
     /**
      * <pre>
@@ -134,7 +134,7 @@ public interface AdminModelJpaService {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    AdminModelDTO updateModelAgency(AdminModelEntity adminModelEntity);
+    AdminModelDTO updateModelAgency(Long idx, AdminModelEntity adminModelEntity);
 
     /**
      * <pre>
