@@ -126,12 +126,12 @@ class AdminNoticeJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공지사항 조회 테스트")
     void 공지사항조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/notice/lists")
+        mockMvc.perform(get("/api/notice/lists").param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(jsonPath("$.noticeList.length()", greaterThan(0)));
+                .andExpect(jsonPath("$.content").isNotEmpty());
     }
 
     @Test
@@ -140,12 +140,11 @@ class AdminNoticeJpaControllerTest {
     void 공지사항검색조회Api테스트() throws Exception {
         // 검색 테스트
         LinkedMultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
-        paramMap.add("jpaStartPage", "1");
-        paramMap.add("size", "3");
+
         paramMap.add("searchType", "0");
         paramMap.add("searchKeyword", "하하");
 
-        mockMvc.perform(get("/api/notice/lists").queryParams(paramMap)
+        mockMvc.perform(get("/api/notice/lists").queryParams(paramMap).param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())

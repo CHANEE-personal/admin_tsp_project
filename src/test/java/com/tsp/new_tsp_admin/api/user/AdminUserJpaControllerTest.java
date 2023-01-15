@@ -114,7 +114,7 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 회원 조회 테스트")
     void Admin회원조회() throws Exception {
-        mockMvc.perform(get("/api/user").param("page", "1").param("size", "100")
+        mockMvc.perform(get("/api/user").param("pageNum", "1").param("size", "100")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -126,7 +126,7 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 회원 조회 권한 테스트")
     void Admin회원조회권한테스트() throws Exception {
-        mockMvc.perform(get("/api/user").param("page", "1").param("size", "100")
+        mockMvc.perform(get("/api/user").param("pageNum", "1").param("size", "100")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());

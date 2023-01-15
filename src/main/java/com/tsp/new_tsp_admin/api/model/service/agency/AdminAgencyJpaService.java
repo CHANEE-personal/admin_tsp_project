@@ -4,23 +4,14 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminAgencyJpaService {
-
-    /**
-     * <pre>
-     * 1. MethodName : findAgencyCount
-     * 2. ClassName  : AdminAgencyJpaService.java
-     * 3. Comment    : 관리자 소속사 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 14.
-     * </pre>
-     */
-    int findAgencyCount(Map<String, Object> agencyMap);
 
     /**
      * <pre>
@@ -31,7 +22,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap);
+    Page<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap, PageRequest pageRequest);
 
     /**
      * <pre>

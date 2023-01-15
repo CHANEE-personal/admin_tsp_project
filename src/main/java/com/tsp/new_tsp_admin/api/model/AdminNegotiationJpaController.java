@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -53,35 +55,17 @@ public class AdminNegotiationJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findModelNegotiationList(@RequestParam(required = false) Map<String, Object> paramMap,
-                                                                        @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
-                                                                        @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
-                                                                        Paging paging) {
-        // 페이징 및 검색
-        Map<String, Object> negotiationMap = searchCommon.searchCommon(paging, paramMap);
+    public ResponseEntity<Page<AdminNegotiationDTO>> findModelNegotiationList(@RequestParam(required = false) Map<String, Object> paramMap,
+                                                                              @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
+                                                                              @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
+                                                                              Paging paging) {
 
         if (searchStartTime != null && searchEndTime != null) {
-            negotiationMap.put("searchStartTime", searchStartTime);
-            negotiationMap.put("searchEndTime", searchEndTime);
+            paramMap.put("searchStartTime", searchStartTime);
+            paramMap.put("searchEndTime", searchEndTime);
         }
 
-        int negotiationCount = this.adminNegotiationJpaService.findNegotiationCount(negotiationMap);
-        List<AdminNegotiationDTO> negotiationList = new ArrayList<>();
-
-        if (negotiationCount > 0) {
-            negotiationList = this.adminNegotiationJpaService.findNegotiationList(negotiationMap);
-        }
-
-        // 리스트 수
-        negotiationMap.put("pageSize", paging.getSize());
-        // 전체 페이지 수
-        negotiationMap.put("perPageListCnt", ceil((double) negotiationCount / paging.getSize()));
-        // 전체 아이템 수
-        negotiationMap.put("negotiationListTotalCnt", negotiationCount);
-
-        negotiationMap.put("negotiationList", negotiationList);
-
-        return ResponseEntity.ok().body(negotiationMap);
+        return ResponseEntity.ok(adminNegotiationJpaService.findNegotiationList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**

@@ -8,6 +8,8 @@ import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,21 +38,6 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findPortfoliosCount
-     * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
-     * 3. Comment    : 관리자 포트폴리오 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 14.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findPortfolioCount(Map<String, Object> portfolioMap) {
-        return adminPortfolioJpaQueryRepository.findPortfolioCount(portfolioMap);
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
@@ -60,8 +47,8 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) {
-        return adminPortfolioJpaQueryRepository.findPortfolioList(portfolioMap);
+    public Page<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap, PageRequest pageRequest) {
+        return adminPortfolioJpaQueryRepository.findPortfolioList(portfolioMap, pageRequest);
     }
 
     /**

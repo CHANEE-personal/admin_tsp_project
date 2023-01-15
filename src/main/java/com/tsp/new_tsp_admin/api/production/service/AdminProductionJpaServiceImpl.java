@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,21 +34,6 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
 
     /**
      * <pre>
-     * 1. MethodName : findProductionCount
-     * 2. ClassName  : AdminProductionJpaServiceImpl.java
-     * 3. Comment    : 관리자 프로덕션 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 09.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findProductionCount(Map<String, Object> productionMap) {
-        return adminProductionJpaQueryRepository.findProductionCount(productionMap);
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaServiceImpl.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
@@ -56,8 +43,8 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
-        return adminProductionJpaQueryRepository.findProductionList(productionMap);
+    public Page<AdminProductionDTO> findProductionList(Map<String, Object> productionMap, PageRequest pageRequest) {
+        return adminProductionJpaQueryRepository.findProductionList(productionMap, pageRequest);
     }
 
     /**

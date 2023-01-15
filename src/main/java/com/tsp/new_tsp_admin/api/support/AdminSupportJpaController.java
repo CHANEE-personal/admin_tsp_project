@@ -13,6 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +50,7 @@ public class AdminSupportJpaController {
      */
     @ApiOperation(value = "지원모델 조회", notes = "지원모델을 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "지원모델 조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "지원모델 조회 성공", response = Page.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
@@ -56,27 +58,8 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/lists")
-    public ResponseEntity<Map<String, Object>> findSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
-        // 페이징 및 검색
-        Map<String, Object> supportMap = searchCommon.searchCommon(paging, paramMap);
-
-        int supportListCount = this.adminSupportJpaService.findSupportCount(supportMap);
-        List<AdminSupportDTO> supportList = new ArrayList<>();
-
-        if (supportListCount > 0) {
-            supportList = this.adminSupportJpaService.findSupportList(supportMap);
-        }
-
-        // 리스트 수
-        supportMap.put("pageSize", paging.getSize());
-        // 전체 페이지 수
-        supportMap.put("perPageListCnt", ceil((double) supportListCount / paging.getSize()));
-        // 전체 아이템 수
-        supportMap.put("modelListTotalCnt", supportListCount);
-
-        supportMap.put("supportList", supportList);
-
-        return ResponseEntity.ok().body(supportMap);
+    public ResponseEntity<Page<AdminSupportDTO>> findSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok().body(adminSupportJpaService.findSupportList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**
@@ -137,7 +120,7 @@ public class AdminSupportJpaController {
      */
     @ApiOperation(value = "지원모델 평가 리스트 조회", notes = "지원모델을 평가 리스트를 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "지원모델 평가 리스트 조회성공", response = Map.class),
+            @ApiResponse(code = 200, message = "지원모델 평가 리스트 조회성공", response = Page.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
@@ -145,27 +128,8 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/evaluation/lists")
-    public ResponseEntity<Map<String, Object>> findEvaluationList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
-        // 페이징 및 검색
-        Map<String, Object> evaluationMap = searchCommon.searchCommon(paging, paramMap);
-
-        int evaluationCount = this.adminSupportJpaService.findEvaluationCount(evaluationMap);
-        List<EvaluationDTO> evaluationList = new ArrayList<>();
-
-        if (evaluationCount > 0) {
-            evaluationList = this.adminSupportJpaService.findEvaluationList(evaluationMap);
-        }
-
-        // 리스트 수
-        evaluationMap.put("pageSize", paging.getSize());
-        // 전체 페이지 수
-        evaluationMap.put("perPageListCnt", ceil((evaluationCount - 1) / paging.getSize() + 1));
-        // 전체 아이템 수
-        evaluationMap.put("evaluationCount", evaluationCount);
-
-        evaluationMap.put("evaluationList", evaluationList);
-
-        return ResponseEntity.ok().body(evaluationMap);
+    public ResponseEntity<Page<EvaluationDTO>> findEvaluationList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok().body(adminSupportJpaService.findEvaluationList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**

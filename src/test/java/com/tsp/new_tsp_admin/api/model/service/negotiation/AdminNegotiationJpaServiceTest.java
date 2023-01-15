@@ -18,6 +18,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
@@ -121,29 +125,26 @@ class AdminNegotiationJpaServiceTest {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
         negotiationMap.put("searchKeyword", "김예영");
-        negotiationMap.put("jpaStartPage", 0);
-        negotiationMap.put("size", 100);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminNegotiationJpaService.findNegotiationList(negotiationMap)).isNotEmpty();
+        assertThat(adminNegotiationJpaService.findNegotiationList(negotiationMap, pageRequest)).isNotEmpty();
 
         Map<String, Object> lastMonthNegotiationMap = new HashMap<>();
         lastMonthNegotiationMap.put("searchStartTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 1, 0, 0, 0, 0));
         lastMonthNegotiationMap.put("searchEndTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 30, 23, 59, 59));
-        lastMonthNegotiationMap.put("jpaStartPage", 0);
-        lastMonthNegotiationMap.put("size", 100);
+        PageRequest pageRequest2 = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminNegotiationJpaService.findNegotiationList(negotiationMap)).isNotEmpty();
+        assertThat(adminNegotiationJpaService.findNegotiationList(negotiationMap, pageRequest2)).isNotEmpty();
 
         Map<String, Object> currentNegotiationMap = new HashMap<>();
         currentNegotiationMap.put("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0));
         currentNegotiationMap.put("searchEndTime", of(now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59));
-        currentNegotiationMap.put("jpaStartPage", 0);
-        currentNegotiationMap.put("size", 100);
+        PageRequest pageRequest3 = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminNegotiationJpaService.findNegotiationList(negotiationMap)).isNotEmpty();
+        assertThat(adminNegotiationJpaService.findNegotiationList(negotiationMap, pageRequest3)).isNotEmpty();
     }
 
     @Test
@@ -151,8 +152,7 @@ class AdminNegotiationJpaServiceTest {
     void 모델섭외Mockito조회테스트() {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
-        negotiationMap.put("jpaStartPage", 1);
-        negotiationMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminNegotiationDTO> negotiationList = new ArrayList<>();
         negotiationList.add(AdminNegotiationDTO.builder().modelIdx(adminModelEntity.getIdx())
@@ -160,21 +160,24 @@ class AdminNegotiationJpaServiceTest {
         negotiationList.add(AdminNegotiationDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelNegotiationDesc("영화 프로젝트 참여 테스트 두번째").modelNegotiationDate(now()).build());
 
+        Page<AdminNegotiationDTO> resultNegotiation = new PageImpl<>(negotiationList, pageRequest, negotiationList.size());
+
         // when
-        when(mockAdminNegotiationJpaService.findNegotiationList(negotiationMap)).thenReturn(negotiationList);
-        List<AdminNegotiationDTO> newModelNegotiationList = mockAdminNegotiationJpaService.findNegotiationList(negotiationMap);
+        when(mockAdminNegotiationJpaService.findNegotiationList(negotiationMap, pageRequest)).thenReturn(resultNegotiation);
+        Page<AdminNegotiationDTO> newModelNegotiationList = mockAdminNegotiationJpaService.findNegotiationList(negotiationMap, pageRequest);
+        List<AdminNegotiationDTO> findNegotiationList = newModelNegotiationList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newModelNegotiationList.get(0).getIdx()).isEqualTo(negotiationList.get(0).getIdx());
-        assertThat(newModelNegotiationList.get(0).getModelNegotiationDesc()).isEqualTo(negotiationList.get(0).getModelNegotiationDesc());
+        assertThat(findNegotiationList.get(0).getIdx()).isEqualTo(negotiationList.get(0).getIdx());
+        assertThat(findNegotiationList.get(0).getModelNegotiationDesc()).isEqualTo(negotiationList.get(0).getModelNegotiationDesc());
 
         // verify
-        verify(mockAdminNegotiationJpaService, times(1)).findNegotiationList(negotiationMap);
-        verify(mockAdminNegotiationJpaService, atLeastOnce()).findNegotiationList(negotiationMap);
+        verify(mockAdminNegotiationJpaService, times(1)).findNegotiationList(negotiationMap, pageRequest);
+        verify(mockAdminNegotiationJpaService, atLeastOnce()).findNegotiationList(negotiationMap, pageRequest);
         verifyNoMoreInteractions(mockAdminNegotiationJpaService);
 
         InOrder inOrder = inOrder(mockAdminNegotiationJpaService);
-        inOrder.verify(mockAdminNegotiationJpaService).findNegotiationList(negotiationMap);
+        inOrder.verify(mockAdminNegotiationJpaService).findNegotiationList(negotiationMap, pageRequest);
     }
 
     @Test
@@ -182,8 +185,7 @@ class AdminNegotiationJpaServiceTest {
     void 모델섭외BDD조회테스트() {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
-        negotiationMap.put("jpaStartPage", 1);
-        negotiationMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminNegotiationDTO> negotiationList = new ArrayList<>();
         negotiationList.add(AdminNegotiationDTO.builder().modelIdx(adminModelEntity.getIdx())
@@ -191,17 +193,20 @@ class AdminNegotiationJpaServiceTest {
         negotiationList.add(AdminNegotiationDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelNegotiationDesc("영화 프로젝트 참여 테스트 두번째").modelNegotiationDate(now()).build());
 
+        Page<AdminNegotiationDTO> resultNegotiation = new PageImpl<>(negotiationList, pageRequest, negotiationList.size());
+
         // when
-        given(mockAdminNegotiationJpaService.findNegotiationList(negotiationMap)).willReturn(negotiationList);
-        List<AdminNegotiationDTO> newModelNegotiationList = mockAdminNegotiationJpaService.findNegotiationList(negotiationMap);
+        given(mockAdminNegotiationJpaService.findNegotiationList(negotiationMap, pageRequest)).willReturn(resultNegotiation);
+        Page<AdminNegotiationDTO> newModelNegotiationList = mockAdminNegotiationJpaService.findNegotiationList(negotiationMap, pageRequest);
+        List<AdminNegotiationDTO> findNegotiationList = newModelNegotiationList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newModelNegotiationList.get(0).getIdx()).isEqualTo(negotiationList.get(0).getIdx());
-        assertThat(newModelNegotiationList.get(0).getModelNegotiationDesc()).isEqualTo(negotiationList.get(0).getModelNegotiationDesc());
+        assertThat(findNegotiationList.get(0).getIdx()).isEqualTo(negotiationList.get(0).getIdx());
+        assertThat(findNegotiationList.get(0).getModelNegotiationDesc()).isEqualTo(negotiationList.get(0).getModelNegotiationDesc());
 
         // verify
-        then(mockAdminNegotiationJpaService).should(times(1)).findNegotiationList(negotiationMap);
-        then(mockAdminNegotiationJpaService).should(atLeastOnce()).findNegotiationList(negotiationMap);
+        then(mockAdminNegotiationJpaService).should(times(1)).findNegotiationList(negotiationMap, pageRequest);
+        then(mockAdminNegotiationJpaService).should(atLeastOnce()).findNegotiationList(negotiationMap, pageRequest);
         then(mockAdminNegotiationJpaService).shouldHaveNoMoreInteractions();
     }
 

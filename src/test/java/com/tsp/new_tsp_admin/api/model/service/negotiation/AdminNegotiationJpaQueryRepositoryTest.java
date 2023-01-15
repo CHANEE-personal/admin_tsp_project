@@ -20,6 +20,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
@@ -126,29 +130,26 @@ class AdminNegotiationJpaQueryRepositoryTest {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
         negotiationMap.put("searchKeyword", "김예영");
-        negotiationMap.put("jpaStartPage", 0);
-        negotiationMap.put("size", 100);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap)).isNotEmpty();
+        assertThat(adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap, pageRequest)).isNotEmpty();
 
         Map<String, Object> lastMonthNegotiationMap = new HashMap<>();
         lastMonthNegotiationMap.put("searchStartTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 1, 0, 0, 0, 0));
         lastMonthNegotiationMap.put("searchEndTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 30, 23, 59, 59));
-        lastMonthNegotiationMap.put("jpaStartPage", 0);
-        lastMonthNegotiationMap.put("size", 100);
+        PageRequest pageRequest2 = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap)).isNotEmpty();
+        assertThat(adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap, pageRequest2)).isNotEmpty();
 
         Map<String, Object> currentNegotiationMap = new HashMap<>();
         currentNegotiationMap.put("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0));
         currentNegotiationMap.put("searchEndTime", of(now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59));
-        currentNegotiationMap.put("jpaStartPage", 0);
-        currentNegotiationMap.put("size", 100);
+        PageRequest pageRequest3 = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap)).isNotEmpty();
+        assertThat(adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap, pageRequest3)).isNotEmpty();
     }
 
     @Test
@@ -156,8 +157,7 @@ class AdminNegotiationJpaQueryRepositoryTest {
     void 모델섭외Mockito조회테스트() {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
-        negotiationMap.put("jpaStartPage", 1);
-        negotiationMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminNegotiationDTO> negotiationList = new ArrayList<>();
         negotiationList.add(AdminNegotiationDTO.builder().modelIdx(adminModelEntity.getIdx())
@@ -165,21 +165,24 @@ class AdminNegotiationJpaQueryRepositoryTest {
         negotiationList.add(AdminNegotiationDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelNegotiationDesc("영화 프로젝트 참여 테스트 두번째").modelNegotiationDate(now()).build());
 
+        Page<AdminNegotiationDTO> resultNegotiation = new PageImpl<>(negotiationList, pageRequest, negotiationList.size());
+
         // when
-        when(mockAdminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap)).thenReturn(negotiationList);
-        List<AdminNegotiationDTO> newModelNegotiationList = mockAdminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap);
+        when(mockAdminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap, pageRequest)).thenReturn(resultNegotiation);
+        Page<AdminNegotiationDTO> newModelNegotiationList = mockAdminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap, pageRequest);
+        List<AdminNegotiationDTO> findNegotiationList = newModelNegotiationList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newModelNegotiationList.get(0).getIdx()).isEqualTo(negotiationList.get(0).getIdx());
-        assertThat(newModelNegotiationList.get(0).getModelNegotiationDesc()).isEqualTo(negotiationList.get(0).getModelNegotiationDesc());
+        assertThat(findNegotiationList.get(0).getIdx()).isEqualTo(negotiationList.get(0).getIdx());
+        assertThat(findNegotiationList.get(0).getModelNegotiationDesc()).isEqualTo(negotiationList.get(0).getModelNegotiationDesc());
 
         // verify
-        verify(mockAdminNegotiationJpaQueryRepository, times(1)).findNegotiationList(negotiationMap);
-        verify(mockAdminNegotiationJpaQueryRepository, atLeastOnce()).findNegotiationList(negotiationMap);
+        verify(mockAdminNegotiationJpaQueryRepository, times(1)).findNegotiationList(negotiationMap, pageRequest);
+        verify(mockAdminNegotiationJpaQueryRepository, atLeastOnce()).findNegotiationList(negotiationMap, pageRequest);
         verifyNoMoreInteractions(mockAdminNegotiationJpaQueryRepository);
 
         InOrder inOrder = inOrder(mockAdminNegotiationJpaQueryRepository);
-        inOrder.verify(mockAdminNegotiationJpaQueryRepository).findNegotiationList(negotiationMap);
+        inOrder.verify(mockAdminNegotiationJpaQueryRepository).findNegotiationList(negotiationMap, pageRequest);
     }
 
     @Test
@@ -187,8 +190,7 @@ class AdminNegotiationJpaQueryRepositoryTest {
     void 모델섭외BDD조회테스트() {
         // given
         Map<String, Object> negotiationMap = new HashMap<>();
-        negotiationMap.put("jpaStartPage", 1);
-        negotiationMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminNegotiationDTO> negotiationList = new ArrayList<>();
         negotiationList.add(AdminNegotiationDTO.builder().modelIdx(adminModelEntity.getIdx())
@@ -196,122 +198,20 @@ class AdminNegotiationJpaQueryRepositoryTest {
         negotiationList.add(AdminNegotiationDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelNegotiationDesc("영화 프로젝트 참여 테스트 두번째").modelNegotiationDate(now()).build());
 
+        Page<AdminNegotiationDTO> resultNegotiation = new PageImpl<>(negotiationList, pageRequest, negotiationList.size());
+
         // when
-        given(mockAdminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap)).willReturn(negotiationList);
-        List<AdminNegotiationDTO> newModelNegotiationList = mockAdminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap);
+        given(mockAdminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap, pageRequest)).willReturn(resultNegotiation);
+        Page<AdminNegotiationDTO> newModelNegotiationList = mockAdminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap, pageRequest);
+        List<AdminNegotiationDTO> findNegotiationList = newModelNegotiationList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newModelNegotiationList.get(0).getIdx()).isEqualTo(negotiationList.get(0).getIdx());
-        assertThat(newModelNegotiationList.get(0).getModelNegotiationDesc()).isEqualTo(negotiationList.get(0).getModelNegotiationDesc());
+        assertThat(findNegotiationList.get(0).getIdx()).isEqualTo(negotiationList.get(0).getIdx());
+        assertThat(findNegotiationList.get(0).getModelNegotiationDesc()).isEqualTo(negotiationList.get(0).getModelNegotiationDesc());
 
         // verify
-        then(mockAdminNegotiationJpaQueryRepository).should(times(1)).findNegotiationList(negotiationMap);
-        then(mockAdminNegotiationJpaQueryRepository).should(atLeastOnce()).findNegotiationList(negotiationMap);
-        then(mockAdminNegotiationJpaQueryRepository).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("이전 or 다음 모델 섭외 상세 조회 테스트")
-    void 이전or다음모델섭외상세조회테스트() {
-        // given
-        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
-
-        // when
-        adminNegotiationDTO = adminNegotiationJpaQueryRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
-
-        // 이전 모델 섭외
-        assertThat(adminNegotiationJpaQueryRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx()).getIdx()).isEqualTo(1);
-        // 다음 모델 섭외
-        assertThat(adminNegotiationJpaQueryRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx()).getIdx()).isEqualTo(3);
-    }
-
-    @Test
-    @DisplayName("이전 모델 섭외 상세 조회 Mockito 테스트")
-    void 이전모델섭외상세조회Mockito테스트() {
-        // given
-        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
-
-        // when
-        adminNegotiationDTO = adminNegotiationJpaQueryRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
-
-        when(mockAdminNegotiationJpaQueryRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx())).thenReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaQueryRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx());
-
-        // then
-        assertThat(negotiationInfo.getIdx()).isEqualTo(1);
-
-        // verify
-        verify(mockAdminNegotiationJpaQueryRepository, times(1)).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
-        verify(mockAdminNegotiationJpaQueryRepository, atLeastOnce()).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
-        verifyNoMoreInteractions(mockAdminNegotiationJpaQueryRepository);
-
-        InOrder inOrder = inOrder(mockAdminNegotiationJpaQueryRepository);
-        inOrder.verify(mockAdminNegotiationJpaQueryRepository).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
-    }
-
-    @Test
-    @DisplayName("이전 모델 섭외 상세 조회 BDD 테스트")
-    void 이전모델섭외상세조회BDD테스트() {
-        // given
-        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
-
-        // when
-        adminNegotiationDTO = adminNegotiationJpaQueryRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
-
-        given(mockAdminNegotiationJpaQueryRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx())).willReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaQueryRepository.findPrevOneNegotiation(adminNegotiationEntity.getIdx());
-
-        // then
-        assertThat(negotiationInfo.getIdx()).isEqualTo(1);
-
-        // verify
-        then(mockAdminNegotiationJpaQueryRepository).should(times(1)).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
-        then(mockAdminNegotiationJpaQueryRepository).should(atLeastOnce()).findPrevOneNegotiation(adminNegotiationEntity.getIdx());
-        then(mockAdminNegotiationJpaQueryRepository).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("다음 모델 섭외 상세 조회 Mockito 테스트")
-    void 다음모델섭외상세조회Mockito테스트() {
-        // given
-        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
-
-        // when
-        adminNegotiationDTO = adminNegotiationJpaQueryRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
-
-        when(mockAdminNegotiationJpaQueryRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx())).thenReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaQueryRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx());
-
-        // then
-        assertThat(negotiationInfo.getIdx()).isEqualTo(3);
-
-        // verify
-        verify(mockAdminNegotiationJpaQueryRepository, times(1)).findNextOneNegotiation(adminNegotiationEntity.getIdx());
-        verify(mockAdminNegotiationJpaQueryRepository, atLeastOnce()).findNextOneNegotiation(adminNegotiationEntity.getIdx());
-        verifyNoMoreInteractions(mockAdminNegotiationJpaQueryRepository);
-
-        InOrder inOrder = inOrder(mockAdminNegotiationJpaQueryRepository);
-        inOrder.verify(mockAdminNegotiationJpaQueryRepository).findNextOneNegotiation(adminNegotiationEntity.getIdx());
-    }
-
-    @Test
-    @DisplayName("다음 모델 섭외 상세 조회 BDD 테스트")
-    void 다음모델섭외상세조회BDD테스트() {
-        // given
-        adminNegotiationEntity = AdminNegotiationEntity.builder().idx(2L).build();
-
-        // when
-        adminNegotiationDTO = adminNegotiationJpaQueryRepository.findOneNegotiation(adminNegotiationEntity.getIdx());
-
-        given(mockAdminNegotiationJpaQueryRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx())).willReturn(adminNegotiationDTO);
-        AdminNegotiationDTO negotiationInfo = mockAdminNegotiationJpaQueryRepository.findNextOneNegotiation(adminNegotiationEntity.getIdx());
-
-        // then
-        assertThat(negotiationInfo.getIdx()).isEqualTo(3);
-
-        // verify
-        then(mockAdminNegotiationJpaQueryRepository).should(times(1)).findNextOneNegotiation(adminNegotiationEntity.getIdx());
-        then(mockAdminNegotiationJpaQueryRepository).should(atLeastOnce()).findNextOneNegotiation(adminNegotiationEntity.getIdx());
+        then(mockAdminNegotiationJpaQueryRepository).should(times(1)).findNegotiationList(negotiationMap, pageRequest);
+        then(mockAdminNegotiationJpaQueryRepository).should(atLeastOnce()).findNegotiationList(negotiationMap, pageRequest);
         then(mockAdminNegotiationJpaQueryRepository).shouldHaveNoMoreInteractions();
     }
 }

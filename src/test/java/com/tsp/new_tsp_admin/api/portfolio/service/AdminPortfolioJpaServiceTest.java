@@ -19,6 +19,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -89,15 +93,14 @@ class AdminPortfolioJpaServiceTest {
     }
 
     @Test
-    @DisplayName("포트폴리오 리스트 조회 테스트")
-    void 포트폴리오리스트조회테스트() {
+    @DisplayName("포트폴리오조회테스트")
+    void 포트폴리오조회테스트() {
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
-        portfolioMap.put("jpaStartPage", 1);
-        portfolioMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminPortfolioJpaService.findPortfolioList(portfolioMap)).isNotEmpty();
+        assertThat(adminPortfolioJpaService.findPortfolioList(portfolioMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -105,37 +108,38 @@ class AdminPortfolioJpaServiceTest {
     void 포트폴리오리스트조회Mockito테스트() {
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
-        portfolioMap.put("jpaStartPage", 1);
-        portfolioMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminPortFolioDTO> returnPortfolioList = new ArrayList<>();
         returnPortfolioList.add(AdminPortFolioDTO.builder()
                 .idx(1L).title("portfolioTest").description("portfolioTest").hashTag("portfolio").videoUrl("test").visible("Y").build());
+        Page<AdminPortFolioDTO> resultPortfolio = new PageImpl<>(returnPortfolioList, pageRequest, returnPortfolioList.size());
 
         // when
-        when(mockAdminPortfolioJpaService.findPortfolioList(portfolioMap)).thenReturn(returnPortfolioList);
-        List<AdminPortFolioDTO> portfolioList = mockAdminPortfolioJpaService.findPortfolioList(portfolioMap);
+        when(mockAdminPortfolioJpaService.findPortfolioList(portfolioMap, pageRequest)).thenReturn(resultPortfolio);
+        Page<AdminPortFolioDTO> portfolioList = mockAdminPortfolioJpaService.findPortfolioList(portfolioMap, pageRequest);
+        List<AdminPortFolioDTO> findPortfolioList = portfolioList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(portfolioList).isNotEmpty(),
-                () -> assertThat(portfolioList).hasSize(1)
+                () -> assertThat(findPortfolioList).isNotEmpty(),
+                () -> assertThat(findPortfolioList).hasSize(1)
         );
 
-        assertThat(portfolioList.get(0).getIdx()).isEqualTo(returnPortfolioList.get(0).getIdx());
-        assertThat(portfolioList.get(0).getTitle()).isEqualTo(returnPortfolioList.get(0).getTitle());
-        assertThat(portfolioList.get(0).getDescription()).isEqualTo(returnPortfolioList.get(0).getDescription());
-        assertThat(portfolioList.get(0).getHashTag()).isEqualTo(returnPortfolioList.get(0).getHashTag());
-        assertThat(portfolioList.get(0).getVideoUrl()).isEqualTo(returnPortfolioList.get(0).getVideoUrl());
-        assertThat(portfolioList.get(0).getVisible()).isEqualTo(returnPortfolioList.get(0).getVisible());
+        assertThat(findPortfolioList.get(0).getIdx()).isEqualTo(returnPortfolioList.get(0).getIdx());
+        assertThat(findPortfolioList.get(0).getTitle()).isEqualTo(returnPortfolioList.get(0).getTitle());
+        assertThat(findPortfolioList.get(0).getDescription()).isEqualTo(returnPortfolioList.get(0).getDescription());
+        assertThat(findPortfolioList.get(0).getHashTag()).isEqualTo(returnPortfolioList.get(0).getHashTag());
+        assertThat(findPortfolioList.get(0).getVideoUrl()).isEqualTo(returnPortfolioList.get(0).getVideoUrl());
+        assertThat(findPortfolioList.get(0).getVisible()).isEqualTo(returnPortfolioList.get(0).getVisible());
 
         // verify
-        verify(mockAdminPortfolioJpaService, times(1)).findPortfolioList(portfolioMap);
-        verify(mockAdminPortfolioJpaService, atLeastOnce()).findPortfolioList(portfolioMap);
+        verify(mockAdminPortfolioJpaService, times(1)).findPortfolioList(portfolioMap, pageRequest);
+        verify(mockAdminPortfolioJpaService, atLeastOnce()).findPortfolioList(portfolioMap, pageRequest);
         verifyNoMoreInteractions(mockAdminPortfolioJpaService);
 
         InOrder inOrder = inOrder(mockAdminPortfolioJpaService);
-        inOrder.verify(mockAdminPortfolioJpaService).findPortfolioList(portfolioMap);
+        inOrder.verify(mockAdminPortfolioJpaService).findPortfolioList(portfolioMap, pageRequest);
     }
 
     @Test
@@ -143,33 +147,34 @@ class AdminPortfolioJpaServiceTest {
     void 포트폴리오리스트조회BDD테스트() {
         // given
         Map<String, Object> portfolioMap = new HashMap<>();
-        portfolioMap.put("jpaStartPage", 1);
-        portfolioMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminPortFolioDTO> returnPortfolioList = new ArrayList<>();
         returnPortfolioList.add(AdminPortFolioDTO.builder()
                 .idx(1L).title("portfolioTest").description("portfolioTest").hashTag("portfolio").videoUrl("test").visible("Y").build());
+        Page<AdminPortFolioDTO> resultPortfolio = new PageImpl<>(returnPortfolioList, pageRequest, returnPortfolioList.size());
 
         // when
-        given(mockAdminPortfolioJpaService.findPortfolioList(portfolioMap)).willReturn(returnPortfolioList);
-        List<AdminPortFolioDTO> portfolioList = mockAdminPortfolioJpaService.findPortfolioList(portfolioMap);
+        given(mockAdminPortfolioJpaService.findPortfolioList(portfolioMap, pageRequest)).willReturn(resultPortfolio);
+        Page<AdminPortFolioDTO> portfolioList = mockAdminPortfolioJpaService.findPortfolioList(portfolioMap, pageRequest);
+        List<AdminPortFolioDTO> findPortfolioList = portfolioList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(portfolioList).isNotEmpty(),
-                () -> assertThat(portfolioList).hasSize(1)
+                () -> assertThat(findPortfolioList).isNotEmpty(),
+                () -> assertThat(findPortfolioList).hasSize(1)
         );
 
-        assertThat(portfolioList.get(0).getIdx()).isEqualTo(returnPortfolioList.get(0).getIdx());
-        assertThat(portfolioList.get(0).getTitle()).isEqualTo(returnPortfolioList.get(0).getTitle());
-        assertThat(portfolioList.get(0).getDescription()).isEqualTo(returnPortfolioList.get(0).getDescription());
-        assertThat(portfolioList.get(0).getHashTag()).isEqualTo(returnPortfolioList.get(0).getHashTag());
-        assertThat(portfolioList.get(0).getVideoUrl()).isEqualTo(returnPortfolioList.get(0).getVideoUrl());
-        assertThat(portfolioList.get(0).getVisible()).isEqualTo(returnPortfolioList.get(0).getVisible());
+        assertThat(findPortfolioList.get(0).getIdx()).isEqualTo(returnPortfolioList.get(0).getIdx());
+        assertThat(findPortfolioList.get(0).getTitle()).isEqualTo(returnPortfolioList.get(0).getTitle());
+        assertThat(findPortfolioList.get(0).getDescription()).isEqualTo(returnPortfolioList.get(0).getDescription());
+        assertThat(findPortfolioList.get(0).getHashTag()).isEqualTo(returnPortfolioList.get(0).getHashTag());
+        assertThat(findPortfolioList.get(0).getVideoUrl()).isEqualTo(returnPortfolioList.get(0).getVideoUrl());
+        assertThat(findPortfolioList.get(0).getVisible()).isEqualTo(returnPortfolioList.get(0).getVisible());
 
         // verify
-        then(mockAdminPortfolioJpaService).should(times(1)).findPortfolioList(portfolioMap);
-        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findPortfolioList(portfolioMap);
+        then(mockAdminPortfolioJpaService).should(times(1)).findPortfolioList(portfolioMap, pageRequest);
+        then(mockAdminPortfolioJpaService).should(atLeastOnce()).findPortfolioList(portfolioMap, pageRequest);
         then(mockAdminPortfolioJpaService).shouldHaveNoMoreInteractions();
     }
 

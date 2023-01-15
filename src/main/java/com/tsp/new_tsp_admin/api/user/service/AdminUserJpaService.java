@@ -2,6 +2,8 @@ package com.tsp.new_tsp_admin.api.user.service;
 
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,7 @@ public interface AdminUserJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminUserDTO> findUserList(Map<String, Object> userMap);
+    Page<AdminUserDTO> findUserList(Map<String, Object> userMap, PageRequest pageRequest);
 
     /**
      * <pre>

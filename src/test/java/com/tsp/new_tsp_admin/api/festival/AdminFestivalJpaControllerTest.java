@@ -128,12 +128,12 @@ class AdminFestivalJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 행사 조회 테스트")
     void 행사조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/festival/lists")
+        mockMvc.perform(get("/api/festival/lists").param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(jsonPath("$.festivalList.length()", greaterThan(0)));
+                .andExpect(jsonPath("$.content").isNotEmpty());
     }
 
     @Test

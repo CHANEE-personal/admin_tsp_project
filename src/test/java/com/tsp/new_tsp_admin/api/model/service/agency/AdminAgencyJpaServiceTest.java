@@ -13,6 +13,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -67,11 +72,10 @@ class AdminAgencyJpaServiceTest {
     void 소속사리스트조회테스트() {
         // given
         Map<String, Object> agencyMap = new HashMap<>();
-        agencyMap.put("jpaStartPage", 1);
-        agencyMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         // then
-        assertThat(adminAgencyJpaService.findAgencyList(agencyMap)).isNotEmpty();
+        assertThat(adminAgencyJpaService.findAgencyList(agencyMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -79,41 +83,43 @@ class AdminAgencyJpaServiceTest {
     void 소속사리스트조회Mockito테스트() {
         // given
         Map<String, Object> agencyMap = new HashMap<>();
-        agencyMap.put("jpaStartPage", 1);
-        agencyMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminAgencyDTO> returnAgencyList = new ArrayList<>();
 
         returnAgencyList.add(AdminAgencyDTO.builder().idx(1L).agencyName("agency1").agencyDescription("agency1").visible("Y").build());
         returnAgencyList.add(AdminAgencyDTO.builder().idx(2L).agencyName("agency2").agencyDescription("agency2").visible("Y").build());
 
+        Page<AdminAgencyDTO> resultAgency = new PageImpl<>(returnAgencyList, pageRequest, returnAgencyList.size());
+
         // when
-        when(mockAdminAgencyJpaService.findAgencyList(agencyMap)).thenReturn(returnAgencyList);
-        List<AdminAgencyDTO> agencyList = mockAdminAgencyJpaService.findAgencyList(agencyMap);
+        when(mockAdminAgencyJpaService.findAgencyList(agencyMap, pageRequest)).thenReturn(resultAgency);
+        Page<AdminAgencyDTO> agencyList = mockAdminAgencyJpaService.findAgencyList(agencyMap, pageRequest);
+        List<AdminAgencyDTO> findAgencyList = agencyList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(agencyList).isNotEmpty(),
-                () -> assertThat(agencyList).hasSize(2)
+                () -> assertThat(findAgencyList).isNotEmpty(),
+                () -> assertThat(findAgencyList).hasSize(2)
         );
 
-        assertThat(agencyList.get(0).getIdx()).isEqualTo(returnAgencyList.get(0).getIdx());
-        assertThat(agencyList.get(0).getAgencyName()).isEqualTo(returnAgencyList.get(0).getAgencyName());
-        assertThat(agencyList.get(0).getAgencyDescription()).isEqualTo(returnAgencyList.get(0).getAgencyDescription());
-        assertThat(agencyList.get(0).getVisible()).isEqualTo(returnAgencyList.get(0).getVisible());
+        assertThat(findAgencyList.get(0).getIdx()).isEqualTo(returnAgencyList.get(0).getIdx());
+        assertThat(findAgencyList.get(0).getAgencyName()).isEqualTo(returnAgencyList.get(0).getAgencyName());
+        assertThat(findAgencyList.get(0).getAgencyDescription()).isEqualTo(returnAgencyList.get(0).getAgencyDescription());
+        assertThat(findAgencyList.get(0).getVisible()).isEqualTo(returnAgencyList.get(0).getVisible());
 
-        assertThat(agencyList.get(1).getIdx()).isEqualTo(returnAgencyList.get(1).getIdx());
-        assertThat(agencyList.get(1).getAgencyName()).isEqualTo(returnAgencyList.get(1).getAgencyName());
-        assertThat(agencyList.get(1).getAgencyDescription()).isEqualTo(returnAgencyList.get(1).getAgencyDescription());
-        assertThat(agencyList.get(1).getVisible()).isEqualTo(returnAgencyList.get(1).getVisible());
+        assertThat(findAgencyList.get(1).getIdx()).isEqualTo(returnAgencyList.get(1).getIdx());
+        assertThat(findAgencyList.get(1).getAgencyName()).isEqualTo(returnAgencyList.get(1).getAgencyName());
+        assertThat(findAgencyList.get(1).getAgencyDescription()).isEqualTo(returnAgencyList.get(1).getAgencyDescription());
+        assertThat(findAgencyList.get(1).getVisible()).isEqualTo(returnAgencyList.get(1).getVisible());
 
         // verify
-        verify(mockAdminAgencyJpaService, times(1)).findAgencyList(agencyMap);
-        verify(mockAdminAgencyJpaService, atLeastOnce()).findAgencyList(agencyMap);
+        verify(mockAdminAgencyJpaService, times(1)).findAgencyList(agencyMap, pageRequest);
+        verify(mockAdminAgencyJpaService, atLeastOnce()).findAgencyList(agencyMap, pageRequest);
         verifyNoMoreInteractions(mockAdminAgencyJpaService);
 
         InOrder inOrder = inOrder(mockAdminAgencyJpaService);
-        inOrder.verify(mockAdminAgencyJpaService).findAgencyList(agencyMap);
+        inOrder.verify(mockAdminAgencyJpaService).findAgencyList(agencyMap, pageRequest);
     }
 
     @Test
@@ -121,37 +127,39 @@ class AdminAgencyJpaServiceTest {
     void 소속사리스트조회BDD테스트() {
         // given
         Map<String, Object> agencyMap = new HashMap<>();
-        agencyMap.put("jpaStartPage", 1);
-        agencyMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminAgencyDTO> returnAgencyList = new ArrayList<>();
 
         returnAgencyList.add(AdminAgencyDTO.builder().idx(1L).agencyName("agency1").agencyDescription("agency1").visible("Y").build());
         returnAgencyList.add(AdminAgencyDTO.builder().idx(2L).agencyName("agency2").agencyDescription("agency2").visible("Y").build());
 
+        Page<AdminAgencyDTO> resultAgency = new PageImpl<>(returnAgencyList, pageRequest, returnAgencyList.size());
+
         // when
-        given(mockAdminAgencyJpaService.findAgencyList(agencyMap)).willReturn(returnAgencyList);
-        List<AdminAgencyDTO> agencyList = mockAdminAgencyJpaService.findAgencyList(agencyMap);
+        given(mockAdminAgencyJpaService.findAgencyList(agencyMap, pageRequest)).willReturn(resultAgency);
+        Page<AdminAgencyDTO> agencyList = mockAdminAgencyJpaService.findAgencyList(agencyMap, pageRequest);
+        List<AdminAgencyDTO> findAgencyList = agencyList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(agencyList).isNotEmpty(),
-                () -> assertThat(agencyList).hasSize(2)
+                () -> assertThat(findAgencyList).isNotEmpty(),
+                () -> assertThat(findAgencyList).hasSize(2)
         );
 
-        assertThat(agencyList.get(0).getIdx()).isEqualTo(returnAgencyList.get(0).getIdx());
-        assertThat(agencyList.get(0).getAgencyName()).isEqualTo(returnAgencyList.get(0).getAgencyName());
-        assertThat(agencyList.get(0).getAgencyDescription()).isEqualTo(returnAgencyList.get(0).getAgencyDescription());
-        assertThat(agencyList.get(0).getVisible()).isEqualTo(returnAgencyList.get(0).getVisible());
+        assertThat(findAgencyList.get(0).getIdx()).isEqualTo(returnAgencyList.get(0).getIdx());
+        assertThat(findAgencyList.get(0).getAgencyName()).isEqualTo(returnAgencyList.get(0).getAgencyName());
+        assertThat(findAgencyList.get(0).getAgencyDescription()).isEqualTo(returnAgencyList.get(0).getAgencyDescription());
+        assertThat(findAgencyList.get(0).getVisible()).isEqualTo(returnAgencyList.get(0).getVisible());
 
-        assertThat(agencyList.get(1).getIdx()).isEqualTo(returnAgencyList.get(1).getIdx());
-        assertThat(agencyList.get(1).getAgencyName()).isEqualTo(returnAgencyList.get(1).getAgencyName());
-        assertThat(agencyList.get(1).getAgencyDescription()).isEqualTo(returnAgencyList.get(1).getAgencyDescription());
-        assertThat(agencyList.get(1).getVisible()).isEqualTo(returnAgencyList.get(1).getVisible());
+        assertThat(findAgencyList.get(1).getIdx()).isEqualTo(returnAgencyList.get(1).getIdx());
+        assertThat(findAgencyList.get(1).getAgencyName()).isEqualTo(returnAgencyList.get(1).getAgencyName());
+        assertThat(findAgencyList.get(1).getAgencyDescription()).isEqualTo(returnAgencyList.get(1).getAgencyDescription());
+        assertThat(findAgencyList.get(1).getVisible()).isEqualTo(returnAgencyList.get(1).getVisible());
 
         // verify
-        then(mockAdminAgencyJpaService).should(times(1)).findAgencyList(agencyMap);
-        then(mockAdminAgencyJpaService).should(atLeastOnce()).findAgencyList(agencyMap);
+        then(mockAdminAgencyJpaService).should(times(1)).findAgencyList(agencyMap, pageRequest);
+        then(mockAdminAgencyJpaService).should(atLeastOnce()).findAgencyList(agencyMap, pageRequest);
         then(mockAdminAgencyJpaService).shouldHaveNoMoreInteractions();
     }
 

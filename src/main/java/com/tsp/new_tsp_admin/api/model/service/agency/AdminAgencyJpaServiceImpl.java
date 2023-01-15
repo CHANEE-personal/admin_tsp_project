@@ -8,6 +8,8 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,21 +35,6 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findAgencyCount
-     * 2. ClassName  : AdminAgencyJpaServiceImpl.java
-     * 3. Comment    : 관리자 소속사 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 14.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findAgencyCount(Map<String, Object> agencyMap) {
-        return adminAgencyJpaQueryRepository.findAgencyCount(agencyMap);
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findAgencyList
      * 2. ClassName  : AdminAgencyJpaServiceImpl.java
      * 3. Comment    : 관리자 소속사 리스트 조회
@@ -57,8 +44,8 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) {
-        return adminAgencyJpaQueryRepository.findAgencyList(agencyMap);
+    public Page<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap, PageRequest pageRequest) {
+        return adminAgencyJpaQueryRepository.findAgencyList(agencyMap, pageRequest);
     }
 
     /**

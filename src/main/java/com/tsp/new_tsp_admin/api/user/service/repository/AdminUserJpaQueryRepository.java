@@ -7,6 +7,9 @@ import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,15 +49,15 @@ public class AdminUserJpaQueryRepository {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
+    public Page<AdminUserDTO> findUserList(Map<String, Object> userMap, PageRequest pageRequest) {
         List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
                 .where(adminUserEntity.visible.eq("Y"))
                 .orderBy(adminUserEntity.idx.desc())
-                .offset(getInt(userMap.get("jpaStartPage"), 0))
-                .limit(getInt(userMap.get("size"), 0))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
 
-        return userList != null ? toDtoList(userList) : emptyList();
+        return new PageImpl<>(AdminUserEntity.toDtoList(userList), pageRequest, userList.size());
     }
 
     /**

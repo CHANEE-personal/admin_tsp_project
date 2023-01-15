@@ -37,7 +37,6 @@ import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -126,12 +125,12 @@ class AdminProductionJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 조회 테스트")
     void 프로덕션조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/production/lists")
+        mockMvc.perform(get("/api/production/lists").param("pageNum", "1").param("size", "3")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(jsonPath("$.productionList.length()", greaterThan(0)));
+                .andExpect(jsonPath("$.content").isNotEmpty());
     }
 
     @Test
@@ -140,12 +139,10 @@ class AdminProductionJpaControllerTest {
     void 프로덕션검색조회Api테스트() throws Exception {
         // 검색 테스트
         LinkedMultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
-        paramMap.add("jpaStartPage", "1");
-        paramMap.add("size", "3");
         paramMap.add("searchType", "0");
         paramMap.add("searchKeyword", "하하");
 
-        mockMvc.perform(get("/api/production/lists").queryParams(paramMap)
+        mockMvc.perform(get("/api/production/lists").queryParams(paramMap).param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())

@@ -12,6 +12,9 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,7 +24,6 @@ import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoL
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
-import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 import static java.util.Collections.emptyList;
@@ -51,19 +53,6 @@ public class AdminProductionJpaQueryRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findProductionCount
-     * 2. ClassName  : AdminProductionJpaRepository.java
-     * 3. Comment    : 관리자 프로덕션 리스트 갯수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 09.
-     * </pre>
-     */
-    public int findProductionCount(Map<String, Object> productionMap) {
-        return queryFactory.selectFrom(adminProductionEntity).where(searchProduction(productionMap)).fetch().size();
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaRepository.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
@@ -71,16 +60,16 @@ public class AdminProductionJpaQueryRepository {
      * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
-    public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
+    public Page<AdminProductionDTO> findProductionList(Map<String, Object> productionMap, PageRequest pageRequest) {
         List<AdminProductionEntity> productionList = queryFactory
                 .selectFrom(adminProductionEntity)
                 .orderBy(adminProductionEntity.idx.desc())
                 .where(searchProduction(productionMap))
-                .offset(getInt(productionMap.get("jpaStartPage"), 0))
-                .limit(getInt(productionMap.get("size"), 0))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
 
-        return productionList != null ? toPartDtoList(productionList) : emptyList();
+        return new PageImpl<>(AdminProductionEntity.toDtoList(productionList), pageRequest, productionList.size());
     }
 
     /**

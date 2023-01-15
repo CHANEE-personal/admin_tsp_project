@@ -1,15 +1,13 @@
 package com.tsp.new_tsp_admin.api.model.service.schedule;
 
-import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,19 +29,9 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
                 .orElseThrow(() -> new TspException(NOT_FOUND_MODEL));
     }
 
-    /**
-     * <pre>
-     * 1. MethodName : findScheduleCount
-     * 2. ClassName  : AdminScheduleJpaServiceImpl.java
-     * 3. Comment    : 관리자 모델 스케줄 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 31.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findScheduleCount(Map<String, Object> scheduleMap) {
-        return adminScheduleJpaQueryRepository.findScheduleCount(scheduleMap);
+    private AdminScheduleEntity oneSchedule(Long idx) {
+        return adminScheduleJpaRepository.findById(idx)
+                .orElseThrow(() -> new TspException(NOT_FOUND_MODEL_SCHEDULE));
     }
 
     /**
@@ -57,8 +45,8 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminScheduleDTO> findScheduleList(Map<String, Object> scheduleMap) {
-        return adminScheduleJpaQueryRepository.findScheduleList(scheduleMap);
+    public Page<AdminScheduleDTO> findScheduleList(Map<String, Object> scheduleMap, PageRequest pageRequest) {
+        return adminScheduleJpaQueryRepository.findScheduleList(scheduleMap, pageRequest);
     }
 
     /**
@@ -73,8 +61,7 @@ public class AdminScheduleJpaServiceImpl implements AdminScheduleJpaService {
     @Override
     @Transactional(readOnly = true)
     public AdminScheduleDTO findOneSchedule(Long idx) {
-        AdminScheduleEntity oneSchedule = adminScheduleJpaRepository.findById(idx).orElseThrow(() -> new TspException(NOT_FOUND_MODEL_SCHEDULE));
-        return AdminScheduleEntity.toDto(oneSchedule);
+        return AdminScheduleEntity.toDto(oneSchedule(idx));
     }
 
     /**

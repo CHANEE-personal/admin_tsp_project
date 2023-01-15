@@ -4,12 +4,13 @@ import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.api.model.service.schedule.AdminScheduleJpaService;
 import com.tsp.new_tsp_admin.common.Paging;
-import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.ceil;
 
 @Validated
 @RestController
@@ -31,7 +29,6 @@ import static java.lang.Math.ceil;
 @RequiredArgsConstructor
 public class AdminScheduleJpaController {
     private final AdminScheduleJpaService adminScheduleJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -51,35 +48,17 @@ public class AdminScheduleJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findScheduleList(@RequestParam(required = false) Map<String, Object> paramMap,
-                                                                @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
-                                                                @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
-                                                                Paging paging) {
-        // 페이징 및 검색
-        Map<String, Object> scheduleMap = searchCommon.searchCommon(paging, paramMap);
+    public ResponseEntity<Page<AdminScheduleDTO>> findScheduleList(@RequestParam(required = false) Map<String, Object> paramMap,
+                                                                   @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
+                                                                   @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
+                                                                   Paging paging) {
 
         if (searchStartTime != null && searchEndTime != null) {
-            scheduleMap.put("searchStartTime", searchStartTime);
-            scheduleMap.put("searchEndTime", searchEndTime);
+            paramMap.put("searchStartTime", searchStartTime);
+            paramMap.put("searchEndTime", searchEndTime);
         }
 
-        int scheduleListCount = this.adminScheduleJpaService.findScheduleCount(scheduleMap);
-        List<AdminScheduleDTO> scheduleList = new ArrayList<>();
-
-        if (scheduleListCount > 0) {
-            scheduleList = this.adminScheduleJpaService.findScheduleList(scheduleMap);
-        }
-
-        // 리스트 수
-        scheduleMap.put("pageSize", paging.getSize());
-        // 전체 페이지 수
-        scheduleMap.put("perPageListCnt", ceil((double) scheduleListCount / paging.getSize()));
-        // 전체 아이템 수
-        scheduleMap.put("scheduleListTotalCnt", scheduleListCount);
-
-        scheduleMap.put("scheduleList", scheduleList);
-
-        return ResponseEntity.ok().body(scheduleMap);
+        return ResponseEntity.ok().body(adminScheduleJpaService.findScheduleList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**

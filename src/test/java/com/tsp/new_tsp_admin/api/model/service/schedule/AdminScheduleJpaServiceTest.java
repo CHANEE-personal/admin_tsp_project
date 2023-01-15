@@ -18,6 +18,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -26,6 +29,7 @@ import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +48,8 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 @AutoConfigureTestDatabase(replace = NONE)
 @DisplayName("모델 스케줄 Service Test")
 class AdminScheduleJpaServiceTest {
-    @Mock private AdminScheduleJpaService mockAdminScheduleJpaService;
+    @Mock
+    private AdminScheduleJpaService mockAdminScheduleJpaService;
     private final AdminScheduleJpaService adminScheduleJpaService;
     private final EntityManager em;
 
@@ -65,7 +70,7 @@ class AdminScheduleJpaServiceTest {
         adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
         ArrayList<CareerJson> careerList = new ArrayList<>();
-        careerList.add(new CareerJson("title","txt"));
+        careerList.add(new CareerJson("title", "txt"));
 
         adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
@@ -112,29 +117,26 @@ class AdminScheduleJpaServiceTest {
         // given
         Map<String, Object> scheduleMap = new HashMap<>();
         scheduleMap.put("searchKeyword", "김예영");
-        scheduleMap.put("jpaStartPage", 0);
-        scheduleMap.put("size", 100);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminScheduleJpaService.findScheduleList(scheduleMap)).isNotEmpty();
+        assertThat(adminScheduleJpaService.findScheduleList(scheduleMap, pageRequest)).isNotEmpty();
 
         Map<String, Object> lastMonthScheduleMap = new HashMap<>();
         lastMonthScheduleMap.put("searchStartTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 1, 0, 0, 0, 0));
         lastMonthScheduleMap.put("searchEndTime", of(now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 30, 23, 59, 59));
-        lastMonthScheduleMap.put("jpaStartPage", 0);
-        lastMonthScheduleMap.put("size", 100);
+        PageRequest pageRequest2 = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminScheduleJpaService.findScheduleList(lastMonthScheduleMap)).isEmpty();
+        assertThat(adminScheduleJpaService.findScheduleList(lastMonthScheduleMap, pageRequest2)).isEmpty();
 
         Map<String, Object> currentScheduleMap = new HashMap<>();
         currentScheduleMap.put("searchStartTime", of(now().getYear(), LocalDate.now().getMonth(), 1, 0, 0, 0, 0));
         currentScheduleMap.put("searchEndTime", of(now().getYear(), LocalDate.now().getMonth(), 30, 23, 59, 59));
-        currentScheduleMap.put("jpaStartPage", 0);
-        currentScheduleMap.put("size", 100);
+        PageRequest pageRequest3 = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminScheduleJpaService.findScheduleList(currentScheduleMap)).isNotEmpty();
+        assertThat(adminScheduleJpaService.findScheduleList(currentScheduleMap, pageRequest3)).isNotEmpty();
     }
 
     @Test
@@ -142,8 +144,7 @@ class AdminScheduleJpaServiceTest {
     void 모델스케줄Mockito조회테스트() {
         // given
         Map<String, Object> scheduleMap = new HashMap<>();
-        scheduleMap.put("jpaStartPage", 1);
-        scheduleMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
@@ -151,21 +152,24 @@ class AdminScheduleJpaServiceTest {
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
+        Page<AdminScheduleDTO> resultSchedule = new PageImpl<>(scheduleList, pageRequest, scheduleList.size());
+
         // when
-        when(mockAdminScheduleJpaService.findScheduleList(scheduleMap)).thenReturn(scheduleList);
-        List<AdminScheduleDTO> newModelScheduleList = mockAdminScheduleJpaService.findScheduleList(scheduleMap);
+        when(mockAdminScheduleJpaService.findScheduleList(scheduleMap, pageRequest)).thenReturn(resultSchedule);
+        Page<AdminScheduleDTO> newModelScheduleList = mockAdminScheduleJpaService.findScheduleList(scheduleMap, pageRequest);
+        List<AdminScheduleDTO> findScheduleList = newModelScheduleList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newModelScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
-        assertThat(newModelScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
+        assertThat(findScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
+        assertThat(findScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
 
         // verify
-        verify(mockAdminScheduleJpaService, times(1)).findScheduleList(scheduleMap);
-        verify(mockAdminScheduleJpaService, atLeastOnce()).findScheduleList(scheduleMap);
+        verify(mockAdminScheduleJpaService, times(1)).findScheduleList(scheduleMap, pageRequest);
+        verify(mockAdminScheduleJpaService, atLeastOnce()).findScheduleList(scheduleMap, pageRequest);
         verifyNoMoreInteractions(mockAdminScheduleJpaService);
 
         InOrder inOrder = inOrder(mockAdminScheduleJpaService);
-        inOrder.verify(mockAdminScheduleJpaService).findScheduleList(scheduleMap);
+        inOrder.verify(mockAdminScheduleJpaService).findScheduleList(scheduleMap, pageRequest);
     }
 
     @Test
@@ -173,8 +177,7 @@ class AdminScheduleJpaServiceTest {
     void 모델스케줄BDD조회테스트() {
         // given
         Map<String, Object> scheduleMap = new HashMap<>();
-        scheduleMap.put("jpaStartPage", 1);
-        scheduleMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminScheduleDTO> scheduleList = new ArrayList<>();
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
@@ -182,17 +185,20 @@ class AdminScheduleJpaServiceTest {
         scheduleList.add(AdminScheduleDTO.builder().modelIdx(adminModelEntity.getIdx())
                 .modelSchedule("스케줄 테스트 두번째").modelScheduleTime(now()).build());
 
+        Page<AdminScheduleDTO> resultSchedule = new PageImpl<>(scheduleList, pageRequest, scheduleList.size());
+
         // when
-        given(mockAdminScheduleJpaService.findScheduleList(scheduleMap)).willReturn(scheduleList);
-        List<AdminScheduleDTO> newModelScheduleList = mockAdminScheduleJpaService.findScheduleList(scheduleMap);
+        given(mockAdminScheduleJpaService.findScheduleList(scheduleMap, pageRequest)).willReturn(resultSchedule);
+        Page<AdminScheduleDTO> newModelScheduleList = mockAdminScheduleJpaService.findScheduleList(scheduleMap, pageRequest);
+        List<AdminScheduleDTO> findScheduleList = newModelScheduleList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newModelScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
-        assertThat(newModelScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
+        assertThat(findScheduleList.get(0).getIdx()).isEqualTo(scheduleList.get(0).getIdx());
+        assertThat(findScheduleList.get(0).getModelSchedule()).isEqualTo(scheduleList.get(0).getModelSchedule());
 
         // verify
-        then(mockAdminScheduleJpaService).should(times(1)).findScheduleList(scheduleMap);
-        then(mockAdminScheduleJpaService).should(atLeastOnce()).findScheduleList(scheduleMap);
+        then(mockAdminScheduleJpaService).should(times(1)).findScheduleList(scheduleMap, pageRequest);
+        then(mockAdminScheduleJpaService).should(atLeastOnce()).findScheduleList(scheduleMap, pageRequest);
         then(mockAdminScheduleJpaService).shouldHaveNoMoreInteractions();
     }
 

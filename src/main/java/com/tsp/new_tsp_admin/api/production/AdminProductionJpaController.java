@@ -5,12 +5,13 @@ import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.service.AdminProductionJpaService;
 import com.tsp.new_tsp_admin.common.Paging;
-import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -18,12 +19,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
@@ -33,7 +31,6 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 @RequiredArgsConstructor
 public class AdminProductionJpaController {
     private final AdminProductionJpaService adminProductionJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -54,26 +51,8 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
-        Map<String, Object> productionMap = new HashMap<>();
-
-        int productionCnt = this.adminProductionJpaService.findProductionCount(searchCommon.searchCommon(paging, paramMap));
-        List<AdminProductionDTO> productionList = new ArrayList<>();
-
-        if (productionCnt > 0) {
-            productionList = this.adminProductionJpaService.findProductionList(searchCommon.searchCommon(paging, paramMap));
-        }
-
-        // 리스트 수
-        productionMap.put("pageSize", paging.getSize());
-        // 전체 페이지 수
-        productionMap.put("perPageListCnt", ceil((double) productionCnt / paging.getSize()));
-        // 전체 아이템 수
-        productionMap.put("productionListCnt", productionCnt);
-
-        productionMap.put("productionList", productionList);
-
-        return ResponseEntity.ok().body(productionMap);
+    public ResponseEntity<Page<AdminProductionDTO>> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok().body(adminProductionJpaService.findProductionList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**

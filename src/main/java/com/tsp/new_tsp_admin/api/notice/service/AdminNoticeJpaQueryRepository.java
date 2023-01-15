@@ -7,6 +7,9 @@ import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -15,10 +18,8 @@ import java.util.*;
 import static com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity.toDto;
 import static com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.notice.QAdminNoticeEntity.*;
-import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_NOTICE;
-import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,19 +47,6 @@ public class AdminNoticeJpaQueryRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findNoticeCount
-     * 2. ClassName  : AdminNoticeJpaRepository.java
-     * 3. Comment    : 관리자 공지사항 리스트 갯수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 16.
-     * </pre>
-     */
-    public int findNoticeCount(Map<String, Object> noticeMap) {
-        return queryFactory.selectFrom(adminNoticeEntity).where(searchNotice(noticeMap)).fetch().size();
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findNoticeList
      * 2. ClassName  : AdminNoticeJpaRepository.java
      * 3. Comment    : 관리자 공지사항 리스트 조회
@@ -66,16 +54,16 @@ public class AdminNoticeJpaQueryRepository {
      * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
-    public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) {
+    public Page<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap, PageRequest pageRequest) {
         List<AdminNoticeEntity> noticeList = queryFactory
                 .selectFrom(adminNoticeEntity)
                 .orderBy(adminNoticeEntity.idx.desc())
                 .where(searchNotice(noticeMap))
-                .offset(getInt(noticeMap.get("jpaStartPage"), 0))
-                .limit(getInt(noticeMap.get("size"), 0))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
 
-        return noticeList != null ? toDtoList(noticeList) : emptyList();
+        return new PageImpl<>(toDtoList(noticeList), pageRequest, noticeList.size());
     }
 
     /**

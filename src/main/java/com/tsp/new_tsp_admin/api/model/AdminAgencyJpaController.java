@@ -7,12 +7,13 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaService;
 import com.tsp.new_tsp_admin.common.Paging;
-import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @Validated
@@ -36,7 +35,6 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequiredArgsConstructor
 public class AdminAgencyJpaController {
     private final AdminAgencyJpaService adminAgencyJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -57,27 +55,8 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findAgencyList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
-        // 페이징 및 검색
-        Map<String, Object> agencyMap = searchCommon.searchCommon(paging, paramMap);
-
-        int agencyListCount = this.adminAgencyJpaService.findAgencyCount(agencyMap);
-        List<AdminAgencyDTO> agencyList = new ArrayList<>();
-
-        if (agencyListCount > 0) {
-            agencyList = this.adminAgencyJpaService.findAgencyList(agencyMap);
-        }
-
-        // 리스트 수
-        agencyMap.put("pageSize", paging.getSize());
-        // 전체 페이지 수
-        agencyMap.put("perPageListCnt", ceil((double) agencyListCount / paging.getSize()));
-        // 전체 아이템 수
-        agencyMap.put("agencyListTotalCnt", agencyListCount);
-
-        agencyMap.put("agencyList", agencyList);
-
-        return ResponseEntity.ok().body(agencyMap);
+    public ResponseEntity<Page<AdminAgencyDTO>> findAgencyList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok().body(adminAgencyJpaService.findAgencyList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**

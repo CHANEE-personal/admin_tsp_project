@@ -4,12 +4,13 @@ import com.tsp.new_tsp_admin.api.domain.festival.AdminFestivalDTO;
 import com.tsp.new_tsp_admin.api.domain.festival.AdminFestivalEntity;
 import com.tsp.new_tsp_admin.api.festival.service.AdminFestivalJpaService;
 import com.tsp.new_tsp_admin.common.Paging;
-import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -17,12 +18,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.ceil;
 
 @RestController
 @RequestMapping("/api/festival")
@@ -31,7 +28,6 @@ import static java.lang.Math.ceil;
 public class AdminFestivalJpaController {
 
     private final AdminFestivalJpaService adminFestivalJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -52,26 +48,8 @@ public class AdminFestivalJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findFestivalList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
-        Map<String, Object> festivalMap = new HashMap<>();
-
-        int festivalCount = this.adminFestivalJpaService.findFestivalCount(searchCommon.searchCommon(paging, paramMap));
-        List<AdminFestivalDTO> festivalList = new ArrayList<>();
-
-        if (festivalCount > 0) {
-            festivalList = this.adminFestivalJpaService.findFestivalList(searchCommon.searchCommon(paging, paramMap));
-        }
-
-        // 리스트 수
-        festivalMap.put("pageSize", paging.getSize());
-        // 전체 페이지 수
-        festivalMap.put("perPageListCnt", ceil((double) festivalCount / paging.getSize()));
-        // 전체 아이템 수
-        festivalMap.put("festivalListCnt", festivalCount);
-
-        festivalMap.put("festivalList", festivalList);
-
-        return ResponseEntity.ok().body(festivalMap);
+    public ResponseEntity<Page<AdminFestivalDTO>> findFestivalList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok().body(adminFestivalJpaService.findFestivalList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**
