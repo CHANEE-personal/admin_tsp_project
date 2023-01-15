@@ -3,7 +3,7 @@ package com.tsp.new_tsp_admin.api.notice;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeDTO;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity;
 import com.tsp.new_tsp_admin.api.notice.service.AdminNoticeJpaService;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,20 +52,20 @@ public class AdminNoticeJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findNoticeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findNoticeList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         Map<String, Object> noticeMap = new HashMap<>();
 
-        int noticeCount = this.adminNoticeJpaService.findNoticeCount(searchCommon.searchCommon(page, paramMap));
+        int noticeCount = this.adminNoticeJpaService.findNoticeCount(searchCommon.searchCommon(paging, paramMap));
         List<AdminNoticeDTO> noticeList = new ArrayList<>();
 
         if (noticeCount > 0) {
-            noticeList = this.adminNoticeJpaService.findNoticeList(searchCommon.searchCommon(page, paramMap));
+            noticeList = this.adminNoticeJpaService.findNoticeList(searchCommon.searchCommon(paging, paramMap));
         }
 
         // 리스트 수
-        noticeMap.put("pageSize", page.getSize());
+        noticeMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        noticeMap.put("perPageListCnt", ceil((double) noticeCount / page.getSize()));
+        noticeMap.put("perPageListCnt", ceil((double) noticeCount / paging.getSize()));
         // 전체 아이템 수
         noticeMap.put("noticeListCnt", noticeCount);
 

@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel
-public class Page {
+public class Paging {
     @ApiModelProperty(value = "페이지 번호(0..N)", example = "1")
-    private Integer page;
+    private Integer pageNum;
 
     @ApiModelProperty(value = "페이지 크기", allowableValues = "range[0,100]", example = "1")
     private Integer size;
@@ -18,6 +18,6 @@ public class Page {
     // 시작페이지
     @ApiModelProperty(value = "시작페이지", hidden = true, example = "1")
     public Integer getStartPage() {
-        return (page - 1) * size;
+        return (pageNum - 1) * size;
     }
 }

@@ -7,7 +7,7 @@ import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.jwt.AuthenticationResponse;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.jwt.MyUserDetailsService;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -63,8 +63,8 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping
-    public ResponseEntity<List<AdminUserDTO>> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
-        return ResponseEntity.ok(adminUserJpaService.findUserList(searchCommon.searchCommon(page, paramMap)));
+    public ResponseEntity<List<AdminUserDTO>> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok(adminUserJpaService.findUserList(searchCommon.searchCommon(paging, paramMap)));
     }
 
     /**

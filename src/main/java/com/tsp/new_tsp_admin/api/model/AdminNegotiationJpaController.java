@@ -4,7 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.api.model.service.negotiation.AdminNegotiationJpaService;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,9 +56,9 @@ public class AdminNegotiationJpaController {
     public ResponseEntity<Map<String, Object>> findModelNegotiationList(@RequestParam(required = false) Map<String, Object> paramMap,
                                                                         @RequestParam(value = "searchStartTime", required = false) String searchStartTime,
                                                                         @RequestParam(value = "searchEndTime", required = false) String searchEndTime,
-                                                                        Page page) {
+                                                                        Paging paging) {
         // 페이징 및 검색
-        Map<String, Object> negotiationMap = searchCommon.searchCommon(page, paramMap);
+        Map<String, Object> negotiationMap = searchCommon.searchCommon(paging, paramMap);
 
         if (searchStartTime != null && searchEndTime != null) {
             negotiationMap.put("searchStartTime", searchStartTime);
@@ -73,9 +73,9 @@ public class AdminNegotiationJpaController {
         }
 
         // 리스트 수
-        negotiationMap.put("pageSize", page.getSize());
+        negotiationMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        negotiationMap.put("perPageListCnt", ceil((double) negotiationCount / page.getSize()));
+        negotiationMap.put("perPageListCnt", ceil((double) negotiationCount / paging.getSize()));
         // 전체 아이템 수
         negotiationMap.put("negotiationListTotalCnt", negotiationCount);
 

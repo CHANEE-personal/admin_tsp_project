@@ -4,7 +4,7 @@ import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.service.AdminProductionJpaService;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,20 +54,20 @@ public class AdminProductionJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findProductionList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         Map<String, Object> productionMap = new HashMap<>();
 
-        int productionCnt = this.adminProductionJpaService.findProductionCount(searchCommon.searchCommon(page, paramMap));
+        int productionCnt = this.adminProductionJpaService.findProductionCount(searchCommon.searchCommon(paging, paramMap));
         List<AdminProductionDTO> productionList = new ArrayList<>();
 
         if (productionCnt > 0) {
-            productionList = this.adminProductionJpaService.findProductionList(searchCommon.searchCommon(page, paramMap));
+            productionList = this.adminProductionJpaService.findProductionList(searchCommon.searchCommon(paging, paramMap));
         }
 
         // 리스트 수
-        productionMap.put("pageSize", page.getSize());
+        productionMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        productionMap.put("perPageListCnt", ceil((double) productionCnt / page.getSize()));
+        productionMap.put("perPageListCnt", ceil((double) productionCnt / paging.getSize()));
         // 전체 아이템 수
         productionMap.put("productionListCnt", productionCnt);
 

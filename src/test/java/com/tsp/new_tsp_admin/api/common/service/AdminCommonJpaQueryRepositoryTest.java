@@ -2,6 +2,8 @@ package com.tsp.new_tsp_admin.api.common.service;
 
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeDTO;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -51,8 +57,8 @@ class AdminCommonJpaQueryRepositoryTest {
     private final AdminUserJpaQueryRepository adminUserJpaQueryRepository;
     private final EntityManager em;
 
-    private CommonCodeEntity commonCodeEntity;
-    private CommonCodeDTO commonCodeDTO;
+    private NewCodeEntity commonCodeEntity;
+    private NewCodeDTO commonCodeDTO;
 
     public void createModelAndImage() {
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
@@ -64,14 +70,14 @@ class AdminCommonJpaQueryRepositoryTest {
 
         adminUserJpaQueryRepository.adminLogin(adminUserEntity);
 
-        commonCodeEntity = CommonCodeEntity.builder()
+        commonCodeEntity = NewCodeEntity.builder()
                 .categoryCd(1)
                 .categoryNm("공통코드")
                 .cmmType("common")
                 .visible("Y")
                 .build();
 
-        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
+        commonCodeDTO = NewCodeEntity.toDto(commonCodeEntity);
     }
 
     @BeforeEach
@@ -85,276 +91,64 @@ class AdminCommonJpaQueryRepositoryTest {
     void 공통코드리스트조회테스트() {
         // given
         Map<String, Object> commonMap = new HashMap<>();
-        commonMap.put("jpaStartPage", 0);
-        commonMap.put("size", 100);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminCommonJpaQueryRepository.findCommonCodeList(commonMap)).isNotEmpty();
+        assertThat(adminCommonJpaQueryRepository.findCommonCodeList(commonMap, pageRequest)).isNotEmpty();
     }
 
     @Test
     @DisplayName("공통코드 리스트 조회 Mockito 테스트")
     void 공통코드리스트조회Mockito테스트() {
         Map<String, Object> commonMap = new HashMap<>();
-        commonMap.put("jpaStartPage", 1);
-        commonMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
-        List<CommonCodeDTO> commonCodeList = new ArrayList<>();
-        commonCodeList.add(CommonCodeDTO.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
-
+        List<NewCodeDTO> commonCodeList = new ArrayList<>();
+        commonCodeList.add(NewCodeDTO.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
+        Page<NewCodeDTO> resultCommon = new PageImpl<>(commonCodeList, pageRequest, commonCodeList.size());
         // when
-        when(mockAdminCommonJpaQueryRepository.findCommonCodeList(commonMap)).thenReturn(commonCodeList);
-        List<CommonCodeDTO> newCommonCodeList = mockAdminCommonJpaQueryRepository.findCommonCodeList(commonMap);
+        when(mockAdminCommonJpaQueryRepository.findCommonCodeList(commonMap, pageRequest)).thenReturn(resultCommon);
+        Page<NewCodeDTO> newCommonCodeList = mockAdminCommonJpaQueryRepository.findCommonCodeList(commonMap, pageRequest);
+        List<NewCodeDTO> findCommonCodeList = newCommonCodeList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newCommonCodeList.get(0).getIdx()).isEqualTo(commonCodeList.get(0).getIdx());
-        assertThat(newCommonCodeList.get(0).getCategoryCd()).isEqualTo(commonCodeList.get(0).getCategoryCd());
-        assertThat(newCommonCodeList.get(0).getCategoryNm()).isEqualTo(commonCodeList.get(0).getCategoryNm());
-        assertThat(newCommonCodeList.get(0).getCmmType()).isEqualTo(commonCodeList.get(0).getCmmType());
+        assertThat(findCommonCodeList.get(0).getIdx()).isEqualTo(commonCodeList.get(0).getIdx());
+        assertThat(findCommonCodeList.get(0).getCategoryCd()).isEqualTo(commonCodeList.get(0).getCategoryCd());
+        assertThat(findCommonCodeList.get(0).getCategoryNm()).isEqualTo(commonCodeList.get(0).getCategoryNm());
+        assertThat(findCommonCodeList.get(0).getCmmType()).isEqualTo(commonCodeList.get(0).getCmmType());
 
         // verify
-        verify(mockAdminCommonJpaQueryRepository, times(1)).findCommonCodeList(commonMap);
-        verify(mockAdminCommonJpaQueryRepository, atLeastOnce()).findCommonCodeList(commonMap);
+        verify(mockAdminCommonJpaQueryRepository, times(1)).findCommonCodeList(commonMap, pageRequest);
+        verify(mockAdminCommonJpaQueryRepository, atLeastOnce()).findCommonCodeList(commonMap, pageRequest);
         verifyNoMoreInteractions(mockAdminCommonJpaQueryRepository);
 
         InOrder inOrder = inOrder(mockAdminCommonJpaQueryRepository);
-        inOrder.verify(mockAdminCommonJpaQueryRepository).findCommonCodeList(commonMap);
+        inOrder.verify(mockAdminCommonJpaQueryRepository).findCommonCodeList(commonMap, pageRequest);
     }
 
     @Test
     @DisplayName("공통코드 리스트 조회 BDD 테스트")
     void 공통코드리스트조회BDD테스트() {
         Map<String, Object> commonMap = new HashMap<>();
-        commonMap.put("jpaStartPage", 1);
-        commonMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
-        List<CommonCodeDTO> commonCodeList = new ArrayList<>();
-        commonCodeList.add(CommonCodeDTO.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
-
+        List<NewCodeDTO> commonCodeList = new ArrayList<>();
+        commonCodeList.add(NewCodeDTO.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build());
+        Page<NewCodeDTO> resultCommon = new PageImpl<>(commonCodeList, pageRequest, commonCodeList.size());
         // when
-        given(mockAdminCommonJpaQueryRepository.findCommonCodeList(commonMap)).willReturn(commonCodeList);
-        List<CommonCodeDTO> newCommonCodeList = mockAdminCommonJpaQueryRepository.findCommonCodeList(commonMap);
+        when(mockAdminCommonJpaQueryRepository.findCommonCodeList(commonMap, pageRequest)).thenReturn(resultCommon);
+        Page<NewCodeDTO> newCommonCodeList = mockAdminCommonJpaQueryRepository.findCommonCodeList(commonMap, pageRequest);
+        List<NewCodeDTO> findCommonCodeList = newCommonCodeList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newCommonCodeList.get(0).getIdx()).isEqualTo(commonCodeList.get(0).getIdx());
-        assertThat(newCommonCodeList.get(0).getCategoryCd()).isEqualTo(commonCodeList.get(0).getCategoryCd());
-        assertThat(newCommonCodeList.get(0).getCategoryNm()).isEqualTo(commonCodeList.get(0).getCategoryNm());
-        assertThat(newCommonCodeList.get(0).getCmmType()).isEqualTo(commonCodeList.get(0).getCmmType());
+        assertThat(findCommonCodeList.get(0).getIdx()).isEqualTo(commonCodeList.get(0).getIdx());
+        assertThat(findCommonCodeList.get(0).getCategoryCd()).isEqualTo(commonCodeList.get(0).getCategoryCd());
+        assertThat(findCommonCodeList.get(0).getCategoryNm()).isEqualTo(commonCodeList.get(0).getCategoryNm());
+        assertThat(findCommonCodeList.get(0).getCmmType()).isEqualTo(commonCodeList.get(0).getCmmType());
 
         // verify
-        then(mockAdminCommonJpaQueryRepository).should(times(1)).findCommonCodeList(commonMap);
-        then(mockAdminCommonJpaQueryRepository).should(atLeastOnce()).findCommonCodeList(commonMap);
+        then(mockAdminCommonJpaQueryRepository).should(times(1)).findCommonCodeList(commonMap, pageRequest);
+        then(mockAdminCommonJpaQueryRepository).should(atLeastOnce()).findCommonCodeList(commonMap, pageRequest);
         then(mockAdminCommonJpaQueryRepository).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("공통코드 상세 조회 테스트")
-    void 공통코드상세조회테스트() {
-        // given
-        commonCodeEntity = CommonCodeEntity.builder().idx(1L).categoryCd(1).build();
-
-        commonCodeDTO = adminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx());
-
-        assertAll(() -> {
-                    assertThat(commonCodeDTO.getIdx()).isEqualTo(1);
-                },
-                () -> {
-                    assertThat(commonCodeDTO.getCategoryCd()).isEqualTo(1);
-                    assertNotNull(commonCodeDTO.getCategoryCd());
-                },
-                () -> {
-                    assertThat(commonCodeDTO.getCategoryNm()).isEqualTo("men");
-                    assertNotNull(commonCodeDTO.getCategoryNm());
-                },
-                () -> {
-                    assertThat(commonCodeDTO.getCmmType()).isEqualTo("model");
-                    assertNotNull(commonCodeDTO.getCmmType());
-                });
-    }
-
-    @Test
-    @DisplayName("공통코드 상세 조회 Mockito 테스트")
-    void 공통코드상세조회Mockito테스트() {
-        // given
-        commonCodeEntity = CommonCodeEntity.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
-
-        commonCodeDTO = CommonCodeDTO.builder()
-                .idx(1L)
-                .categoryCd(1)
-                .categoryNm("men")
-                .cmmType("model")
-                .visible("Y")
-                .build();
-
-        // when
-        when(mockAdminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx())).thenReturn(commonCodeDTO);
-        CommonCodeDTO commonCodeInfo = mockAdminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx());
-
-        // then
-        assertThat(commonCodeInfo.getIdx()).isEqualTo(1);
-        assertThat(commonCodeInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(commonCodeInfo.getCategoryNm()).isEqualTo("men");
-        assertThat(commonCodeInfo.getCmmType()).isEqualTo("model");
-
-        // verify
-        verify(mockAdminCommonJpaQueryRepository, times(1)).findOneCommonCode(commonCodeEntity.getIdx());
-        verify(mockAdminCommonJpaQueryRepository, atLeastOnce()).findOneCommonCode(commonCodeEntity.getIdx());
-        verifyNoMoreInteractions(mockAdminCommonJpaQueryRepository);
-
-        InOrder inOrder = inOrder(mockAdminCommonJpaQueryRepository);
-        inOrder.verify(mockAdminCommonJpaQueryRepository).findOneCommonCode(commonCodeEntity.getIdx());
-    }
-
-    @Test
-    @DisplayName("공통코드 상세 조회 BDD 테스트")
-    void 공통코드상세조회BDD테스트() {
-        // given
-        commonCodeEntity = CommonCodeEntity.builder().idx(1L).categoryCd(1).categoryNm("men").cmmType("model").visible("Y").build();
-
-        commonCodeDTO = CommonCodeDTO.builder()
-                .idx(1L)
-                .categoryCd(1)
-                .categoryNm("men")
-                .cmmType("model")
-                .visible("Y")
-                .build();
-
-        // when
-        given(mockAdminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx())).willReturn(commonCodeDTO);
-        CommonCodeDTO commonCodeInfo = mockAdminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx());
-
-        // then
-        assertThat(commonCodeInfo.getIdx()).isEqualTo(1);
-        assertThat(commonCodeInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(commonCodeInfo.getCategoryNm()).isEqualTo("men");
-        assertThat(commonCodeInfo.getCmmType()).isEqualTo("model");
-
-        // verify
-        then(mockAdminCommonJpaQueryRepository).should(times(1)).findOneCommonCode(commonCodeEntity.getIdx());
-        then(mockAdminCommonJpaQueryRepository).should(atLeastOnce()).findOneCommonCode(commonCodeEntity.getIdx());
-        then(mockAdminCommonJpaQueryRepository).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("공통코드 등록 Mockito 테스트")
-    void 공통코드등록Mockito테스트() {
-        // given
-        adminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity);
-
-        // when
-        when(mockAdminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity)).thenReturn(commonCodeDTO);
-        CommonCodeDTO commonInfo = mockAdminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity);
-
-        // then
-        assertThat(commonInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(commonInfo.getCategoryNm()).isEqualTo("공통코드");
-        assertThat(commonInfo.getCmmType()).isEqualTo("common");
-
-        // verify
-        verify(mockAdminCommonJpaQueryRepository, times(1)).insertCommonCode(commonCodeEntity);
-        verify(mockAdminCommonJpaQueryRepository, atLeastOnce()).insertCommonCode(commonCodeEntity);
-        verifyNoMoreInteractions(mockAdminCommonJpaQueryRepository);
-
-        InOrder inOrder = inOrder(mockAdminCommonJpaQueryRepository);
-        inOrder.verify(mockAdminCommonJpaQueryRepository).insertCommonCode(commonCodeEntity);
-    }
-
-    @Test
-    @DisplayName("공통코드 등록 BDD 테스트")
-    void 공통코드등록BDD테스트() {
-        // given
-        adminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity);
-
-        // when
-        given(mockAdminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity)).willReturn(commonCodeDTO);
-        CommonCodeDTO commonInfo = mockAdminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity);
-
-        // then
-        assertThat(commonInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(commonInfo.getCategoryNm()).isEqualTo("공통코드");
-        assertThat(commonInfo.getCmmType()).isEqualTo("common");
-
-        // verify
-        then(mockAdminCommonJpaQueryRepository).should(times(1)).insertCommonCode(commonCodeEntity);
-        then(mockAdminCommonJpaQueryRepository).should(atLeastOnce()).insertCommonCode(commonCodeEntity);
-        then(mockAdminCommonJpaQueryRepository).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("공통코드 수정 Mockito 테스트")
-    void 공통코드수정Mockito테스트() {
-        Long idx = adminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity).getIdx();
-
-        commonCodeEntity = CommonCodeEntity.builder()
-                .idx(idx)
-                .categoryCd(1)
-                .categoryNm("new men")
-                .cmmType("model")
-                .visible("Y").build();
-
-        adminCommonJpaQueryRepository.updateCommonCode(commonCodeEntity);
-
-        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
-
-        // when
-        when(mockAdminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx())).thenReturn(commonCodeDTO);
-        CommonCodeDTO commonCodeInfo = mockAdminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx());
-
-        // then
-        assertThat(commonCodeInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(commonCodeInfo.getCategoryNm()).isEqualTo("new men");
-        assertThat(commonCodeInfo.getCmmType()).isEqualTo("model");
-
-        // verify
-        verify(mockAdminCommonJpaQueryRepository, times(1)).findOneCommonCode(commonCodeEntity.getIdx());
-        verify(mockAdminCommonJpaQueryRepository, atLeastOnce()).findOneCommonCode(commonCodeEntity.getIdx());
-        verifyNoMoreInteractions(mockAdminCommonJpaQueryRepository);
-
-        InOrder inOrder = inOrder(mockAdminCommonJpaQueryRepository);
-        inOrder.verify(mockAdminCommonJpaQueryRepository).findOneCommonCode(commonCodeEntity.getIdx());
-    }
-
-    @Test
-    @DisplayName("공통코드 수정 BDD 테스트")
-    void 공통코드수정BDD테스트() {
-        Long idx = adminCommonJpaQueryRepository.insertCommonCode(commonCodeEntity).getIdx();
-
-        commonCodeEntity = CommonCodeEntity.builder()
-                .idx(idx)
-                .categoryCd(1)
-                .categoryNm("new men")
-                .cmmType("model")
-                .visible("Y").build();
-
-        adminCommonJpaQueryRepository.updateCommonCode(commonCodeEntity);
-
-        commonCodeDTO = CommonCodeEntity.toDto(commonCodeEntity);
-
-        // when
-        given(mockAdminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx())).willReturn(commonCodeDTO);
-        CommonCodeDTO commonCodeInfo = mockAdminCommonJpaQueryRepository.findOneCommonCode(commonCodeEntity.getIdx());
-
-        // then
-        assertThat(commonCodeInfo.getCategoryCd()).isEqualTo(1);
-        assertThat(commonCodeInfo.getCategoryNm()).isEqualTo("new men");
-        assertThat(commonCodeInfo.getCmmType()).isEqualTo("model");
-
-        // verify
-        then(mockAdminCommonJpaQueryRepository).should(times(1)).findOneCommonCode(commonCodeEntity.getIdx());
-        then(mockAdminCommonJpaQueryRepository).should(atLeastOnce()).findOneCommonCode(commonCodeEntity.getIdx());
-        then(mockAdminCommonJpaQueryRepository).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("공통코드 삭제 테스트")
-    void 공통코드삭제테스트() {
-        // given
-        em.persist(commonCodeEntity);
-
-        Long entityIdx = commonCodeEntity.getIdx();
-        Long deleteIdx = adminCommonJpaQueryRepository.deleteCommonCode(commonCodeEntity.getIdx());
-
-        // then
-        assertThat(deleteIdx).isEqualTo(entityIdx);
     }
 }

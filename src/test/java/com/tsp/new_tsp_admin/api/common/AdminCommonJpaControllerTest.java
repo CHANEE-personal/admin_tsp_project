@@ -1,7 +1,7 @@
 package com.tsp.new_tsp_admin.api.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +70,7 @@ class AdminCommonJpaControllerTest {
     private final EntityManager em;
     private final JwtUtil jwtUtil;
     private AdminUserEntity adminUserEntity;
-    private CommonCodeEntity commonCodeEntity;
+    private NewCodeEntity newCodeEntity;
 
     Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -102,7 +102,7 @@ class AdminCommonJpaControllerTest {
         createUser();
 
         // 공통코드 생성
-        commonCodeEntity = CommonCodeEntity.builder()
+        newCodeEntity = NewCodeEntity.builder()
                 .categoryCd(1)
                 .categoryNm("men")
                 .cmmType("model")
@@ -128,9 +128,7 @@ class AdminCommonJpaControllerTest {
     @DisplayName("Admin 공통코드 조회 테스트")
     void 공통코드조회Api테스트() throws Exception {
         LinkedMultiValueMap<String, String> commonMap = new LinkedMultiValueMap<>();
-        commonMap.add("jpaStartPage", "1");
-        commonMap.add("size", "3");
-        mockMvc.perform(get("/api/jpa-common/lists").queryParams(commonMap)
+        mockMvc.perform(get("/api/jpa-common/lists").queryParams(commonMap).param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -142,9 +140,7 @@ class AdminCommonJpaControllerTest {
     @DisplayName("Admin 공통코드 조회 권한 테스트")
     void 공통코드조회Api권한테스트() throws Exception {
         LinkedMultiValueMap<String, String> commonMap = new LinkedMultiValueMap<>();
-        commonMap.add("jpaStartPage", "1");
-        commonMap.add("size", "3");
-        mockMvc.perform(get("/api/jpa-common/lists").queryParams(commonMap)
+        mockMvc.perform(get("/api/jpa-common/lists").queryParams(commonMap).param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden())
@@ -173,7 +169,7 @@ class AdminCommonJpaControllerTest {
         mockMvc.perform(post("/api/jpa-common")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(commonCodeEntity)))
+                        .content(objectMapper.writeValueAsString(newCodeEntity)))
                 .andDo(print())
                 .andDo(document("common/post",
                         preprocessRequest(prettyPrint()),
@@ -199,20 +195,20 @@ class AdminCommonJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공통코드 수정 테스트")
     void 공통코드수정Api테스트() throws Exception {
-        em.persist(commonCodeEntity);
+        em.persist(newCodeEntity);
 
-        commonCodeEntity = CommonCodeEntity.builder()
-                .idx(commonCodeEntity.getIdx())
+        newCodeEntity = NewCodeEntity.builder()
+                .idx(newCodeEntity.getIdx())
                 .categoryCd(1)
                 .categoryNm("new men")
                 .cmmType("model")
                 .visible("Y")
                 .build();
 
-        mockMvc.perform(put("/api/jpa-common/{idx}", commonCodeEntity.getIdx())
+        mockMvc.perform(put("/api/jpa-common/{idx}", newCodeEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                         .contentType(APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(commonCodeEntity)))
+                        .content(objectMapper.writeValueAsString(newCodeEntity)))
                 .andDo(print())
                 .andDo(document("common/put",
                         preprocessRequest(prettyPrint()),
@@ -238,13 +234,13 @@ class AdminCommonJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 공통코드 삭제 테스트")
     void 공통코드삭제Api테스트() throws Exception {
-        em.persist(commonCodeEntity);
+        em.persist(newCodeEntity);
 
-        mockMvc.perform(delete("/api/jpa-common/{idx}", commonCodeEntity.getIdx())
+        mockMvc.perform(delete("/api/jpa-common/{idx}", newCodeEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(content().string(getString(commonCodeEntity.getIdx())));
+                .andExpect(content().string(getString(newCodeEntity.getIdx())));
     }
 }

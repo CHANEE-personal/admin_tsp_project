@@ -6,7 +6,7 @@ import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaService;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,9 +57,9 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findAgencyList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findAgencyList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         // 페이징 및 검색
-        Map<String, Object> agencyMap = searchCommon.searchCommon(page, paramMap);
+        Map<String, Object> agencyMap = searchCommon.searchCommon(paging, paramMap);
 
         int agencyListCount = this.adminAgencyJpaService.findAgencyCount(agencyMap);
         List<AdminAgencyDTO> agencyList = new ArrayList<>();
@@ -69,9 +69,9 @@ public class AdminAgencyJpaController {
         }
 
         // 리스트 수
-        agencyMap.put("pageSize", page.getSize());
+        agencyMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        agencyMap.put("perPageListCnt", ceil((double) agencyListCount / page.getSize()));
+        agencyMap.put("perPageListCnt", ceil((double) agencyListCount / paging.getSize()));
         // 전체 아이템 수
         agencyMap.put("agencyListTotalCnt", agencyListCount);
 

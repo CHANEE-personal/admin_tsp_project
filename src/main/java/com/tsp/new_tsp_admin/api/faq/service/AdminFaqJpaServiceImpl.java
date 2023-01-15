@@ -4,10 +4,11 @@ import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqDTO;
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,21 +27,6 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findFaqCount
-     * 2. ClassName  : AdminFaqJpaServiceImpl.java
-     * 3. Comment    : 관리자 FAQ 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 22.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findFaqCount(Map<String, Object> faqMap) {
-        return adminFaqJpaQueryRepository.findFaqCount(faqMap);
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findFaqList
      * 2. ClassName  : AdminFaqJpaServiceImpl.java
      * 3. Comment    : 관리자 FAQ 리스트 조회
@@ -50,8 +36,8 @@ public class AdminFaqJpaServiceImpl implements AdminFaqJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminFaqDTO> findFaqList(Map<String, Object> faqMap) {
-        return adminFaqJpaQueryRepository.findFaqList(faqMap);
+    public Page<AdminFaqDTO> findFaqList(Map<String, Object> faqMap, PageRequest pageRequest) {
+        return adminFaqJpaQueryRepository.findFaqList(faqMap, pageRequest);
     }
 
     /**

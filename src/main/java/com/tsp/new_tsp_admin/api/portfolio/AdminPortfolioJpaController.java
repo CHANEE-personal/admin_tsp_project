@@ -1,11 +1,10 @@
 package com.tsp.new_tsp_admin.api.portfolio;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
-import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.portfolio.service.AdminPortfolioJpaService;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,20 +53,20 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         Map<String, Object> portfolioMap = new HashMap<>();
 
-        int portfolioCnt = this.adminPortfolioJpaService.findPortfolioCount(searchCommon.searchCommon(page, paramMap));
+        int portfolioCnt = this.adminPortfolioJpaService.findPortfolioCount(searchCommon.searchCommon(paging, paramMap));
         List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
 
         if (portfolioCnt > 0) {
-            portfolioList = this.adminPortfolioJpaService.findPortfolioList(searchCommon.searchCommon(page, paramMap));
+            portfolioList = this.adminPortfolioJpaService.findPortfolioList(searchCommon.searchCommon(paging, paramMap));
         }
 
         // 리스트 수
-        portfolioMap.put("pageSize", page.getSize());
+        portfolioMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        portfolioMap.put("perPageListCnt", ceil((double) portfolioCnt / page.getSize()));
+        portfolioMap.put("perPageListCnt", ceil((double) portfolioCnt / paging.getSize()));
         // 전체 아이템 수
         portfolioMap.put("portfolioListCnt", portfolioCnt);
 

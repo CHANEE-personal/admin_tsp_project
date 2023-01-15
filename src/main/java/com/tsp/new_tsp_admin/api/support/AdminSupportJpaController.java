@@ -6,7 +6,7 @@ import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
 import com.tsp.new_tsp_admin.api.support.service.AdminSupportJpaService;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,9 +56,9 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/lists")
-    public ResponseEntity<Map<String, Object>> findSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findSupportList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         // 페이징 및 검색
-        Map<String, Object> supportMap = searchCommon.searchCommon(page, paramMap);
+        Map<String, Object> supportMap = searchCommon.searchCommon(paging, paramMap);
 
         int supportListCount = this.adminSupportJpaService.findSupportCount(supportMap);
         List<AdminSupportDTO> supportList = new ArrayList<>();
@@ -68,9 +68,9 @@ public class AdminSupportJpaController {
         }
 
         // 리스트 수
-        supportMap.put("pageSize", page.getSize());
+        supportMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        supportMap.put("perPageListCnt", ceil((double) supportListCount / page.getSize()));
+        supportMap.put("perPageListCnt", ceil((double) supportListCount / paging.getSize()));
         // 전체 아이템 수
         supportMap.put("modelListTotalCnt", supportListCount);
 
@@ -145,9 +145,9 @@ public class AdminSupportJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/evaluation/lists")
-    public ResponseEntity<Map<String, Object>> findEvaluationList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findEvaluationList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         // 페이징 및 검색
-        Map<String, Object> evaluationMap = searchCommon.searchCommon(page, paramMap);
+        Map<String, Object> evaluationMap = searchCommon.searchCommon(paging, paramMap);
 
         int evaluationCount = this.adminSupportJpaService.findEvaluationCount(evaluationMap);
         List<EvaluationDTO> evaluationList = new ArrayList<>();
@@ -157,9 +157,9 @@ public class AdminSupportJpaController {
         }
 
         // 리스트 수
-        evaluationMap.put("pageSize", page.getSize());
+        evaluationMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        evaluationMap.put("perPageListCnt", ceil((evaluationCount - 1) / page.getSize() + 1));
+        evaluationMap.put("perPageListCnt", ceil((evaluationCount - 1) / paging.getSize() + 1));
         // 전체 아이템 수
         evaluationMap.put("evaluationCount", evaluationCount);
 

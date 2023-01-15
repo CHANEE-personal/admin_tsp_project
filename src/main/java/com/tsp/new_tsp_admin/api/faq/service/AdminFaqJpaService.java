@@ -2,21 +2,13 @@ package com.tsp.new_tsp_admin.api.faq.service;
 
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqDTO;
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminFaqJpaService {
-    /**
-     * <pre>
-     * 1. MethodName : findFaqCount
-     * 2. ClassName  : AdminFaqJpaService.java
-     * 3. Comment    : 관리자 FAQ 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 22.
-     * </pre>
-     */
-    int findFaqCount(Map<String, Object> faqMap);
 
     /**
      * <pre>
@@ -27,7 +19,7 @@ public interface AdminFaqJpaService {
      * 5. 작성일       : 2022. 08. 22.
      * </pre>
      */
-    List<AdminFaqDTO> findFaqList(Map<String, Object> faqMap);
+    Page<AdminFaqDTO> findFaqList(Map<String, Object> faqMap, PageRequest pageRequest);
 
     /**
      * <pre>
