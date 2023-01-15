@@ -5,22 +5,13 @@ import com.tsp.new_tsp_admin.api.domain.support.AdminSupportDTO;
 import com.tsp.new_tsp_admin.api.domain.support.AdminSupportEntity;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminSupportJpaService {
-
-    /**
-     * <pre>
-     * 1. MethodName : findSupportCount
-     * 2. ClassName  : AdminSupportJpaService.java
-     * 3. Comment    : 관리자 지원모델 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
-     * </pre>
-     */
-    int findSupportCount(Map<String, Object> supportMap);
 
     /**
      * <pre>
@@ -31,7 +22,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap);
+    Page<AdminSupportDTO> findSupportList(Map<String, Object> supportMap, PageRequest pageRequest);
 
     /**
      * <pre>
@@ -79,17 +70,6 @@ public interface AdminSupportJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findEvaluationCount
-     * 2. ClassName  : AdminSupportJpaService.java
-     * 3. Comment    : 관리자 지원모델 평가 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    int findEvaluationCount(Map<String, Object> evaluationMap);
-
-    /**
-     * <pre>
      * 1. MethodName : findEvaluationList
      * 2. ClassName  : AdminSupportJpaService.java
      * 3. Comment    : 관리자 지원모델 평가 리스트 조회
@@ -97,7 +77,7 @@ public interface AdminSupportJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<EvaluationDTO> findEvaluationList(Map<String, Object> evaluationMap);
+    Page<EvaluationDTO> findEvaluationList(Map<String, Object> evaluationMap, PageRequest pageRequest);
 
     /**
      * <pre>

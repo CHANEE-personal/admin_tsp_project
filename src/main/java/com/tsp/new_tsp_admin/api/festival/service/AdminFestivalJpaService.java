@@ -2,22 +2,13 @@ package com.tsp.new_tsp_admin.api.festival.service;
 
 import com.tsp.new_tsp_admin.api.domain.festival.AdminFestivalDTO;
 import com.tsp.new_tsp_admin.api.domain.festival.AdminFestivalEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminFestivalJpaService {
-
-    /**
-     * <pre>
-     * 1. MethodName : findFestivalCount
-     * 2. ClassName  : AdminFestivalJpaService.java
-     * 3. Comment    : 관리자 행사 리스트 갯수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2023. 01. 09.
-     * </pre>
-     */
-    int findFestivalCount(Map<String, Object> festivalMap);
 
     /**
      * <pre>
@@ -28,7 +19,7 @@ public interface AdminFestivalJpaService {
      * 5. 작성일      : 2023. 01. 09.
      * </pre>
      */
-    List<AdminFestivalDTO> findFestivalList(Map<String, Object> festivalMap);
+    Page<AdminFestivalDTO> findFestivalList(Map<String, Object> festivalMap, PageRequest pageRequest);
 
     /**
      * <pre>

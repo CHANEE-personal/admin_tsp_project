@@ -15,6 +15,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
@@ -77,11 +81,10 @@ class AdminNoticeJpaQueryRepositoryTest {
     void 공지사항리스트조회테스트() {
         // given
         Map<String, Object> noticeMap = new HashMap<>();
-        noticeMap.put("jpaStartPage", 1);
-        noticeMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminNoticeJpaQueryRepository.findNoticeList(noticeMap)).isNotEmpty();
+        assertThat(adminNoticeJpaQueryRepository.findNoticeList(noticeMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -89,30 +92,32 @@ class AdminNoticeJpaQueryRepositoryTest {
     void 공지사항Mockito조회테스트() {
         // given
         Map<String, Object> noticeMap = new HashMap<>();
-        noticeMap.put("jpaStartPage", 1);
-        noticeMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminNoticeDTO> noticeList = new ArrayList<>();
         noticeList.add(AdminNoticeDTO.builder().idx(1L).title("공지사항 테스트")
                 .description("공지사항 테스트").build());
 
+        Page<AdminNoticeDTO> resultNotice = new PageImpl<>(noticeList, pageRequest, noticeList.size());
+
         // when
-        when(mockAdminNoticeJpaQueryRepository.findNoticeList(noticeMap)).thenReturn(noticeList);
-        List<AdminNoticeDTO> newNoticeList = mockAdminNoticeJpaQueryRepository.findNoticeList(noticeMap);
+        when(mockAdminNoticeJpaQueryRepository.findNoticeList(noticeMap, pageRequest)).thenReturn(resultNotice);
+        Page<AdminNoticeDTO> newNoticeList = mockAdminNoticeJpaQueryRepository.findNoticeList(noticeMap, pageRequest);
+        List<AdminNoticeDTO> findNoticeList = newNoticeList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newNoticeList.get(0).getIdx()).isEqualTo(noticeList.get(0).getIdx());
-        assertThat(newNoticeList.get(0).getTitle()).isEqualTo(noticeList.get(0).getTitle());
-        assertThat(newNoticeList.get(0).getDescription()).isEqualTo(noticeList.get(0).getDescription());
-        assertThat(newNoticeList.get(0).getVisible()).isEqualTo(noticeList.get(0).getVisible());
+        assertThat(findNoticeList.get(0).getIdx()).isEqualTo(noticeList.get(0).getIdx());
+        assertThat(findNoticeList.get(0).getTitle()).isEqualTo(noticeList.get(0).getTitle());
+        assertThat(findNoticeList.get(0).getDescription()).isEqualTo(noticeList.get(0).getDescription());
+        assertThat(findNoticeList.get(0).getVisible()).isEqualTo(noticeList.get(0).getVisible());
 
         // verify
-        verify(mockAdminNoticeJpaQueryRepository, times(1)).findNoticeList(noticeMap);
-        verify(mockAdminNoticeJpaQueryRepository, atLeastOnce()).findNoticeList(noticeMap);
+        verify(mockAdminNoticeJpaQueryRepository, times(1)).findNoticeList(noticeMap, pageRequest);
+        verify(mockAdminNoticeJpaQueryRepository, atLeastOnce()).findNoticeList(noticeMap, pageRequest);
         verifyNoMoreInteractions(mockAdminNoticeJpaQueryRepository);
 
         InOrder inOrder = inOrder(mockAdminNoticeJpaQueryRepository);
-        inOrder.verify(mockAdminNoticeJpaQueryRepository).findNoticeList(noticeMap);
+        inOrder.verify(mockAdminNoticeJpaQueryRepository).findNoticeList(noticeMap, pageRequest);
     }
 
     @Test
@@ -120,26 +125,28 @@ class AdminNoticeJpaQueryRepositoryTest {
     void 공지사항BDD조회테스트() {
         // given
         Map<String, Object> noticeMap = new HashMap<>();
-        noticeMap.put("jpaStartPage", 1);
-        noticeMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminNoticeDTO> noticeList = new ArrayList<>();
         noticeList.add(AdminNoticeDTO.builder().idx(1L).title("공지사항 테스트")
                 .description("공지사항 테스트").build());
 
+        Page<AdminNoticeDTO> resultNotice = new PageImpl<>(noticeList, pageRequest, noticeList.size());
+
         // when
-        given(mockAdminNoticeJpaQueryRepository.findNoticeList(noticeMap)).willReturn(noticeList);
-        List<AdminNoticeDTO> newNoticeList = mockAdminNoticeJpaQueryRepository.findNoticeList(noticeMap);
+        given(mockAdminNoticeJpaQueryRepository.findNoticeList(noticeMap, pageRequest)).willReturn(resultNotice);
+        Page<AdminNoticeDTO> newNoticeList = mockAdminNoticeJpaQueryRepository.findNoticeList(noticeMap, pageRequest);
+        List<AdminNoticeDTO> findNoticeList = newNoticeList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newNoticeList.get(0).getIdx()).isEqualTo(noticeList.get(0).getIdx());
-        assertThat(newNoticeList.get(0).getTitle()).isEqualTo(noticeList.get(0).getTitle());
-        assertThat(newNoticeList.get(0).getDescription()).isEqualTo(noticeList.get(0).getDescription());
-        assertThat(newNoticeList.get(0).getVisible()).isEqualTo(noticeList.get(0).getVisible());
+        assertThat(findNoticeList.get(0).getIdx()).isEqualTo(noticeList.get(0).getIdx());
+        assertThat(findNoticeList.get(0).getTitle()).isEqualTo(noticeList.get(0).getTitle());
+        assertThat(findNoticeList.get(0).getDescription()).isEqualTo(noticeList.get(0).getDescription());
+        assertThat(findNoticeList.get(0).getVisible()).isEqualTo(noticeList.get(0).getVisible());
 
         // verify
-        then(mockAdminNoticeJpaQueryRepository).should(times(1)).findNoticeList(noticeMap);
-        then(mockAdminNoticeJpaQueryRepository).should(atLeastOnce()).findNoticeList(noticeMap);
+        then(mockAdminNoticeJpaQueryRepository).should(times(1)).findNoticeList(noticeMap, pageRequest);
+        then(mockAdminNoticeJpaQueryRepository).should(atLeastOnce()).findNoticeList(noticeMap, pageRequest);
         then(mockAdminNoticeJpaQueryRepository).shouldHaveNoMoreInteractions();
     }
 

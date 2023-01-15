@@ -4,22 +4,13 @@ import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminPortfolioJpaService {
-
-    /**
-     * <pre>
-     * 1. MethodName : findPortfolioCount
-     * 2. ClassName  : AdminPortfolioJpaService.java
-     * 3. Comment    : 관리자 포트폴리오 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 14.
-     * </pre>
-     */
-    int findPortfolioCount(Map<String, Object> portfolioMap);
 
     /**
      * <pre>
@@ -30,7 +21,7 @@ public interface AdminPortfolioJpaService {
      * 5. 작성일       : 2022. 05. 14.
      * </pre>
      */
-    List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap);
+    Page<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap, PageRequest pageRequest);
 
     /**
      * <pre>

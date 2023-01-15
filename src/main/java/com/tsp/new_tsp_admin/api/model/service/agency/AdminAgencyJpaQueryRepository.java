@@ -7,6 +7,9 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -15,10 +18,8 @@ import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonI
 import static com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity.toDto;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.model.agency.QAdminAgencyEntity.adminAgencyEntity;
-import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_AGENCY;
-import static java.util.Collections.emptyList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,19 +45,6 @@ public class AdminAgencyJpaQueryRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findAgencyCount
-     * 2. ClassName  : AdminAgencyJpaRepository.java
-     * 3. Comment    : 관리자 모델 소속사 리스트 갯수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 14.
-     * </pre>
-     */
-    public int findAgencyCount(Map<String, Object> agencyMap) {
-        return queryFactory.selectFrom(adminAgencyEntity).where(searchAgency(agencyMap)).fetch().size();
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findAgencyList
      * 2. ClassName  : AdminAgencyJpaRepository.java
      * 3. Comment    : 관리자 모델 소속사 리스트 조회
@@ -64,17 +52,17 @@ public class AdminAgencyJpaQueryRepository {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    public List<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap) {
+    public Page<AdminAgencyDTO> findAgencyList(Map<String, Object> agencyMap, PageRequest pageRequest) {
         List<AdminAgencyEntity> agencyList = queryFactory
                 .selectFrom(adminAgencyEntity)
                 .orderBy(adminAgencyEntity.idx.desc())
                 .where(searchAgency(agencyMap))
                 .where(adminAgencyEntity.visible.eq("Y"))
-                .offset(getInt(agencyMap.get("jpaStartPage"), 0))
-                .limit(getInt(agencyMap.get("size"), 0))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
 
-        return agencyList != null ? toDtoList(agencyList) : emptyList();
+        return new PageImpl<>(toDtoList(agencyList), pageRequest, agencyList.size());
     }
 
     /**

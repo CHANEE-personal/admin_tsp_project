@@ -6,6 +6,8 @@ import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaQueryReposi
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +39,8 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
-        return adminUserJpaQueryRepository.findUserList(userMap);
+    public Page<AdminUserDTO> findUserList(Map<String, Object> userMap, PageRequest pageRequest) {
+        return adminUserJpaQueryRepository.findUserList(userMap, pageRequest);
     }
 
     /**

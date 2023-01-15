@@ -2,14 +2,17 @@ package com.tsp.new_tsp_admin.api.common;
 
 import com.tsp.new_tsp_admin.api.common.service.AdminCommonJpaService;
 import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
-import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeDTO;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +21,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-
-import static java.lang.Math.ceil;
 
 @Validated
 @RestController
@@ -32,7 +31,6 @@ import static java.lang.Math.ceil;
 public class AdminCommonJpaController {
 
     private final AdminCommonJpaService adminCommonJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -53,32 +51,13 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> commonCodeList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
-        // 페이징 및 검색
-        Map<String, Object> commonMap = searchCommon.searchCommon(page, paramMap);
-
-        int commonCodeListCount = this.adminCommonJpaService.findCommonCodeListCount(commonMap);
-        List<CommonCodeDTO> commonCodeList = new ArrayList<>();
-
-        if (commonCodeListCount > 0) {
-            commonCodeList = this.adminCommonJpaService.findCommonCodeList(commonMap);
-        }
-
-        // 리스트 수
-        commonMap.put("pageSize", page.getSize());
-        // 전체 페이지 수
-        commonMap.put("perPageListCnt", ceil((double) commonCodeListCount / page.getSize()));
-        // 전체 아이템 수
-        commonMap.put("commonCodeListTotalCnt", commonCodeListCount);
-
-        commonMap.put("commonCodeList", commonCodeList);
-
-        return ResponseEntity.ok().body(commonMap);
+    public ResponseEntity<Page<NewCodeDTO>> commonCodeList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok().body(adminCommonJpaService.findCommonCodeList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**
      * <pre>
-     * 1. MethodName : commonCodeInfo
+     * 1. MethodName : findOneCommon
      * 2. ClassName  : AdminCommonJpaController.java
      * 3. Comment    : 관리자 공통 코드 상세
      * 4. 작성자      : CHO
@@ -87,7 +66,7 @@ public class AdminCommonJpaController {
      */
     @ApiOperation(value = "공통코드 상세 조회", notes = "공통코드를 상세 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "공통코드 상세 조회 성공", response = CommonCodeDTO.class),
+            @ApiResponse(code = 200, message = "공통코드 상세 조회 성공", response = NewCodeDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
@@ -95,7 +74,7 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public ResponseEntity<CommonCodeDTO> commonCodeInfo(@PathVariable Long idx) {
+    public ResponseEntity<NewCodeDTO> findOneCommon(@PathVariable Long idx) {
         return ResponseEntity.ok(adminCommonJpaService.findOneCommonCode(idx));
     }
 
@@ -110,7 +89,7 @@ public class AdminCommonJpaController {
      */
     @ApiOperation(value = "공통코드 저장", notes = "공통코드를 저장한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "공통코드 등록성공", response = CommonCodeDTO.class),
+            @ApiResponse(code = 201, message = "공통코드 등록성공", response = NewCodeDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
@@ -118,8 +97,8 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping
-    public ResponseEntity<CommonCodeDTO> insertCommonCode(@Valid @RequestBody CommonCodeEntity commonCodeEntity) {
-        return ResponseEntity.created(URI.create("")).body(adminCommonJpaService.insertCommonCode(commonCodeEntity));
+    public ResponseEntity<NewCodeDTO> insertCommonCode(@Valid @RequestBody NewCodeEntity newCodeEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminCommonJpaService.insertCommonCode(newCodeEntity));
     }
 
     /**
@@ -133,7 +112,7 @@ public class AdminCommonJpaController {
      */
     @ApiOperation(value = "공통코드 수정", notes = "공통코드를 수정한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "공통코드 수정성공", response = CommonCodeDTO.class),
+            @ApiResponse(code = 200, message = "공통코드 수정성공", response = NewCodeDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
@@ -141,11 +120,8 @@ public class AdminCommonJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public ResponseEntity<CommonCodeDTO> updateCommonCode(@PathVariable Long idx, @Valid @RequestBody CommonCodeEntity commonCodeEntity) {
-        if (adminCommonJpaService.findOneCommonCode(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminCommonJpaService.updateCommonCode(commonCodeEntity));
+    public ResponseEntity<NewCodeDTO> updateCommonCode(@PathVariable Long idx, @Valid @RequestBody NewCodeEntity commonCodeEntity) {
+        return ResponseEntity.ok(adminCommonJpaService.updateCommonCode(idx, commonCodeEntity));
     }
 
     /**
@@ -168,9 +144,6 @@ public class AdminCommonJpaController {
     })
     @DeleteMapping("/{idx}")
     public ResponseEntity<Long> deleteCommonCode(@PathVariable Long idx) {
-        if (adminCommonJpaService.findOneCommonCode(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminCommonJpaService.deleteCommonCode(idx);
         return ResponseEntity.noContent().build();
     }

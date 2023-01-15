@@ -12,6 +12,9 @@ import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -54,19 +57,6 @@ public class AdminSupportJpaQueryRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findSupportCount
-     * 2. ClassName  : AdminSupportJpaRepository.java
-     * 3. Comment    : 관리자 지원모델 리스트 갯수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    public int findSupportCount(Map<String, Object> supportMap) {
-        return queryFactory.selectFrom(adminSupportEntity).where(searchSupport(supportMap)).fetch().size();
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findSupportList
      * 2. ClassName  : AdminSupportJpaRepository.java
      * 3. Comment    : 관리자 지원모델 리스트 조회
@@ -74,28 +64,15 @@ public class AdminSupportJpaQueryRepository {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    public List<AdminSupportDTO> findSupportList(Map<String, Object> supportMap) {
+    public Page<AdminSupportDTO> findSupportList(Map<String, Object> supportMap, PageRequest pageRequest) {
         List<AdminSupportEntity> supportList = queryFactory.selectFrom(adminSupportEntity)
                 .where(searchSupport(supportMap))
                 .orderBy(adminSupportEntity.idx.desc())
-                .offset(getInt(supportMap.get("jpaStartPage"), 0))
-                .limit(getInt(supportMap.get("size"), 0))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
 
-        return supportList != null ? toDtoList(supportList) : emptyList();
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findEvaluationCount
-     * 2. ClassName  : AdminSupportJpaRepository.java
-     * 3. Comment    : 관리자 지원모델 평가 리스트 갯수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    public int findEvaluationCount() {
-        return queryFactory.selectFrom(evaluationEntity).fetch().size();
+        return new PageImpl<>(AdminSupportEntity.toDtoList(supportList), pageRequest, supportList.size());
     }
 
     /**
@@ -107,34 +84,15 @@ public class AdminSupportJpaQueryRepository {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    public List<EvaluationDTO> findEvaluationList(Map<String, Object> evaluationMap) {
+    public Page<EvaluationDTO> findEvaluationList(Map<String, Object> evaluationMap, PageRequest pageRequest) {
         List<EvaluationEntity> evaluationList = queryFactory.selectFrom(evaluationEntity)
                 .where(evaluationEntity.visible.eq("Y"))
                 .orderBy(adminSupportEntity.idx.desc())
-                .offset(getInt(evaluationMap.get("jpaStartPage"), 0))
-                .limit(getInt(evaluationMap.get("size"), 0))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
 
-        return evaluationList != null ? toDtoList(evaluationList) : emptyList();
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findOneEvaluation
-     * 2. ClassName  : AdminSupportJpaRepository.java
-     * 3. Comment    : 관리자 지원모델 평가내용 상세 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    public EvaluationDTO findOneEvaluation(Long idx) {
-        //모델 상세 조회
-        EvaluationEntity findOneEvaluation = Optional.ofNullable(queryFactory
-                .selectFrom(evaluationEntity)
-                .where(evaluationEntity.idx.eq(idx))
-                .fetchOne()).orElseThrow(() -> new TspException(NOT_FOUND_EVALUATION));
-
-        return toDto(findOneEvaluation);
+        return new PageImpl<>(EvaluationEntity.toDtoList(evaluationList), pageRequest, evaluationList.size());
     }
 
     /**

@@ -16,6 +16,10 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -73,11 +78,10 @@ class AdminFaqJpaQueryRepositoryTest {
     void FAQ리스트조회테스트() {
         // given
         Map<String, Object> faqMap = new HashMap<>();
-        faqMap.put("jpaStartPage", 1);
-        faqMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminFaqJpaQueryRepository.findFaqList(faqMap)).isNotEmpty();
+        assertThat(adminFaqJpaQueryRepository.findFaqList(faqMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -85,30 +89,31 @@ class AdminFaqJpaQueryRepositoryTest {
     void FAQMockito조회테스트() {
         // given
         Map<String, Object> faqMap = new HashMap<>();
-        faqMap.put("jpaStartPage", 1);
-        faqMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminFaqDTO> faqList = new ArrayList<>();
         faqList.add(AdminFaqDTO.builder().idx(1L).title("FAQ 테스트")
                 .description("FAQ 테스트").build());
+        Page<AdminFaqDTO> resultFaq = new PageImpl<>(faqList, pageRequest, faqList.size());
 
         // when
-        when(mockAdminFaqJpaQueryRepository.findFaqList(faqMap)).thenReturn(faqList);
-        List<AdminFaqDTO> newFaqList = mockAdminFaqJpaQueryRepository.findFaqList(faqMap);
+        when(mockAdminFaqJpaQueryRepository.findFaqList(faqMap, pageRequest)).thenReturn(resultFaq);
+        Page<AdminFaqDTO> newFaqList = mockAdminFaqJpaQueryRepository.findFaqList(faqMap, pageRequest);
+        List<AdminFaqDTO> findFaqList = newFaqList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newFaqList.get(0).getIdx()).isEqualTo(faqList.get(0).getIdx());
-        assertThat(newFaqList.get(0).getTitle()).isEqualTo(faqList.get(0).getTitle());
-        assertThat(newFaqList.get(0).getDescription()).isEqualTo(faqList.get(0).getDescription());
-        assertThat(newFaqList.get(0).getVisible()).isEqualTo(faqList.get(0).getVisible());
+        assertThat(findFaqList.get(0).getIdx()).isEqualTo(faqList.get(0).getIdx());
+        assertThat(findFaqList.get(0).getTitle()).isEqualTo(faqList.get(0).getTitle());
+        assertThat(findFaqList.get(0).getDescription()).isEqualTo(faqList.get(0).getDescription());
+        assertThat(findFaqList.get(0).getVisible()).isEqualTo(faqList.get(0).getVisible());
 
         // verify
-        verify(mockAdminFaqJpaQueryRepository, times(1)).findFaqList(faqMap);
-        verify(mockAdminFaqJpaQueryRepository, atLeastOnce()).findFaqList(faqMap);
+        verify(mockAdminFaqJpaQueryRepository, times(1)).findFaqList(faqMap, pageRequest);
+        verify(mockAdminFaqJpaQueryRepository, atLeastOnce()).findFaqList(faqMap, pageRequest);
         verifyNoMoreInteractions(mockAdminFaqJpaQueryRepository);
 
         InOrder inOrder = inOrder(mockAdminFaqJpaQueryRepository);
-        inOrder.verify(mockAdminFaqJpaQueryRepository).findFaqList(faqMap);
+        inOrder.verify(mockAdminFaqJpaQueryRepository).findFaqList(faqMap, pageRequest);
     }
 
     @Test
@@ -116,26 +121,27 @@ class AdminFaqJpaQueryRepositoryTest {
     void FAQBDD조회테스트() {
         // given
         Map<String, Object> faqMap = new HashMap<>();
-        faqMap.put("jpaStartPage", 1);
-        faqMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminFaqDTO> faqList = new ArrayList<>();
         faqList.add(AdminFaqDTO.builder().idx(1L).title("FAQ 테스트")
                 .description("FAQ 테스트").build());
+        Page<AdminFaqDTO> resultFaq = new PageImpl<>(faqList, pageRequest, faqList.size());
 
         // when
-        given(mockAdminFaqJpaQueryRepository.findFaqList(faqMap)).willReturn(faqList);
-        List<AdminFaqDTO> newNoticeList = mockAdminFaqJpaQueryRepository.findFaqList(faqMap);
+        given(mockAdminFaqJpaQueryRepository.findFaqList(faqMap, pageRequest)).willReturn(resultFaq);
+        Page<AdminFaqDTO> newFaqList = mockAdminFaqJpaQueryRepository.findFaqList(faqMap, pageRequest);
+        List<AdminFaqDTO> findFaqList = newFaqList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newNoticeList.get(0).getIdx()).isEqualTo(faqList.get(0).getIdx());
-        assertThat(newNoticeList.get(0).getTitle()).isEqualTo(faqList.get(0).getTitle());
-        assertThat(newNoticeList.get(0).getDescription()).isEqualTo(faqList.get(0).getDescription());
-        assertThat(newNoticeList.get(0).getVisible()).isEqualTo(faqList.get(0).getVisible());
+        assertThat(findFaqList.get(0).getIdx()).isEqualTo(faqList.get(0).getIdx());
+        assertThat(findFaqList.get(0).getTitle()).isEqualTo(faqList.get(0).getTitle());
+        assertThat(findFaqList.get(0).getDescription()).isEqualTo(faqList.get(0).getDescription());
+        assertThat(findFaqList.get(0).getVisible()).isEqualTo(faqList.get(0).getVisible());
 
         // verify
-        then(mockAdminFaqJpaQueryRepository).should(times(1)).findFaqList(faqMap);
-        then(mockAdminFaqJpaQueryRepository).should(atLeastOnce()).findFaqList(faqMap);
+        then(mockAdminFaqJpaQueryRepository).should(times(1)).findFaqList(faqMap, pageRequest);
+        then(mockAdminFaqJpaQueryRepository).should(atLeastOnce()).findFaqList(faqMap, pageRequest);
         then(mockAdminFaqJpaQueryRepository).shouldHaveNoMoreInteractions();
     }
 

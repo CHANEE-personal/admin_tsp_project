@@ -18,6 +18,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -25,6 +28,7 @@ import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,11 +86,10 @@ class AdminSupportJpaServiceTest {
     void 지원모델리스트조회테스트() {
         // given
         Map<String, Object> supportMap = new HashMap<>();
-        supportMap.put("jpaStartPage", 1);
-        supportMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         // then
-        assertThat(adminSupportJpaService.findSupportList(supportMap)).isNotEmpty();
+        assertThat(adminSupportJpaService.findSupportList(supportMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -94,37 +97,38 @@ class AdminSupportJpaServiceTest {
     void 지원모델리스트조회Mockito테스트() {
         // given
         Map<String, Object> supportMap = new HashMap<>();
-        supportMap.put("jpaStartPage", 1);
-        supportMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminSupportDTO> returnSupportList = new ArrayList<>();
         returnSupportList.add(AdminSupportDTO.builder()
                 .idx(1L).supportName("조찬희").supportHeight(170).supportMessage("조찬희")
                 .supportPhone("010-1234-5678").supportSize3("31-24-31").supportInstagram("https://instagram.com").visible("Y").build());
+        Page<AdminSupportDTO> resultSupport = new PageImpl<>(returnSupportList, pageRequest, returnSupportList.size());
 
         // when
-        when(mockAdminSupportJpaService.findSupportList(supportMap)).thenReturn(returnSupportList);
-        List<AdminSupportDTO> supportsList = mockAdminSupportJpaService.findSupportList(supportMap);
+        when(mockAdminSupportJpaService.findSupportList(supportMap, pageRequest)).thenReturn(resultSupport);
+        Page<AdminSupportDTO> supportsList = mockAdminSupportJpaService.findSupportList(supportMap, pageRequest);
+        List<AdminSupportDTO> findSupportList = supportsList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(supportsList).isNotEmpty(),
-                () -> assertThat(supportsList).hasSize(1)
+                () -> assertThat(findSupportList).isNotEmpty(),
+                () -> assertThat(findSupportList).hasSize(1)
         );
 
-        assertThat(supportsList.get(0).getIdx()).isEqualTo(returnSupportList.get(0).getIdx());
-        assertThat(supportsList.get(0).getSupportName()).isEqualTo(returnSupportList.get(0).getSupportName());
-        assertThat(supportsList.get(0).getSupportHeight()).isEqualTo(returnSupportList.get(0).getSupportHeight());
-        assertThat(supportsList.get(0).getSupportMessage()).isEqualTo(returnSupportList.get(0).getSupportMessage());
-        assertThat(supportsList.get(0).getVisible()).isEqualTo(returnSupportList.get(0).getVisible());
+        assertThat(findSupportList.get(0).getIdx()).isEqualTo(returnSupportList.get(0).getIdx());
+        assertThat(findSupportList.get(0).getSupportName()).isEqualTo(returnSupportList.get(0).getSupportName());
+        assertThat(findSupportList.get(0).getSupportHeight()).isEqualTo(returnSupportList.get(0).getSupportHeight());
+        assertThat(findSupportList.get(0).getSupportMessage()).isEqualTo(returnSupportList.get(0).getSupportMessage());
+        assertThat(findSupportList.get(0).getVisible()).isEqualTo(returnSupportList.get(0).getVisible());
 
         // verify
-        verify(mockAdminSupportJpaService, times(1)).findSupportList(supportMap);
-        verify(mockAdminSupportJpaService, atLeastOnce()).findSupportList(supportMap);
+        verify(mockAdminSupportJpaService, times(1)).findSupportList(supportMap, pageRequest);
+        verify(mockAdminSupportJpaService, atLeastOnce()).findSupportList(supportMap, pageRequest);
         verifyNoMoreInteractions(mockAdminSupportJpaService);
 
         InOrder inOrder = inOrder(mockAdminSupportJpaService);
-        inOrder.verify(mockAdminSupportJpaService).findSupportList(supportMap);
+        inOrder.verify(mockAdminSupportJpaService).findSupportList(supportMap, pageRequest);
     }
 
     @Test
@@ -132,33 +136,34 @@ class AdminSupportJpaServiceTest {
     void 지원모델리스트조회BDD테스트() {
         // given
         Map<String, Object> supportMap = new HashMap<>();
-        supportMap.put("jpaStartPage", 1);
-        supportMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminSupportDTO> returnSupportList = new ArrayList<>();
         returnSupportList.add(AdminSupportDTO.builder()
                 .idx(1L).supportName("조찬희").supportHeight(170).supportMessage("조찬희")
                 .supportPhone("010-1234-5678").supportSize3("31-24-31").supportInstagram("https://instagram.com").visible("Y").build());
+        Page<AdminSupportDTO> resultSupport = new PageImpl<>(returnSupportList, pageRequest, returnSupportList.size());
 
         // when
-        given(mockAdminSupportJpaService.findSupportList(supportMap)).willReturn(returnSupportList);
-        List<AdminSupportDTO> supportsList = mockAdminSupportJpaService.findSupportList(supportMap);
+        given(mockAdminSupportJpaService.findSupportList(supportMap, pageRequest)).willReturn(resultSupport);
+        Page<AdminSupportDTO> supportsList = mockAdminSupportJpaService.findSupportList(supportMap, pageRequest);
+        List<AdminSupportDTO> findSupportList = supportsList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(supportsList).isNotEmpty(),
-                () -> assertThat(supportsList).hasSize(1)
+                () -> assertThat(findSupportList).isNotEmpty(),
+                () -> assertThat(findSupportList).hasSize(1)
         );
 
-        assertThat(supportsList.get(0).getIdx()).isEqualTo(returnSupportList.get(0).getIdx());
-        assertThat(supportsList.get(0).getSupportName()).isEqualTo(returnSupportList.get(0).getSupportName());
-        assertThat(supportsList.get(0).getSupportHeight()).isEqualTo(returnSupportList.get(0).getSupportHeight());
-        assertThat(supportsList.get(0).getSupportMessage()).isEqualTo(returnSupportList.get(0).getSupportMessage());
-        assertThat(supportsList.get(0).getVisible()).isEqualTo(returnSupportList.get(0).getVisible());
+        assertThat(findSupportList.get(0).getIdx()).isEqualTo(returnSupportList.get(0).getIdx());
+        assertThat(findSupportList.get(0).getSupportName()).isEqualTo(returnSupportList.get(0).getSupportName());
+        assertThat(findSupportList.get(0).getSupportHeight()).isEqualTo(returnSupportList.get(0).getSupportHeight());
+        assertThat(findSupportList.get(0).getSupportMessage()).isEqualTo(returnSupportList.get(0).getSupportMessage());
+        assertThat(findSupportList.get(0).getVisible()).isEqualTo(returnSupportList.get(0).getVisible());
 
         // verify
-        then(mockAdminSupportJpaService).should(times(1)).findSupportList(supportMap);
-        then(mockAdminSupportJpaService).should(atLeastOnce()).findSupportList(supportMap);
+        then(mockAdminSupportJpaService).should(times(1)).findSupportList(supportMap, pageRequest);
+        then(mockAdminSupportJpaService).should(atLeastOnce()).findSupportList(supportMap, pageRequest);
         then(mockAdminSupportJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -301,29 +306,30 @@ class AdminSupportJpaServiceTest {
     void 지원모델평가리스트조회Mockito테스트() {
         // given
         Map<String, Object> evaluationMap = new HashMap<>();
-        evaluationMap.put("jpaStartPage", 1);
-        evaluationMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<EvaluationDTO> evaluationList = new ArrayList<>();
         evaluationList.add(EvaluationDTO.builder().idx(1L)
                 .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
+        Page<EvaluationDTO> resultEvaluate = new PageImpl<>(evaluationList, pageRequest, evaluationList.size());
 
         // when
-        when(mockAdminSupportJpaService.findEvaluationList(evaluationMap)).thenReturn(evaluationList);
-        List<EvaluationDTO> evaluationInfo = mockAdminSupportJpaService.findEvaluationList(evaluationMap);
+        when(mockAdminSupportJpaService.findEvaluationList(evaluationMap, pageRequest)).thenReturn(resultEvaluate);
+        Page<EvaluationDTO> evaluationInfo = mockAdminSupportJpaService.findEvaluationList(evaluationMap, pageRequest);
+        List<EvaluationDTO> findEvaluateList = evaluationInfo.stream().collect(Collectors.toList());
 
         // then
-        assertThat(evaluationInfo.get(0).getIdx()).isEqualTo(evaluationInfo.get(0).getIdx());
-        assertThat(evaluationInfo.get(0).getSupportIdx()).isEqualTo(evaluationInfo.get(0).getSupportIdx());
-        assertThat(evaluationInfo.get(0).getEvaluateComment()).isEqualTo(evaluationInfo.get(0).getEvaluateComment());
+        assertThat(findEvaluateList.get(0).getIdx()).isEqualTo(evaluationList.get(0).getIdx());
+        assertThat(findEvaluateList.get(0).getSupportIdx()).isEqualTo(evaluationList.get(0).getSupportIdx());
+        assertThat(findEvaluateList.get(0).getEvaluateComment()).isEqualTo(evaluationList.get(0).getEvaluateComment());
 
         // verify
-        verify(mockAdminSupportJpaService, times(1)).findEvaluationList(evaluationMap);
-        verify(mockAdminSupportJpaService, atLeastOnce()).findEvaluationList(evaluationMap);
+        verify(mockAdminSupportJpaService, times(1)).findEvaluationList(evaluationMap, pageRequest);
+        verify(mockAdminSupportJpaService, atLeastOnce()).findEvaluationList(evaluationMap, pageRequest);
         verifyNoMoreInteractions(mockAdminSupportJpaService);
 
         InOrder inOrder = inOrder(mockAdminSupportJpaService);
-        inOrder.verify(mockAdminSupportJpaService).findEvaluationList(evaluationMap);
+        inOrder.verify(mockAdminSupportJpaService).findEvaluationList(evaluationMap, pageRequest);
     }
 
     @Test
@@ -331,25 +337,26 @@ class AdminSupportJpaServiceTest {
     void 지원모델평가리스트조회BDD테스트() {
         // given
         Map<String, Object> evaluationMap = new HashMap<>();
-        evaluationMap.put("jpaStartPage", 1);
-        evaluationMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<EvaluationDTO> evaluationList = new ArrayList<>();
         evaluationList.add(EvaluationDTO.builder().idx(1L)
                 .supportIdx(adminSupportEntity.getIdx()).evaluateComment("합격").visible("Y").build());
+        Page<EvaluationDTO> resultEvaluate = new PageImpl<>(evaluationList, pageRequest, evaluationList.size());
 
         // when
-        given(mockAdminSupportJpaService.findEvaluationList(evaluationMap)).willReturn(evaluationList);
-        List<EvaluationDTO> evaluationInfo = mockAdminSupportJpaService.findEvaluationList(evaluationMap);
+        given(mockAdminSupportJpaService.findEvaluationList(evaluationMap, pageRequest)).willReturn(resultEvaluate);
+        Page<EvaluationDTO> evaluationInfo = mockAdminSupportJpaService.findEvaluationList(evaluationMap, pageRequest);
+        List<EvaluationDTO> findEvaluateList = evaluationInfo.stream().collect(Collectors.toList());
 
         // then
-        assertThat(evaluationInfo.get(0).getIdx()).isEqualTo(evaluationInfo.get(0).getIdx());
-        assertThat(evaluationInfo.get(0).getSupportIdx()).isEqualTo(evaluationInfo.get(0).getSupportIdx());
-        assertThat(evaluationInfo.get(0).getEvaluateComment()).isEqualTo(evaluationInfo.get(0).getEvaluateComment());
+        assertThat(findEvaluateList.get(0).getIdx()).isEqualTo(evaluationList.get(0).getIdx());
+        assertThat(findEvaluateList.get(0).getSupportIdx()).isEqualTo(evaluationList.get(0).getSupportIdx());
+        assertThat(findEvaluateList.get(0).getEvaluateComment()).isEqualTo(evaluationList.get(0).getEvaluateComment());
 
         // verify
-        then(mockAdminSupportJpaService).should(times(1)).findEvaluationList(evaluationMap);
-        then(mockAdminSupportJpaService).should(atLeastOnce()).findEvaluationList(evaluationMap);
+        then(mockAdminSupportJpaService).should(times(1)).findEvaluationList(evaluationMap, pageRequest);
+        then(mockAdminSupportJpaService).should(atLeastOnce()).findEvaluationList(evaluationMap, pageRequest);
         then(mockAdminSupportJpaService).shouldHaveNoMoreInteractions();
     }
 

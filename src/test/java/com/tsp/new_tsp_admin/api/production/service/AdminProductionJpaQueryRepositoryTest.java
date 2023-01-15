@@ -20,6 +20,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -94,11 +97,10 @@ class AdminProductionJpaQueryRepositoryTest {
     void 프로덕션리스트조회테스트() {
         // given
         Map<String, Object> productionMap = new HashMap<>();
-        productionMap.put("jpaStartPage", 1);
-        productionMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         // then
-        assertThat(adminProductionJpaQueryRepository.findProductionList(productionMap)).isNotEmpty();
+        assertThat(adminProductionJpaQueryRepository.findProductionList(productionMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -136,8 +138,7 @@ class AdminProductionJpaQueryRepositoryTest {
     void 프로덕션Mockito조회테스트() {
         // given
         Map<String, Object> productionMap = new HashMap<>();
-        productionMap.put("jpaStartPage", 1);
-        productionMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
@@ -145,24 +146,26 @@ class AdminProductionJpaQueryRepositoryTest {
         List<AdminProductionDTO> productionList = new ArrayList<>();
         productionList.add(AdminProductionDTO.builder().idx(1L).title("프로덕션 테스트")
                 .description("프로덕션 테스트").productionImage(commonImageDtoList).build());
+        Page<AdminProductionDTO> resultProduction = new PageImpl<>(productionList, pageRequest, productionList.size());
 
         // when
-        when(mockAdminProductionJpaQueryRepository.findProductionList(productionMap)).thenReturn(productionList);
-        List<AdminProductionDTO> newProductionList = mockAdminProductionJpaQueryRepository.findProductionList(productionMap);
+        when(mockAdminProductionJpaQueryRepository.findProductionList(productionMap, pageRequest)).thenReturn(resultProduction);
+        Page<AdminProductionDTO> newProductionList = mockAdminProductionJpaQueryRepository.findProductionList(productionMap, pageRequest);
+        List<AdminProductionDTO> findProductionList = newProductionList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newProductionList.get(0).getIdx()).isEqualTo(productionList.get(0).getIdx());
-        assertThat(newProductionList.get(0).getTitle()).isEqualTo(productionList.get(0).getTitle());
-        assertThat(newProductionList.get(0).getDescription()).isEqualTo(productionList.get(0).getDescription());
-        assertThat(newProductionList.get(0).getVisible()).isEqualTo(productionList.get(0).getVisible());
+        assertThat(findProductionList.get(0).getIdx()).isEqualTo(productionList.get(0).getIdx());
+        assertThat(findProductionList.get(0).getTitle()).isEqualTo(productionList.get(0).getTitle());
+        assertThat(findProductionList.get(0).getDescription()).isEqualTo(productionList.get(0).getDescription());
+        assertThat(findProductionList.get(0).getVisible()).isEqualTo(productionList.get(0).getVisible());
 
         // verify
-        verify(mockAdminProductionJpaQueryRepository, times(1)).findProductionList(productionMap);
-        verify(mockAdminProductionJpaQueryRepository, atLeastOnce()).findProductionList(productionMap);
+        verify(mockAdminProductionJpaQueryRepository, times(1)).findProductionList(productionMap, pageRequest);
+        verify(mockAdminProductionJpaQueryRepository, atLeastOnce()).findProductionList(productionMap, pageRequest);
         verifyNoMoreInteractions(mockAdminProductionJpaQueryRepository);
 
         InOrder inOrder = inOrder(mockAdminProductionJpaQueryRepository);
-        inOrder.verify(mockAdminProductionJpaQueryRepository).findProductionList(productionMap);
+        inOrder.verify(mockAdminProductionJpaQueryRepository).findProductionList(productionMap, pageRequest);
     }
 
     @Test
@@ -170,8 +173,7 @@ class AdminProductionJpaQueryRepositoryTest {
     void 프로덕션BDD조회테스트() {
         // given
         Map<String, Object> productionMap = new HashMap<>();
-        productionMap.put("jpaStartPage", 1);
-        productionMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
@@ -179,20 +181,22 @@ class AdminProductionJpaQueryRepositoryTest {
         List<AdminProductionDTO> productionList = new ArrayList<>();
         productionList.add(AdminProductionDTO.builder().idx(1L).title("프로덕션 테스트")
                 .description("프로덕션 테스트").productionImage(commonImageDtoList).build());
+        Page<AdminProductionDTO> resultProduction = new PageImpl<>(productionList, pageRequest, productionList.size());
 
         // when
-        given(mockAdminProductionJpaQueryRepository.findProductionList(productionMap)).willReturn(productionList);
-        List<AdminProductionDTO> newProductionList = mockAdminProductionJpaQueryRepository.findProductionList(productionMap);
+        given(mockAdminProductionJpaQueryRepository.findProductionList(productionMap, pageRequest)).willReturn(resultProduction);
+        Page<AdminProductionDTO> newProductionList = mockAdminProductionJpaQueryRepository.findProductionList(productionMap, pageRequest);
+        List<AdminProductionDTO> findProductionList = newProductionList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newProductionList.get(0).getIdx()).isEqualTo(productionList.get(0).getIdx());
-        assertThat(newProductionList.get(0).getTitle()).isEqualTo(productionList.get(0).getTitle());
-        assertThat(newProductionList.get(0).getDescription()).isEqualTo(productionList.get(0).getDescription());
-        assertThat(newProductionList.get(0).getVisible()).isEqualTo(productionList.get(0).getVisible());
+        assertThat(findProductionList.get(0).getIdx()).isEqualTo(productionList.get(0).getIdx());
+        assertThat(findProductionList.get(0).getTitle()).isEqualTo(productionList.get(0).getTitle());
+        assertThat(findProductionList.get(0).getDescription()).isEqualTo(productionList.get(0).getDescription());
+        assertThat(findProductionList.get(0).getVisible()).isEqualTo(productionList.get(0).getVisible());
 
         // verify
-        then(mockAdminProductionJpaQueryRepository).should(times(1)).findProductionList(productionMap);
-        then(mockAdminProductionJpaQueryRepository).should(atLeastOnce()).findProductionList(productionMap);
+        then(mockAdminProductionJpaQueryRepository).should(times(1)).findProductionList(productionMap, pageRequest);
+        then(mockAdminProductionJpaQueryRepository).should(atLeastOnce()).findProductionList(productionMap, pageRequest);
         then(mockAdminProductionJpaQueryRepository).shouldHaveNoMoreInteractions();
     }
 

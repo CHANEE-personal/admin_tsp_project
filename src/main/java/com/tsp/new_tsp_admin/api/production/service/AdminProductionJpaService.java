@@ -5,6 +5,8 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -13,33 +15,22 @@ public interface AdminProductionJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findProductionCount
-     * 2. ClassName  : AdminProductionJpaService.java
-     * 3. Comment    : 관리자 프로덕션 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
-     * </pre>
-     */
-    int findProductionCount(Map<String, Object> productionMap);
-
-    /**
-     * <pre>
      * 1. MethodName : findProductionList
      * 2. ClassName  : AdminProductionJpaService.java
      * 3. Comment    : 관리자 프로덕션 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 09.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
-    List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap);
+    Page<AdminProductionDTO> findProductionList(Map<String, Object> productionMap, PageRequest pageRequest);
 
     /**
      * <pre>
      * 1. MethodName : findOneProduction
      * 2. ClassName  : AdminProductionJpaService.java
      * 3. Comment    : 관리자 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 15.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 15.
      * </pre>
      */
     AdminProductionDTO findOneProduction(Long idx);
@@ -49,8 +40,8 @@ public interface AdminProductionJpaService {
      * 1. MethodName : findPrevOneProduction
      * 2. ClassName  : AdminProductionJpaService.java
      * 3. Comment    : 관리자 이전 프로덕션 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 13.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
     AdminProductionDTO findPrevOneProduction(Long idx);

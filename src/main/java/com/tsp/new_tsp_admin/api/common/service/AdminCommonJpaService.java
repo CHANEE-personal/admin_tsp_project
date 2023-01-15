@@ -1,23 +1,13 @@
 package com.tsp.new_tsp_admin.api.common.service;
 
-import com.tsp.new_tsp_admin.api.domain.common.CommonCodeDTO;
-import com.tsp.new_tsp_admin.api.domain.common.CommonCodeEntity;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeDTO;
+import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
 import java.util.Map;
 
 public interface AdminCommonJpaService {
-
-    /**
-     * <pre>
-     * 1. MethodName : findCommonCodeListCount
-     * 2. ClassName  : AdminCommonJpaService.java
-     * 3. Comment    : 관리자 공통 코드 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 02.
-     * </pre>
-     */
-    int findCommonCodeListCount(Map<String, Object> commonMap);
 
     /**
      * <pre>
@@ -28,7 +18,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    List<CommonCodeDTO> findCommonCodeList(Map<String, Object> commonMap);
+    Page<NewCodeDTO> findCommonCodeList(Map<String, Object> commonMap, PageRequest pageRequest);
 
     /**
      * <pre>
@@ -39,7 +29,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    CommonCodeDTO findOneCommonCode(Long idx);
+    NewCodeDTO findOneCommonCode(Long idx);
 
     /**
      * <pre>
@@ -50,7 +40,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    CommonCodeDTO insertCommonCode(CommonCodeEntity commonCodeEntity);
+    NewCodeDTO insertCommonCode(NewCodeEntity newCodeEntity);
 
     /**
      * <pre>
@@ -61,7 +51,7 @@ public interface AdminCommonJpaService {
      * 5. 작성일       : 2022. 05. 02.
      * </pre>
      */
-    CommonCodeDTO updateCommonCode(CommonCodeEntity commonCodeEntity);
+    NewCodeDTO updateCommonCode(Long idx, NewCodeEntity newCodeEntity);
 
     /**
      * <pre>

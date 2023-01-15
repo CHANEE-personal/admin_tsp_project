@@ -3,7 +3,7 @@ package com.tsp.new_tsp_admin.api.comment;
 import com.tsp.new_tsp_admin.api.comment.service.AdminCommentJpaService;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,20 +52,20 @@ public class AdminCommentJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findAdminCommentList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findAdminCommentList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         Map<String, Object> commentMap = new HashMap<>();
 
-        int commentCount = this.adminCommentJpaService.findAdminCommentCount(searchCommon.searchCommon(page, paramMap));
+        int commentCount = this.adminCommentJpaService.findAdminCommentCount(searchCommon.searchCommon(paging, paramMap));
         List<AdminCommentDTO> commentList = new ArrayList<>();
 
         if (commentCount > 0) {
-            commentList = this.adminCommentJpaService.findAdminCommentList(searchCommon.searchCommon(page, paramMap));
+            commentList = this.adminCommentJpaService.findAdminCommentList(searchCommon.searchCommon(paging, paramMap));
         }
 
         // 리스트 수
-        commentMap.put("pageSize", page.getSize());
+        commentMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        commentMap.put("perPageListCnt", ceil((double) commentCount / page.getSize()));
+        commentMap.put("perPageListCnt", ceil((double) commentCount / paging.getSize()));
         // 전체 아이템 수
         commentMap.put("commentListCnt", commentCount);
 

@@ -13,6 +13,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -74,37 +78,37 @@ class AdminFestivalJpaServiceTest {
     @DisplayName("축제 리스트 조회 테스트")
     void 축제리스트조회테스트() {
         Map<String, Object> festivalMap = new HashMap<>();
-        festivalMap.put("jpaStartPage", 1);
-        festivalMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
-        assertThat(adminFestivalJpaService.findFestivalList(festivalMap)).isNotEmpty();
+        assertThat(adminFestivalJpaService.findFestivalList(festivalMap, pageRequest)).isNotEmpty();
     }
 
     @Test
     @DisplayName("축제 리스트 조회 Mockito 테스트")
     void 축제리스트조회Mockito테스트() {
         Map<String, Object> festivalMap = new HashMap<>();
-        festivalMap.put("jpaStartPage", 1);
-        festivalMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminFestivalDTO> festivalList = new ArrayList<>();
         festivalList.add(adminFestivalDTO);
+        Page<AdminFestivalDTO> resultFestival = new PageImpl<>(festivalList, pageRequest, festivalList.size());
 
         // when
-        when(mockAdminFestivalJpaService.findFestivalList(festivalMap)).thenReturn(festivalList);
-        List<AdminFestivalDTO> findFestivalList = mockAdminFestivalJpaService.findFestivalList(festivalMap);
+        when(mockAdminFestivalJpaService.findFestivalList(festivalMap, pageRequest)).thenReturn(resultFestival);
+        Page<AdminFestivalDTO> findFestivalList = mockAdminFestivalJpaService.findFestivalList(festivalMap, pageRequest);
+        List<AdminFestivalDTO> newFestivalList = findFestivalList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(findFestivalList.get(0).getFestivalTitle()).isEqualTo("축제 제목");
-        assertThat(findFestivalList.get(0).getFestivalDescription()).isEqualTo("축제 내용");
+        assertThat(newFestivalList.get(0).getFestivalTitle()).isEqualTo("축제 제목");
+        assertThat(newFestivalList.get(0).getFestivalDescription()).isEqualTo("축제 내용");
 
         // verify
-        verify(mockAdminFestivalJpaService, times(1)).findFestivalList(festivalMap);
-        verify(mockAdminFestivalJpaService, atLeastOnce()).findFestivalList(festivalMap);
+        verify(mockAdminFestivalJpaService, times(1)).findFestivalList(festivalMap, pageRequest);
+        verify(mockAdminFestivalJpaService, atLeastOnce()).findFestivalList(festivalMap, pageRequest);
         verifyNoMoreInteractions(mockAdminFestivalJpaService);
 
         InOrder inOrder = inOrder(mockAdminFestivalJpaService);
-        inOrder.verify(mockAdminFestivalJpaService).findFestivalList(festivalMap);
+        inOrder.verify(mockAdminFestivalJpaService).findFestivalList(festivalMap, pageRequest);
     }
 
     @Test

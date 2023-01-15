@@ -4,21 +4,13 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminNegotiationJpaService {
-    /**
-     * <pre>
-     * 1. MethodName : findNegotiationCount
-     * 2. ClassName  : AdminNegotiationJpaService.java
-     * 3. Comment    : 관리자 모델 섭외 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 09. 09.
-     * </pre>
-     */
-    int findNegotiationCount(Map<String, Object> negotiationMap);
 
     /**
      * <pre>
@@ -29,7 +21,7 @@ public interface AdminNegotiationJpaService {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
-    List<AdminNegotiationDTO> findNegotiationList(Map<String, Object> negotiationMap);
+    Page<AdminNegotiationDTO> findNegotiationList(Map<String, Object> negotiationMap, PageRequest pageRequest);
 
     /**
      * <pre>

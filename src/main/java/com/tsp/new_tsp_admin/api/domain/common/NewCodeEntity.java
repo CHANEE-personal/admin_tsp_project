@@ -55,6 +55,11 @@ public class NewCodeEntity extends NewCommonMappedClass {
     @OneToMany(mappedBy = "newPortFolioJpaDTO", cascade = MERGE, fetch = LAZY)
     private List<AdminPortFolioEntity> adminPortFolioEntityList = new ArrayList<>();
 
+    public void update(NewCodeEntity newCodeEntity) {
+        this.categoryNm = newCodeEntity.categoryNm;
+        this.visible = newCodeEntity.visible;
+    }
+
     public void addModel(AdminModelEntity adminModelEntity) {
         adminModelEntity.setNewModelCodeJpaDTO(this);
         this.adminModelEntityList.add(adminModelEntity);

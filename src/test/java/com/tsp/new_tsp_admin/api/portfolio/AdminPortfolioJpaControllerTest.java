@@ -131,9 +131,7 @@ class AdminPortfolioJpaControllerTest {
     @DisplayName("Admin 포트폴리오 조회 테스트")
     void 포트폴리오조회Api테스트() throws Exception {
         MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
-        portfolioMap.add("jpaStartPage", "1");
-        portfolioMap.add("size", "3");
-        mockMvc.perform(get("/api/portfolio/lists").params(portfolioMap)
+        mockMvc.perform(get("/api/portfolio/lists").params(portfolioMap).param("pageNum", "1").param("size", "3")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -146,11 +144,9 @@ class AdminPortfolioJpaControllerTest {
     @DisplayName("Admin 포트폴리오 검색조회 테스트")
     void 포트폴리오검색조회Api테스트() throws Exception {
         MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
-        portfolioMap.add("jpaStartPage", "1");
-        portfolioMap.add("size", "3");
         portfolioMap.add("searchType", "0");
         portfolioMap.add("searchKeyword", "하하");
-        mockMvc.perform(get("/api/portfolio/lists").queryParams(portfolioMap)
+        mockMvc.perform(get("/api/portfolio/lists").queryParams(portfolioMap).param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -164,9 +160,8 @@ class AdminPortfolioJpaControllerTest {
     @DisplayName("Admin 포트폴리오 조회 권한 테스트")
     void 포트폴리오조회Api권한테스트() throws Exception {
         MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
-        portfolioMap.add("jpaStartPage", "1");
-        portfolioMap.add("size", "3");
-        mockMvc.perform(get("/api/portfolio/lists").params(portfolioMap)
+
+        mockMvc.perform(get("/api/portfolio/lists").params(portfolioMap).param("pageNum", "1").param("size", "3")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());

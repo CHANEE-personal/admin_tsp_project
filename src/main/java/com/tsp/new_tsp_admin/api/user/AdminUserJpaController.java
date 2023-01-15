@@ -7,10 +7,11 @@ import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.jwt.AuthenticationResponse;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.jwt.MyUserDetailsService;
-import com.tsp.new_tsp_admin.common.Page;
-import com.tsp.new_tsp_admin.common.SearchCommon;
+import com.tsp.new_tsp_admin.common.Paging;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,7 +28,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -42,7 +42,6 @@ public class AdminUserJpaController {
     private final AuthenticationManager authenticationManager;
     private final MyUserDetailsService userDetailsService;
     private final JwtUtil jwtTokenUtil;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -55,7 +54,7 @@ public class AdminUserJpaController {
      */
     @ApiOperation(value = "Admin 회원 조회", notes = "Admin 회원을 조회한다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "관리자 회원 조회 성공", response = Map.class),
+            @ApiResponse(code = 200, message = "관리자 회원 조회 성공", response = Page.class),
             @ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
             @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
             @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
@@ -63,8 +62,8 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping
-    public ResponseEntity<List<AdminUserDTO>> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
-        return ResponseEntity.ok(adminUserJpaService.findUserList(searchCommon.searchCommon(page, paramMap)));
+    public ResponseEntity<Page<AdminUserDTO>> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok(adminUserJpaService.findUserList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**

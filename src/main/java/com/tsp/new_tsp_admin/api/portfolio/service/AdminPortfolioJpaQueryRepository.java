@@ -12,6 +12,9 @@ import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -22,7 +25,6 @@ import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonI
 import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
 import static com.tsp.new_tsp_admin.api.domain.production.QAdminProductionEntity.adminProductionEntity;
-import static com.tsp.new_tsp_admin.common.StringUtil.getInt;
 import static com.tsp.new_tsp_admin.common.StringUtil.getString;
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 import static java.util.Collections.emptyList;
@@ -52,19 +54,6 @@ public class AdminPortfolioJpaQueryRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findPortfolioCount
-     * 2. ClassName  : AdminPortfolioJpaRepository.java
-     * 3. Comment    : 관리자 포트폴리오 리스트 갯수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 12.
-     * </pre>
-     */
-    public int findPortfolioCount(Map<String, Object> portfolioMap) {
-        return queryFactory.selectFrom(adminPortFolioEntity).where(searchPortfolio(portfolioMap)).fetch().size();
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaRepository.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
@@ -72,16 +61,16 @@ public class AdminPortfolioJpaQueryRepository {
      * 5. 작성일      : 2022. 05. 13.
      * </pre>
      */
-    public List<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap) {
+    public Page<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap, PageRequest pageRequest) {
         List<AdminPortFolioEntity> portfolioList = queryFactory
                 .selectFrom(adminPortFolioEntity)
                 .orderBy(adminPortFolioEntity.idx.desc())
                 .where(searchPortfolio(portfolioMap))
-                .offset(getInt(portfolioMap.get("jpaStartPage"), 0))
-                .limit(getInt(portfolioMap.get("size"), 0))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
 
-        return portfolioList != null ? toPartDtoList(portfolioList) : emptyList();
+        return new PageImpl<>(AdminPortFolioEntity.toDtoList(portfolioList), pageRequest, portfolioList.size());
     }
 
     /**

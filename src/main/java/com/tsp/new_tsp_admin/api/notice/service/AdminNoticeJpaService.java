@@ -2,21 +2,13 @@ package com.tsp.new_tsp_admin.api.notice.service;
 
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeDTO;
 import com.tsp.new_tsp_admin.api.domain.notice.AdminNoticeEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminNoticeJpaService {
-    /**
-     * <pre>
-     * 1. MethodName : findNoticeCount
-     * 2. ClassName  : AdminNoticeJpaService.java
-     * 3. Comment    : 관리자 공지사항 리스트 수 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 16.
-     * </pre>
-     */
-    int findNoticeCount(Map<String, Object> noticeMap);
 
     /**
      * <pre>
@@ -27,7 +19,7 @@ public interface AdminNoticeJpaService {
      * 5. 작성일       : 2022. 08. 16.
      * </pre>
      */
-    List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap);
+    Page<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap, PageRequest pageRequest);
 
     /**
      * <pre>

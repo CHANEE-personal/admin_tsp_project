@@ -5,6 +5,8 @@ import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,21 +30,6 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
 
     /**
      * <pre>
-     * 1. MethodName : findNegotiationCount
-     * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
-     * 3. Comment    : 관리자 모델 섭외 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 09. 09.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findNegotiationCount(Map<String, Object> negotiationMap) {
-        return adminNegotiationJpaQueryRepository.findNegotiationCount(negotiationMap);
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findModelNegotiationList
      * 2. ClassName  : AdminNegotiationJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 섭외 리스트 조회
@@ -52,8 +39,8 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminNegotiationDTO> findNegotiationList(Map<String, Object> negotiationMap) {
-        return adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap);
+    public Page<AdminNegotiationDTO> findNegotiationList(Map<String, Object> negotiationMap, PageRequest pageRequest) {
+        return adminNegotiationJpaQueryRepository.findNegotiationList(negotiationMap, pageRequest);
     }
 
     /**
@@ -68,7 +55,7 @@ public class AdminNegotiationJpaServiceImpl implements AdminNegotiationJpaServic
     @Override
     @Transactional(readOnly = true)
     public AdminNegotiationDTO findOneNegotiation(Long idx) {
-        return adminNegotiationJpaQueryRepository.findOneNegotiation(idx);
+        return AdminNegotiationEntity.toDto(oneNegotiation(idx));
     }
 
     /**

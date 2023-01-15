@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,20 +31,6 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
                 .orElseThrow(() -> new TspException(NOT_FOUND_NOTICE));
     }
 
-    /**
-     * <pre>
-     * 1. MethodName : findNoticeCount
-     * 2. ClassName  : AdminNoticeServiceImpl.java
-     * 3. Comment    : 관리자 공지사항 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 16.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findNoticeCount(Map<String, Object> noticeMap) {
-        return adminNoticeJpaQueryRepository.findNoticeCount(noticeMap);
-    }
 
     /**
      * <pre>
@@ -55,8 +43,8 @@ public class AdminNoticeJpaServiceImpl implements AdminNoticeJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap) {
-        return adminNoticeJpaQueryRepository.findNoticeList(noticeMap);
+    public Page<AdminNoticeDTO> findNoticeList(Map<String, Object> noticeMap, PageRequest pageRequest) {
+        return adminNoticeJpaQueryRepository.findNoticeList(noticeMap, pageRequest);
     }
 
     /**

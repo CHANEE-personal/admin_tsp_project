@@ -1,17 +1,17 @@
 package com.tsp.new_tsp_admin.api.portfolio;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
-import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.portfolio.service.AdminPortfolioJpaService;
-import com.tsp.new_tsp_admin.common.Page;
-import com.tsp.new_tsp_admin.common.SearchCommon;
+import com.tsp.new_tsp_admin.common.Paging;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -19,12 +19,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.ceil;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
 @RestController
@@ -33,7 +30,6 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 @RequiredArgsConstructor
 public class AdminPortfolioJpaController {
     private final AdminPortfolioJpaService adminPortfolioJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -54,26 +50,8 @@ public class AdminPortfolioJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
-        Map<String, Object> portfolioMap = new HashMap<>();
-
-        int portfolioCnt = this.adminPortfolioJpaService.findPortfolioCount(searchCommon.searchCommon(page, paramMap));
-        List<AdminPortFolioDTO> portfolioList = new ArrayList<>();
-
-        if (portfolioCnt > 0) {
-            portfolioList = this.adminPortfolioJpaService.findPortfolioList(searchCommon.searchCommon(page, paramMap));
-        }
-
-        // 리스트 수
-        portfolioMap.put("pageSize", page.getSize());
-        // 전체 페이지 수
-        portfolioMap.put("perPageListCnt", ceil((double) portfolioCnt / page.getSize()));
-        // 전체 아이템 수
-        portfolioMap.put("portfolioListCnt", portfolioCnt);
-
-        portfolioMap.put("portfolioList", portfolioList);
-
-        return ResponseEntity.ok().body(portfolioMap);
+    public ResponseEntity<Page<AdminPortFolioDTO>> findPortfolioList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok().body(adminPortfolioJpaService.findPortfolioList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**

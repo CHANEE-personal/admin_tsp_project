@@ -10,12 +10,16 @@ import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,9 +48,9 @@ class AdminUserJpaServiceTest {
     void 관리자회원리스트조회테스트() {
         // given
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("jpaStartPage", 1);
-        userMap.put("size", 3);
-        List<AdminUserDTO> adminUserList = adminUserJpaService.findUserList(userMap);
+        PageRequest pageRequest = PageRequest.of(1, 100);
+        Page<AdminUserDTO> adminUserList = adminUserJpaService.findUserList(userMap, pageRequest);
+
         // then
         assertThat(adminUserList).isNotEmpty();
     }
@@ -56,36 +60,37 @@ class AdminUserJpaServiceTest {
     void 관리자회원리스트조회Mockito테스트() {
         // given
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("jpaStartPage", 1);
-        userMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminUserDTO> returnUserList = new ArrayList<>();
         returnUserList.add(AdminUserDTO.builder()
                 .idx(1L).userId("admin05").password("test1234").name("admin05").visible("Y").build());
+        Page<AdminUserDTO> resultUser = new PageImpl<>(returnUserList, pageRequest, returnUserList.size());
 
         // when
-        when(mockAdminUserJpaService.findUserList(userMap)).thenReturn(returnUserList);
-        List<AdminUserDTO> userList = mockAdminUserJpaService.findUserList(userMap);
+        when(mockAdminUserJpaService.findUserList(userMap, pageRequest)).thenReturn(resultUser);
+        Page<AdminUserDTO> userList = mockAdminUserJpaService.findUserList(userMap, pageRequest);
+        List<AdminUserDTO> findUserList = userList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(userList).isNotEmpty(),
-                () -> assertThat(userList).hasSize(1)
+                () -> assertThat(findUserList).isNotEmpty(),
+                () -> assertThat(findUserList).hasSize(1)
         );
 
-        assertThat(userList.get(0).getIdx()).isEqualTo(returnUserList.get(0).getIdx());
-        assertThat(userList.get(0).getUserId()).isEqualTo(returnUserList.get(0).getUserId());
-        assertThat(userList.get(0).getPassword()).isEqualTo(returnUserList.get(0).getPassword());
-        assertThat(userList.get(0).getName()).isEqualTo(returnUserList.get(0).getName());
-        assertThat(userList.get(0).getVisible()).isEqualTo(returnUserList.get(0).getVisible());
+        assertThat(findUserList.get(0).getIdx()).isEqualTo(returnUserList.get(0).getIdx());
+        assertThat(findUserList.get(0).getUserId()).isEqualTo(returnUserList.get(0).getUserId());
+        assertThat(findUserList.get(0).getPassword()).isEqualTo(returnUserList.get(0).getPassword());
+        assertThat(findUserList.get(0).getName()).isEqualTo(returnUserList.get(0).getName());
+        assertThat(findUserList.get(0).getVisible()).isEqualTo(returnUserList.get(0).getVisible());
 
         // verify
-        verify(mockAdminUserJpaService, times(1)).findUserList(userMap);
-        verify(mockAdminUserJpaService, atLeastOnce()).findUserList(userMap);
+        verify(mockAdminUserJpaService, times(1)).findUserList(userMap, pageRequest);
+        verify(mockAdminUserJpaService, atLeastOnce()).findUserList(userMap, pageRequest);
         verifyNoMoreInteractions(mockAdminUserJpaService);
 
         InOrder inOrder = inOrder(mockAdminUserJpaService);
-        inOrder.verify(mockAdminUserJpaService).findUserList(userMap);
+        inOrder.verify(mockAdminUserJpaService).findUserList(userMap, pageRequest);
     }
 
     @Test
@@ -93,31 +98,32 @@ class AdminUserJpaServiceTest {
     void 관리자회원리스트조회BDD테스트() {
         // given
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("jpaStartPage", 1);
-        userMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminUserDTO> returnUserList = new ArrayList<>();
         returnUserList.add(AdminUserDTO.builder()
                 .idx(1L).userId("admin05").password("test1234").name("admin05").visible("Y").build());
+        Page<AdminUserDTO> resultUser = new PageImpl<>(returnUserList, pageRequest, returnUserList.size());
 
         // when
-        given(mockAdminUserJpaService.findUserList(userMap)).willReturn(returnUserList);
-        List<AdminUserDTO> userList = mockAdminUserJpaService.findUserList(userMap);
+        given(mockAdminUserJpaService.findUserList(userMap, pageRequest)).willReturn(resultUser);
+        Page<AdminUserDTO> userList = mockAdminUserJpaService.findUserList(userMap, pageRequest);
+        List<AdminUserDTO> findUserList = userList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(userList).isNotEmpty(),
-                () -> assertThat(userList).hasSize(1)
+                () -> assertThat(findUserList).isNotEmpty(),
+                () -> assertThat(findUserList).hasSize(1)
         );
 
-        assertThat(userList.get(0).getIdx()).isEqualTo(returnUserList.get(0).getIdx());
-        assertThat(userList.get(0).getUserId()).isEqualTo(returnUserList.get(0).getUserId());
-        assertThat(userList.get(0).getPassword()).isEqualTo(returnUserList.get(0).getPassword());
-        assertThat(userList.get(0).getName()).isEqualTo(returnUserList.get(0).getName());
-        assertThat(userList.get(0).getVisible()).isEqualTo(returnUserList.get(0).getVisible());
+        assertThat(findUserList.get(0).getIdx()).isEqualTo(returnUserList.get(0).getIdx());
+        assertThat(findUserList.get(0).getUserId()).isEqualTo(returnUserList.get(0).getUserId());
+        assertThat(findUserList.get(0).getPassword()).isEqualTo(returnUserList.get(0).getPassword());
+        assertThat(findUserList.get(0).getName()).isEqualTo(returnUserList.get(0).getName());
+        assertThat(findUserList.get(0).getVisible()).isEqualTo(returnUserList.get(0).getVisible());
 
         // verify
-        then(mockAdminUserJpaService).should(times(1)).findUserList(userMap);
+        then(mockAdminUserJpaService).should(times(1)).findUserList(userMap, pageRequest);
         then(mockAdminUserJpaService).should(atLeastOnce());
         then(mockAdminUserJpaService).shouldHaveNoMoreInteractions();
     }

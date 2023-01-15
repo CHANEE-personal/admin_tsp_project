@@ -10,7 +10,7 @@ import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
-import com.tsp.new_tsp_admin.common.Page;
+import com.tsp.new_tsp_admin.common.Paging;
 import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,9 +65,9 @@ public class AdminModelJpaController {
     })
     @GetMapping(value = "/lists/{categoryCd}")
     public ResponseEntity<Map<String, Object>> findModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                                             @RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+                                                             @RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         // 페이징 및 검색
-        Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
+        Map<String, Object> modelMap = searchCommon.searchCommon(paging, paramMap);
         modelMap.put("categoryCd", categoryCd);
 
         int modelListCount = this.adminModelJpaService.findModelCount(modelMap);
@@ -78,9 +78,9 @@ public class AdminModelJpaController {
         }
 
         // 리스트 수
-        modelMap.put("pageSize", page.getSize());
+        modelMap.put("pageSize", paging.getSize());
         // 전체 페이지 수
-        modelMap.put("perPageListCnt", ceil((double) modelListCount / page.getSize()));
+        modelMap.put("perPageListCnt", ceil((double) modelListCount / paging.getSize()));
         // 전체 아이템 수
         modelMap.put("modelListTotalCnt", modelListCount);
 
@@ -388,9 +388,9 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/recommend")
-    public ResponseEntity<Map<String, Object>> findRecommendList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
+    public ResponseEntity<Map<String, Object>> findRecommendList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         Map<String, Object> recommendMap = new HashMap<>();
-        recommendMap.put("recommendList", adminModelJpaService.findRecommendList(searchCommon.searchCommon(page, paramMap)));
+        recommendMap.put("recommendList", adminModelJpaService.findRecommendList(searchCommon.searchCommon(paging, paramMap)));
         return ResponseEntity.ok().body(recommendMap);
     }
 

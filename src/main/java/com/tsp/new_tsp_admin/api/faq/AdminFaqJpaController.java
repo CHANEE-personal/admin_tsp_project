@@ -3,13 +3,14 @@ package com.tsp.new_tsp_admin.api.faq;
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqDTO;
 import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
 import com.tsp.new_tsp_admin.api.faq.service.AdminFaqJpaService;
-import com.tsp.new_tsp_admin.common.Page;
-import com.tsp.new_tsp_admin.common.SearchCommon;
+import com.tsp.new_tsp_admin.common.Paging;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -17,12 +18,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -31,7 +28,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class AdminFaqJpaController {
     private final AdminFaqJpaService adminFaqJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -52,26 +48,8 @@ public class AdminFaqJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public ResponseEntity<Map<String, Object>> findFaqList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) {
-        Map<String, Object> faqMap = new HashMap<>();
-
-        int faqCount = this.adminFaqJpaService.findFaqCount(searchCommon.searchCommon(page, paramMap));
-        List<AdminFaqDTO> faqList = new ArrayList<>();
-
-        if (faqCount > 0) {
-            faqList = this.adminFaqJpaService.findFaqList(searchCommon.searchCommon(page, paramMap));
-        }
-
-        // 리스트 수
-        faqMap.put("pageSize", page.getSize());
-        // 전체 페이지 수
-        faqMap.put("perPageListCnt", ceil((double) faqCount / page.getSize()));
-        // 전체 아이템 수
-        faqMap.put("faqListCnt", faqCount);
-
-        faqMap.put("faqList", faqList);
-
-        return ResponseEntity.ok().body(faqMap);
+    public ResponseEntity<Page<AdminFaqDTO>> findFaqList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        return ResponseEntity.ok().body(adminFaqJpaService.findFaqList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**
