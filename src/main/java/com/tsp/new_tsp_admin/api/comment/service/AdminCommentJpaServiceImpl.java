@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,43 +29,10 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
     private final AdminCommentJpaQueryRepository adminCommentJpaQueryRepository;
     private final AdminCommentJpaRepository adminCommentJpaRepository;
-    private final AdminModelJpaRepository adminModelJpaRepository;
-    private final AdminProductionJpaRepository adminProductionJpaRepository;
-    private final AdminPortfolioJpaRepository adminPortfolioJpaRepository;
-
-    private AdminModelEntity oneModel(Long idx) {
-        return adminModelJpaRepository.findById(idx)
-                .orElseThrow(() -> new TspException(NOT_FOUND_MODEL));
-    }
-
-    private AdminProductionEntity oneProduction(Long idx) {
-        return adminProductionJpaRepository.findById(idx)
-                .orElseThrow(() -> new TspException(NOT_FOUND_PRODUCTION));
-    }
-
-    private AdminPortFolioEntity onePortfolio(Long idx) {
-        return adminPortfolioJpaRepository.findById(idx)
-                .orElseThrow(() -> new TspException(NOT_FOUND_PORTFOLIO));
-    }
 
     private AdminCommentEntity oneComment(Long idx) {
         return adminCommentJpaRepository.findById(idx)
                 .orElseThrow(() -> new TspException(NOT_FOUND_COMMENT));
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findAdminCommentCount
-     * 2. ClassName  : AdminCommentJpaServiceImpl.java
-     * 3. Comment    : 관리자 코멘트 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 24.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findAdminCommentCount(Map<String, Object> commentMap) {
-        return adminCommentJpaQueryRepository.findAdminCommentCount(commentMap);
     }
 
     /**
@@ -77,8 +46,8 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap) {
-        return adminCommentJpaQueryRepository.findAdminCommentList(commentMap);
+    public Page<AdminCommentDTO> findAdminCommentList(Map<String, Object> commentMap, PageRequest pageRequest) {
+        return adminCommentJpaQueryRepository.findAdminCommentList(commentMap, pageRequest);
     }
 
     /**
@@ -86,74 +55,14 @@ public class AdminCommentJpaServiceImpl implements AdminCommentJpaService {
      * 1. MethodName : findOneAdminComment
      * 2. ClassName  : AdminCommentJpaServiceImpl.java
      * 3. Comment    : 관리자 코멘트 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
     @Override
     @Transactional(readOnly = true)
     public AdminCommentDTO findOneAdminComment(Long idx) {
         return AdminCommentEntity.toDto(oneComment(idx));
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : insertModelAdminComment
-     * 2. ClassName  : AdminCommentJpaServiceImpl.java
-     * 3. Comment    : 관리자 코멘트 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 24.
-     * </pre>
-     */
-    @Override
-    @Transactional
-    public AdminCommentDTO insertModelAdminComment(Long idx, AdminCommentEntity adminCommentEntity) {
-        try {
-            oneModel(idx).addComment(adminCommentEntity);
-            return AdminCommentEntity.toDto(adminCommentJpaRepository.save(adminCommentEntity));
-        } catch (Exception e) {
-            throw new TspException(ERROR_COMMENT);
-        }
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : insertProductionAdminComment
-     * 2. ClassName  : AdminCommentJpaServiceImpl.java
-     * 3. Comment    : 관리자 프로덕션 코멘트 등록
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 24.
-     * </pre>
-     */
-    @Override
-    @Transactional
-    public AdminCommentDTO insertProductionAdminComment(Long idx, AdminCommentEntity adminCommentEntity) {
-        try {
-            oneProduction(idx).addComment(adminCommentEntity);
-            return AdminCommentEntity.toDto(adminCommentJpaRepository.save(adminCommentEntity));
-        } catch (Exception e) {
-            throw new TspException(ERROR_COMMENT);
-        }
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : insertPortfolioAdminComment
-     * 2. ClassName  : AdminCommentJpaServiceImpl.java
-     * 3. Comment    : 관리자 포트폴리오 코멘트 등록
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 24.
-     * </pre>
-     */
-    @Override
-    @Transactional
-    public AdminCommentDTO insertPortfolioAdminComment(Long idx, AdminCommentEntity adminCommentEntity) {
-        try {
-            onePortfolio(idx).addComment(adminCommentEntity);
-            return AdminCommentEntity.toDto(adminCommentJpaRepository.save(adminCommentEntity));
-        } catch (Exception e) {
-            throw new TspException(ERROR_COMMENT);
-        }
     }
 
     /**

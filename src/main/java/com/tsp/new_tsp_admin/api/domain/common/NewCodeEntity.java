@@ -5,6 +5,7 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.*;
 
@@ -46,13 +48,13 @@ public class NewCodeEntity extends NewCommonMappedClass {
     private String cmmType;
 
     @Builder.Default
-    @JsonIgnore
-    @OneToMany(mappedBy = "newModelCodeJpaDTO", cascade = MERGE, fetch = LAZY)
+    @Where(clause = "type_name = 'model'")
+    @OneToMany(mappedBy = "newModelCodeJpaDTO", cascade = { PERSIST, MERGE }, fetch = LAZY)
     private List<AdminModelEntity> adminModelEntityList = new ArrayList<>();
 
     @Builder.Default
-    @JsonIgnore
-    @OneToMany(mappedBy = "newPortFolioJpaDTO", cascade = MERGE, fetch = LAZY)
+    @Where(clause = "type_name = 'portfolio'")
+    @OneToMany(mappedBy = "newPortFolioJpaDTO", cascade = { PERSIST, MERGE }, fetch = LAZY)
     private List<AdminPortFolioEntity> adminPortFolioEntityList = new ArrayList<>();
 
     public void update(NewCodeEntity newCodeEntity) {

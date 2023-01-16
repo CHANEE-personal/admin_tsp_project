@@ -150,23 +150,4 @@ public class AdminProductionJpaServiceImpl implements AdminProductionJpaService 
             throw new TspException(ERROR_DELETE_PRODUCTION);
         }
     }
-
-    /**
-     * <pre>
-     * 1. MethodName : findProductionAdminComment
-     * 2. ClassName  : AdminProductionJpaServiceImpl.java
-     * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 26.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findProductionAdminComment(Long idx) {
-        try {
-            return adminProductionJpaQueryRepository.findProductionAdminComment(idx);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_COMMENT_LIST);
-        }
-    }
 }

@@ -44,7 +44,6 @@ public class EvaluationEntity extends NewCommonMappedClass {
     @NotEmpty(message = "지원모델 평가 내용 입력은 필수입니다.")
     private String evaluateComment;
 
-    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "support_idx", referencedColumnName = "idx", insertable = false, updatable = false)
     private AdminSupportEntity adminSupportEntity;

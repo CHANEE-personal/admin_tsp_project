@@ -67,25 +67,15 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
     @NotEmpty(message = "포트폴리오 노출 여부 선택은 필수입니다.")
     private String visible;
 
-    @JsonIgnore
-    @Where(clause = "cmm_type = 'portfolio'")
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newPortFolioJpaDTO;
 
     @Builder.Default
-    @JsonIgnore
     @BatchSize(size = 5)
     @Where(clause = "type_name = 'portfolio'")
-    @OneToMany(mappedBy = "adminPortfolioEntity")
+    @OneToMany(mappedBy = "adminPortfolioEntity", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
-
-    @Builder.Default
-    @JsonIgnore
-    @BatchSize(size = 20)
-    @Where(clause = "comment_type = 'portfolio'")
-    @OneToMany(mappedBy = "adminPortfolioEntity")
-    private List<AdminCommentEntity> commentList = new ArrayList<>();
 
     public void update(AdminPortFolioEntity adminPortFolioEntity) {
         this.categoryCd = adminPortFolioEntity.categoryCd;
@@ -96,9 +86,9 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
         this.visible = adminPortFolioEntity.visible;
     }
 
-    public void addComment(AdminCommentEntity adminCommentEntity) {
-        adminCommentEntity.setAdminPortfolioEntity(this);
-        this.commentList.add(adminCommentEntity);
+    public void addImage(CommonImageEntity commonImageEntity) {
+        commonImageEntity.setAdminPortfolioEntity(this);
+        this.commonImageEntityList.add(commonImageEntity);
     }
 
     public static AdminPortFolioDTO toDto(AdminPortFolioEntity entity) {

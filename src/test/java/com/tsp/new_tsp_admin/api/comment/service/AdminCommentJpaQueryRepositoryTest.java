@@ -4,7 +4,6 @@ import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -18,6 +17,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -47,7 +50,6 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 class AdminCommentJpaQueryRepositoryTest {
     @Mock private AdminCommentJpaQueryRepository mockAdminCommentJpaQueryRepository;
     private final AdminCommentJpaQueryRepository adminCommentJpaQueryRepository;
-    private final AdminModelJpaQueryRepository adminModelJpaQueryRepository;
     private final EntityManager em;
 
     private AdminModelEntity adminModelEntity;
@@ -81,7 +83,6 @@ class AdminCommentJpaQueryRepositoryTest {
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
-                .commentType("model")
                 .visible("Y")
                 .build();
 
@@ -100,11 +101,10 @@ class AdminCommentJpaQueryRepositoryTest {
     void 어드민코멘트리스트조회테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
-        commentMap.put("jpaStartPage", 1);
-        commentMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         // then
-        assertThat(adminCommentJpaQueryRepository.findAdminCommentList(commentMap)).isNotEmpty();
+        assertThat(adminCommentJpaQueryRepository.findAdminCommentList(commentMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -112,30 +112,31 @@ class AdminCommentJpaQueryRepositoryTest {
     void 어드민코멘트Mockito조회테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
-        commentMap.put("jpaStartPage", 1);
-        commentMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminCommentDTO> commentList = new ArrayList<>();
         commentList.add(AdminCommentDTO.builder().idx(1L)
                 .commentType("model").commentTypeIdx(adminModelEntity.getIdx())
                 .comment("model").build());
+        Page<AdminCommentDTO> resultComment = new PageImpl<>(commentList, pageRequest, commentList.size());
 
         // when
-        when(mockAdminCommentJpaQueryRepository.findAdminCommentList(commentMap)).thenReturn(commentList);
-        List<AdminCommentDTO> newCommentList = mockAdminCommentJpaQueryRepository.findAdminCommentList(commentMap);
+        when(mockAdminCommentJpaQueryRepository.findAdminCommentList(commentMap, pageRequest)).thenReturn(resultComment);
+        Page<AdminCommentDTO> newCommentList = mockAdminCommentJpaQueryRepository.findAdminCommentList(commentMap, pageRequest);
+        List<AdminCommentDTO> findCommentList = newCommentList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newCommentList.get(0).getComment()).isEqualTo(commentList.get(0).getComment());
-        assertThat(newCommentList.get(0).getCommentType()).isEqualTo(commentList.get(0).getCommentType());
-        assertThat(newCommentList.get(0).getCommentTypeIdx()).isEqualTo(commentList.get(0).getCommentTypeIdx());
+        assertThat(findCommentList.get(0).getComment()).isEqualTo(commentList.get(0).getComment());
+        assertThat(findCommentList.get(0).getCommentType()).isEqualTo(commentList.get(0).getCommentType());
+        assertThat(findCommentList.get(0).getCommentTypeIdx()).isEqualTo(commentList.get(0).getCommentTypeIdx());
 
         // verify
-        verify(mockAdminCommentJpaQueryRepository, times(1)).findAdminCommentList(commentMap);
-        verify(mockAdminCommentJpaQueryRepository, atLeastOnce()).findAdminCommentList(commentMap);
+        verify(mockAdminCommentJpaQueryRepository, times(1)).findAdminCommentList(commentMap, pageRequest);
+        verify(mockAdminCommentJpaQueryRepository, atLeastOnce()).findAdminCommentList(commentMap, pageRequest);
         verifyNoMoreInteractions(mockAdminCommentJpaQueryRepository);
 
         InOrder inOrder = inOrder(mockAdminCommentJpaQueryRepository);
-        inOrder.verify(mockAdminCommentJpaQueryRepository).findAdminCommentList(commentMap);
+        inOrder.verify(mockAdminCommentJpaQueryRepository).findAdminCommentList(commentMap, pageRequest);
     }
 
     @Test
@@ -143,26 +144,27 @@ class AdminCommentJpaQueryRepositoryTest {
     void 어드민코멘트BDD조회테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
-        commentMap.put("jpaStartPage", 1);
-        commentMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminCommentDTO> commentList = new ArrayList<>();
         commentList.add(AdminCommentDTO.builder().idx(1L)
                 .commentType("model").commentTypeIdx(adminModelEntity.getIdx())
                 .comment("model").build());
+        Page<AdminCommentDTO> resultComment = new PageImpl<>(commentList, pageRequest, commentList.size());
 
         // when
-        given(mockAdminCommentJpaQueryRepository.findAdminCommentList(commentMap)).willReturn(commentList);
-        List<AdminCommentDTO> newCommentList = mockAdminCommentJpaQueryRepository.findAdminCommentList(commentMap);
+        given(mockAdminCommentJpaQueryRepository.findAdminCommentList(commentMap, pageRequest)).willReturn(resultComment);
+        Page<AdminCommentDTO> newCommentList = mockAdminCommentJpaQueryRepository.findAdminCommentList(commentMap, pageRequest);
+        List<AdminCommentDTO> findCommentList = newCommentList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newCommentList.get(0).getComment()).isEqualTo(commentList.get(0).getComment());
-        assertThat(newCommentList.get(0).getCommentType()).isEqualTo(commentList.get(0).getCommentType());
-        assertThat(newCommentList.get(0).getCommentTypeIdx()).isEqualTo(commentList.get(0).getCommentTypeIdx());
+        assertThat(findCommentList.get(0).getComment()).isEqualTo(commentList.get(0).getComment());
+        assertThat(findCommentList.get(0).getCommentType()).isEqualTo(commentList.get(0).getCommentType());
+        assertThat(findCommentList.get(0).getCommentTypeIdx()).isEqualTo(commentList.get(0).getCommentTypeIdx());
 
         // verify
-        then(mockAdminCommentJpaQueryRepository).should(times(1)).findAdminCommentList(commentMap);
-        then(mockAdminCommentJpaQueryRepository).should(atLeastOnce()).findAdminCommentList(commentMap);
+        then(mockAdminCommentJpaQueryRepository).should(times(1)).findAdminCommentList(commentMap, pageRequest);
+        then(mockAdminCommentJpaQueryRepository).should(atLeastOnce()).findAdminCommentList(commentMap, pageRequest);
         then(mockAdminCommentJpaQueryRepository).shouldHaveNoMoreInteractions();
     }
 }

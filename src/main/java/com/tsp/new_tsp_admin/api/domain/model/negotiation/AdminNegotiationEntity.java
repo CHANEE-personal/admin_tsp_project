@@ -68,7 +68,6 @@ public class AdminNegotiationEntity extends NewCommonMappedClass {
     @NotEmpty(message = "모델 섭외 노출 여부 선택은 필수입니다.")
     private String visible;
 
-    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "model_idx", referencedColumnName = "idx", nullable = false)
     private AdminModelEntity adminModelEntity;

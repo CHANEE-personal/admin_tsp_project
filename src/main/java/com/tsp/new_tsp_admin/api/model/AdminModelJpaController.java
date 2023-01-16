@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.model;
 
 import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Math.ceil;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
 
@@ -298,6 +300,29 @@ public class AdminModelJpaController {
     @PutMapping("/{idx}/agency")
     public ResponseEntity<AdminModelDTO> updateModelAgency(@PathVariable Long idx, @RequestParam Long agencyIdx) {
         return ResponseEntity.ok(adminModelJpaService.updateModelAgency(agencyIdx, AdminModelEntity.builder().idx(idx).build()));
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertModelAdminComment
+     * 2. ClassName  : AdminModelJpaController.java
+     * 3. Comment    : 관리자 모델 코멘트 저장
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 22.
+     * </pre>
+     */
+    @ApiOperation(value = "모델 어드민 코멘트 저장", notes = "어드민 코멘트를 저장한다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "모델 어드민 코멘트 등록성공", response = AdminCommentDTO.class),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+            @ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+            @ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+            @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+    })
+    @PostMapping(value = "/{idx}/comment", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AdminCommentDTO> insertModelAdminComment(Long idx, @Valid @RequestBody AdminCommentEntity adminCommentEntity) {
+        return ResponseEntity.created(URI.create("")).body(adminModelJpaService.insertModelAdminComment(idx, adminCommentEntity));
     }
 
     /**

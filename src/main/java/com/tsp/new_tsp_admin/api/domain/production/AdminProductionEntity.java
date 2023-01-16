@@ -50,17 +50,10 @@ public class AdminProductionEntity extends NewCommonMappedClass {
     @NotEmpty(message = "프로덕션 노출 여부 선택은 필수입니다.")
     private String visible;
 
-    @JsonIgnore
     @BatchSize(size = 5)
     @Where(clause = "type_name = 'production'")
-    @OneToMany(mappedBy = "adminProductionEntity")
+    @OneToMany(mappedBy = "adminProductionEntity", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
-
-    @JsonIgnore
-    @BatchSize(size = 20)
-    @Where(clause = "comment_type = 'production'")
-    @OneToMany(mappedBy = "adminProductionEntity")
-    private List<AdminCommentEntity> commentList = new ArrayList<>();
 
     public void update(AdminProductionEntity adminProductionEntity) {
         this.title = adminProductionEntity.title;
@@ -68,9 +61,9 @@ public class AdminProductionEntity extends NewCommonMappedClass {
         this.visible = adminProductionEntity.visible;
     }
 
-    public void addComment(AdminCommentEntity adminCommentEntity) {
-        adminCommentEntity.setAdminProductionEntity(this);
-        this.commentList.add(adminCommentEntity);
+    public void addImage(CommonImageEntity commonImageEntity) {
+        commonImageEntity.setAdminProductionEntity(this);
+        this.commonImageEntityList.add(commonImageEntity);
     }
 
     public static AdminProductionDTO toDto(AdminProductionEntity entity) {

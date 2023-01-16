@@ -1,7 +1,9 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.tsp.new_tsp_admin.api.comment.service.AdminCommentJpaRepository;
 import com.tsp.new_tsp_admin.api.common.SaveImage;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
@@ -34,6 +36,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     private final AdminModelJpaRepository adminModelJpaRepository;
     private final AdminAgencyJpaRepository adminAgencyJpaRepository;
     private final AdminRecommendJpaRepository adminRecommendJpaRepository;
+    private final AdminCommentJpaRepository adminCommentJpaRepository;
     private final ImageService imageService;
     private final SaveImage saveImage;
 
@@ -234,6 +237,26 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
         Optional.ofNullable(oneAgency(agencyIdx))
                 .ifPresent(adminAgencyEntity -> adminAgencyEntity.addAgency(adminModelEntity));
         return toDto(adminModelEntity);
+    }
+
+    /**
+     * <pre>
+     * 1. MethodName : insertModelAdminComment
+     * 2. ClassName  : AdminCommentJpaServiceImpl.java
+     * 3. Comment    : 관리자 코멘트 등록
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2022. 08. 24.
+     * </pre>
+     */
+    @Override
+    @Transactional
+    public AdminCommentDTO insertModelAdminComment(Long idx, AdminCommentEntity adminCommentEntity) {
+        try {
+            oneModel(idx).addComment(adminCommentEntity);
+            return AdminCommentEntity.toDto(adminCommentJpaRepository.save(adminCommentEntity));
+        } catch (Exception e) {
+            throw new TspException(ERROR_COMMENT);
+        }
     }
 
     /**

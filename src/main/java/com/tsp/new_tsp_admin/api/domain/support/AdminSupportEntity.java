@@ -77,8 +77,7 @@ public class AdminSupportEntity extends NewCommonMappedClass {
     private LocalDateTime passTime;
 
     @Builder.Default
-    @JsonIgnore
-    @OneToMany(mappedBy = "adminSupportEntity")
+    @OneToMany(mappedBy = "adminSupportEntity", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<EvaluationEntity> evaluationEntityList = new ArrayList<>();
 
     public void update(AdminSupportEntity adminSupportEntity) {

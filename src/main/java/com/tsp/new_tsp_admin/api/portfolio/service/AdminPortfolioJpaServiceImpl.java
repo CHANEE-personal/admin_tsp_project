@@ -1,19 +1,16 @@
 package com.tsp.new_tsp_admin.api.portfolio.service;
 
 import com.tsp.new_tsp_admin.api.common.service.AdminCommonJpaRepository;
-import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -156,21 +153,5 @@ public class AdminPortfolioJpaServiceImpl implements AdminPortfolioJpaService {
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_PORTFOLIO);
         }
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findPortfolioAdminComment
-     * 2. ClassName  : AdminPortfolioJpaServiceImpl.java
-     * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 26.
-     * </pre>
-     */
-    @Override
-    @Cacheable(value = "comment", key = "#idx")
-    @Transactional(readOnly = true)
-    public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) {
-        return adminPortfolioJpaQueryRepository.findPortfolioAdminComment(idx);
     }
 }

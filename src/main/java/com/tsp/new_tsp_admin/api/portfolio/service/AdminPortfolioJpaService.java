@@ -17,8 +17,8 @@ public interface AdminPortfolioJpaService {
      * 1. MethodName : findPortfolioList
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 포트폴리오 리스트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 14.
      * </pre>
      */
     Page<AdminPortFolioDTO> findPortfolioList(Map<String, Object> portfolioMap, PageRequest pageRequest);
@@ -28,8 +28,8 @@ public interface AdminPortfolioJpaService {
      * 1. MethodName : findOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
     AdminPortFolioDTO findOnePortfolio(Long idx);
@@ -39,8 +39,8 @@ public interface AdminPortfolioJpaService {
      * 1. MethodName : findPrevOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 이전 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 14.
      * </pre>
      */
     AdminPortFolioDTO findPrevOnePortfolio(Long idx);
@@ -50,8 +50,8 @@ public interface AdminPortfolioJpaService {
      * 1. MethodName : findNextOnePortfolio
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 다음 포트폴리오 상세 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 09. 14.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 09. 14.
      * </pre>
      */
     AdminPortFolioDTO findNextOnePortfolio(Long idx);
@@ -61,8 +61,8 @@ public interface AdminPortfolioJpaService {
      * 1. MethodName : insertPortfolio
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 포트폴리오 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
     AdminPortFolioDTO insertPortfolio(AdminPortFolioEntity adminPortFolioEntity);
@@ -72,8 +72,8 @@ public interface AdminPortfolioJpaService {
      * 1. MethodName : updatePortfolio
      * 2. ClassName  : AdminPortfolioJpaService.java
      * 3. Comment    : 관리자 포트폴리오 수정
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 18.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
     AdminPortFolioDTO updatePortfolio(Long idx, AdminPortFolioEntity adminPortFolioEntity);
@@ -83,20 +83,9 @@ public interface AdminPortfolioJpaService {
      * 1. MethodName : deletePortfolio
      * 2. ClassName  : AdminModeJpaService.java
      * 3. Comment    : 관리자 포트폴리오 삭제
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 05. 17.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
     Long deletePortfolio(Long idx);
-
-    /**
-     * <pre>
-     * 1. MethodName : findPortfolioAdminComment
-     * 2. ClassName  : AdminPortfolioJpaService.java
-     * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
-     * </pre>
-     */
-    List<AdminCommentDTO> findPortfolioAdminComment(Long idx);
 }
