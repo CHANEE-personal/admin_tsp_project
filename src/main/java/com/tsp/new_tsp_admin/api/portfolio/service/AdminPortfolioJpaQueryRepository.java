@@ -3,9 +3,6 @@ package com.tsp.new_tsp_admin.api.portfolio.service;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.common.EntityType;
-import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
-import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
-import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
@@ -20,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.*;
 
-import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
 import static com.tsp.new_tsp_admin.api.domain.common.QCommonImageEntity.commonImageEntity;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity.*;
 import static com.tsp.new_tsp_admin.api.domain.portfolio.QAdminPortFolioEntity.adminPortFolioEntity;
@@ -150,25 +146,5 @@ public class AdminPortfolioJpaQueryRepository {
     public Long insertPortfolioImage(CommonImageEntity commonImageEntity) {
         em.persist(commonImageEntity);
         return commonImageEntity.getIdx();
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findPortfolioAdminComment
-     * 2. ClassName  : AdminPortfolioJpaRepository.java
-     * 3. Comment    : 관리자 포트폴리오 어드민 코멘트 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 08. 26.
-     * </pre>
-     */
-    public List<AdminCommentDTO> findPortfolioAdminComment(Long idx) {
-        List<AdminCommentEntity> adminCommentEntity = queryFactory
-                .selectFrom(QAdminCommentEntity.adminCommentEntity)
-                .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("portfolio")
-                        .and(QAdminCommentEntity.adminCommentEntity.idx.eq(idx))
-                        .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
-                .fetch();
-
-        return adminCommentEntity != null ? toDtoList(adminCommentEntity) : emptyList();
     }
 }

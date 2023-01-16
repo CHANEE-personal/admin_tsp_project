@@ -226,7 +226,6 @@ class AdminSupportJpaQueryRepositoryTest {
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
-                .commentType("support")
                 .visible("Y")
                 .build();
 
@@ -270,7 +269,6 @@ class AdminSupportJpaQueryRepositoryTest {
 
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
-                .commentType("support")
                 .visible("Y")
                 .build();
 

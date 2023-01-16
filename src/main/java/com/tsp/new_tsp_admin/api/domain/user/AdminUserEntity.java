@@ -70,13 +70,6 @@ public class AdminUserEntity extends NewCommonMappedClass {
     @Enumerated(value = STRING)
     private Role role;
 
-    @Builder.Default
-    @JsonIgnore
-    @BatchSize(size = 5)
-    @Where(clause = "comment_type = 'user'")
-    @OneToMany(mappedBy = "adminUserEntity")
-    private List<AdminCommentEntity> commentList = new ArrayList<>();
-
     public void update(AdminUserEntity adminUserEntity) {
         this.userId = adminUserEntity.userId;
         this.password = adminUserEntity.password;

@@ -28,7 +28,7 @@ public class SearchCommon {
         Map<String, Object> searchMap = new HashMap<>();
 
         // 페이징 처리
-        paging.setPage(getInt(paging.getPage(), 1));
+        paging.setPageNum(getInt(paging.getPageNum(), 1));
         paging.setSize(getInt(paging.getSize(), 10));
 
         // 검색 조건
@@ -37,7 +37,7 @@ public class SearchCommon {
             searchMap.put("searchKeyword", getString(paramMap.get("searchKeyword"), ""));
         }
         searchMap.put("jpaStartPage", getInt(paging.getStartPage(), 0));
-        searchMap.put("startPage", getInt(paging.getPage(), 1));
+        searchMap.put("startPage", getInt(paging.getPageNum(), 1));
         searchMap.put("size", getInt(paging.getSize(), 10));
 
         return searchMap;

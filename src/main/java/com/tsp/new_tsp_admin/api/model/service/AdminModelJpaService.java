@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
+import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
@@ -135,6 +136,17 @@ public interface AdminModelJpaService {
      * </pre>
      */
     AdminModelDTO updateModelAgency(Long idx, AdminModelEntity adminModelEntity);
+
+    /**
+     * <pre>
+     * 1. MethodName : insertModelAdminComment
+     * 2. ClassName  : AdminModelJpaService.java
+     * 3. Comment    : 관리자 모델 코멘트 등록
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2022. 08. 24.
+     * </pre>
+     */
+    AdminCommentDTO insertModelAdminComment(Long idx, AdminCommentEntity adminCommentEntity);
 
     /**
      * <pre>

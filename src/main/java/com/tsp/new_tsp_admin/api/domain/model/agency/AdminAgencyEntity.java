@@ -53,12 +53,10 @@ public class AdminAgencyEntity extends NewCommonMappedClass {
     @NotEmpty(message = "소속사 노출 여부 선택은 필수입니다.")
     private String visible;
 
-    @JsonIgnore
     @Where(clause = "type_name = 'agency'")
-    @OneToMany(mappedBy = "adminAgencyEntity")
+    @OneToMany(mappedBy = "adminAgencyEntity", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
-    @JsonIgnore
     @OneToOne(mappedBy = "adminAgencyEntity", fetch = LAZY)
     private AdminModelEntity adminModelEntity;
 

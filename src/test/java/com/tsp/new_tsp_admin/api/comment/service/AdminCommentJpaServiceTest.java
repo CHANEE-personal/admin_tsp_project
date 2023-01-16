@@ -16,6 +16,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,11 +99,10 @@ class AdminCommentJpaServiceTest {
     void 어드민코멘트리스트조회테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
-        commentMap.put("jpaStartPage", 1);
-        commentMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         // then
-        assertThat(adminCommentJpaService.findAdminCommentList(commentMap)).isNotEmpty();
+        assertThat(adminCommentJpaService.findAdminCommentList(commentMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -107,36 +110,37 @@ class AdminCommentJpaServiceTest {
     void 어드민코멘트리스트조회Mockito테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
-        commentMap.put("jpaStartPage", 1);
-        commentMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminCommentDTO> returnCommentList = new ArrayList<>();
 
         returnCommentList.add(AdminCommentDTO.builder().idx(1L).comment("코멘트테스트").commentType("model").commentTypeIdx(adminModelEntity.getIdx()).visible("Y").build());
         returnCommentList.add(AdminCommentDTO.builder().idx(2L).comment("코멘트테스트2").commentType("model").commentTypeIdx(adminModelEntity.getIdx()).visible("Y").build());
 
+        Page<AdminCommentDTO> resultComment = new PageImpl<>(returnCommentList, pageRequest, returnCommentList.size());
         // when
-        when(mockAdminCommentJpaService.findAdminCommentList(commentMap)).thenReturn(returnCommentList);
-        List<AdminCommentDTO> commentList = mockAdminCommentJpaService.findAdminCommentList(commentMap);
+        when(mockAdminCommentJpaService.findAdminCommentList(commentMap, pageRequest)).thenReturn(resultComment);
+        Page<AdminCommentDTO> commentList = mockAdminCommentJpaService.findAdminCommentList(commentMap, pageRequest);
+        List<AdminCommentDTO> findCommentList = commentList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(commentList).isNotEmpty(),
-                () -> assertThat(commentList).hasSize(2)
+                () -> assertThat(findCommentList).isNotEmpty(),
+                () -> assertThat(findCommentList).hasSize(2)
         );
 
-        assertThat(commentList.get(0).getIdx()).isEqualTo(returnCommentList.get(0).getIdx());
-        assertThat(commentList.get(0).getComment()).isEqualTo(returnCommentList.get(0).getComment());
-        assertThat(commentList.get(0).getCommentType()).isEqualTo(returnCommentList.get(0).getCommentType());
-        assertThat(commentList.get(0).getCommentTypeIdx()).isEqualTo(returnCommentList.get(0).getCommentTypeIdx());
+        assertThat(findCommentList.get(0).getIdx()).isEqualTo(returnCommentList.get(0).getIdx());
+        assertThat(findCommentList.get(0).getComment()).isEqualTo(returnCommentList.get(0).getComment());
+        assertThat(findCommentList.get(0).getCommentType()).isEqualTo(returnCommentList.get(0).getCommentType());
+        assertThat(findCommentList.get(0).getCommentTypeIdx()).isEqualTo(returnCommentList.get(0).getCommentTypeIdx());
 
         // verify
-        verify(mockAdminCommentJpaService, times(1)).findAdminCommentList(commentMap);
-        verify(mockAdminCommentJpaService, atLeastOnce()).findAdminCommentList(commentMap);
+        verify(mockAdminCommentJpaService, times(1)).findAdminCommentList(commentMap, pageRequest);
+        verify(mockAdminCommentJpaService, atLeastOnce()).findAdminCommentList(commentMap, pageRequest);
         verifyNoMoreInteractions(mockAdminCommentJpaService);
 
         InOrder inOrder = inOrder(mockAdminCommentJpaService);
-        inOrder.verify(mockAdminCommentJpaService).findAdminCommentList(commentMap);
+        inOrder.verify(mockAdminCommentJpaService).findAdminCommentList(commentMap, pageRequest);
     }
 
     @Test
@@ -144,261 +148,33 @@ class AdminCommentJpaServiceTest {
     void 어드민코멘트리스트조회BDD테스트() {
         // given
         Map<String, Object> commentMap = new HashMap<>();
-        commentMap.put("jpaStartPage", 1);
-        commentMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<AdminCommentDTO> returnCommentList = new ArrayList<>();
 
         returnCommentList.add(AdminCommentDTO.builder().idx(1L).comment("코멘트테스트").commentType("model").commentTypeIdx(adminModelEntity.getIdx()).visible("Y").build());
         returnCommentList.add(AdminCommentDTO.builder().idx(2L).comment("코멘트테스트2").commentType("model").commentTypeIdx(adminModelEntity.getIdx()).visible("Y").build());
 
+        Page<AdminCommentDTO> resultComment = new PageImpl<>(returnCommentList, pageRequest, returnCommentList.size());
         // when
-        given(mockAdminCommentJpaService.findAdminCommentList(commentMap)).willReturn(returnCommentList);
-        List<AdminCommentDTO> commentList = mockAdminCommentJpaService.findAdminCommentList(commentMap);
+        given(mockAdminCommentJpaService.findAdminCommentList(commentMap, pageRequest)).willReturn(resultComment);
+        Page<AdminCommentDTO> commentList = mockAdminCommentJpaService.findAdminCommentList(commentMap, pageRequest);
+        List<AdminCommentDTO> findCommentList = commentList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(commentList).isNotEmpty(),
-                () -> assertThat(commentList).hasSize(2)
+                () -> assertThat(findCommentList).isNotEmpty(),
+                () -> assertThat(findCommentList).hasSize(2)
         );
 
-        assertThat(commentList.get(0).getIdx()).isEqualTo(returnCommentList.get(0).getIdx());
-        assertThat(commentList.get(0).getComment()).isEqualTo(returnCommentList.get(0).getComment());
-        assertThat(commentList.get(0).getCommentType()).isEqualTo(returnCommentList.get(0).getCommentType());
-        assertThat(commentList.get(0).getCommentTypeIdx()).isEqualTo(returnCommentList.get(0).getCommentTypeIdx());
+        assertThat(findCommentList.get(0).getIdx()).isEqualTo(returnCommentList.get(0).getIdx());
+        assertThat(findCommentList.get(0).getComment()).isEqualTo(returnCommentList.get(0).getComment());
+        assertThat(findCommentList.get(0).getCommentType()).isEqualTo(returnCommentList.get(0).getCommentType());
+        assertThat(findCommentList.get(0).getCommentTypeIdx()).isEqualTo(returnCommentList.get(0).getCommentTypeIdx());
 
         // verify
-        then(mockAdminCommentJpaService).should(times(1)).findAdminCommentList(commentMap);
-        then(mockAdminCommentJpaService).should(atLeastOnce()).findAdminCommentList(commentMap);
-        then(mockAdminCommentJpaService).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("어드민코멘트상세Mockito조회테스트")
-    void 어드민코멘트상세Mockito조회테스트() {
-        // given
-        AdminCommentEntity adminCommentEntity = AdminCommentEntity.builder()
-                .idx(1L)
-                .comment("코멘트 테스트")
-                .commentType("model")
-                .visible("Y")
-                .build();
-
-        AdminCommentDTO oneComment = adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
-
-        // when
-        when(mockAdminCommentJpaService.findOneAdminComment(oneComment.getIdx())).thenReturn(oneComment);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaService.findOneAdminComment(oneComment.getIdx());
-
-        // then
-        assertThat(commentInfo.getIdx()).isEqualTo(1);
-        assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트");
-        assertThat(commentInfo.getCommentType()).isEqualTo("model");
-        assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelDTO.getIdx());
-
-        // verify
-        verify(mockAdminCommentJpaService, times(1)).findOneAdminComment(oneComment.getIdx());
-        verify(mockAdminCommentJpaService, atLeastOnce()).findOneAdminComment(oneComment.getIdx());
-        verifyNoMoreInteractions(mockAdminCommentJpaService);
-
-        InOrder inOrder = inOrder(mockAdminCommentJpaService);
-        inOrder.verify(mockAdminCommentJpaService).findOneAdminComment(oneComment.getIdx());
-    }
-
-    @Test
-    @DisplayName("FAQ상세BDD조회테스트")
-    void FAQ상세BDD조회테스트() {
-        // given
-        AdminCommentEntity adminCommentEntity = AdminCommentEntity.builder()
-                .idx(1L)
-                .comment("코멘트 테스트")
-                .commentType("model")
-                .visible("Y")
-                .build();
-
-        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
-
-        // when
-        given(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).willReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx());
-
-        // then
-        assertThat(commentInfo.getIdx()).isEqualTo(1);
-        assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트");
-        assertThat(commentInfo.getCommentType()).isEqualTo("model");
-        assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
-
-        // verify
-        then(mockAdminCommentJpaService).should(times(1)).findOneAdminComment(adminCommentEntity.getIdx());
-        then(mockAdminCommentJpaService).should(atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
-        then(mockAdminCommentJpaService).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("어드민코멘트등록Mockito테스트")
-    void 어드민코멘트등록Mockito테스트() {
-        // given
-        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
-
-        // when
-        when(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx());
-
-        // then
-        assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트");
-        assertThat(commentInfo.getCommentType()).isEqualTo("model");
-        assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
-
-        // verify
-        verify(mockAdminCommentJpaService, times(1)).findOneAdminComment(adminCommentEntity.getIdx());
-        verify(mockAdminCommentJpaService, atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
-        verifyNoMoreInteractions(mockAdminCommentJpaService);
-
-        InOrder inOrder = inOrder(mockAdminCommentJpaService);
-        inOrder.verify(mockAdminCommentJpaService).findOneAdminComment(adminCommentEntity.getIdx());
-    }
-
-    @Test
-    @DisplayName("어드민코멘트등록BDD테스트")
-    void 어드민코멘트등록BDD테스트() {
-        // given
-        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
-
-        // when
-        given(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).willReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx());
-
-        // then
-        assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트");
-        assertThat(commentInfo.getCommentType()).isEqualTo("model");
-        assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
-
-        // verify
-        then(mockAdminCommentJpaService).should(times(1)).findOneAdminComment(adminCommentEntity.getIdx());
-        then(mockAdminCommentJpaService).should(atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
-        then(mockAdminCommentJpaService).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("어드민코멘트수정Mockito테스트")
-    void 어드민코멘트수정Mockito테스트() {
-        // given
-        Long idx = adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity).getIdx();
-
-        adminCommentEntity = AdminCommentEntity.builder()
-                .idx(idx)
-                .comment("코멘트 테스트1")
-                .commentType("model")
-                .visible("Y")
-                .build();
-
-        AdminCommentDTO adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
-
-        adminCommentJpaService.updateAdminComment(idx, adminCommentEntity);
-
-        // when
-        when(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx());
-
-        // then
-        assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트1");
-        assertThat(commentInfo.getCommentType()).isEqualTo("model");
-        assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
-
-        // verify
-        verify(mockAdminCommentJpaService, times(1)).findOneAdminComment(adminCommentEntity.getIdx());
-        verify(mockAdminCommentJpaService, atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
-        verifyNoMoreInteractions(mockAdminCommentJpaService);
-
-        InOrder inOrder = inOrder(mockAdminCommentJpaService);
-        inOrder.verify(mockAdminCommentJpaService).findOneAdminComment(adminCommentEntity.getIdx());
-    }
-
-    @Test
-    @DisplayName("어드민코멘트수정BDD테스트")
-    void 어드민코멘트수정BDD테스트() {
-        // given
-        Long idx = adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity).getIdx();
-
-        adminCommentEntity = AdminCommentEntity.builder()
-                .idx(idx)
-                .comment("코멘트 테스트1")
-                .commentType("model")
-                .visible("Y")
-                .build();
-
-        AdminCommentDTO adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
-
-        adminCommentJpaService.updateAdminComment(idx, adminCommentEntity);
-
-        // when
-        given(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).willReturn(adminCommentDTO);
-        AdminCommentDTO commentInfo = mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx());
-
-        // then
-        assertThat(commentInfo.getComment()).isEqualTo("코멘트 테스트1");
-        assertThat(commentInfo.getCommentType()).isEqualTo("model");
-        assertThat(commentInfo.getCommentTypeIdx()).isEqualTo(adminModelEntity.getIdx());
-
-        // verify
-        then(mockAdminCommentJpaService).should(times(1)).findOneAdminComment(adminCommentEntity.getIdx());
-        then(mockAdminCommentJpaService).should(atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
-        then(mockAdminCommentJpaService).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("어드민코멘트삭제테스트")
-    void 어드민코멘트삭제테스트() {
-        // given
-        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
-
-        Long entityIdx = adminCommentEntity.getIdx();
-        Long idx = adminCommentJpaService.deleteAdminComment(adminCommentEntity.getIdx());
-
-        // then
-        assertThat(entityIdx).isEqualTo(idx);
-    }
-
-    @Test
-    @DisplayName("어드민코멘트삭제Mockito테스트")
-    void 어드민코멘트삭제Mockito테스트() {
-        // given
-        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
-        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
-
-        // when
-        when(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).thenReturn(adminCommentDTO);
-        Long deleteIdx = adminCommentJpaService.deleteAdminComment(adminCommentEntity.getIdx());
-
-        // then
-        assertThat(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
-
-        // verify
-        verify(mockAdminCommentJpaService, times(1)).findOneAdminComment(adminCommentEntity.getIdx());
-        verify(mockAdminCommentJpaService, atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
-        verifyNoMoreInteractions(mockAdminCommentJpaService);
-
-        InOrder inOrder = inOrder(mockAdminCommentJpaService);
-        inOrder.verify(mockAdminCommentJpaService).findOneAdminComment(adminCommentEntity.getIdx());
-    }
-
-    @Test
-    @DisplayName("어드민코멘트삭제BDD테스트")
-    void 어드민코멘트삭제BDD테스트() {
-        // given
-        adminCommentJpaService.insertModelAdminComment(adminModelDTO.getIdx(), adminCommentEntity);
-        adminCommentDTO = AdminCommentEntity.toDto(adminCommentEntity);
-
-        // when
-        given(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx())).willReturn(adminCommentDTO);
-        Long deleteIdx = adminCommentJpaService.deleteAdminComment(adminCommentEntity.getIdx());
-
-        // then
-        assertThat(mockAdminCommentJpaService.findOneAdminComment(adminCommentEntity.getIdx()).getIdx()).isEqualTo(deleteIdx);
-
-        // verify
-        then(mockAdminCommentJpaService).should(times(1)).findOneAdminComment(adminCommentEntity.getIdx());
-        then(mockAdminCommentJpaService).should(atLeastOnce()).findOneAdminComment(adminCommentEntity.getIdx());
+        then(mockAdminCommentJpaService).should(times(1)).findAdminCommentList(commentMap, pageRequest);
+        then(mockAdminCommentJpaService).should(atLeastOnce()).findAdminCommentList(commentMap, pageRequest);
         then(mockAdminCommentJpaService).shouldHaveNoMoreInteractions();
     }
 }

@@ -325,17 +325,4 @@ class AdminProductionJpaControllerTest {
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    @DisplayName("Admin 프로덕션 어드민 코멘트 조회 테스트")
-    void 프로덕션어드민코멘트조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/production/{idx}/admin-comment", adminProductionEntity.getIdx())
-                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(jsonPath("$.commentType").value("production"))
-                .andExpect(jsonPath("$.commentTypeIdx").value(adminProductionEntity.getIdx()));
-    }
 }

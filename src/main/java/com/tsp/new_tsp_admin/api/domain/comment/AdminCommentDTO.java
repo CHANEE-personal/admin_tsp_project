@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.comment;
 
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonDTO;
+import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -35,4 +36,7 @@ public class AdminCommentDTO extends NewCommonDTO {
     @NotEmpty(message = "코멘트 노출 여부 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "visible")
     private String visible;
+
+    @ApiModelProperty(value = "adminModelDTO", hidden = true)
+    private AdminModelDTO adminModelDTO;
 }

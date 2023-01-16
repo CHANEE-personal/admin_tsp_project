@@ -150,24 +150,4 @@ public class AdminProductionJpaQueryRepository {
         em.persist(commonImageEntity);
         return commonImageEntity.getIdx();
     }
-
-    /**
-     * <pre>
-     * 1. MethodName : findProductionAdminComment
-     * 2. ClassName  : AdminProductionJpaRepository.java
-     * 3. Comment    : 관리자 프로덕션 어드민 코멘트 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2022. 08. 26.
-     * </pre>
-     */
-    public List<AdminCommentDTO> findProductionAdminComment(Long idx) {
-        List<AdminCommentEntity> adminCommentEntity = queryFactory
-                .selectFrom(QAdminCommentEntity.adminCommentEntity)
-                .where(QAdminCommentEntity.adminCommentEntity.commentType.eq("production")
-                        .and(QAdminCommentEntity.adminCommentEntity.idx.eq(idx))
-                        .and(QAdminCommentEntity.adminCommentEntity.visible.eq("Y")))
-                .fetch();
-
-        return adminCommentEntity != null ? toDtoList(adminCommentEntity) : emptyList();
-    }
 }

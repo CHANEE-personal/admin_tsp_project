@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCodeEntity;
@@ -128,19 +127,15 @@ public class AdminModelEntity extends NewCommonMappedClass {
     @Column(columnDefinition = "json", name = "model_keyword")
     private List<String> modelKeyword = new ArrayList<>();
 
-    @JsonIgnore
-    @Where(clause = "cmm_type = 'model'")
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_cd", insertable = false, updatable = false)
     private NewCodeEntity newModelCodeJpaDTO;
 
-    @JsonIgnore
     @BatchSize(size = 5)
     @Where(clause = "type_name = 'model'")
-    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE)
+    @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE, orphanRemoval = true)
     private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
-    @JsonIgnore
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "agency_idx", referencedColumnName = "idx")
     private AdminAgencyEntity adminAgencyEntity;
@@ -151,15 +146,13 @@ public class AdminModelEntity extends NewCommonMappedClass {
     private List<AdminScheduleEntity> scheduleList = new ArrayList<>();
 
     @Builder.Default
-    @JsonIgnore
     @OneToMany(mappedBy = "adminModelEntity", fetch = LAZY, cascade = REMOVE, orphanRemoval = true)
     private List<AdminNegotiationEntity> negotiationList = new ArrayList<>();
 
     @Builder.Default
-    @JsonIgnore
     @BatchSize(size = 20)
     @Where(clause = "comment_type = 'model'")
-    @OneToMany(mappedBy = "adminModelEntity")
+    @OneToMany(mappedBy = "adminModelEntity", cascade = REMOVE, orphanRemoval = true)
     private List<AdminCommentEntity> commentList = new ArrayList<>();
 
     public void update(AdminModelEntity adminModelEntity) {
@@ -200,6 +193,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
 
     public void addComment(AdminCommentEntity adminCommentEntity) {
         adminCommentEntity.setAdminModelEntity(this);
+        adminCommentEntity.setCommentType("model");
         this.commentList.add(adminCommentEntity);
     }
 

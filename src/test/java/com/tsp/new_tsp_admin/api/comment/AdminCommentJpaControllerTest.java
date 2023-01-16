@@ -129,7 +129,6 @@ class AdminCommentJpaControllerTest {
         // 어드민 코멘트 생성
         adminCommentEntity = AdminCommentEntity.builder()
                 .comment("코멘트 테스트")
-                .commentType("model")
                 .visible("Y")
                 .build();
 
@@ -153,12 +152,12 @@ class AdminCommentJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 코멘트 조회 테스트")
     void 어드민코멘트조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/jpa-comment/lists")
+        mockMvc.perform(get("/api/jpa-comment/lists").param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(jsonPath("$.commentList.length()", greaterThan(0)));
+                .andExpect(jsonPath("$.content").isNotEmpty());
     }
 
     @Test
@@ -167,12 +166,10 @@ class AdminCommentJpaControllerTest {
     void 어드민코멘트검색조회Api테스트() throws Exception {
         // 검색 테스트
         LinkedMultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
-        paramMap.add("jpaStartPage", "1");
-        paramMap.add("size", "3");
         paramMap.add("searchType", "0");
         paramMap.add("searchKeyword", "하하");
 
-        mockMvc.perform(get("/api/jpa-comment/lists").queryParams(paramMap)
+        mockMvc.perform(get("/api/jpa-comment/lists").queryParams(paramMap).param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -231,7 +228,7 @@ class AdminCommentJpaControllerTest {
     void 어드민코멘트수정Api테스트() throws Exception {
         em.persist(adminCommentEntity);
 
-        adminCommentEntity = AdminCommentEntity.builder().idx(adminCommentEntity.getIdx()).comment("코멘트 테스트1").commentType("model").visible("Y").build();
+        adminCommentEntity = AdminCommentEntity.builder().idx(adminCommentEntity.getIdx()).comment("코멘트 테스트1").visible("Y").build();
 
         mockMvc.perform(put("/api/jpa-comment/{idx}", adminCommentEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
