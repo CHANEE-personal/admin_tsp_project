@@ -2,24 +2,13 @@ package com.tsp.new_tsp_admin.api.comment.service;
 
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
-import com.tsp.new_tsp_admin.api.domain.faq.AdminFaqEntity;
-import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
-import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
-import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
-import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaRepository;
-import com.tsp.new_tsp_admin.api.portfolio.service.AdminPortfolioJpaRepository;
-import com.tsp.new_tsp_admin.api.production.service.AdminProductionJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
