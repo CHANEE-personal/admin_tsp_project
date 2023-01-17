@@ -2,7 +2,6 @@ package com.tsp.new_tsp_admin.api.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.api.domain.user.LoginRequest;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

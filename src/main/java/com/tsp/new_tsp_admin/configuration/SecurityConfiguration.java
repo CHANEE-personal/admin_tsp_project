@@ -42,12 +42,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * </pre>
      *
      */
-//    @Bean
-//    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-//        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager());
-//        filter.setAuthenticationManager(authenticationManager());
-//        return filter;
-//    }
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager());
+        filter.setAuthenticationManager(authenticationManager());
+        return filter;
+    }
 
     @Override
     public void configure(WebSecurity web) {
@@ -90,7 +90,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthorizationFilter, LogoutFilter.class);
 
         // 로그인 인증 관련
-//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 그 외
         http.csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
