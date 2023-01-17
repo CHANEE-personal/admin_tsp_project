@@ -89,7 +89,7 @@ class AdminScheduleJpaControllerTest {
     void createUser() {
         PasswordEncoder passwordEncoder = createDelegatingPasswordEncoder();
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", passwordEncoder.encode("pass1234"), getAuthorities());
-        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+        String token = jwtUtil.doGenerateToken(authenticationToken.getName());
 
         adminUserEntity = AdminUserEntity.builder()
                 .userId("admin04")

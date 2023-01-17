@@ -79,8 +79,6 @@ class AdminModelJpaQueryRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminUserJpaQueryRepository.adminLogin(adminUserEntity);
-
         adminAgencyEntity = AdminAgencyEntity.builder()
                 .agencyName("agency")
                 .agencyDescription("agency")

@@ -38,45 +38,45 @@ class JwtUtilTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void setUp() {
-        userDetails = userDetailsService.loadUserByUsername(AuthenticationRequest.builder().userId("admin02").password("pass1234").build().getUserId());
+//        userDetails = userDetailsService.loadUserByUsername(AuthenticationRequest.builder().userId("admin02").password("pass1234").build().getUserId());
     }
 
     @Test
     @DisplayName("토큰 만료 테스트")
     void isTokenExpiredTest() {
-        String token = jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.doGenerateToken(userDetails.getUsername());
         assertFalse(jwtUtil.isTokenExpired(token));
     }
 
     @Test
     @DisplayName("토큰 생성 테스트")
     void generateTokenTest() {
-        assertNotNull(jwtUtil.generateToken(userDetails));
+        assertNotNull(jwtUtil.doGenerateToken(userDetails.getUsername()));
     }
 
     @Test
     @DisplayName("리프레시 토큰 생성 테스트")
     void generateRefreshTokenTest() {
-        assertNotNull(jwtUtil.generateToken(userDetails));
+        assertNotNull(jwtUtil.doGenerateToken(userDetails.getUsername()));
     }
 
     @Test
     void extractAllClaimsTest() {
-        String token = jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.doGenerateToken(userDetails.getUsername());
         assertNotNull(jwtUtil.extractAllClaims(token));
     }
 
     @Test
     @DisplayName("토큰 유효성 테스트")
     void validateTokenTest() {
-        String token = jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.doGenerateToken(userDetails.getUsername());
         assertTrue(jwtUtil.validateToken(token));
     }
 
     @Test
     @DisplayName("엑세스 토큰 헤더 설정 테스트")
     void setHeaderAccessTokenTest() {
-        String token = jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.doGenerateToken(userDetails.getUsername());
         jwtUtil.setHeaderAccessToken(response, token);
         assertNotNull(response.getHeader("Authorization"));
         assertThat("Bearer " + token).isEqualTo(response.getHeader("Authorization"));
@@ -85,9 +85,9 @@ class JwtUtilTest {
     @Test
     @DisplayName("엑세스 리프레시 토큰 헤더 설정 테스트")
     void setHeaderRefreshTokenTest() {
-        String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+        String refreshToken = jwtUtil.doGenerateRefreshToken(userDetails.getUsername());
         jwtUtil.setHeaderRefreshToken(response, refreshToken);
-        assertNotNull(response.getHeader("refreshToken"));
+        assertNotNull(response.getHeader("RefreshToken"));
         assertThat("Bearer " + refreshToken).isEqualTo(response.getHeader("refreshToken"));
     }
 }

@@ -90,7 +90,7 @@ class AdminPortfolioJpaControllerTest {
                 .name("test")
                 .email("test@test.com")
                 .role(ROLE_ADMIN)
-                .userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
+                .userToken(jwtUtil.doGenerateToken(authenticationToken.getName()))
                 .visible("Y")
                 .build();
 

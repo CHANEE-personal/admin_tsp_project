@@ -1,9 +1,7 @@
 package com.tsp.new_tsp_admin.api.user;
 
-import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
+import com.tsp.new_tsp_admin.api.domain.user.*;
 import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
-import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.jwt.AuthenticationResponse;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.jwt.MyUserDetailsService;
@@ -18,7 +16,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -27,7 +24,6 @@ import javax.validation.Valid;
 
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -63,7 +59,7 @@ public class AdminUserJpaController {
     })
     @GetMapping
     public ResponseEntity<Page<AdminUserDTO>> findUserList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
-        return ResponseEntity.ok(adminUserJpaService.findUserList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
+        return ok(adminUserJpaService.findUserList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**
@@ -85,59 +81,19 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
-        Map<String, Object> userMap = new HashMap<>();
+    public ResponseEntity<JwtUtil.TokenInfo> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) throws Exception {
+        JwtUtil.TokenInfo jwtResponse = adminUserJpaService.adminLogin(loginRequest);
+        jwtTokenUtil.setHeaderAccessToken(response, jwtResponse.getAccessToken());
+        jwtTokenUtil.setHeaderRefreshToken(response, jwtResponse.getRefreshToken());
+        return ok().body(jwtResponse);
 
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId(authenticationRequest.getUserId())
-                .password(authenticationRequest.getPassword())
-                .build();
-
-        if ("Y".equals(adminUserJpaService.adminLogin(adminUserEntity))) {
-            userMap.put("loginYn", "Y");
-            userMap.put("userId", adminUserEntity.getUserId());
-            userMap.put("token", createAuthenticationToken(authenticationRequest));
-
-            // 로그인 완료 시 생성된 token 값 DB에 저장
-            UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUserId());
-            String accessToken = jwtTokenUtil.generateToken(userDetails);
-            String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
-            adminUserEntity.setUserToken(accessToken);
-            adminUserEntity.setUserRefreshToken(refreshToken);
-            jwtTokenUtil.setHeaderAccessToken(response, accessToken);
-            jwtTokenUtil.setHeaderRefreshToken(response, refreshToken);
-
-            adminUserJpaService.insertToken(adminUserEntity);
-        }
-
-        return ResponseEntity.ok().body(userMap);
-
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : createAuthenticationToken
-     * 2. ClassName  : AdminUserJpaController.java
-     * 3. Comment    : 관리자 로그인 시 JWT 토큰 발급
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        // id, password 인증
-        authenticate(authenticationRequest.getUserId(), authenticationRequest.getPassword());
-
-        // 사용자 정보 조회 후 token 생성
-        String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(authenticationRequest.getUserId()));
-
-        return ok(new AuthenticationResponse(token));
     }
 
     @ApiOperation(value = "JWT 토큰 재발급", notes = "JWT 토큰을 재발급")
     @PostMapping(value = "/refresh")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "access-token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "REFRESH-TOKEN", value = "refresh-token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "X-ACCESS-TOKEN", value = "access-token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "X-REFRESH-TOKEN", value = "refresh-token", required = true, dataType = "String", paramType = "header")
     })
     public ResponseEntity<?> createAuthenticationRefreshToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         // id, password 인증
@@ -189,9 +145,9 @@ public class AdminUserJpaController {
             @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @PostMapping
-    public ResponseEntity<AdminUserDTO> insertAdminUser(@Valid @RequestBody AdminUserEntity adminUserEntity) {
-        return ResponseEntity.created(URI.create("")).body(adminUserJpaService.insertAdminUser(adminUserEntity));
+    @PostMapping("/signUp")
+    public ResponseEntity<AdminUserDTO> insertAdminUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+        return ResponseEntity.created(URI.create("")).body(adminUserJpaService.insertAdminUser(signUpRequest));
     }
 
     /**
@@ -214,7 +170,7 @@ public class AdminUserJpaController {
     })
     @PutMapping("/{idx}")
     public ResponseEntity<AdminUserDTO> updateAdminUser(@PathVariable Long idx, @Valid @RequestBody AdminUserEntity adminUserEntity) {
-        return ResponseEntity.ok(adminUserJpaService.updateAdminUser(idx, adminUserEntity));
+        return ok(adminUserJpaService.updateAdminUser(idx, adminUserEntity));
     }
 
     /**

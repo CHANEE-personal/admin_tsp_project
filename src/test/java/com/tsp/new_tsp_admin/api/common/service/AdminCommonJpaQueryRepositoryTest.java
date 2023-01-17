@@ -68,8 +68,6 @@ class AdminCommonJpaQueryRepositoryTest {
                 .visible("Y")
                 .build();
 
-        adminUserJpaQueryRepository.adminLogin(adminUserEntity);
-
         commonCodeEntity = NewCodeEntity.builder()
                 .categoryCd(1)
                 .categoryNm("공통코드")

@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
-        setFilterProcessesUrl("/api/jpa-user/login");
+        setFilterProcessesUrl("/api/user/login");
     }
 
     @Override
@@ -74,8 +74,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + token);
-        response.addHeader("username", ((User) authResult.getPrincipal()).getUsername());
-        response.addHeader("loginYn", "Y");
         response.getWriter().write("Bearer " + token);
         response.getWriter().flush();
     }
