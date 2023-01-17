@@ -1,27 +1,36 @@
 package com.tsp.new_tsp_admin.api.user.service;
 
-import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
-import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.*;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaQueryRepository;
 import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
+import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.*;
 
+@Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminUserJpaServiceImpl implements AdminUserJpaService {
     private final AdminUserJpaQueryRepository adminUserJpaQueryRepository;
     private final AdminUserJpaRepository adminUserJpaRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     private AdminUserEntity oneUser(Long idx) {
         return adminUserJpaRepository.findById(idx)
@@ -54,27 +63,10 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public AdminUserEntity findOneUser(String id) {
-        return adminUserJpaQueryRepository.findOneUser(id);
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : findOneUserByToken
-     * 2. ClassName  : AdminUserJpaServiceImpl.java
-     * 3. Comment    : 관리자 토큰을 이용한 유저 상세 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public String findOneUserByToken(String token) {
-        try {
-            return adminUserJpaQueryRepository.findOneUserByToken(token);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER);
-        }
+    public AdminUserDTO findOneUser(String id) {
+        AdminUserEntity oneUser = adminUserJpaRepository.findByUserId(id)
+                .orElseThrow(() -> new TspException(NOT_FOUND_USER));
+        return AdminUserEntity.toDto(oneUser);
     }
 
     /**
@@ -87,33 +79,28 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      * </pre>
      */
     @Override
-    @Transactional(readOnly = true)
-    public String adminLogin(AdminUserEntity adminUserEntity) {
-        try {
-            return adminUserJpaQueryRepository.adminLogin(adminUserEntity);
-        } catch (Exception e) {
-            throw new TspException(NOT_FOUND_USER);
-        }
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : insertToken
-     * 2. ClassName  : AdminUserJpaServiceImpl.java
-     * 3. Comment    : 관리자 토큰 저장
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    @Override
     @Transactional
-    public void insertToken(AdminUserEntity paramUserEntity) {
-        try {
-            AdminUserEntity adminUserEntity = adminUserJpaQueryRepository.findOneUser(paramUserEntity.getUserId());
-            adminUserJpaQueryRepository.insertUserTokenByEm(adminUserEntity);
-        } catch (Exception e) {
-            throw new TspException(ERROR_USER);
+    public JwtUtil.TokenInfo adminLogin(LoginRequest loginRequest) {
+        // 패스워드 일치할 시
+        if (passwordEncoder.matches(loginRequest.getPassword(), findOneUser(loginRequest.getUserId()).getPassword())) {
+            Authentication authentication = authenticate(loginRequest.getUserId(), loginRequest.getPassword());
+            if (authentication != null) {
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof AuthenticationRequest) {
+                    AuthenticationRequest principalDetails = (AuthenticationRequest) principal;
+                    AdminUserEntity user = principalDetails.getAdminUserEntity();
+                    // accessToken
+                    String accessToken = jwtUtil.doGenerateToken(principalDetails.getUsername());
+                    user.updateToken(accessToken);
+                    // refreshToken
+                    String refreshToken = jwtUtil.doGenerateRefreshToken(principalDetails.getUsername());
+                    user.updateRefreshToken(refreshToken);
+
+                    return jwtUtil.getJwtTokens(accessToken, refreshToken);
+                }
+            }
         }
+        return null;
     }
 
     /**
@@ -127,9 +114,21 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @Transactional
-    public AdminUserDTO insertAdminUser(AdminUserEntity adminUserEntity) {
+    public AdminUserDTO insertAdminUser(SignUpRequest signUpRequest) {
         try {
-            return AdminUserEntity.toDto(adminUserJpaRepository.save(adminUserEntity));
+            if (adminUserJpaRepository.findByUserId(signUpRequest.getUserId()).isPresent()) {
+                throw new TspException(EXIST_USER);
+            }
+
+            return AdminUserEntity.toDto(adminUserJpaRepository.save(AdminUserEntity.builder()
+                    .userId(signUpRequest.getUserId())
+                    .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                    .name(signUpRequest.getName())
+                    .email(signUpRequest.getEmail())
+                    .role(Role.ROLE_USER)
+                    .visible("Y")
+                    .build()));
+
         } catch (Exception e) {
             throw new TspException(ERROR_USER);
         }
@@ -173,5 +172,23 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_USER);
         }
+    }
+
+    private Authentication authenticate(String userId, String password) {
+        try {
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userId, password));
+        } catch(BadCredentialsException e) {
+            throw new BadCredentialsException("BadCredentialsException");
+        } catch(DisabledException e) {
+            throw new DisabledException("DisabledException");
+        } catch(LockedException e) {
+            throw new LockedException("LockedException");
+        } catch(UsernameNotFoundException e) {
+            throw new UsernameNotFoundException("UsernameNotFoundException");
+        } catch(AuthenticationException e) {
+            log.error(e.getMessage());
+        }
+
+        return null;
     }
 }

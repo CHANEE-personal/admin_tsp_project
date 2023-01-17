@@ -17,6 +17,8 @@ import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaRepository;
 import com.tsp.new_tsp_admin.api.model.service.recommend.AdminRecommendJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,21 +59,6 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
 
     /**
      * <pre>
-     * 1. MethodName : findModelCount
-     * 2. ClassName  : AdminModelJpaServiceImpl.java
-     * 3. Comment    : 관리자 모델 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public int findModelCount(Map<String, Object> modelMap) {
-        return adminModelJpaQueryRepository.findModelCount(modelMap);
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findModelList
      * 2. ClassName  : AdminModelJpaServiceImpl.java
      * 3. Comment    : 관리자 모델 리스트 조회
@@ -81,8 +68,8 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) {
-        return adminModelJpaQueryRepository.findModelList(modelMap);
+    public Page<AdminModelDTO> findModelList(Map<String, Object> modelMap, PageRequest pageRequest) {
+        return adminModelJpaQueryRepository.findModelList(modelMap, pageRequest);
     }
 
     /**

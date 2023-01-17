@@ -1,10 +1,7 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,15 +10,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@SuperBuilder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class AuthenticationRequest implements UserDetails {
-    @JsonIgnore
+
     private AdminUserEntity adminUserEntity;
+
+    public AuthenticationRequest(AdminUserEntity adminUserEntity) {
+        this.adminUserEntity = adminUserEntity;
+    }
+
     private static final long serialVersionUID = 5926468583005150707L;
 
     @JsonProperty("userId")
@@ -29,8 +28,9 @@ public class AuthenticationRequest implements UserDetails {
     @JsonProperty("password")
     private String password;
 
+    private Collection<? extends GrantedAuthority> authorities;
+
     @Override
-    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -38,32 +38,32 @@ public class AuthenticationRequest implements UserDetails {
     }
 
     @Override
-    @JsonIgnore
     public String getUsername() {
         return adminUserEntity.getName();
     }
 
     @Override
-    @JsonIgnore
+    public String getPassword() {
+        return adminUserEntity.getPassword();
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
-    @JsonIgnore
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
-    @JsonIgnore
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
-    @JsonIgnore
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

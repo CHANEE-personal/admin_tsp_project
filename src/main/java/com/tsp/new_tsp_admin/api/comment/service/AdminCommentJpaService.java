@@ -5,7 +5,6 @@ import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
 import java.util.Map;
 
 public interface AdminCommentJpaService {

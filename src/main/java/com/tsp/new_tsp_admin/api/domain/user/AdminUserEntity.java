@@ -1,20 +1,15 @@
 package com.tsp.new_tsp_admin.api.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.NewCommonMappedClass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +24,6 @@ import static javax.persistence.GenerationType.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "tsp_admin")
 public class AdminUserEntity extends NewCommonMappedClass {
     @Transient
@@ -72,11 +66,18 @@ public class AdminUserEntity extends NewCommonMappedClass {
 
     public void update(AdminUserEntity adminUserEntity) {
         this.userId = adminUserEntity.userId;
-        this.password = adminUserEntity.password;
         this.name = adminUserEntity.name;
         this.email = adminUserEntity.email;
         this.visible = adminUserEntity.visible;
         this.role = adminUserEntity.role;
+    }
+
+    public void updateToken(String token) {
+        this.userToken = token;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.userRefreshToken = refreshToken;
     }
 
     public static AdminUserDTO toDto(AdminUserEntity entity) {

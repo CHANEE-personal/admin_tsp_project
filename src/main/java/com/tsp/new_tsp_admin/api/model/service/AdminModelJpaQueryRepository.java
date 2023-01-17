@@ -5,8 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.comment.QAdminCommentEntity;
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
-import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelDTO;
 import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
@@ -17,9 +15,11 @@ import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleEntity;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import java.util.*;
 
 import static com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity.toDtoList;
@@ -37,7 +37,6 @@ import static java.util.Collections.emptyList;
 @Repository
 public class AdminModelJpaQueryRepository {
     private final JPAQueryFactory queryFactory;
-    private final EntityManager em;
 
     private BooleanExpression searchCategory(Map<String, Object> modelMap) {
         int categoryCd = getInt(modelMap.get("categoryCd"), 0);
@@ -70,22 +69,6 @@ public class AdminModelJpaQueryRepository {
 
     /**
      * <pre>
-     * 1. MethodName : findModelCount
-     * 2. ClassName  : AdminModelJpaRepository.java
-     * 3. Comment    : 관리자 모델 리스트 갯수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    public int findModelCount(Map<String, Object> modelMap) {
-        return queryFactory.selectFrom(adminModelEntity)
-                .where(searchCategory(modelMap), searchModelInfo(modelMap),
-                        searchNewModel(modelMap))
-                .fetch().size();
-    }
-
-    /**
-     * <pre>
      * 1. MethodName : findModelList
      * 2. ClassName  : AdminModelJpaRepository.java
      * 3. Comment    : 관리자 모델 리스트 조회
@@ -93,17 +76,17 @@ public class AdminModelJpaQueryRepository {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    public List<AdminModelDTO> findModelList(Map<String, Object> modelMap) {
+    public Page<AdminModelDTO> findModelList(Map<String, Object> modelMap, PageRequest pageRequest) {
         List<AdminModelEntity> modelList = queryFactory
                 .selectFrom(adminModelEntity)
                 .orderBy(adminModelEntity.idx.desc())
                 .innerJoin(adminModelEntity.adminAgencyEntity, adminAgencyEntity)
                 .where(searchCategory(modelMap), searchModelInfo(modelMap), searchNewModel(modelMap))
-                .offset(getInt(modelMap.get("jpaStartPage"), 0))
-                .limit(getInt(modelMap.get("size"), 0))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
 
-        return modelList != null ? toPartDtoList(modelList) : emptyList();
+        return new PageImpl<>(AdminModelEntity.toDtoList(modelList), pageRequest, modelList.size());
     }
 
     /**
@@ -172,20 +155,6 @@ public class AdminModelJpaQueryRepository {
                 .fetchFirst()).orElseThrow(() -> new TspException(NOT_FOUND_MODEL));
 
         return toDto(findNextOneModel);
-    }
-
-    /**
-     * <pre>
-     * 1. MethodName : insertModelImage
-     * 2. ClassName  : AdminModelJpaRepository.java
-     * 3. Comment    : 관리자 모델 이미지 등록
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 07.
-     * </pre>
-     */
-    public CommonImageDTO insertModelImage(CommonImageEntity commonImageEntity) {
-        em.persist(commonImageEntity);
-        return CommonImageEntity.toDto(commonImageEntity);
     }
 
     /**

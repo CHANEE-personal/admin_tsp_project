@@ -26,6 +26,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -75,8 +78,6 @@ class AdminModelJpaQueryRepositoryTest {
                 .name("test")
                 .visible("Y")
                 .build();
-
-        adminUserJpaQueryRepository.adminLogin(adminUserEntity);
 
         adminAgencyEntity = AdminAgencyEntity.builder()
                 .agencyName("agency")
@@ -143,11 +144,10 @@ class AdminModelJpaQueryRepositoryTest {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", 1);
-        modelMap.put("jpaStartPage", 0);
-        modelMap.put("size", 100);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminModelJpaQueryRepository.findModelList(modelMap)).isNotEmpty();
+        assertThat(adminModelJpaQueryRepository.findModelList(modelMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -156,8 +156,7 @@ class AdminModelJpaQueryRepositoryTest {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", 1);
-        modelMap.put("jpaStartPage", 1);
-        modelMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
@@ -165,25 +164,27 @@ class AdminModelJpaQueryRepositoryTest {
         List<AdminModelDTO> modelList = new ArrayList<>();
         modelList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
+        Page<AdminModelDTO> resultModel = new PageImpl<>(modelList, pageRequest, modelList.size());
 
         // when
-        when(mockAdminModelJpaQueryRepository.findModelList(modelMap)).thenReturn(modelList);
-        List<AdminModelDTO> newModelList = mockAdminModelJpaQueryRepository.findModelList(modelMap);
+        when(mockAdminModelJpaQueryRepository.findModelList(modelMap, pageRequest)).thenReturn(resultModel);
+        Page<AdminModelDTO> newModelList = mockAdminModelJpaQueryRepository.findModelList(modelMap, pageRequest);
+        List<AdminModelDTO> findModelList = newModelList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newModelList.get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
-        assertThat(newModelList.get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
-        assertThat(newModelList.get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
-        assertThat(newModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(modelList.get(0).getModelAgency().getAgencyName());
-        assertThat(newModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(modelList.get(0).getModelAgency().getAgencyDescription());
+        assertThat(findModelList.get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
+        assertThat(findModelList.get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
+        assertThat(findModelList.get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
+        assertThat(findModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(modelList.get(0).getModelAgency().getAgencyName());
+        assertThat(findModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(modelList.get(0).getModelAgency().getAgencyDescription());
 
         // verify
-        verify(mockAdminModelJpaQueryRepository, times(1)).findModelList(modelMap);
-        verify(mockAdminModelJpaQueryRepository, atLeastOnce()).findModelList(modelMap);
+        verify(mockAdminModelJpaQueryRepository, times(1)).findModelList(modelMap, pageRequest);
+        verify(mockAdminModelJpaQueryRepository, atLeastOnce()).findModelList(modelMap, pageRequest);
         verifyNoMoreInteractions(mockAdminModelJpaQueryRepository);
 
         InOrder inOrder = inOrder(mockAdminModelJpaQueryRepository);
-        inOrder.verify(mockAdminModelJpaQueryRepository).findModelList(modelMap);
+        inOrder.verify(mockAdminModelJpaQueryRepository).findModelList(modelMap, pageRequest);
     }
 
     @Test
@@ -192,29 +193,31 @@ class AdminModelJpaQueryRepositoryTest {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", 1);
-        modelMap.put("jpaStartPage", 1);
-        modelMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminModelDTO> modelList = new ArrayList<>();
-        modelList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희").modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
+        modelList.add(AdminModelDTO.builder().idx(3L).categoryCd(1).modelKorName("조찬희")
+                .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
+        Page<AdminModelDTO> resultModel = new PageImpl<>(modelList, pageRequest, modelList.size());
 
         // when
-        given(mockAdminModelJpaQueryRepository.findModelList(modelMap)).willReturn(modelList);
-        List<AdminModelDTO> newModelList = mockAdminModelJpaQueryRepository.findModelList(modelMap);
+        given(mockAdminModelJpaQueryRepository.findModelList(modelMap, pageRequest)).willReturn(resultModel);
+        Page<AdminModelDTO> newModelList = mockAdminModelJpaQueryRepository.findModelList(modelMap, pageRequest);
+        List<AdminModelDTO> findModelList = newModelList.stream().collect(Collectors.toList());
 
         // then
-        assertThat(newModelList.get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
-        assertThat(newModelList.get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
-        assertThat(newModelList.get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
-        assertThat(newModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(modelList.get(0).getModelAgency().getAgencyName());
-        assertThat(newModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(modelList.get(0).getModelAgency().getAgencyDescription());
+        assertThat(findModelList.get(0).getIdx()).isEqualTo(modelList.get(0).getIdx());
+        assertThat(findModelList.get(0).getCategoryCd()).isEqualTo(modelList.get(0).getCategoryCd());
+        assertThat(findModelList.get(0).getModelKorName()).isEqualTo(modelList.get(0).getModelKorName());
+        assertThat(findModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(modelList.get(0).getModelAgency().getAgencyName());
+        assertThat(findModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(modelList.get(0).getModelAgency().getAgencyDescription());
 
         // verify
-        then(mockAdminModelJpaQueryRepository).should(times(1)).findModelList(modelMap);
-        then(mockAdminModelJpaQueryRepository).should(atLeastOnce()).findModelList(modelMap);
+        then(mockAdminModelJpaQueryRepository).should(times(1)).findModelList(modelMap, pageRequest);
+        then(mockAdminModelJpaQueryRepository).should(atLeastOnce()).findModelList(modelMap, pageRequest);
         then(mockAdminModelJpaQueryRepository).shouldHaveNoMoreInteractions();
     }
 

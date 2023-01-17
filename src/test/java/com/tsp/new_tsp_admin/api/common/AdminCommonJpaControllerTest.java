@@ -81,7 +81,7 @@ class AdminCommonJpaControllerTest {
     @DisplayName("테스트 유저 생성")
     void createUser() {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
-        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+        String token = jwtUtil.doGenerateToken(authenticationToken.getName());
 
         adminUserEntity = AdminUserEntity.builder()
                 .userId("admin04")

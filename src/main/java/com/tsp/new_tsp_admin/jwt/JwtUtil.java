@@ -1,9 +1,11 @@
 package com.tsp.new_tsp_admin.jwt;
 
-import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
+import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.user.service.repository.AdminUserJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,21 +23,39 @@ import java.util.Objects;
 
 import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
 import static io.jsonwebtoken.Jwts.*;
-import static io.jsonwebtoken.Jwts.builder;
 import static io.jsonwebtoken.Jwts.parserBuilder;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
-import static java.lang.System.currentTimeMillis;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil implements Serializable {
+    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String ACCESS_TOKEN = "X-ACCESS-TOKEN";
+    public static final String REFRESH_TOKEN = "X-REFRESH-TOKEN";
     public final static long TOKEN_VALIDATION_SECOND = 1000L * 10;
     public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 24 * 2;
     private final MyUserDetailsService myUserDetailsService;
-    private final AdminUserJpaService adminUserJpaService;
+    private final AdminUserJpaRepository adminUserJpaRepository;
+
+    @Getter
+    public static class TokenInfo {
+
+        private static final String type = TOKEN_PREFIX;
+        private String accessToken;
+        private String refreshToken;
+
+        public TokenInfo(String accessToken, String refreshToken) {
+            this.accessToken = TOKEN_PREFIX + accessToken;
+            this.refreshToken = TOKEN_PREFIX + refreshToken;
+        }
+    }
+
+    public TokenInfo getJwtTokens(String accessToken, String refreshToken) {
+        return new TokenInfo(accessToken, refreshToken);
+    }
 
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
@@ -49,8 +69,8 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : extractAllClaims
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : JWT 토큰이 유효한 토큰인지 검사한 후, 토큰에 담긴 Payload 값을 가져온다
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     public Claims extractAllClaims(String token) throws ExpiredJwtException {
@@ -80,8 +100,8 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : isTokenExpired
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : 만료된 토큰인지 체크
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     public Boolean isTokenExpired(String token) {
@@ -97,12 +117,12 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : generateToken
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : 토큰 발급
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     public String generateToken(UserDetails userDetails) {
-        return doGenerateToken(userDetails.getUsername(), TOKEN_VALIDATION_SECOND);
+        return doGenerateToken(userDetails.getUsername());
     }
 
     /**
@@ -110,12 +130,12 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : generateRefreshToken
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : 리프레시 토큰 재발급
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     public String generateRefreshToken(UserDetails userDetails) {
-        return doGenerateToken(userDetails.getUsername(), REFRESH_TOKEN_VALIDATION_SECOND);
+        return doGenerateToken(userDetails.getUsername());
     }
 
     /**
@@ -123,19 +143,28 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : doGenerateToken
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : 토큰 발급
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
-    public String doGenerateToken(String username, long expireTime) {
-
-        Claims claims = claims();
-        claims.put("username", username);
-
-        return builder()
+    public String doGenerateToken(String userPk) {
+        Claims claims = Jwts.claims().setSubject(userPk);
+        Date now = new Date();
+        return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(currentTimeMillis()))
-                .setExpiration(new Date(currentTimeMillis() + expireTime))
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + TOKEN_VALIDATION_SECOND))
+                .signWith(getSigningKey(SECRET_KEY), HS256)
+                .compact();
+    }
+
+    public String doGenerateRefreshToken(String userPk) {
+        Claims claims = Jwts.claims().setSubject(userPk);
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALIDATION_SECOND))
                 .signWith(getSigningKey(SECRET_KEY), HS256)
                 .compact();
     }
@@ -145,8 +174,8 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : validateToken
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : JWT 토큰 검증
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     public Boolean validateToken(String token) {
@@ -173,13 +202,16 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : getAuthentication
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : JWT 에서 인증 정보 조회
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     public Authentication getAuthentication(String token) throws TspException {
         try {
-            UserDetails userDetails = myUserDetailsService.loadUserByUsername(adminUserJpaService.findOneUserByToken(token));
+            AdminUserEntity oneUser = adminUserJpaRepository.findByUserToken(token)
+                    .orElseThrow(() -> new TspException(NOT_FOUND_USER));
+
+            UserDetails userDetails = myUserDetailsService.loadUserByUsername(oneUser.getUserId());
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         } catch (Exception e) {
             throw new TspException(NOT_FOUND_USER);
@@ -191,12 +223,12 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : setHeaderAccessToken
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : Header 토큰 정보 세팅
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader("Authorization", "Bearer " + accessToken);
+        response.setHeader(ACCESS_TOKEN, TOKEN_PREFIX + accessToken);
     }
 
     /**
@@ -204,11 +236,11 @@ public class JwtUtil implements Serializable {
      * 1. MethodName : setHeaderRefreshToken
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : Header 리프레시 토큰 정보 세팅
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader("refreshToken", "Bearer " + refreshToken);
+        response.setHeader(REFRESH_TOKEN, TOKEN_PREFIX + refreshToken);
     }
 }

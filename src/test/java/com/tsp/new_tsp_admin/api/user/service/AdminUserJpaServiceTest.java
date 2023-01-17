@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_admin.api.user.service;
 
-import com.tsp.new_tsp_admin.api.domain.user.AdminUserDTO;
-import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.*;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,9 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.*;
@@ -40,8 +41,11 @@ import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 @AutoConfigureTestDatabase(replace = NONE)
 @DisplayName("유저 Service Test")
 class AdminUserJpaServiceTest {
-    @Mock private AdminUserJpaService mockAdminUserJpaService;
+    @Mock
+    private AdminUserJpaService mockAdminUserJpaService;
     private final AdminUserJpaService adminUserJpaService;
+    private final PasswordEncoder passwordEncoder;
+    private final EntityManager em;
 
     @Test
     @DisplayName("관리자 회원 리스트 조회 테스트")
@@ -132,7 +136,7 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 회원 상세 조회 테스트")
     void 관리자회원상세조회테스트() {
         // given
-        AdminUserEntity adminUserEntity = adminUserJpaService.findOneUser("admin01");
+        AdminUserDTO adminUserEntity = adminUserJpaService.findOneUser("admin01");
         // then
         assertThat(adminUserEntity).isNotNull();
     }
@@ -141,76 +145,63 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 회원 상세 조회 Mockito 테스트")
     void 관리자회원상세조회Mockito테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId("admin03")
-                .password("pass1234")
-                .name("admin03")
-                .role(ROLE_ADMIN)
+        SignUpRequest signUpRequest = SignUpRequest.builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
                 .visible("Y")
                 .build();
 
-        AdminUserDTO adminUserDTO = AdminUserEntity.toDto(adminUserEntity);
+        AdminUserDTO oneUser = adminUserJpaService.insertAdminUser(signUpRequest);
+
         // when
-        when(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
-        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());
+        when(mockAdminUserJpaService.findOneUser(oneUser.getUserId())).thenReturn(oneUser);
+        AdminUserDTO userInfo = mockAdminUserJpaService.findOneUser(oneUser.getUserId());
 
         // then
-        assertThat(userInfo.getIdx()).isEqualTo(adminUserEntity.getIdx());
-        assertThat(userInfo.getUserId()).isEqualTo(adminUserEntity.getUserId());
-        assertThat(userInfo.getPassword()).isEqualTo(adminUserEntity.getPassword());
-        assertThat(userInfo.getVisible()).isEqualTo(adminUserEntity.getVisible());
+        assertThat(userInfo.getIdx()).isEqualTo(oneUser.getIdx());
+        assertThat(userInfo.getUserId()).isEqualTo(oneUser.getUserId());
+        assertThat(userInfo.getPassword()).isEqualTo(oneUser.getPassword());
+        assertThat(userInfo.getVisible()).isEqualTo(oneUser.getVisible());
 
         // verify
-        verify(mockAdminUserJpaService, times(1)).findOneUser(adminUserEntity.getUserId());
-        verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(adminUserDTO.getUserId());
+        verify(mockAdminUserJpaService, times(1)).findOneUser(oneUser.getUserId());
+        verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(oneUser.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaService);
 
         InOrder inOrder = inOrder(mockAdminUserJpaService);
-        inOrder.verify(mockAdminUserJpaService).findOneUser(adminUserDTO.getUserId());
+        inOrder.verify(mockAdminUserJpaService).findOneUser(oneUser.getUserId());
     }
 
     @Test
     @DisplayName("관리자 회원 상세 조회 BDD 테스트")
     void 관리자회원상세조회BDD테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId("admin03")
-                .password("pass1234")
-                .name("admin03")
-                .role(ROLE_ADMIN)
+        SignUpRequest signUpRequest = SignUpRequest.builder()
+                .userId("test")
+                .password("test")
+                .name("test")
+                .email("test@test.com")
                 .visible("Y")
                 .build();
 
+        AdminUserDTO oneUser = adminUserJpaService.insertAdminUser(signUpRequest);
+
         // when
-        given(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).willReturn(adminUserEntity);
-        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());
+        given(mockAdminUserJpaService.findOneUser(oneUser.getUserId())).willReturn(oneUser);
+        AdminUserDTO userInfo = mockAdminUserJpaService.findOneUser(oneUser.getUserId());
 
         // then
-        assertThat(userInfo.getIdx()).isEqualTo(adminUserEntity.getIdx());
-        assertThat(userInfo.getUserId()).isEqualTo(adminUserEntity.getUserId());
-        assertThat(userInfo.getPassword()).isEqualTo(adminUserEntity.getPassword());
-        assertThat(userInfo.getVisible()).isEqualTo(adminUserEntity.getVisible());
+        assertThat(userInfo.getIdx()).isEqualTo(oneUser.getIdx());
+        assertThat(userInfo.getUserId()).isEqualTo(oneUser.getUserId());
+        assertThat(userInfo.getPassword()).isEqualTo(oneUser.getPassword());
+        assertThat(userInfo.getVisible()).isEqualTo(oneUser.getVisible());
 
         // verify
-        then(mockAdminUserJpaService).should(times(1)).findOneUser(adminUserEntity.getUserId());
-        then(mockAdminUserJpaService).should(atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaService).should(times(1)).findOneUser(oneUser.getUserId());
+        then(mockAdminUserJpaService).should(atLeastOnce()).findOneUser(oneUser.getUserId());
         then(mockAdminUserJpaService).shouldHaveNoMoreInteractions();
-    }
-
-    @Test
-    @DisplayName("Token을 이용한 관리자 조회 테스트")
-    void 토큰을이용한관리자조회테스트() {
-        // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId("admin01")
-                .idx(2L)
-                .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
-                .build();
-
-        adminUserJpaService.insertToken(adminUserEntity);
-
-        // then
-        assertThat(adminUserJpaService.findOneUserByToken(adminUserEntity.getUserToken())).isEqualTo(adminUserEntity.getUserId());
     }
 
     @Test
@@ -218,47 +209,40 @@ class AdminUserJpaServiceTest {
     void 관리자로그인처리테스트() {
         // given
         AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId("admin03")
-                .password("pass1234")
+                .userId("admin05")
+                .password(passwordEncoder.encode("pass1234"))
+                .name("admin05")
+                .email("admin05@admin.com")
+                .visible("Y")
+                .role(ROLE_ADMIN)
                 .build();
 
-        // then
-        assertThat(adminUserJpaService.adminLogin(adminUserEntity)).isEqualTo("Y");
-    }
+        em.persist(adminUserEntity);
 
-    @Test
-    @DisplayName("관리자 토큰 저장 테스트")
-    void 관리자토큰저장테스트() {
-        // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
-                .userId("admin03")
-                .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
-                .build();
-
-        adminUserJpaService.insertToken(adminUserEntity);
+        LoginRequest loginRequest = LoginRequest.builder().userId(adminUserEntity.getUserId())
+                .password("pass1234").build();
 
         // then
-        assertThat(adminUserEntity.getUserToken()).isNotEmpty();
+        adminUserJpaService.adminLogin(loginRequest);
     }
 
     @Test
     @DisplayName("관리자 회원가입 Mockito 테스트")
     void 관리자회원가입Mockito테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        SignUpRequest signUpRequest = SignUpRequest.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
                 .email("test@test.com")
-                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
-        adminUserJpaService.insertAdminUser(adminUserEntity);
+        AdminUserDTO oneUser = adminUserJpaService.insertAdminUser(signUpRequest);
 
         // when
-        when(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).thenReturn(adminUserEntity);
-        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());
+        when(mockAdminUserJpaService.findOneUser(oneUser.getUserId())).thenReturn(oneUser);
+        AdminUserDTO userInfo = mockAdminUserJpaService.findOneUser(oneUser.getUserId());
 
         // then
         assertThat(userInfo.getUserId()).isEqualTo("test");
@@ -266,32 +250,31 @@ class AdminUserJpaServiceTest {
         assertThat(userInfo.getEmail()).isEqualTo("test@test.com");
 
         // verify
-        verify(mockAdminUserJpaService, times(1)).findOneUser(adminUserEntity.getUserId());
-        verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        verify(mockAdminUserJpaService, times(1)).findOneUser(oneUser.getUserId());
+        verify(mockAdminUserJpaService, atLeastOnce()).findOneUser(oneUser.getUserId());
         verifyNoMoreInteractions(mockAdminUserJpaService);
 
         InOrder inOrder = inOrder(mockAdminUserJpaService);
-        inOrder.verify(mockAdminUserJpaService).findOneUser(adminUserEntity.getUserId());
+        inOrder.verify(mockAdminUserJpaService).findOneUser(oneUser.getUserId());
     }
 
     @Test
     @DisplayName("관리자 회원가입 BDD 테스트")
     void 관리자회원가입BDD테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        SignUpRequest signUpRequest = SignUpRequest.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
                 .email("test@test.com")
-                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
-        adminUserJpaService.insertAdminUser(adminUserEntity);
+        AdminUserDTO oneUser = adminUserJpaService.insertAdminUser(signUpRequest);
 
         // when
-        given(mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId())).willReturn(adminUserEntity);
-        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(adminUserEntity.getUserId());
+        given(mockAdminUserJpaService.findOneUser(oneUser.getUserId())).willReturn(oneUser);
+        AdminUserDTO userInfo = mockAdminUserJpaService.findOneUser(oneUser.getUserId());
 
         // then
         assertThat(userInfo.getUserId()).isEqualTo("test");
@@ -299,8 +282,8 @@ class AdminUserJpaServiceTest {
         assertThat(userInfo.getEmail()).isEqualTo("test@test.com");
 
         // verify
-        then(mockAdminUserJpaService).should(times(1)).findOneUser(adminUserEntity.getUserId());
-        then(mockAdminUserJpaService).should(atLeastOnce()).findOneUser(adminUserEntity.getUserId());
+        then(mockAdminUserJpaService).should(times(1)).findOneUser(oneUser.getUserId());
+        then(mockAdminUserJpaService).should(atLeastOnce()).findOneUser(oneUser.getUserId());
         then(mockAdminUserJpaService).shouldHaveNoMoreInteractions();
     }
 
@@ -308,16 +291,15 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 수정 Mockito 테스트")
     void 관리자수정Mockito테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        SignUpRequest signUpRequest = SignUpRequest.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
                 .email("test@test.com")
-                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
-        Long idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
+        Long idx = adminUserJpaService.insertAdminUser(signUpRequest).getIdx();
 
         AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
@@ -329,11 +311,11 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminUserJpaService.updateAdminUser(idx, newAdminUserEntity);
+        AdminUserDTO updateUser = adminUserJpaService.updateAdminUser(idx, newAdminUserEntity);
 
         // when
-        when(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).thenReturn(newAdminUserEntity);
-        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId());
+        when(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).thenReturn(updateUser);
+        AdminUserDTO userInfo = mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId());
 
         // then
         assertThat(userInfo.getUserId()).isEqualTo("test1");
@@ -353,16 +335,15 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 수정 BDD 테스트")
     void 관리자수정BDD테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        SignUpRequest signUpRequest = SignUpRequest.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
                 .email("test@test.com")
-                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
-        Long idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
+        Long idx = adminUserJpaService.insertAdminUser(signUpRequest).getIdx();
 
         AdminUserEntity newAdminUserEntity = AdminUserEntity.builder()
                 .idx(idx)
@@ -374,11 +355,11 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        adminUserJpaService.updateAdminUser(idx, newAdminUserEntity);
+        AdminUserDTO updateUser = adminUserJpaService.updateAdminUser(idx, newAdminUserEntity);
 
         // when
-        given(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).willReturn(newAdminUserEntity);
-        AdminUserEntity userInfo = mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId());
+        given(mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId())).willReturn(updateUser);
+        AdminUserDTO userInfo = mockAdminUserJpaService.findOneUser(newAdminUserEntity.getUserId());
 
         // then
         assertThat(userInfo.getUserId()).isEqualTo("test1");
@@ -395,16 +376,15 @@ class AdminUserJpaServiceTest {
     @DisplayName("관리자 탈퇴 테스트")
     void 관리자탈퇴테스트() {
         // given
-        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+        SignUpRequest signUpRequest = SignUpRequest.builder()
                 .userId("test")
                 .password("test")
                 .name("test")
                 .email("test@test.com")
-                .role(ROLE_ADMIN)
                 .visible("Y")
                 .build();
 
-        Long idx = adminUserJpaService.insertAdminUser(adminUserEntity).getIdx();
+        Long idx = adminUserJpaService.insertAdminUser(signUpRequest).getIdx();
 
         // then
         assertThat(adminUserJpaService.deleteAdminUser(idx)).isNotNull();

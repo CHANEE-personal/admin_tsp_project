@@ -19,6 +19,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
@@ -66,29 +67,10 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists/{categoryCd}")
-    public ResponseEntity<Map<String, Object>> findModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                                             @RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
-        // 페이징 및 검색
-        Map<String, Object> modelMap = searchCommon.searchCommon(paging, paramMap);
-        modelMap.put("categoryCd", categoryCd);
-
-        int modelListCount = this.adminModelJpaService.findModelCount(modelMap);
-        List<AdminModelDTO> modelList = new ArrayList<>();
-
-        if (modelListCount > 0) {
-            modelList = this.adminModelJpaService.findModelList(modelMap);
-        }
-
-        // 리스트 수
-        modelMap.put("pageSize", paging.getSize());
-        // 전체 페이지 수
-        modelMap.put("perPageListCnt", ceil((double) modelListCount / paging.getSize()));
-        // 전체 아이템 수
-        modelMap.put("modelListTotalCnt", modelListCount);
-
-        modelMap.put("modelList", modelList);
-
-        return ResponseEntity.ok().body(modelMap);
+    public ResponseEntity<Page<AdminModelDTO>> findModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+                                              @RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+        paramMap.put("categoryCd", categoryCd);
+        return ResponseEntity.ok().body(adminModelJpaService.findModelList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
 
     /**

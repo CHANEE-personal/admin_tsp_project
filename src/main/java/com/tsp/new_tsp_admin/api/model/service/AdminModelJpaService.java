@@ -9,23 +9,14 @@ import com.tsp.new_tsp_admin.api.domain.model.AdminModelEntity;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminModelJpaService {
-
-    /**
-     * <pre>
-     * 1. MethodName : findModelCount
-     * 2. ClassName  : AdminModelJpaService.java
-     * 3. Comment    : 관리자 모델 리스트 수 조회
-     * 4. 작성자      : CHO
-     * 5. 작성일      : 2022. 05. 02.
-     * </pre>
-     */
-    int findModelCount(Map<String, Object> modelMap);
 
     /**
      * <pre>
@@ -36,7 +27,7 @@ public interface AdminModelJpaService {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    List<AdminModelDTO> findModelList(Map<String, Object> modelMap);
+    Page<AdminModelDTO> findModelList(Map<String, Object> modelMap, PageRequest pageRequest);
 
     /**
      * <pre>

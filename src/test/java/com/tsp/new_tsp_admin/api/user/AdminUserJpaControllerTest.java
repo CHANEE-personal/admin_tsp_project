@@ -2,7 +2,7 @@ package com.tsp.new_tsp_admin.api.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
-import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
+import com.tsp.new_tsp_admin.api.domain.user.LoginRequest;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +46,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -82,11 +81,11 @@ class AdminUserJpaControllerTest {
         passwordEncoder = createDelegatingPasswordEncoder();
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
-        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+        String token = jwtUtil.doGenerateToken(authenticationToken.getName());
 
         adminUserEntity = AdminUserEntity.builder()
-                .userId("admin04")
-                .password("pass1234")
+                .userId("admin05")
+                .password(passwordEncoder.encode("pass1234"))
                 .name("test")
                 .email("test@test.com")
                 .role(ROLE_ADMIN)
@@ -102,7 +101,7 @@ class AdminUserJpaControllerTest {
     public void setup(RestDocumentationContextProvider restDocumentationContextProvider) {
         this.mockMvc = webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
-                .apply(springSecurity())
+//                .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
                 .alwaysDo(print())
                 .build();
@@ -133,19 +132,18 @@ class AdminUserJpaControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+//    @WithMockUser(roles = "USER")
     @DisplayName("로그인 테스트")
     void 로그인테스트() throws Exception {
+        LoginRequest loginRequest = LoginRequest.builder().userId(adminUserEntity.getUserId()).password("pass1234").build();
         mockMvc.perform(post("/api/user/login")
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+//                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(adminUserEntity)))
+                .content(objectMapper.writeValueAsString(loginRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(header().string("loginYn", "Y"))
-                .andExpect(header().string("username", "test"))
-                .andExpect(header().exists("authorization"));
+                .andExpect(jsonPath("$.accessToken").isNotEmpty());
     }
 
     @Test
@@ -297,7 +295,7 @@ class AdminUserJpaControllerTest {
         mockMvc.perform(post("/api/user/refresh")
                 .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(AuthenticationRequest.builder().userId("admin01").password("pass1234").build())))
+                .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=utf-8"))

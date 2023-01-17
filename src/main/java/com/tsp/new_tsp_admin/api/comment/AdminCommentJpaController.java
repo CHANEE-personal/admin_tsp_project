@@ -17,14 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
