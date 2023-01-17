@@ -235,49 +235,10 @@ public class AdminModelEntity extends NewCommonMappedClass {
                 .build();
     }
 
-    public static AdminModelDTO toPartDto(AdminModelEntity entity) {
-        if (entity == null) return null;
-        return AdminModelDTO.builder().idx(entity.getIdx())
-                .rowNum(entity.getRowNum())
-                .categoryCd(entity.getCategoryCd())
-                .modelKorName(entity.getModelKorName())
-                .modelEngName(entity.getModelEngName())
-                .modelDescription(entity.getModelDescription())
-                .visible(entity.getVisible())
-                .height(entity.getHeight())
-                .shoes(entity.getShoes())
-                .size3(entity.getSize3())
-                .categoryAge(entity.getCategoryAge())
-                .modelMainYn(entity.getModelMainYn())
-                .modelFirstName(entity.getModelFirstName())
-                .modelSecondName(entity.getModelSecondName())
-                .modelKorFirstName(entity.getModelKorFirstName())
-                .modelKorSecondName(entity.getModelKorSecondName())
-                .favoriteCount(entity.getFavoriteCount())
-                .viewCount(entity.getViewCount())
-                .agencyIdx(entity.getAdminAgencyEntity().getIdx())
-                .careerList(entity.getCareerList())
-                .status(entity.getStatus())
-                .newYn(entity.getNewYn())
-                .modelKeyword(entity.getModelKeyword())
-                .creator(entity.getCreator())
-                .createTime(entity.getCreateTime())
-                .updater(entity.getUpdater())
-                .updateTime(entity.getUpdateTime())
-                .build();
-    }
-
     public static List<AdminModelDTO> toDtoList(List<AdminModelEntity> entityList) {
         if (entityList == null) return null;
         return entityList.stream()
                 .map(AdminModelEntity::toDto)
-                .collect(Collectors.toList());
-    }
-
-    public static List<AdminModelDTO> toPartDtoList(List<AdminModelEntity> entityList) {
-        if (entityList == null) return null;
-        return entityList.stream()
-                .map(AdminModelEntity::toPartDto)
                 .collect(Collectors.toList());
     }
 }

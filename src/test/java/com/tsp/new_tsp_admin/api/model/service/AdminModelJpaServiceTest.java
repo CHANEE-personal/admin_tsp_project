@@ -26,6 +26,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
@@ -34,6 +37,7 @@ import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -134,9 +138,10 @@ class AdminModelJpaServiceTest {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", -1);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         // then
-        assertThatThrownBy(() -> adminModelJpaService.findModelList(modelMap))
+        assertThatThrownBy(() -> adminModelJpaService.findModelList(modelMap, pageRequest))
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
@@ -146,11 +151,10 @@ class AdminModelJpaServiceTest {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", 1);
-        modelMap.put("jpaStartPage", 0);
-        modelMap.put("size", 100);
+        PageRequest pageRequest = PageRequest.of(1, 100);
 
         // then
-        assertThat(adminModelJpaService.findModelList(modelMap)).isNotEmpty();
+        assertThat(adminModelJpaService.findModelList(modelMap, pageRequest)).isNotEmpty();
     }
 
     @Test
@@ -159,8 +163,7 @@ class AdminModelJpaServiceTest {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", "1");
-        modelMap.put("jpaStartPage", 1);
-        modelMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
@@ -176,44 +179,47 @@ class AdminModelJpaServiceTest {
         returnModelList.add(AdminModelDTO.builder().idx(3L).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
+        Page<AdminModelDTO> resultModel = new PageImpl<>(returnModelList, pageRequest, returnModelList.size());
+
         // when
-        when(mockAdminModelJpaService.findModelList(modelMap)).thenReturn(returnModelList);
-        List<AdminModelDTO> modelList = mockAdminModelJpaService.findModelList(modelMap);
+        when(mockAdminModelJpaService.findModelList(modelMap, pageRequest)).thenReturn(resultModel);
+        Page<AdminModelDTO> modelList = mockAdminModelJpaService.findModelList(modelMap, pageRequest);
+        List<AdminModelDTO> findModelList = modelList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(modelList).isNotEmpty(),
-                () -> assertThat(modelList).hasSize(3)
+                () -> assertThat(findModelList).isNotEmpty(),
+                () -> assertThat(findModelList).hasSize(3)
         );
 
-        assertThat(modelList.get(0).getIdx()).isEqualTo(returnModelList.get(0).getIdx());
-        assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getCategoryCd());
-        assertThat(modelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
-        assertThat(modelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
-        assertThat(modelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
-        assertThat(modelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
+        assertThat(findModelList.get(0).getIdx()).isEqualTo(returnModelList.get(0).getIdx());
+        assertThat(findModelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getCategoryCd());
+        assertThat(findModelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
+        assertThat(findModelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
+        assertThat(findModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
+        assertThat(findModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
 
-        assertThat(modelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
-        assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getCategoryCd());
-        assertThat(modelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
-        assertThat(modelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
-        assertThat(modelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
-        assertThat(modelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
+        assertThat(findModelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
+        assertThat(findModelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getCategoryCd());
+        assertThat(findModelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
+        assertThat(findModelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
+        assertThat(findModelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
+        assertThat(findModelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
 
-        assertThat(modelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
-        assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getCategoryCd());
-        assertThat(modelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
-        assertThat(modelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
-        assertThat(modelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
-        assertThat(modelList.get(2).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyDescription());
+        assertThat(findModelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
+        assertThat(findModelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getCategoryCd());
+        assertThat(findModelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
+        assertThat(findModelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
+        assertThat(findModelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
+        assertThat(findModelList.get(2).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyDescription());
 
         // verify
-        verify(mockAdminModelJpaService, times(1)).findModelList(modelMap);
-        verify(mockAdminModelJpaService, atLeastOnce()).findModelList(modelMap);
+        verify(mockAdminModelJpaService, times(1)).findModelList(modelMap, pageRequest);
+        verify(mockAdminModelJpaService, atLeastOnce()).findModelList(modelMap, pageRequest);
         verifyNoMoreInteractions(mockAdminModelJpaService);
 
         InOrder inOrder = inOrder(mockAdminModelJpaService);
-        inOrder.verify(mockAdminModelJpaService).findModelList(modelMap);
+        inOrder.verify(mockAdminModelJpaService).findModelList(modelMap, pageRequest);
     }
 
     @Test
@@ -222,14 +228,12 @@ class AdminModelJpaServiceTest {
         // given
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", "1");
-        modelMap.put("jpaStartPage", 1);
-        modelMap.put("size", 3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
         List<CommonImageDTO> commonImageDtoList = new ArrayList<>();
         commonImageDtoList.add(commonImageDTO);
 
         List<AdminModelDTO> returnModelList = new ArrayList<>();
-
         // 남성
         returnModelList.add(AdminModelDTO.builder().idx(1L).categoryCd(1).modelKorName("남성모델").modelEngName("menModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
@@ -240,40 +244,43 @@ class AdminModelJpaServiceTest {
         returnModelList.add(AdminModelDTO.builder().idx(3L).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel")
                 .modelImage(commonImageDtoList).modelAgency(adminAgencyDTO).build());
 
+        Page<AdminModelDTO> resultModel = new PageImpl<>(returnModelList, pageRequest, returnModelList.size());
+
         // when
-        given(mockAdminModelJpaService.findModelList(modelMap)).willReturn(returnModelList);
-        List<AdminModelDTO> modelList = mockAdminModelJpaService.findModelList(modelMap);
+        given(mockAdminModelJpaService.findModelList(modelMap, pageRequest)).willReturn(resultModel);
+        Page<AdminModelDTO> modelList = mockAdminModelJpaService.findModelList(modelMap, pageRequest);
+        List<AdminModelDTO> findModelList = modelList.stream().collect(Collectors.toList());
 
         // then
         assertAll(
-                () -> assertThat(modelList).isNotEmpty(),
-                () -> assertThat(modelList).hasSize(3)
+                () -> assertThat(findModelList).isNotEmpty(),
+                () -> assertThat(findModelList).hasSize(3)
         );
 
-        assertThat(modelList.get(0).getIdx()).isEqualTo(returnModelList.get(0).getIdx());
-        assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getCategoryCd());
-        assertThat(modelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
-        assertThat(modelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
-        assertThat(modelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
-        assertThat(modelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
+        assertThat(findModelList.get(0).getIdx()).isEqualTo(returnModelList.get(0).getIdx());
+        assertThat(findModelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getCategoryCd());
+        assertThat(findModelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
+        assertThat(findModelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
+        assertThat(findModelList.get(0).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyName());
+        assertThat(findModelList.get(0).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(0).getModelAgency().getAgencyDescription());
 
-        assertThat(modelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
-        assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getCategoryCd());
-        assertThat(modelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
-        assertThat(modelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
-        assertThat(modelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
-        assertThat(modelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
+        assertThat(findModelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
+        assertThat(findModelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getCategoryCd());
+        assertThat(findModelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
+        assertThat(findModelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
+        assertThat(findModelList.get(1).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyName());
+        assertThat(findModelList.get(1).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(1).getModelAgency().getAgencyDescription());
 
-        assertThat(modelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
-        assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getCategoryCd());
-        assertThat(modelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
-        assertThat(modelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
-        assertThat(modelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
-        assertThat(modelList.get(2).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyDescription());
+        assertThat(findModelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
+        assertThat(findModelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getCategoryCd());
+        assertThat(findModelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
+        assertThat(findModelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
+        assertThat(findModelList.get(2).getModelAgency().getAgencyName()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyName());
+        assertThat(findModelList.get(2).getModelAgency().getAgencyDescription()).isEqualTo(returnModelList.get(2).getModelAgency().getAgencyDescription());
 
         // verify
-        then(mockAdminModelJpaService).should(times(1)).findModelList(modelMap);
-        then(mockAdminModelJpaService).should(atLeastOnce()).findModelList(modelMap);
+        then(mockAdminModelJpaService).should(times(1)).findModelList(modelMap, pageRequest);
+        then(mockAdminModelJpaService).should(atLeastOnce()).findModelList(modelMap, pageRequest);
         then(mockAdminModelJpaService).shouldHaveNoMoreInteractions();
     }
 
