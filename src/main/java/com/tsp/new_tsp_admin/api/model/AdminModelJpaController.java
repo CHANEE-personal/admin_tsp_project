@@ -12,7 +12,6 @@ import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
 import com.tsp.new_tsp_admin.api.model.service.AdminModelJpaService;
 import com.tsp.new_tsp_admin.common.Paging;
-import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -22,6 +21,7 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -30,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,6 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 @RequiredArgsConstructor
 public class AdminModelJpaController {
     private final AdminModelJpaService adminModelJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -57,6 +55,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 조회", notes = "모델을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 조회 성공", response = Map.class),
@@ -68,7 +67,7 @@ public class AdminModelJpaController {
     })
     @GetMapping(value = "/lists/{categoryCd}")
     public ResponseEntity<Page<AdminModelDTO>> findModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                              @RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
+                                                             @RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         paramMap.put("categoryCd", categoryCd);
         return ResponseEntity.ok().body(adminModelJpaService.findModelList(paramMap, PageRequest.of(paging.getPageNum(), paging.getSize())));
     }
@@ -82,6 +81,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 상세조회 성공", response = AdminModelDTO.class),
@@ -105,6 +105,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 09. 12.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "이전 모델 상세 조회", notes = "이전 모델을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "이전 모델 상세조회 성공", response = AdminModelDTO.class),
@@ -129,6 +130,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 09. 12.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "다음 모델 상세 조회", notes = "다음 모델을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "다음 모델 상세조회 성공", response = AdminModelDTO.class),
@@ -153,6 +155,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 저장", notes = "모델을 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 등록성공", response = AdminModelDTO.class),
@@ -176,6 +179,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 이미지 저장", notes = "모델 이미지를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 이미지 등록성공", response = List.class),
@@ -199,6 +203,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 이미지 삭제", notes = "모델 이미지를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 이미지 삭제성공", response = Long.class),
@@ -209,8 +214,8 @@ public class AdminModelJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}/images")
-    public ResponseEntity<Long> deleteModelImage(@PathVariable Long idx) {
-        adminModelJpaService.deleteImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.MODEL).build());
+    public ResponseEntity<Void> deleteModelImage(@PathVariable Long idx) {
+        adminModelJpaService.deleteImage(CommonImageEntity.builder().idx(idx).typeName(EntityType.MODEL).build());
         return ResponseEntity.noContent().build();
     }
 
@@ -223,6 +228,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 수정성공", response = AdminModelDTO.class),
@@ -246,6 +252,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 삭제성공", response = void.class),
@@ -270,6 +277,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 소속사 수정", notes = "모델 소속사를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 소속사 수정성공", response = AdminModelDTO.class),
@@ -293,6 +301,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 어드민 코멘트 저장", notes = "어드민 코멘트를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 어드민 코멘트 등록성공", response = AdminCommentDTO.class),
@@ -316,6 +325,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 어드민 코멘트 조회", notes = "모델 어드민 코멘트를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 어드민 코멘트 조회성공", response = List.class),
@@ -339,6 +349,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 08. 29.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "새로운 모델 설정", notes = "새로운 모델을 설정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "새로운 모델 설정 성공", response = AdminModelDTO.class),
@@ -362,6 +373,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 09. 03.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "모델 스케줄 조회", notes = "모델 스케줄을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 스케줄 조회성공", response = List.class),
@@ -385,6 +397,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "추천 검색어 조회", notes = "추천 검색어를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "추천 검색어 조회성공", response = Map.class),
@@ -397,7 +410,7 @@ public class AdminModelJpaController {
     @GetMapping(value = "/recommend")
     public ResponseEntity<Map<String, Object>> findRecommendList(@RequestParam(required = false) Map<String, Object> paramMap, Paging paging) {
         Map<String, Object> recommendMap = new HashMap<>();
-        recommendMap.put("recommendList", adminModelJpaService.findRecommendList(searchCommon.searchCommon(paging, paramMap)));
+        recommendMap.put("recommendList", adminModelJpaService.findRecommendList(paramMap));
         return ResponseEntity.ok().body(recommendMap);
     }
 
@@ -410,6 +423,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "추천 검색어 상세 조회", notes = "추천 검색어를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "추천 검색어 상세 조회성공", response = AdminRecommendDTO.class),
@@ -433,6 +447,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "추천 검색어 등록", notes = "추천 검색어를 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "추천 검색어 등록성공", response = AdminRecommendDTO.class),
@@ -456,6 +471,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "추천 검색어 등록", notes = "추천 검색어를 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "추천 검색어 등록성공", response = AdminRecommendDTO.class),
@@ -479,6 +495,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "추천 검색어 삭제", notes = "추천 검색어를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "추천 검색어 삭제성공", response = AdminRecommendDTO.class),

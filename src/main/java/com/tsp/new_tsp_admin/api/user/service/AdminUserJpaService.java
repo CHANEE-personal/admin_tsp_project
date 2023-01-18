@@ -73,5 +73,5 @@ public interface AdminUserJpaService {
      * 5. 작성일      : 2022. 05. 11.
      * </pre>
      */
-    Long deleteAdminUser(Long idx);
+    void deleteAdminUser(AdminUserEntity adminUserEntity);
 }

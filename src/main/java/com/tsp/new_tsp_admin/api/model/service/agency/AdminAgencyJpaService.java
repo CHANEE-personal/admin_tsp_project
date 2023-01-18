@@ -55,7 +55,7 @@ public interface AdminAgencyJpaService {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity);
+    AdminAgencyDTO updateAgency(Long idx, AdminAgencyEntity adminAgencyEntity);
 
     /**
      * <pre>
@@ -88,5 +88,5 @@ public interface AdminAgencyJpaService {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    Long deleteAgencyImage(CommonImageEntity commonImageEntity);
+    void deleteAgencyImage(CommonImageEntity commonImageEntity);
 }

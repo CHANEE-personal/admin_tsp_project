@@ -4,7 +4,6 @@ import com.tsp.new_tsp_admin.api.comment.service.AdminCommentJpaService;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.common.Paging;
-import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -28,7 +28,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class AdminCommentJpaController {
     private final AdminCommentJpaService adminCommentJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -39,6 +38,7 @@ public class AdminCommentJpaController {
      * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "어드민 코멘트 조회", notes = "어드민 코멘트를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "어드민 코멘트 조회 성공", response = Page.class),
@@ -62,6 +62,7 @@ public class AdminCommentJpaController {
      * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "어드민 코멘트 상세 조회", notes = "어드민 코멘트를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "어드민 코멘트 상세 조회 성공", response = AdminCommentDTO.class),
@@ -85,6 +86,7 @@ public class AdminCommentJpaController {
      * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "어드민 코멘트 수정", notes = "어드민 코멘트를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "어드민 코멘트 수정 성공", response = AdminCommentDTO.class),
@@ -108,6 +110,7 @@ public class AdminCommentJpaController {
      * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "어드민 코멘트 삭제", notes = "어드민 코멘트를 삭제 한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "어드민 코멘트 삭제 성공", response = Long.class),

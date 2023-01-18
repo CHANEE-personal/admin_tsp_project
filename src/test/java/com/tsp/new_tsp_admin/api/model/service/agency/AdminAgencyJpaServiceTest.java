@@ -226,7 +226,7 @@ class AdminAgencyJpaServiceTest {
 
         AdminAgencyDTO adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
-        adminAgencyJpaService.updateAgency(adminAgencyEntity);
+        adminAgencyJpaService.updateAgency(idx, adminAgencyEntity);
 
         // when
         when(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).thenReturn(adminAgencyDTO);
@@ -260,7 +260,7 @@ class AdminAgencyJpaServiceTest {
 
         AdminAgencyDTO adminAgencyDTO = AdminAgencyEntity.toDto(adminAgencyEntity);
 
-        adminAgencyJpaService.updateAgency(adminAgencyEntity);
+        adminAgencyJpaService.updateAgency(idx, adminAgencyEntity);
 
         // when
         given(mockAdminAgencyJpaService.findOneAgency(adminAgencyEntity.getIdx())).willReturn(adminAgencyDTO);

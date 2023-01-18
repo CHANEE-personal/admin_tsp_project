@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -45,6 +46,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "소속사 조회", notes = "소속사를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = Map.class),
@@ -68,6 +70,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "소속사 상세 조회", notes = "소속사를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = AdminAgencyDTO.class),
@@ -91,6 +94,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "소속사 저장", notes = "소속사를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "소속사 등록성공", response = AdminAgencyDTO.class),
@@ -114,6 +118,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "소속사 수정", notes = "소속사를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "소속사 수정성공", response = AdminAgencyDTO.class),
@@ -125,10 +130,7 @@ public class AdminAgencyJpaController {
     })
     @PutMapping("/{idx}")
     public ResponseEntity<AdminAgencyDTO> updateAgency(@PathVariable Long idx, @Valid @RequestBody AdminAgencyEntity adminAgencyEntity) {
-        if (adminAgencyJpaService.findOneAgency(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(adminAgencyJpaService.updateAgency(adminAgencyEntity));
+        return ResponseEntity.ok(adminAgencyJpaService.updateAgency(idx, adminAgencyEntity));
     }
 
     /**
@@ -140,6 +142,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "소속사 삭제", notes = "소속사를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "소속사 삭제성공", response = Long.class),
@@ -151,9 +154,6 @@ public class AdminAgencyJpaController {
     })
     @DeleteMapping("/{idx}")
     public ResponseEntity<Long> deleteAgency(@PathVariable Long idx) {
-        if (adminAgencyJpaService.findOneAgency(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
         adminAgencyJpaService.deleteAgency(idx);
         return ResponseEntity.noContent().build();
     }
@@ -167,6 +167,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "소속사 이미지 저장", notes = "소속사 이미지를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "소속사 이미지 등록성공", response = List.class),
@@ -178,9 +179,6 @@ public class AdminAgencyJpaController {
     })
     @PostMapping(value = "/{idx}/images", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<CommonImageDTO>> insertAgencyImage(@PathVariable Long idx, @RequestParam("images") List<MultipartFile> fileName) {
-        if (adminAgencyJpaService.findOneAgency(idx) == null) {
-            ResponseEntity.notFound().build();
-        }
         return ResponseEntity.created(URI.create("")).body(adminAgencyJpaService.insertAgencyImage(CommonImageEntity.builder().typeName(EntityType.AGENCY).typeIdx(idx).build(), fileName));
     }
 
@@ -193,6 +191,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "소속사 이미지 삭제", notes = "소속사 이미지를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 이미지 삭제성공", response = Long.class),
@@ -203,10 +202,7 @@ public class AdminAgencyJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}/images")
-    public ResponseEntity<Long> deleteAgencyImage(@PathVariable Long idx) {
-        if (adminAgencyJpaService.findOneAgency(idx) == null) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deleteAgencyImage(@PathVariable Long idx) {
         adminAgencyJpaService.deleteAgencyImage(CommonImageEntity.builder().typeIdx(idx).typeName(EntityType.AGENCY).build());
         return ResponseEntity.noContent().build();
     }

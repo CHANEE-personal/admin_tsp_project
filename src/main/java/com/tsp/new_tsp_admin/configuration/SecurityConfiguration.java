@@ -15,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -28,6 +30,7 @@ import static org.springframework.security.crypto.factory.PasswordEncoderFactori
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
@@ -53,6 +56,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs",
                 "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+
+        web.httpFirewall(defaultHttpFirewall());
+    }
+
+    @Bean
+    public HttpFirewall defaultHttpFirewall() {
+        return new DefaultHttpFirewall();
     }
 
     /**
@@ -75,8 +85,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * 1. MethodName : passwordEncoder
      * 2. ClassName  : SecurityConfiguration.java
      * 3. Comment    : 암호화에 필요한 passwordEncoder Bean 등록
-     * 4. 작성자       : CHO
-     * 5. 작성일       : 2021. 07. 07.
+     * 4. 작성자      : CHO
+     * 5. 작성일      : 2021. 07. 07.
      * </pre>
      */
     @Bean
@@ -97,6 +107,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().headers().frameOptions().sameOrigin()
                 .and().sessionManagement().sessionCreationPolicy(STATELESS)
                 .and().authorizeRequests()
+                .antMatchers("/api/").hasRole("ADMIN")
                 .antMatchers("/api/user/login").permitAll()
                 .antMatchers("/api/user/signUp").permitAll()
                 .anyRequest().authenticated();

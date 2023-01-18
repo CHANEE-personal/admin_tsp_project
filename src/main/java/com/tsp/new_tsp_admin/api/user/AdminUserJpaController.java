@@ -2,6 +2,7 @@ package com.tsp.new_tsp_admin.api.user;
 
 import com.tsp.new_tsp_admin.api.domain.user.*;
 import com.tsp.new_tsp_admin.api.user.service.AdminUserJpaService;
+import com.tsp.new_tsp_admin.common.CurrentUser;
 import com.tsp.new_tsp_admin.jwt.AuthenticationResponse;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
 import com.tsp.new_tsp_admin.jwt.MyUserDetailsService;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -48,6 +50,7 @@ public class AdminUserJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Admin 회원 조회", notes = "Admin 회원을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "관리자 회원 조회 성공", response = Page.class),
@@ -169,7 +172,7 @@ public class AdminUserJpaController {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PutMapping("/{idx}")
-    public ResponseEntity<AdminUserDTO> updateAdminUser(@PathVariable Long idx, @Valid @RequestBody AdminUserEntity adminUserEntity) {
+    public ResponseEntity<AdminUserDTO> updateAdminUser(@PathVariable Long idx, @CurrentUser AdminUserEntity adminUserEntity) {
         return ok(adminUserJpaService.updateAdminUser(idx, adminUserEntity));
     }
 
@@ -191,9 +194,9 @@ public class AdminUserJpaController {
             @ApiResponse(code = 404, message = "존재 하지 않음", response = HttpClientErrorException.NotFound.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
-    @DeleteMapping("/{idx}")
-    public ResponseEntity<Long> deleteAdminUser(@PathVariable Long idx) {
-        adminUserJpaService.deleteAdminUser(idx);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAdminUser(@CurrentUser AdminUserEntity adminUserEntity) {
+        adminUserJpaService.deleteAdminUser(adminUserEntity);
         return ResponseEntity.noContent().build();
     }
 }

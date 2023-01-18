@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
@@ -115,7 +116,7 @@ public interface AdminModelJpaService {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
-    Long deleteImage(CommonImageEntity commonImageEntity);
+    void deleteImage(CommonImageEntity commonImageEntity);
 
     /**
      * <pre>

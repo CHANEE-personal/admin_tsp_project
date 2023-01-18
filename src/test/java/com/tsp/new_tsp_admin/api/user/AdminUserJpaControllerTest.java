@@ -2,8 +2,10 @@ package com.tsp.new_tsp_admin.api.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_admin.api.domain.user.AdminUserEntity;
+import com.tsp.new_tsp_admin.api.domain.user.AuthenticationRequest;
 import com.tsp.new_tsp_admin.api.domain.user.LoginRequest;
 import com.tsp.new_tsp_admin.jwt.JwtUtil;
+import com.tsp.new_tsp_admin.jwt.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -14,6 +16,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.event.EventListener;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -36,7 +39,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_admin.api.domain.user.Role.ROLE_ADMIN;
-import static com.tsp.new_tsp_admin.common.StringUtil.getString;
+import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -46,6 +49,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -67,8 +71,12 @@ class AdminUserJpaControllerTest {
     private final JwtUtil jwtUtil;
 
     private AdminUserEntity adminUserEntity;
+    private AdminUserEntity nonAdminUserEntity;
     private MockMvc mockMvc;
     protected PasswordEncoder passwordEncoder;
+
+    @MockBean protected MyUserDetailsService myUserDetailsService;
+    protected AuthenticationRequest authenticationRequest;
 
     Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -94,6 +102,18 @@ class AdminUserJpaControllerTest {
                 .build();
 
         em.persist(adminUserEntity);
+
+        nonAdminUserEntity = AdminUserEntity.builder()
+                .userId("admin07")
+                .password(passwordEncoder.encode("pass1234"))
+                .name("test")
+                .email("test@test.com")
+                .role(ROLE_ADMIN)
+                .userToken(token)
+                .visible("Y")
+                .build();
+
+        em.persist(nonAdminUserEntity);
     }
 
     @BeforeEach
@@ -101,12 +121,15 @@ class AdminUserJpaControllerTest {
     public void setup(RestDocumentationContextProvider restDocumentationContextProvider) {
         this.mockMvc = webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
-//                .apply(springSecurity())
+                .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
                 .alwaysDo(print())
                 .build();
 
         createUser();
+
+        authenticationRequest = new AuthenticationRequest(adminUserEntity);
+        when(myUserDetailsService.loadUserByUsername(adminUserEntity.getUserId())).thenReturn(authenticationRequest);
     }
 
     @Test
@@ -270,12 +293,15 @@ class AdminUserJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("관리자 회원탈퇴 테스트")
     void 회원탈퇴테스트() throws Exception {
-        mockMvc.perform(delete("/api/user/{idx}", adminUserEntity.getIdx())
-                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+        mockMvc.perform(delete("/api/user")
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(adminUserEntity)))
                 .andDo(print())
-                .andExpect(status().isNoContent())
-                .andExpect(content().contentType("application/json;charset=utf-8"))
-                .andExpect(content().string(getString(adminUserEntity.getIdx())));
+                .andExpect(status().isNoContent());
+
+        em.flush();
+        em.clear();
     }
 
     @Test

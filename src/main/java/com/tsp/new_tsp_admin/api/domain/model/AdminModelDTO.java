@@ -108,7 +108,7 @@ public class AdminModelDTO extends NewCommonDTO {
 
     @Convert(converter = CustomConverter.class)
     @ApiModelProperty(value = "model career")
-    private ArrayList<CareerJson> careerList;
+    private List<CareerJson> careerList = new ArrayList<>();
 
     @NotEmpty(message = "모델 상태 선택은 필수입니다.")
     @ApiModelProperty(required = true, value = "model status")

@@ -165,10 +165,9 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
      */
     @Override
     @Transactional
-    public Long deleteAdminUser(Long idx) {
+    public void deleteAdminUser(AdminUserEntity adminUserEntity) {
         try {
-            adminUserJpaRepository.deleteById(idx);
-            return idx;
+            adminUserJpaRepository.delete(adminUserEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_USER);
         }
