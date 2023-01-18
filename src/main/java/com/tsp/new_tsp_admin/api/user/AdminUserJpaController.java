@@ -50,7 +50,7 @@ public class AdminUserJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "Admin 회원 조회", notes = "Admin 회원을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "관리자 회원 조회 성공", response = Page.class),

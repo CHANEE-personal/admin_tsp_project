@@ -55,7 +55,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 조회", notes = "모델을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 조회 성공", response = Map.class),
@@ -81,7 +81,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 상세조회 성공", response = AdminModelDTO.class),
@@ -105,7 +105,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 09. 12.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "이전 모델 상세 조회", notes = "이전 모델을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "이전 모델 상세조회 성공", response = AdminModelDTO.class),
@@ -130,7 +130,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 09. 12.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "다음 모델 상세 조회", notes = "다음 모델을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "다음 모델 상세조회 성공", response = AdminModelDTO.class),
@@ -155,7 +155,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 저장", notes = "모델을 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 등록성공", response = AdminModelDTO.class),
@@ -179,7 +179,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 이미지 저장", notes = "모델 이미지를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 이미지 등록성공", response = List.class),
@@ -203,7 +203,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 이미지 삭제", notes = "모델 이미지를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 이미지 삭제성공", response = Long.class),
@@ -228,7 +228,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 07.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 수정성공", response = AdminModelDTO.class),
@@ -252,7 +252,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 삭제성공", response = void.class),
@@ -277,7 +277,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 소속사 수정", notes = "모델 소속사를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 소속사 수정성공", response = AdminModelDTO.class),
@@ -301,7 +301,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 어드민 코멘트 저장", notes = "어드민 코멘트를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 어드민 코멘트 등록성공", response = AdminCommentDTO.class),
@@ -325,7 +325,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 어드민 코멘트 조회", notes = "모델 어드민 코멘트를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 어드민 코멘트 조회성공", response = List.class),
@@ -349,7 +349,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 08. 29.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "새로운 모델 설정", notes = "새로운 모델을 설정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "새로운 모델 설정 성공", response = AdminModelDTO.class),
@@ -373,7 +373,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2022. 09. 03.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 스케줄 조회", notes = "모델 스케줄을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 스케줄 조회성공", response = List.class),
@@ -397,7 +397,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "추천 검색어 조회", notes = "추천 검색어를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "추천 검색어 조회성공", response = Map.class),
@@ -423,7 +423,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "추천 검색어 상세 조회", notes = "추천 검색어를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "추천 검색어 상세 조회성공", response = AdminRecommendDTO.class),
@@ -447,7 +447,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "추천 검색어 등록", notes = "추천 검색어를 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "추천 검색어 등록성공", response = AdminRecommendDTO.class),
@@ -471,7 +471,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "추천 검색어 등록", notes = "추천 검색어를 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "추천 검색어 등록성공", response = AdminRecommendDTO.class),
@@ -495,7 +495,7 @@ public class AdminModelJpaController {
      * 5. 작성일      : 2023. 01. 05.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "추천 검색어 삭제", notes = "추천 검색어를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "추천 검색어 삭제성공", response = AdminRecommendDTO.class),

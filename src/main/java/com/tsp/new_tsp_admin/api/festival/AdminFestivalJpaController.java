@@ -39,7 +39,7 @@ public class AdminFestivalJpaController {
      * 5. 작성일      : 2023. 01. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "행사 리스트 조회", notes = "행사 리스트를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "행사 리스트 조회 성공", response = Map.class),
@@ -63,7 +63,7 @@ public class AdminFestivalJpaController {
      * 5. 작성일      : 2023. 01. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "행사 상세 조회", notes = "행사 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "행사 상세 조회 성공", response = AdminFestivalDTO.class),
@@ -87,7 +87,7 @@ public class AdminFestivalJpaController {
      * 5. 작성일      : 2023. 01. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "행사 등록", notes = "행사를 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "행사 등록 성공", response = AdminFestivalDTO.class),
@@ -111,7 +111,7 @@ public class AdminFestivalJpaController {
      * 5. 작성일      : 2023. 01. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "행사 수정", notes = "행사를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "행사 수정 성공", response = AdminFestivalDTO.class),
@@ -135,7 +135,7 @@ public class AdminFestivalJpaController {
      * 5. 작성일      : 2023. 01. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "행사 삭제", notes = "행사를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "행사 삭제 성공", response = Long.class),

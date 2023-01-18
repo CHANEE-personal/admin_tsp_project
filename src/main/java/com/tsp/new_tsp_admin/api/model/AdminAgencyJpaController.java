@@ -46,7 +46,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "소속사 조회", notes = "소속사를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = Map.class),
@@ -70,7 +70,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "소속사 상세 조회", notes = "소속사를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "성공", response = AdminAgencyDTO.class),
@@ -94,7 +94,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "소속사 저장", notes = "소속사를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "소속사 등록성공", response = AdminAgencyDTO.class),
@@ -118,7 +118,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "소속사 수정", notes = "소속사를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "소속사 수정성공", response = AdminAgencyDTO.class),
@@ -142,7 +142,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "소속사 삭제", notes = "소속사를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "소속사 삭제성공", response = Long.class),
@@ -167,7 +167,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "소속사 이미지 저장", notes = "소속사 이미지를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "소속사 이미지 등록성공", response = List.class),
@@ -191,7 +191,7 @@ public class AdminAgencyJpaController {
      * 5. 작성일      : 2022. 08. 14.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "소속사 이미지 삭제", notes = "소속사 이미지를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 이미지 삭제성공", response = Long.class),

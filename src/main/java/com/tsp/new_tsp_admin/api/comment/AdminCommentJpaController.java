@@ -38,7 +38,7 @@ public class AdminCommentJpaController {
      * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "어드민 코멘트 조회", notes = "어드민 코멘트를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "어드민 코멘트 조회 성공", response = Page.class),
@@ -62,7 +62,7 @@ public class AdminCommentJpaController {
      * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "어드민 코멘트 상세 조회", notes = "어드민 코멘트를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "어드민 코멘트 상세 조회 성공", response = AdminCommentDTO.class),
@@ -86,7 +86,7 @@ public class AdminCommentJpaController {
      * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "어드민 코멘트 수정", notes = "어드민 코멘트를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "어드민 코멘트 수정 성공", response = AdminCommentDTO.class),
@@ -110,7 +110,7 @@ public class AdminCommentJpaController {
      * 5. 작성일      : 2022. 08. 24.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "어드민 코멘트 삭제", notes = "어드민 코멘트를 삭제 한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "어드민 코멘트 삭제 성공", response = Long.class),

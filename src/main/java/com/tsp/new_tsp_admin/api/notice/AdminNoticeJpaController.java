@@ -43,7 +43,7 @@ public class AdminNoticeJpaController {
      * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공지사항 조회", notes = "공지사항을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "공지사항 조회 성공", response = Map.class),
@@ -67,7 +67,7 @@ public class AdminNoticeJpaController {
      * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공지사항 상세 조회", notes = "공지사항을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "공지사항 상세 조회 성공", response = AdminNoticeDTO.class),
@@ -91,7 +91,7 @@ public class AdminNoticeJpaController {
      * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "이전 공지사항 상세 조회", notes = "이전 공지사항을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "이전 공지사항 상세 조회 성공", response = AdminNoticeDTO.class),
@@ -115,7 +115,7 @@ public class AdminNoticeJpaController {
      * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "다음 공지사항 상세 조회", notes = "다음 공지사항을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "다음 공지사항 상세 조회 성공", response = AdminNoticeDTO.class),
@@ -139,7 +139,7 @@ public class AdminNoticeJpaController {
      * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공지사항 저장", notes = "공지사항을 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "공지사항 등록성공", response = AdminNoticeDTO.class),
@@ -163,7 +163,7 @@ public class AdminNoticeJpaController {
      * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공지사항 수정", notes = "공지사항을 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "공지사항 수정 성공", response = AdminNoticeDTO.class),
@@ -187,7 +187,7 @@ public class AdminNoticeJpaController {
      * 5. 작성일      : 2022. 09. 23.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공지사항 상단 고정", notes = "공지사항을 상단 고정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "공지사항 상단 고정 성공", response = Boolean.class),
@@ -211,7 +211,7 @@ public class AdminNoticeJpaController {
      * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공지사항 삭제", notes = "공지사항을 삭제 한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "공지사항 삭제 성공", response = Long.class),

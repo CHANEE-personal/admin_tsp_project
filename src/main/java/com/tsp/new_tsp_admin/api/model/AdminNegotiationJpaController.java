@@ -40,7 +40,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 조회", notes = "모델 섭외를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 조회성공", response = Map.class),
@@ -73,7 +73,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 상세 조회", notes = "모델 섭외를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 상세 조회 성공", response = AdminNegotiationDTO.class),
@@ -97,7 +97,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 21.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 이전 상세 조회", notes = "모델 섭외를 이전 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 이전 상세 조회 성공", response = AdminNegotiationDTO.class),
@@ -121,7 +121,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 21.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 다음 상세 조회", notes = "모델 섭외를 다음 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 다음 상세 조회 성공", response = AdminNegotiationDTO.class),
@@ -145,7 +145,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 저장", notes = "모델 섭외를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 섭외 등록성공", response = AdminNegotiationDTO.class),
@@ -169,7 +169,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 수정", notes = "모델 섭외를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 수정성공", response = AdminNegotiationDTO.class),
@@ -193,7 +193,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 삭제", notes = "모델 섭외를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 섭외 삭제성공", response = Long.class),

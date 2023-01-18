@@ -39,7 +39,7 @@ public class AdminFaqJpaController {
      * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "FAQ 조회", notes = "FAQ를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "FAQ 조회 성공", response = Map.class),
@@ -63,7 +63,7 @@ public class AdminFaqJpaController {
      * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "FAQ 상세 조회", notes = "FAQ를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "FAQ 상세 조회 성공", response = AdminFaqDTO.class),
@@ -87,7 +87,7 @@ public class AdminFaqJpaController {
      * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "이전 FAQ 상세 조회", notes = "이전 FAQ를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "이전 FAQ 상세 조회 성공", response = AdminFaqDTO.class),
@@ -111,7 +111,7 @@ public class AdminFaqJpaController {
      * 5. 작성일      : 2022. 09. 18.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "다음 FAQ 상세 조회", notes = "다음 FAQ를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "다음 FAQ 상세 조회 성공", response = AdminFaqDTO.class),
@@ -135,7 +135,7 @@ public class AdminFaqJpaController {
      * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "FAQ 저장", notes = "FAQ를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "FAQ 등록성공", response = AdminFaqDTO.class),
@@ -159,7 +159,7 @@ public class AdminFaqJpaController {
      * 5. 작성일      : 2022. 08. 16.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "FAQ 수정", notes = "FAQ를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "FAQ 수정 성공", response = AdminFaqDTO.class),
@@ -183,7 +183,7 @@ public class AdminFaqJpaController {
      * 5. 작성일      : 2022. 08. 22.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "FAQ 삭제", notes = "FAQ를 삭제 한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "FAQ 삭제 성공", response = Long.class),

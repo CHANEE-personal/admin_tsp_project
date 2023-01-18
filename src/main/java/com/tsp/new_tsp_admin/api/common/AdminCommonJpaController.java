@@ -40,7 +40,7 @@ public class AdminCommonJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공통 코드 리스트 조회", notes = "공통 코드 리스트를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "공통 코드 리스트 조회 성공", response = Map.class),
@@ -64,7 +64,7 @@ public class AdminCommonJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공통코드 상세 조회", notes = "공통코드를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "공통코드 상세 조회 성공", response = NewCodeDTO.class),
@@ -88,7 +88,7 @@ public class AdminCommonJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공통코드 저장", notes = "공통코드를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "공통코드 등록성공", response = NewCodeDTO.class),
@@ -112,7 +112,7 @@ public class AdminCommonJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공통코드 수정", notes = "공통코드를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "공통코드 수정성공", response = NewCodeDTO.class),
@@ -136,7 +136,7 @@ public class AdminCommonJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "공통코드 삭제", notes = "공통코드를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "공통코드 삭제성공", response = Long.class),
