@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.production;
 
-import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionDTO;
 import com.tsp.new_tsp_admin.api.domain.production.AdminProductionEntity;
 import com.tsp.new_tsp_admin.api.production.service.AdminProductionJpaService;
@@ -13,13 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -30,6 +29,7 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 @Api(tags = "프로덕션 관련 API")
 @RequiredArgsConstructor
 public class AdminProductionJpaController {
+
     private final AdminProductionJpaService adminProductionJpaService;
 
     /**
@@ -41,6 +41,7 @@ public class AdminProductionJpaController {
      * 5. 작성일      : 2022. 05. 09.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "프로덕션 조회", notes = "프로덕션을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "프로덕션 조회 성공", response = Map.class),
@@ -64,6 +65,7 @@ public class AdminProductionJpaController {
      * 5. 작성일      : 2022. 05. 15.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "프로덕션 상세 조회 성공", response = AdminProductionDTO.class),
@@ -87,6 +89,7 @@ public class AdminProductionJpaController {
      * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "이전 프로덕션 상세 조회", notes = "이전 프로덕션을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "이전 프로덕션 상세조회 성공", response = AdminProductionDTO.class),
@@ -110,6 +113,7 @@ public class AdminProductionJpaController {
      * 5. 작성일      : 2022. 09. 13.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "다음 프로덕션 상세 조회", notes = "다음 프로덕션을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "다음 프로덕션 상세조회 성공", response = AdminProductionDTO.class),
@@ -133,6 +137,7 @@ public class AdminProductionJpaController {
      * 5. 작성일      : 2022. 05. 16.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "프로덕션 저장", notes = "프로덕션을 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "프로덕션 등록성공", response = AdminProductionDTO.class),
@@ -156,6 +161,7 @@ public class AdminProductionJpaController {
      * 5. 작성일      : 2022. 05. 16.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "프로덕션 수정", notes = "프로덕션을 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "프로덕션 수정 성공", response = AdminProductionDTO.class),
@@ -179,6 +185,7 @@ public class AdminProductionJpaController {
      * 5. 작성일      : 2022. 05. 17.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "프로덕션 삭제", notes = "프로덕션을 삭제 한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "프로덕션 삭제 성공", response = Long.class),

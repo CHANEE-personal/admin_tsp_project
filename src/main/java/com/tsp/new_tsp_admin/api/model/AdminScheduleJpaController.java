@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -28,6 +29,7 @@ import java.util.Map;
 @RequestMapping("/api/schedule")
 @RequiredArgsConstructor
 public class AdminScheduleJpaController {
+
     private final AdminScheduleJpaService adminScheduleJpaService;
 
     /**
@@ -39,6 +41,7 @@ public class AdminScheduleJpaController {
      * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 스케줄 조회", notes = "모델 스케줄을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 스케줄 조회성공", response = Map.class),
@@ -70,6 +73,7 @@ public class AdminScheduleJpaController {
      * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 스케줄 상세 조회", notes = "모델 스케줄을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 스케줄 상세 조회 성공", response = AdminScheduleDTO.class),
@@ -92,6 +96,7 @@ public class AdminScheduleJpaController {
      * 5. 작성일      : 2022. 09. 22.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "이전 모델 스케줄 상세 조회", notes = "이전 모델 스케줄을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "이전 모델 스케줄 상세 조회 성공", response = AdminScheduleDTO.class),
@@ -114,6 +119,7 @@ public class AdminScheduleJpaController {
      * 5. 작성일      : 2022. 09. 22.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "다음 모델 스케줄 상세 조회", notes = "다음 모델 스케줄을 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "다음 모델 스케줄 상세 조회 성공", response = AdminScheduleDTO.class),
@@ -136,6 +142,7 @@ public class AdminScheduleJpaController {
      * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 스케줄 저장", notes = "모델 스케줄을 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 스케줄 등록성공", response = AdminScheduleDTO.class),
@@ -158,6 +165,7 @@ public class AdminScheduleJpaController {
      * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 스케줄 수정", notes = "모델 스케줄을 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 스케줄 수정성공", response = AdminScheduleDTO.class),
@@ -180,6 +188,7 @@ public class AdminScheduleJpaController {
      * 5. 작성일      : 2022. 08. 31.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 스케줄 삭제", notes = "모델 스케줄을 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 스케줄 삭제성공", response = Long.class),

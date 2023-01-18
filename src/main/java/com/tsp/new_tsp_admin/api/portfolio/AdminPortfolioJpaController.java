@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_admin.api.portfolio;
 
-import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioDTO;
 import com.tsp.new_tsp_admin.api.domain.portfolio.AdminPortFolioEntity;
 import com.tsp.new_tsp_admin.api.portfolio.service.AdminPortfolioJpaService;
@@ -13,13 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.web.client.HttpClientErrorException.*;
@@ -29,6 +28,7 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 @Api(tags = "포트폴리오 관련 API")
 @RequiredArgsConstructor
 public class AdminPortfolioJpaController {
+
     private final AdminPortfolioJpaService adminPortfolioJpaService;
 
     /**
@@ -40,6 +40,7 @@ public class AdminPortfolioJpaController {
      * 5. 작성일      : 2022. 05. 14.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "포트폴리오 조회", notes = "포트폴리오를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "포트폴리오 조회 성공", response = Map.class),
@@ -63,6 +64,7 @@ public class AdminPortfolioJpaController {
      * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "포트폴리오 상세 조회", notes = "포트폴리오를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "포트폴리오 상세 조회 성공", response = AdminPortFolioDTO.class),
@@ -86,6 +88,7 @@ public class AdminPortfolioJpaController {
      * 5. 작성일      : 2022. 09. 14.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "이전 포트폴리오 상세 조회", notes = "이전 포트폴리오를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "이전 포트폴리오 상세조회 성공", response = AdminPortFolioDTO.class),
@@ -109,6 +112,7 @@ public class AdminPortfolioJpaController {
      * 5. 작성일      : 2022. 09. 14.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "다음 포트폴리오 상세 조회", notes = "다음 포트폴리오를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "다음 포트폴리오 상세조회 성공", response = AdminPortFolioDTO.class),
@@ -132,6 +136,7 @@ public class AdminPortfolioJpaController {
      * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "포트폴리오 저장", notes = "포트폴리오를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "포트폴리오 등록성공", response = AdminPortFolioDTO.class),
@@ -155,6 +160,7 @@ public class AdminPortfolioJpaController {
      * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "포트폴리오 수정", notes = "포트폴리오를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "포트폴리오 수정성공", response = AdminPortFolioDTO.class),
@@ -178,6 +184,7 @@ public class AdminPortfolioJpaController {
      * 5. 작성일      : 2022. 05. 18.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "포트폴리오 삭제", notes = "포트폴리오를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "포트폴리오 삭제성공", response = Long.class),

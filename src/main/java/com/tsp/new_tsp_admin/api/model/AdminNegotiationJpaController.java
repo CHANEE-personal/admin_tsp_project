@@ -5,7 +5,6 @@ import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationDTO;
 import com.tsp.new_tsp_admin.api.domain.model.negotiation.AdminNegotiationEntity;
 import com.tsp.new_tsp_admin.api.model.service.negotiation.AdminNegotiationJpaService;
 import com.tsp.new_tsp_admin.common.Paging;
-import com.tsp.new_tsp_admin.common.SearchCommon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -21,11 +21,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.rmi.ServerError;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-
-import static java.lang.Math.ceil;
 
 @Validated
 @RestController
@@ -34,7 +30,6 @@ import static java.lang.Math.ceil;
 @RequiredArgsConstructor
 public class AdminNegotiationJpaController {
     private final AdminNegotiationJpaService adminNegotiationJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -45,6 +40,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 조회", notes = "모델 섭외를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 조회성공", response = Map.class),
@@ -77,6 +73,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 상세 조회", notes = "모델 섭외를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 상세 조회 성공", response = AdminNegotiationDTO.class),
@@ -100,6 +97,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 21.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 이전 상세 조회", notes = "모델 섭외를 이전 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 이전 상세 조회 성공", response = AdminNegotiationDTO.class),
@@ -123,6 +121,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 21.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 다음 상세 조회", notes = "모델 섭외를 다음 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 다음 상세 조회 성공", response = AdminNegotiationDTO.class),
@@ -146,6 +145,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 저장", notes = "모델 섭외를 저장한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "모델 섭외 등록성공", response = AdminNegotiationDTO.class),
@@ -169,6 +169,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 수정", notes = "모델 섭외를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "모델 섭외 수정성공", response = AdminNegotiationDTO.class),
@@ -192,6 +193,7 @@ public class AdminNegotiationJpaController {
      * 5. 작성일      : 2022. 09. 09.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "모델 섭외 삭제", notes = "모델 섭외를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "모델 섭외 삭제성공", response = Long.class),

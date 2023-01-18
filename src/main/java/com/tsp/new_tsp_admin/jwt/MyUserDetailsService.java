@@ -19,6 +19,7 @@ import static com.tsp.new_tsp_admin.exception.ApiExceptionType.NOT_FOUND_USER;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MyUserDetailsService implements UserDetailsService {
+
     private final AdminUserJpaRepository adminUserJpaRepository;
 
     @Override

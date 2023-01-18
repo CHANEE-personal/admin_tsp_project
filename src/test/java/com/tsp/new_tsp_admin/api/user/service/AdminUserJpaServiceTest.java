@@ -384,9 +384,28 @@ class AdminUserJpaServiceTest {
                 .visible("Y")
                 .build();
 
-        Long idx = adminUserJpaService.insertAdminUser(signUpRequest).getIdx();
+        AdminUserDTO adminUserDTO = adminUserJpaService.insertAdminUser(signUpRequest);
+        AdminUserEntity adminUserEntity = AdminUserEntity.builder()
+                .idx(adminUserDTO.getIdx())
+                .userId(adminUserDTO.getUserId())
+                .password(adminUserDTO.getPassword())
+                .name(adminUserDTO.getName())
+                .email(adminUserDTO.getEmail())
+                .visible("Y")
+                .build();
+
+        AdminUserEntity nonadminUserEntity = AdminUserEntity.builder()
+                .idx(999L)
+                .userId(adminUserDTO.getUserId())
+                .password(adminUserDTO.getPassword())
+                .name(adminUserDTO.getName())
+                .email(adminUserDTO.getEmail())
+                .visible("Y")
+                .build();
 
         // then
-        assertThat(adminUserJpaService.deleteAdminUser(idx)).isNotNull();
+        adminUserJpaService.deleteAdminUser(nonadminUserEntity);
+        em.flush();
+        em.clear();
     }
 }

@@ -28,6 +28,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 @Component
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
+
     private final JwtUtil jwtUtil;
     private final MyUserDetailsService userDetailsService;
     private final AdminUserJpaRepository adminUserJpaRepository;

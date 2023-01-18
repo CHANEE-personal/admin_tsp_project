@@ -1,7 +1,9 @@
 package com.tsp.new_tsp_admin.api.model.service;
 
 import com.tsp.new_tsp_admin.api.comment.service.AdminCommentJpaRepository;
+import com.tsp.new_tsp_admin.api.common.EntityType;
 import com.tsp.new_tsp_admin.api.common.SaveImage;
+import com.tsp.new_tsp_admin.api.common.image.AdminCommonImageJpaRepository;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentDTO;
 import com.tsp.new_tsp_admin.api.domain.comment.AdminCommentEntity;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
@@ -12,7 +14,6 @@ import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendDTO;
 import com.tsp.new_tsp_admin.api.domain.model.recommend.AdminRecommendEntity;
 import com.tsp.new_tsp_admin.api.domain.model.schedule.AdminScheduleDTO;
-import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.api.model.service.agency.AdminAgencyJpaRepository;
 import com.tsp.new_tsp_admin.api.model.service.recommend.AdminRecommendJpaRepository;
 import com.tsp.new_tsp_admin.exception.TspException;
@@ -39,7 +40,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     private final AdminAgencyJpaRepository adminAgencyJpaRepository;
     private final AdminRecommendJpaRepository adminRecommendJpaRepository;
     private final AdminCommentJpaRepository adminCommentJpaRepository;
-    private final ImageService imageService;
+    private final AdminCommonImageJpaRepository adminCommonImageJpaRepository;
     private final SaveImage saveImage;
 
     private AdminModelEntity oneModel(Long idx) {
@@ -201,9 +202,9 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
      * </pre>
      */
     @Override
-    public Long deleteImage(CommonImageEntity commonImageEntity) {
+    public void deleteImage(CommonImageEntity commonImageEntity) {
         try {
-            return imageService.deleteImage(commonImageEntity);
+            adminCommonImageJpaRepository.delete(commonImageEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_IMAGE);
         }
@@ -258,7 +259,7 @@ public class AdminModelJpaServiceImpl implements AdminModelJpaService {
     @Override
     @Transactional(readOnly = true)
     public List<AdminCommentDTO> findModelAdminComment(Long idx) {
-        return adminModelJpaQueryRepository.findModelAdminComment(idx);
+        return AdminCommentEntity.toDtoList(adminCommentJpaRepository.findByAdminModelEntityIdxAndCommentType(idx, "model"));
     }
 
     /**

@@ -7,7 +7,7 @@ import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationDTO;
 import com.tsp.new_tsp_admin.api.domain.support.evaluation.EvaluationEntity;
 import com.tsp.new_tsp_admin.api.support.service.AdminSupportJpaService;
 import com.tsp.new_tsp_admin.common.Paging;
-import com.tsp.new_tsp_admin.common.SearchCommon;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -36,8 +37,8 @@ import static org.springframework.web.client.HttpClientErrorException.*;
 @RequestMapping("/api/support")
 @RequiredArgsConstructor
 public class AdminSupportJpaController {
+
     private final AdminSupportJpaService adminSupportJpaService;
-    private final SearchCommon searchCommon;
 
     /**
      * <pre>
@@ -48,6 +49,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 조회", notes = "지원모델을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "지원모델 조회 성공", response = Page.class),
@@ -71,6 +73,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 수정", notes = "지원모델을 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "지원모델 수정 성공", response = AdminSupportDTO.class),
@@ -94,6 +97,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 삭제", notes = "지원모델을 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "지원모델 삭제 성공", response = Long.class),
@@ -118,6 +122,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 평가 리스트 조회", notes = "지원모델을 평가 리스트를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "지원모델 평가 리스트 조회성공", response = Page.class),
@@ -141,6 +146,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 평가 상세 조회", notes = "지원모델 평가를 상세 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "지원모델 평가 상세 조회성공", response = EvaluationDTO.class),
@@ -164,6 +170,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 평가", notes = "지원모델을 평가한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "지원모델 평가성공", response = EvaluationDTO.class),
@@ -188,6 +195,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 평가 수정", notes = "지원모델을 평가를 수정한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "지원모델 평가 수정성공", response = EvaluationDTO.class),
@@ -211,6 +219,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 평가 삭제", notes = "지원모델을 평가를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "지원모델 평가 수정성공", response = Long.class),
@@ -235,6 +244,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 05. 02.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 합격 처리", notes = "지원모델을 합격 처리한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "지원모델 합격 처리성공", response = AdminSupportDTO.class),
@@ -258,6 +268,7 @@ public class AdminSupportJpaController {
      * 5. 작성일      : 2022. 08. 26.
      * </pre>
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @ApiOperation(value = "지원모델 어드민 코멘트 조회", notes = "지원모델 어드민 코멘트를 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "지원모델 어드민 코멘트 조회성공", response = List.class),

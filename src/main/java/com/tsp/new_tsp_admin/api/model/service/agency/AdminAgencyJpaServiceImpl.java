@@ -1,11 +1,11 @@
 package com.tsp.new_tsp_admin.api.model.service.agency;
 
 import com.tsp.new_tsp_admin.api.common.SaveImage;
+import com.tsp.new_tsp_admin.api.common.image.AdminCommonImageJpaRepository;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageDTO;
 import com.tsp.new_tsp_admin.api.domain.common.CommonImageEntity;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyDTO;
 import com.tsp.new_tsp_admin.api.domain.model.agency.AdminAgencyEntity;
-import com.tsp.new_tsp_admin.api.image.service.ImageService;
 import com.tsp.new_tsp_admin.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
     private final AdminAgencyJpaQueryRepository adminAgencyJpaQueryRepository;
     private final AdminAgencyJpaRepository adminAgencyJpaRepository;
     private final SaveImage saveImage;
-    private final ImageService imageService;
+    private final AdminCommonImageJpaRepository adminCommonImageJpaRepository;
 
     private AdminAgencyEntity oneAgency(Long idx) {
         return adminAgencyJpaRepository.findById(idx)
@@ -93,9 +93,9 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      */
     @Override
     @Transactional
-    public AdminAgencyDTO updateAgency(AdminAgencyEntity adminAgencyEntity) {
+    public AdminAgencyDTO updateAgency(Long idx, AdminAgencyEntity adminAgencyEntity) {
         try {
-            Optional.ofNullable(oneAgency(adminAgencyEntity.getIdx()))
+            Optional.ofNullable(oneAgency(idx))
                     .ifPresent(adminAgency -> adminAgency.update(adminAgencyEntity));
             return AdminAgencyEntity.toDto(adminAgencyEntity);
         } catch (Exception e) {
@@ -151,9 +151,9 @@ public class AdminAgencyJpaServiceImpl implements AdminAgencyJpaService {
      * </pre>
      */
     @Override
-    public Long deleteAgencyImage(CommonImageEntity commonImageEntity) {
+    public void deleteAgencyImage(CommonImageEntity commonImageEntity) {
         try {
-            return imageService.deleteImage(commonImageEntity);
+            adminCommonImageJpaRepository.delete(commonImageEntity);
         } catch (Exception e) {
             throw new TspException(ERROR_DELETE_IMAGE);
         }

@@ -113,7 +113,7 @@ public class AdminModelEntity extends NewCommonMappedClass {
 
     @Column(name = "career_list")
     @Convert(converter = CustomConverter.class)
-    private ArrayList<CareerJson> careerList;
+    private List<CareerJson> careerList = new ArrayList<>();
 
     @Column(name = "status")
     @NotEmpty(message = "모델 상태값 선택은 필수입니다.")

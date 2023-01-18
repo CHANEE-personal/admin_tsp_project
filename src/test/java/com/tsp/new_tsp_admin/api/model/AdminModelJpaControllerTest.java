@@ -39,7 +39,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.io.FileInputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -101,7 +100,7 @@ class AdminModelJpaControllerTest {
         String token = jwtUtil.doGenerateToken(authenticationToken.getName());
 
         adminUserEntity = AdminUserEntity.builder()
-                .userId("admin04")
+                .userId("admin06")
                 .password(passwordEncoder.encode("pass1234"))
                 .name("test")
                 .email("test@test.com")
@@ -145,7 +144,7 @@ class AdminModelJpaControllerTest {
 
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
-    public void setup(RestDocumentationContextProvider restDocumentationContextProvider) {
+    public void setup(RestDocumentationContextProvider restDocumentationContextProvider) throws Exception {
         this.mockMvc = webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
@@ -161,9 +160,7 @@ class AdminModelJpaControllerTest {
     @DisplayName("Admin 모델 조회 테스트")
     void 모델조회Api테스트() throws Exception {
         LinkedMultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
-        modelMap.add("jpaStartPage", "1");
-        modelMap.add("size", "3");
-        mockMvc.perform(get("/api/model/lists/1").queryParams(modelMap)
+        mockMvc.perform(get("/api/model/lists/1").queryParams(modelMap).param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -176,12 +173,10 @@ class AdminModelJpaControllerTest {
     void 모델검색조회Api테스트() throws Exception {
         // 검색 테스트
         LinkedMultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
-        paramMap.add("jpaStartPage", "1");
-        paramMap.add("size", "3");
         paramMap.add("searchType", "0");
         paramMap.add("searchKeyword", "김민주");
 
-        mockMvc.perform(get("/api/model/lists/2").queryParams(paramMap)
+        mockMvc.perform(get("/api/model/lists/2").queryParams(paramMap).param("pageNum", "1").param("size", "3")
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -200,12 +195,10 @@ class AdminModelJpaControllerTest {
     }
 
     @Test
-    @Disabled
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 모델 조회 권한 테스트")
     void 모델조회Api권한테스트() throws Exception {
-        mockMvc.perform(get("/api/model/lists/1")
-                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+        mockMvc.perform(get("/api/model/lists/1").param("pageNum", "1").param("size", "3"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -229,23 +222,22 @@ class AdminModelJpaControllerTest {
                 .andExpect(jsonPath("$.size3").value("31-24-34"))
                 .andExpect(jsonPath("$.shoes").value("240"));
     }
-//    @Test
-//    @DisplayName("Admin 모델 상세 조회 예외 테스트")
-//    void 모델상세조회Api예외테스트() throws Exception {
-//        mockMvc.perform(get("/api/model/-1")
-//                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andReturn().getResponse().getContentAsString().equals("모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.");
-//    }
 
     @Test
-    @Disabled
+    @DisplayName("Admin 모델 상세 조회 예외 테스트")
+    void 모델상세조회Api예외테스트() throws Exception {
+        mockMvc.perform(get("/api/model/-1")
+                .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString().equals("모델 categoryCd는 1~3 사이 값만 입력할 수 있습니다.");
+    }
+
+    @Test
     @WithMockUser(roles = "USER")
     @DisplayName("Admin 모델 상세 조회 권한 테스트")
     void 모델상세조회Api권한테스트() throws Exception {
-        mockMvc.perform(get("/api/model/143")
-                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
+        mockMvc.perform(get("/api/model/143"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -683,10 +675,8 @@ class AdminModelJpaControllerTest {
                 .status("active")
                 .build();
 
-        mockMvc.perform(put("/api/model/{idx}/agency", adminModelEntity.getIdx())
-                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken())
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(adminModelEntity)))
+        mockMvc.perform(put("/api/model/{idx}/agency", adminModelEntity.getIdx()).param("agencyIdx", String.valueOf(adminAgencyEntity.getIdx()))
+                        .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andDo(document("model/put/agency",
                         preprocessRequest(prettyPrint()),
@@ -705,7 +695,10 @@ class AdminModelJpaControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 모델 어드민 코멘트 조회 테스트")
     void 모델어드민코멘트조회Api테스트() throws Exception {
-        mockMvc.perform(get("/api/model/{categoryCd}/{idx}/admin-comment", adminModelEntity.getCategoryCd(), adminModelEntity.getIdx())
+        // 모델 등록
+        em.persist(adminModelEntity);
+
+        mockMvc.perform(get("/api/model/{idx}/admin-comment", adminModelEntity.getIdx())
                         .header("Authorization", "Bearer " + adminUserEntity.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
