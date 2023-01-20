@@ -125,7 +125,7 @@ public class AdminUserJpaServiceImpl implements AdminUserJpaService {
                     .password(passwordEncoder.encode(signUpRequest.getPassword()))
                     .name(signUpRequest.getName())
                     .email(signUpRequest.getEmail())
-                    .role(Role.ROLE_USER)
+                    .role(Role.ROLE_ADMIN)
                     .visible("Y")
                     .build()));
 

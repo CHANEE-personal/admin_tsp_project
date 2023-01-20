@@ -89,8 +89,7 @@ public class AdminUserJpaController {
         jwtTokenUtil.setHeaderAccessToken(response, jwtResponse.getAccessToken());
         jwtTokenUtil.setHeaderRefreshToken(response, jwtResponse.getRefreshToken());
         return ok().body(jwtResponse);
-
-    }
+        }
 
     @ApiOperation(value = "JWT 토큰 재발급", notes = "JWT 토큰을 재발급")
     @PostMapping(value = "/refresh")
